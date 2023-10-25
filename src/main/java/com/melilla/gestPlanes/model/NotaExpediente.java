@@ -2,6 +2,8 @@ package com.melilla.gestPlanes.model;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -27,6 +29,7 @@ public class NotaExpediente {
 	
 	private boolean pinned;
 	
+	@JsonBackReference
 	@ManyToOne
 	@JoinColumn(name="idExpediente")
 	private Expediente expediente;

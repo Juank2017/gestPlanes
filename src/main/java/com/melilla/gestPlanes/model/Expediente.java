@@ -6,6 +6,8 @@ import java.util.List;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -18,10 +20,15 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
-import lombok.Data;
+
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 @Entity
-@Data
+@RequiredArgsConstructor
+@Setter
+@Getter
 @Audited
 public class Expediente {
 	
@@ -35,7 +42,7 @@ public class Expediente {
 	
 	private boolean activo;
 	
-	
+	@JsonManagedReference
     @ManyToMany(cascade = {
             CascadeType.PERSIST,
             CascadeType.MERGE
@@ -54,6 +61,7 @@ public class Expediente {
 	@OneToMany(mappedBy = "expediente", cascade = CascadeType.ALL)
 	private List<Documento> documentos;
 	
+	@JsonManagedReference
 	@OneToMany(mappedBy = "expediente", cascade = CascadeType.ALL)
 	@NotAudited
 	private List<NotaExpediente> notas;

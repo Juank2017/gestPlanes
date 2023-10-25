@@ -6,9 +6,8 @@ import java.util.List;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
 
-
-import com.melilla.gestPlanes.model.enums.EstadoCiudadano;
-import com.melilla.gestPlanes.model.enums.EstadoCivil;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -19,9 +18,14 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import lombok.Data;
+import jakarta.persistence.OneToOne;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
-@Data
+@RequiredArgsConstructor
+@Setter
+@Getter
 @Entity
 @Audited
 public class Ciudadano {
@@ -38,13 +42,13 @@ public class Ciudadano {
 	
 	private String fechaNacimiento;
 	
-	private EstadoCivil estadoCivil;
+	private String estadoCivil;
 	
 	private String ccc;
 	
 	private String seguridadSocial;
 	
-	private EstadoCiudadano estado;
+	private String estado;
 	
 	private String email;
 	
@@ -54,6 +58,7 @@ public class Ciudadano {
 	@OneToMany(mappedBy = "ciudadano", cascade= CascadeType.ALL)
 	private List<EmbargoCiudadano> embargos;
 	
+	@JsonBackReference
 	@ManyToMany(mappedBy = "interesados")
 	private List<Expediente> expedientes;
 	
@@ -61,6 +66,10 @@ public class Ciudadano {
 	@JoinColumn(name="idEquipo")
 	@NotAudited
 	private Equipo equipo;
+	
+	@JsonManagedReference
+	@OneToOne(mappedBy = "ciudadano")
+	private Contrato contrato;
 	
 	
 

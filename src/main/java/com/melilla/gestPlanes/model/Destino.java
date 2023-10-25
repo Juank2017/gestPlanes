@@ -10,20 +10,19 @@ import lombok.Data;
 
 @Entity
 @Data
-public class Categoria {
+public class Destino {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long idCategoria;
+	private Long idDestino;
 	
-	private String categoria;
-	
-	@OneToOne
-	@JoinColumn(name="grupo")
-	private Salario grupo;
+	private String destino;
 	
 	@OneToOne
-	@JoinColumn(name="idPlan")
-	private Plan idPlan;
+	@JoinColumn(name="idOrganismo")
+	private Organismo idOrganismo;
+	
+	
+	
 
 }

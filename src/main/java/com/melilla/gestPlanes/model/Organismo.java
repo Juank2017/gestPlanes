@@ -5,25 +5,22 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+
 import jakarta.persistence.OneToOne;
 import lombok.Data;
 
 @Entity
 @Data
-public class Categoria {
-	
+public class Organismo {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long idCategoria;
+	private Long idOrganismo;
 	
-	private String categoria;
-	
-	@OneToOne
-	@JoinColumn(name="grupo")
-	private Salario grupo;
+	private String organismo;
 	
 	@OneToOne
 	@JoinColumn(name="idPlan")
 	private Plan idPlan;
-
+	
 }
