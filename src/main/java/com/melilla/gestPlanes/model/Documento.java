@@ -28,8 +28,8 @@ public class Documento {
 	private String observaciones;
 	
 	@ManyToOne
-	@JoinColumn(name="idExpediente")
-	private Expediente expediente;
+	@JoinColumn(name="idCiudadano")
+	private Ciudadano ciudadano;
 	
 
 }

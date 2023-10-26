@@ -16,7 +16,7 @@ import lombok.Data;
 
 @Entity
 @Data
-public class NotaExpediente {
+public class NotaCiudadano {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,7 +31,7 @@ public class NotaExpediente {
 	
 	@JsonBackReference
 	@ManyToOne
-	@JoinColumn(name="idExpediente")
-	private Expediente expediente;
+	@JoinColumn(name="idCiudadano")
+	private Ciudadano ciudadano;
 
 }

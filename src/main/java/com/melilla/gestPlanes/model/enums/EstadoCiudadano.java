@@ -11,7 +11,7 @@ public enum EstadoCiudadano {
 	BAJA("Baja"),
 	RENUNCIA("Renuncia");
 	
-	public static EstadoCiudadano [] ALL = {NINGUNO,CANDIDATO,RECHAZADO,DESCARTADO,CONTRATADO,FINALIZADO,DESPEDIDO,BAJA};
+	public static EstadoCiudadano [] ALL = {NINGUNO,CANDIDATO,RECHAZADO,DESCARTADO,CONTRATADO,FINALIZADO,DESPEDIDO,BAJA,RENUNCIA};
 	
 	private final String name;
 	
