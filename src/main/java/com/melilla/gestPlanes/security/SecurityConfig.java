@@ -43,7 +43,7 @@ public class SecurityConfig {
                                 .requestMatchers("/login").permitAll()
                                 .requestMatchers("/swagger-ui/**").permitAll()
                                 .requestMatchers("/v3/**").permitAll()
-
+                                .requestMatchers("/refreshtoken").permitAll()
                                 .anyRequest().authenticated())
                 .logout((logout) -> logout.logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler()))
 

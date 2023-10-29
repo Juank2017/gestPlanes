@@ -15,7 +15,8 @@ import com.melilla.gestPlanes.repository.UserRepository;
 import com.melilla.gestPlanes.service.RefreshTokenService;
 
 import jakarta.transaction.Transactional;
-
+import lombok.extern.java.Log;
+@Log
 @Service
 public class RefreshTokenServiceImpl implements RefreshTokenService {
   @Value("${app.jwtRefreshExpirationMs}")
@@ -28,6 +29,7 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
   private UserRepository userRepository;
 
   public Optional<RefreshToken> findByToken(String token) {
+	log.info("refreshService: "+token);  
     return refreshTokenRepository.findByToken(token);
   }
 

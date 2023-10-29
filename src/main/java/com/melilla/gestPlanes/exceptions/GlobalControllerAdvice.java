@@ -11,8 +11,13 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import com.melilla.gestPlanes.exceptions.exceptions.CiudadanoNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.ExpedienteNotFoundException;
+import com.melilla.gestPlanes.exceptions.exceptions.MyFileNotFoundException;
+import com.melilla.gestPlanes.exceptions.exceptions.PlanNotFoundException;
+import com.melilla.gestPlanes.exceptions.exceptions.FileStorageException;
 import com.melilla.gestPlanes.exceptions.exceptions.TokenRefreshException;
+import com.melilla.gestPlanes.exceptions.exceptions.UserNotFoundException;
 
 import io.jsonwebtoken.ExpiredJwtException;
 
@@ -63,9 +68,23 @@ public class GlobalControllerAdvice extends ResponseEntityExceptionHandler {
 		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(apiError);
 	}
 
-	@ExceptionHandler({ ExpedienteNotFoundException.class })
+	@ExceptionHandler({ 
+		ExpedienteNotFoundException.class,
+		CiudadanoNotFoundException.class,
+		MyFileNotFoundException.class,
+		PlanNotFoundException.class,
+		UserNotFoundException.class})
 	public ResponseEntity<ApiError> handleNoEncontrado(Exception ex) {
 		ApiError apiError = new ApiError(HttpStatus.NOT_FOUND, ex.getMessage());
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(apiError);
 	}
+	
+	@ExceptionHandler({FileStorageException.class})
+	public ResponseEntity<ApiError> handleStoragException(Exception ex){
+		ApiError apiError = new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(apiError);
+	}
+	
+	
+	
 }

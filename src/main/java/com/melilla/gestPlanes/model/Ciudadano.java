@@ -1,12 +1,13 @@
 package com.melilla.gestPlanes.model;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
-
+import org.hibernate.annotations.SQLDelete;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
-
+import org.springframework.data.annotation.CreatedDate;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -32,6 +33,7 @@ import lombok.Setter;
 @Getter
 @Entity
 @Audited
+@SQLDelete(sql = "UPDATE ciudadano SET deleted=true, deleted_at= NOW() WHERE id=?")
 public class Ciudadano {
 	
 	@Id
@@ -95,5 +97,12 @@ public class Ciudadano {
 	private List<Documento> documentos;
 	
 	private boolean esJefeEquipo;
+	
+	@CreatedDate
+	private LocalDateTime createdAt;
+	
+	private boolean deleted;
+	
+	private LocalDateTime deletedAt;
 
 }

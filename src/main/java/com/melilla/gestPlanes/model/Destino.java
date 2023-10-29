@@ -1,5 +1,10 @@
 package com.melilla.gestPlanes.model;
 
+import java.time.LocalDateTime;
+
+import org.hibernate.annotations.SQLDelete;
+import org.springframework.data.annotation.CreatedDate;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -10,6 +15,7 @@ import lombok.Data;
 
 @Entity
 @Data
+@SQLDelete(sql = "UPDATE destino SET deleted=true, deleted_at= NOW() WHERE id=?")
 public class Destino {
 	
 	@Id
@@ -22,7 +28,12 @@ public class Destino {
 	@JoinColumn(name="idOrganismo")
 	private Organismo idOrganismo;
 	
+	@CreatedDate
+	private LocalDateTime createdAt;
 	
+	private boolean deleted;
+	
+	private LocalDateTime deletedAt;
 	
 
 }

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.melilla.gestPlanes.service.JWTService;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
@@ -47,8 +48,12 @@ public class JWTServiceImpl implements JWTService {
 	    }
 
 	    private <T> T extractClaim(String token, Function<Claims, T> claimsResolvers) {
-	        final Claims claims = extractAllClaims(token);
-	        return claimsResolvers.apply(claims);
+	        
+	        	final Claims claims = extractAllClaims(token);
+	        	 return claimsResolvers.apply(claims);
+		
+	    	
+	       
 	    }
 
 	    private String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {

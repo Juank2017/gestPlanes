@@ -49,17 +49,18 @@ public class User implements UserDetails {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	protected Long id;
+	private Long id;
 
 	@Basic(optional = false)
 	@Column(name = "username")
-	String username;
+	private String userName;
 
+	@JsonIgnore
 	@Column(name = "password")
-	String password;
+	private String password;
 
 	@Column(name = "enabled")
-	Boolean enabled;
+	private Boolean enabled;
 	
 	
 	@ManyToMany(fetch = FetchType.EAGER)
@@ -85,7 +86,7 @@ public class User implements UserDetails {
     @Override
     public String getUsername() {
         // email in our case
-        return username;
+        return userName;
     }
 
     @Override
