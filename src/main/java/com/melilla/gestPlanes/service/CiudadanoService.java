@@ -11,4 +11,5 @@ public interface CiudadanoService {
 	
 	Optional<Ciudadano> getCiudadano(Long idCiudadano);
 
+	Ciudadano crearCiudadano(Ciudadano ciudadano);
 }

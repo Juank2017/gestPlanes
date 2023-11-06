@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +17,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.melilla.gestPlanes.exceptions.exceptions.FileStorageException;
+import com.melilla.gestPlanes.model.ApiResponse;
+import com.melilla.gestPlanes.model.Documento;
 import com.melilla.gestPlanes.model.DocumentoResponse;
 import com.melilla.gestPlanes.service.DocumentoService;
 
@@ -31,17 +34,17 @@ public class DocumentoController {
 	
 	
 	@PostMapping("/subirDocumento")
-	public DocumentoResponse subirDocumento(@RequestPart MultipartFile file, @RequestPart String idCiudadano) {
+	public ResponseEntity<ApiResponse> subirDocumento(@RequestPart MultipartFile file,@RequestPart String tipo, @RequestPart String idCiudadano) {
 		
-		String fileName = documentoService.guardarDocumento(Long.parseLong(idCiudadano), file);
+		ApiResponse response = new ApiResponse();
 		
-		String fileDownladUri = ServletUriComponentsBuilder
-								.fromCurrentContextPath()
-								.path("/descargaDocumento/")
-								.path(fileName)
-								.toUriString();
+		Documento doc = documentoService.guardarDocumento(Long.parseLong(idCiudadano), file,tipo);
 		
-		return new DocumentoResponse(fileName,fileDownladUri,file.getContentType(),file.getSize());
+		response.setEstado(HttpStatus.OK);
+		response.getPayload().add(documentoService.persistirBBDD(doc));
+		response.setMensaje("Lista de ciudadanos");
+		
+		return ResponseEntity.ok(response);
 		
 	}
 	

@@ -15,11 +15,14 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.melilla.gestPlanes.exceptions.exceptions.CiudadanoNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.FileStorageException;
 import com.melilla.gestPlanes.exceptions.exceptions.MyFileNotFoundException;
 import com.melilla.gestPlanes.model.Ciudadano;
+import com.melilla.gestPlanes.model.Documento;
+import com.melilla.gestPlanes.repository.DocumentoRepository;
 import com.melilla.gestPlanes.service.CiudadanoService;
 import com.melilla.gestPlanes.service.DocumentoService;
 
@@ -34,17 +37,20 @@ public class DocumentoServiceImpl implements DocumentoService {
 	@Autowired
 	private CiudadanoService ciudadanoService;
 	
+	@Autowired
+	private DocumentoRepository documentoRepository;
+	
 	@Value("${file.upload-dir}")
 	private String uploadDir;
 
 	@Override
-	public String guardarDocumento(Long idCiudadano, MultipartFile file) {
+	public Documento guardarDocumento(Long idCiudadano, MultipartFile file, String tipo) {
 		//Obtiene el ciudadano
 		Ciudadano ciudadano = ciudadanoService.getCiudadano(idCiudadano).orElseThrow(()-> new CiudadanoNotFoundException(idCiudadano));
 		//ocupacion del ciudadano
 		String ocupacion = ciudadano.getContrato().getOcupacion()+"\\";
 		//forma el nombre de la capeta con apellidos_nombre
-		String nombreCarpeta = ocupacion + ciudadano.getApellidos()+"_"+ciudadano.getNombre();
+		String nombreCarpeta = ocupacion + ciudadano.getApellidos()+"_"+ciudadano.getNombre()+"\\"+tipo;
 		//obtiene el path absoluto debe ser S:\PLANES DE EMPLEO\ocupacion\apellidos_nombre
 		Path fileStorageLocation = Paths.get(uploadDir+nombreCarpeta).toAbsolutePath().normalize();
 		log.info(fileStorageLocation.toString());
@@ -57,7 +63,7 @@ public class DocumentoServiceImpl implements DocumentoService {
 		
 		//nombre del fichero
 		String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-		
+		fileName = tipo+"_"+fileName;
 		try {
             // Check if the file's name contains invalid characters
             if(fileName.contains("..")) {
@@ -67,7 +73,20 @@ public class DocumentoServiceImpl implements DocumentoService {
         Path targetLocation = fileStorageLocation.resolve(fileName);
         Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
 
-        return fileName;
+        String fileDownladUri = ServletUriComponentsBuilder
+				.fromCurrentContextPath()
+				.path("/descargaDocumento/")
+				.path(fileName)
+				.toUriString();
+        
+        Documento documento = new Documento();
+        
+        documento.setCiudadano(ciudadano);
+        documento.setNombre(fileName);
+        documento.setRuta(fileDownladUri);
+        documento.setTipo(tipo);
+        
+        return documento;
     } catch (IOException ex) {
         throw new FileStorageException("No se pudo subir el documento " + fileName + ". Intentelo de nuevo!");
     }
@@ -98,6 +117,12 @@ public class DocumentoServiceImpl implements DocumentoService {
 	public String eliminarDocumento(Long idCiudadano, String nombreDocumento) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public Documento persistirBBDD(Documento documento) {
+		
+		return documentoRepository.save(documento);
 	}
 
 }

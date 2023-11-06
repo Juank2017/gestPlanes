@@ -2,6 +2,9 @@ package com.melilla.gestPlanes.DTO;
 
 import java.util.Collection;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonFormat.Shape;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.melilla.gestPlanes.model.Role;
 
 public interface UserDTO {
@@ -10,7 +13,10 @@ public interface UserDTO {
 
 	String getUserName();
 
-	Boolean getEnabled();
+	
+	boolean getEnabled();
+	
+	boolean isDeleted();
 
 	Collection<Role> getRoles();
 

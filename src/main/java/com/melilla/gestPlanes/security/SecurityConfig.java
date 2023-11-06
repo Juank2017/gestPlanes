@@ -44,6 +44,7 @@ public class SecurityConfig {
                                 .requestMatchers("/swagger-ui/**").permitAll()
                                 .requestMatchers("/v3/**").permitAll()
                                 .requestMatchers("/refreshtoken").permitAll()
+                                .requestMatchers("/checkToken").permitAll()
                                 .anyRequest().authenticated())
                 .logout((logout) -> logout.logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler()))
 
@@ -83,7 +84,9 @@ public class SecurityConfig {
 
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
-				registry.addMapping("/**").allowedOrigins("http://localhost:5173","http://127.0.0.1:5173","http://localhost");
+				registry.addMapping("/**")
+				.allowedMethods("*")
+				.allowedOrigins("http://localhost:5173","http://127.0.0.1:5173","http://localhost");
 			}
 			
 		};

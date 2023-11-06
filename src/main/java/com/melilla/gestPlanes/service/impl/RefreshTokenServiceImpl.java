@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.melilla.gestPlanes.exceptions.exceptions.TokenRefreshException;
 import com.melilla.gestPlanes.model.RefreshToken;
+import com.melilla.gestPlanes.model.User;
 import com.melilla.gestPlanes.repository.RefreshTokenRepository;
 import com.melilla.gestPlanes.repository.UserRepository;
 import com.melilla.gestPlanes.service.RefreshTokenService;
@@ -33,10 +34,14 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
     return refreshTokenRepository.findByToken(token);
   }
 
+  @Transactional
   public RefreshToken createRefreshToken(Long userId) {
     RefreshToken refreshToken = new RefreshToken();
+    
+    User usuario =userRepository.findById(userId).get();
 
-    refreshToken.setUser(userRepository.findById(userId).get());
+    refreshTokenRepository.deleteAllByUser(usuario);
+    refreshToken.setUser(usuario);
     refreshToken.setExpiryDate(Instant.now().plusMillis(refreshTokenDurationMs));
     refreshToken.setToken(UUID.randomUUID().toString());
 

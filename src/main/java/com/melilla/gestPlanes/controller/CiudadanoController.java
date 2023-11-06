@@ -4,9 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.melilla.gestPlanes.model.ApiResponse;
+import com.melilla.gestPlanes.model.Ciudadano;
 import com.melilla.gestPlanes.service.CiudadanoService;
 
 @RestController
@@ -28,4 +31,15 @@ public class CiudadanoController {
 		
 	}
 
+	@PostMapping("/crearCiudadano")
+	public ResponseEntity<ApiResponse>crearCiudadano(@RequestBody Ciudadano ciudadano){
+		
+		ApiResponse response = new ApiResponse();
+		
+		response.setEstado(HttpStatus.OK);
+		response.getPayload().add(ciudadanoService.crearCiudadano(ciudadano));
+		response.setMensaje("Lista de ciudadanos");
+		
+		return ResponseEntity.ok(response);
+	}
 }

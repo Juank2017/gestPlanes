@@ -1,5 +1,10 @@
 package com.melilla.gestPlanes.repository;
 
-public interface DocumentoRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.history.RevisionRepository;
+
+import com.melilla.gestPlanes.model.Documento;
+
+public interface DocumentoRepository extends JpaRepository<Documento, Long>, RevisionRepository<Documento, Long, Long>{
 
 }

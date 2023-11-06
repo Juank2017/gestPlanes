@@ -30,6 +30,14 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 		
 		return ciudadanoRepository.findById(idCiudadano);
 	}
+
+	@Override
+	public Ciudadano crearCiudadano(Ciudadano ciudadano) {
+		
+		return ciudadanoRepository.save(ciudadano);
+	}
+
+	
 	
 	
 

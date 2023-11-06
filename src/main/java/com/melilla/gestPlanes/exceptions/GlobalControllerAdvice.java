@@ -1,5 +1,7 @@
 package com.melilla.gestPlanes.exceptions;
 
+import javax.management.relation.RoleNotFoundException;
+
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -49,7 +51,7 @@ public class GlobalControllerAdvice extends ResponseEntityExceptionHandler {
 		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(apiError);
 	}
 
-	@ExceptionHandler({BadCredentialsException.class  })
+	@ExceptionHandler({BadCredentialsException.class , NumberFormatException.class })
 	public ResponseEntity<ApiError> handleBadRequest(Exception ex) {
 		ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, ex.getMessage());
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiError);
@@ -73,7 +75,8 @@ public class GlobalControllerAdvice extends ResponseEntityExceptionHandler {
 		CiudadanoNotFoundException.class,
 		MyFileNotFoundException.class,
 		PlanNotFoundException.class,
-		UserNotFoundException.class})
+		UserNotFoundException.class,
+		RoleNotFoundException.class})
 	public ResponseEntity<ApiError> handleNoEncontrado(Exception ex) {
 		ApiError apiError = new ApiError(HttpStatus.NOT_FOUND, ex.getMessage());
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(apiError);

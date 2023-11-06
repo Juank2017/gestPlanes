@@ -1,11 +1,13 @@
 package com.melilla.gestPlanes.model;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 
 import java.util.List;
 
-
+import org.hibernate.annotations.SQLDelete;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -26,6 +28,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
 
 import jakarta.persistence.Table;
+import jakarta.persistence.Version;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -40,6 +43,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name="user")
+@SQLDelete(sql = "UPDATE user SET deleted=true, deleted_at= NOW() WHERE id=?")
 public class User implements UserDetails {
 
 	/**
@@ -60,7 +64,7 @@ public class User implements UserDetails {
 	private String password;
 
 	@Column(name = "enabled")
-	private Boolean enabled;
+	private boolean active;
 	
 	
 	@ManyToMany(fetch = FetchType.EAGER)
@@ -69,7 +73,8 @@ public class User implements UserDetails {
 				inverseJoinColumns = @JoinColumn(name="idRol", referencedColumnName = "id"))
 	private Collection<Role> roles;
 
-
+	@Version
+	private Long version;
 	
 
 	@Override
@@ -106,7 +111,18 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
+    	
+
+        if(!this.active) return false;
+
         return true;
     }
+    
+	@CreatedDate
+	private LocalDateTime createdAt;
+	
+	private boolean deleted;
+	
+	private LocalDateTime deletedAt;
 
 }

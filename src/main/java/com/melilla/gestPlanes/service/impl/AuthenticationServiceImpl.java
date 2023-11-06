@@ -56,5 +56,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 				.refreshToken(refreshToken.getToken())
 				.build();
 	}
+	
+	public boolean checkToken(String token,String userName) {
+		var user = userRepository.findByUserName(userName).orElseThrow(()->new IllegalArgumentException("Usuario no válido"));
+		
+		return jwtService.isTokenValid(token, user);
+	}
 
 }
