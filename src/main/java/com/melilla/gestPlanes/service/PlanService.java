@@ -15,6 +15,6 @@ public interface PlanService {
 	
 	Plan crearPlan(Plan plan);
 	
-	
+	Plan getPlanActivo();
 	
 }

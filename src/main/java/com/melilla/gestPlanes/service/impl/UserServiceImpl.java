@@ -4,18 +4,22 @@ package com.melilla.gestPlanes.service.impl;
 
 
 import java.util.ArrayList;
-import java.util.HashSet;
+
 import java.util.List;
 import java.util.Optional;
 
 import javax.management.relation.RoleNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.melilla.gestPlanes.DTO.CreateUserDTO;
 import com.melilla.gestPlanes.DTO.EditUserDTO;
 import com.melilla.gestPlanes.DTO.UserDTO;
 import com.melilla.gestPlanes.exceptions.exceptions.UserNotFoundException;
@@ -37,6 +41,9 @@ public class UserServiceImpl implements UserService {
 	@Autowired 
 	private RoleRepository roleRepository;
 	
+	
+	
+	
     @Override
     public UserDetailsService userDetailsService() {
         return new UserDetailsService() {
@@ -52,11 +59,26 @@ public class UserServiceImpl implements UserService {
 
 
 	@Override
-	public User createUser(User user) {
+	public User createUser(CreateUserDTO usuario) {
+		
+		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+		String password = usuario.getPassword();
+		User nuevoUsuario = new User();
+		nuevoUsuario.setActive(usuario.isEnabled());
+		nuevoUsuario.setUserName(usuario.getUserName());
+		nuevoUsuario.setPassword(passwordEncoder.encode(password));
 		
 	
+		List<Role> roles = new ArrayList<Role>();
+		try {
+			roles.add(roleRepository.findByRoleName(usuario.getRoles()).orElseThrow(()->new RoleNotFoundException()));
+		} catch (RoleNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
 	
-		return userRepository.save(user);
+		nuevoUsuario.setRoles(roles);
+		return userRepository.save(nuevoUsuario);
 	}
 
 
@@ -70,6 +92,8 @@ public class UserServiceImpl implements UserService {
 	}
 
 
+	
+	
 	@Override
 	public User updateUser(EditUserDTO user) {
 		
@@ -107,5 +131,21 @@ public class UserServiceImpl implements UserService {
 
 		return;
 		
+	}
+
+
+	@Override
+	public UserDTO getUser(Long idUsuario) {
+
+		
+		return userRepository.myFindById(idUsuario).orElseThrow(()->new UserNotFoundException("no se ha encontrado el usuario con id "+idUsuario));
+	}
+
+
+	@Override
+	public boolean existeUsuario(String userName) {
+		
+
+		return userRepository.findByUserName(userName).isPresent();
 	}
 }

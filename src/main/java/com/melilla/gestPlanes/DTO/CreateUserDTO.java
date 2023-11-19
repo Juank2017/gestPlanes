@@ -16,5 +16,5 @@ public class CreateUserDTO {
 	private String userName;
 	private String password;
 	private boolean enabled;
-	private List<Role> roles;
+	private String roles;
 }

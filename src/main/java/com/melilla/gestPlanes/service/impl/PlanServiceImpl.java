@@ -57,4 +57,10 @@ public class PlanServiceImpl implements PlanService {
 		return planRepository.save(plan);
 	}
 
+	@Override
+	public Plan getPlanActivo() {
+		
+		return planRepository.findByActivo(true).orElseThrow(()->new PlanNotFoundException("no hay plan activo"));
+	}
+
 }

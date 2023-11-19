@@ -50,7 +50,7 @@ public class DocumentoServiceImpl implements DocumentoService {
 		//ocupacion del ciudadano
 		String ocupacion = ciudadano.getContrato().getOcupacion()+"\\";
 		//forma el nombre de la capeta con apellidos_nombre
-		String nombreCarpeta = ocupacion + ciudadano.getApellidos()+"_"+ciudadano.getNombre()+"\\"+tipo;
+		String nombreCarpeta = ocupacion + ciudadano.getApellido1()+"_"+ciudadano.getApellido2()+"_"+ciudadano.getNombre()+"\\"+tipo;
 		//obtiene el path absoluto debe ser S:\PLANES DE EMPLEO\ocupacion\apellidos_nombre
 		Path fileStorageLocation = Paths.get(uploadDir+nombreCarpeta).toAbsolutePath().normalize();
 		log.info(fileStorageLocation.toString());
@@ -98,7 +98,7 @@ public class DocumentoServiceImpl implements DocumentoService {
 	public Resource loadDocumentAsResource(Long idCiudadano, String filename) {
 		Ciudadano ciudadano = ciudadanoService.getCiudadano(idCiudadano).orElseThrow(()-> new CiudadanoNotFoundException(idCiudadano));
 		
-		String nombreCarpeta = ciudadano.getApellidos()+"_"+ciudadano.getNombre()+"\\";
+		String nombreCarpeta = ciudadano.getApellido1()+"_"+ciudadano.getApellido2()+"_"+ciudadano.getNombre()+"\\";
 		 try {
 			 Path fileStorageLocation = Paths.get(uploadDir+nombreCarpeta+filename).toAbsolutePath().normalize();
 			 log.info(fileStorageLocation.toString());

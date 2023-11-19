@@ -57,7 +57,7 @@ public class AuthenticationController {
 			return ResponseEntity.ok(JwtResponseDTO.builder()
 							.estado(HttpStatus.OK)
 							.token(token)
-							.refreshToken(request.get("refreshtoken"))
+							.refreshToken(request.get("refreshToken"))
 							.userName(user.getUsername())
 							.roles(user.getAuthorities().stream().collect(Collectors.toList()))
 							.build());

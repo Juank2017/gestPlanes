@@ -63,5 +63,13 @@ public class PlanController {
 		return ResponseEntity.ok(response);
 	}
 	
+	@GetMapping("/planActivo")
+	public ResponseEntity<ApiResponse>obtenerPlanActivo(){
+		ApiResponse response = new ApiResponse();
+		response.setEstado(HttpStatus.OK);
+		response.getPayload().add(planService.getPlanActivo());
+		return ResponseEntity.ok(response);
+	}
+	
 
 }

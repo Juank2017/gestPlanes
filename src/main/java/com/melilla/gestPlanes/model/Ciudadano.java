@@ -42,7 +42,9 @@ public class Ciudadano {
 	
 	private String nombre;
 	
-	private String apellidos;
+	private String apellido1;
+	
+	private String apellido2;
 	
 	private String sexo;
 	

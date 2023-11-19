@@ -16,4 +16,7 @@ public interface UserRepository extends  JpaRepository<User, Long> ,RevisionRepo
 	
 	@Query(value = "SELECT u FROM User u")
 	List<UserDTO>myFindAll();
+	
+	@Query(value = "SELECT u FROM User u WHERE u.id = ?1")
+	Optional<UserDTO>myFindById(Long id);
 }

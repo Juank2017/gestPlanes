@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 import org.hibernate.annotations.SQLDelete;
 import org.springframework.data.annotation.CreatedDate;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -24,10 +26,12 @@ public class Categoria {
 	
 	private String categoria;
 	
+	@JsonIgnore
 	@OneToOne
 	@JoinColumn(name="grupo")
 	private Salario grupo;
 	
+	@JsonIgnore
 	@OneToOne
 	@JoinColumn(name="idPlan")
 	private Plan idPlan;

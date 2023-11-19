@@ -54,22 +54,25 @@ public class UserController {
 		return ResponseEntity.ok(response);
 	}
 	
+	@GetMapping("/usuario/{id}")
+	ResponseEntity<ApiResponse>getUsuario(@PathVariable Long id){
+		ApiResponse response = new ApiResponse();
+		response.setEstado(HttpStatus.OK);
+		response.getPayload().add(userService.getUser(id));
+		
+		response.setMensaje("Obtenido usuario "+id);
+		return ResponseEntity.ok(response);
+	}
+	
 	@PostMapping(value= "/crearUsuario")
 	ResponseEntity<ApiResponse>crearUsuario(@RequestBody CreateUserDTO usuario,BindingResult result){
 		
-		log.info(usuario.toString());
-		log.info(result.toString());
-		String password = usuario.getPassword();
-		User nuevoUsuario = new User();
-		nuevoUsuario.setActive(usuario.isEnabled());
-		nuevoUsuario.setUserName(usuario.getUserName());
-		nuevoUsuario.setPassword(passwordEncoder.encode(password));
-		nuevoUsuario.setRoles(usuario.getRoles());
+	
 		
 		ApiResponse response = new ApiResponse();
 		response.setEstado(HttpStatus.OK);
-		response.getPayload().add(userService.createUser(nuevoUsuario));
-		response.setMensaje("Listado de usuarios");
+		response.getPayload().add(userService.createUser(usuario));
+		response.setMensaje("Usuario "+ usuario.getUserName() +" creado");
 		
 		return ResponseEntity.ok(response);
 	}
@@ -100,6 +103,19 @@ public class UserController {
 		
 		return ResponseEntity.ok(response);
 		
+	}
+	
+	@GetMapping("existeUsuario/{userName}")
+	ResponseEntity<ApiResponse>existeUsuario(@PathVariable String userName){
+			
+		
+		ApiResponse response = new ApiResponse();
+		response.setEstado(HttpStatus.OK);
+		boolean resultado =  userService.existeUsuario(userName);
+		response.getPayload().add(resultado);
+		String mensaje = (resultado)?"El usuario "+userName+" ya existe.":"El usuario no existe"; 
+		response.setMensaje(mensaje);
+		return ResponseEntity.ok(response);
 	}
 
 }
