@@ -1,17 +1,20 @@
 package com.melilla.gestPlanes.model;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.hibernate.annotations.SQLDelete;
 import org.springframework.data.annotation.CreatedDate;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import lombok.Data;
 
@@ -36,6 +39,10 @@ public class Categoria {
 	@JoinColumn(name="idPlan")
 	private Plan idPlan;
 
+	@JsonIgnore
+	@OneToMany(mappedBy = "categoria", cascade= CascadeType.ALL)
+	private List<Contrato>contratos;
+	
 	@CreatedDate
 	private LocalDateTime createdAt;
 	

@@ -1,13 +1,17 @@
 package com.melilla.gestPlanes.model;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.hibernate.annotations.SQLDelete;
 import org.springframework.data.annotation.CreatedDate;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import lombok.Data;
 
@@ -30,6 +34,10 @@ public class Salario {
 	@OneToOne
 	@JoinColumn(name="idPlan")
 	private Plan plan;
+	
+
+	
+
 	
 	@CreatedDate
 	private LocalDateTime createdAt;

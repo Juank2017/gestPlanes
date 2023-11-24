@@ -18,6 +18,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Temporal;
@@ -44,16 +45,29 @@ public class Contrato {
 	private Date fechaExtincion;
 	
 	
+	@NotAudited
+	@ManyToOne
+	@JoinColumn(name="idOcupacion")
+	private Ocupacion ocupacion;
 	
-	private String ocupacion;
 	
-	private String categoria;
+	@NotAudited
+	@ManyToOne
+	@JoinColumn(name="idCategoria")
+	private Categoria categoria;
 	
+
 	private String gc;
 	
-	private String entidad;
+	@NotAudited
+	@ManyToOne
+	@JoinColumn(name="idOrganismo")
+	private Organismo entidad;
 	
-	private String destino;
+	@NotAudited
+	@ManyToOne
+	@JoinColumn(name="idDestino")
+	private Destino destino;
 	
 	private int duracion;
 	
