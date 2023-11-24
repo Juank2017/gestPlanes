@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.melilla.gestPlanes.DTO.CreateTrabajadorDTO;
 import com.melilla.gestPlanes.model.Ciudadano;
 import com.melilla.gestPlanes.repository.CiudadanoRepository;
 import com.melilla.gestPlanes.service.CiudadanoService;
@@ -35,6 +36,12 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 	public Ciudadano crearCiudadano(Ciudadano ciudadano) {
 		
 		return ciudadanoRepository.save(ciudadano);
+	}
+
+	@Override
+	public Ciudadano crearTrabajador(CreateTrabajadorDTO trabajador) {
+		
+		return null;
 	}
 
 	

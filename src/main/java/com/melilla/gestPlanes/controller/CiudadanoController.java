@@ -14,7 +14,10 @@ import com.melilla.gestPlanes.model.ApiResponse;
 import com.melilla.gestPlanes.model.Ciudadano;
 import com.melilla.gestPlanes.service.CiudadanoService;
 
+import lombok.extern.java.Log;
+
 @RestController
+@Log
 public class CiudadanoController {
 	
 	@Autowired
@@ -48,7 +51,8 @@ public class CiudadanoController {
 	@PostMapping("/crearTrabajador/{idPlan}")
 	public ResponseEntity<ApiResponse>crearTrabajador(@RequestBody CreateTrabajadorDTO trabajador,@PathVariable Long idPlan){
 		
-
+		log.info(trabajador.toString());
+        
 		ApiResponse response = new ApiResponse();
 		
 		response.setEstado(HttpStatus.OK);
