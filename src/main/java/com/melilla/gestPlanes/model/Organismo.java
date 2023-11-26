@@ -33,6 +33,8 @@ public class Organismo {
 	
 	private String organismo;
 	
+	private String nombreCortoOrganismo;
+	
 	@OneToOne
 	@JoinColumn(name="idPlan")
 	private Plan idPlan;

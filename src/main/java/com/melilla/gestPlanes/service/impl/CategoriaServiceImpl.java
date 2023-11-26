@@ -19,7 +19,7 @@ public class CategoriaServiceImpl implements CategoriaService {
 	@Override
 	public List<Categoria> obtenerCategoriasGrupo(Long idGrupo, Long idPlan) {
 		
-		return categoriaRpository.findAllByGrupoGrupoAndIdPlanIdPlan(idGrupo,idPlan);
+		return categoriaRpository.findAllByGrupoGrupoAndIdPlanIdPlanOrderByCategoriaAsc(idGrupo,idPlan);
 	}
 
 }

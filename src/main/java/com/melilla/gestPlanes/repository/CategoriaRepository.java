@@ -9,5 +9,5 @@ import com.melilla.gestPlanes.model.Categoria;
 
 public interface CategoriaRepository extends JpaRepository<Categoria, Long>, RevisionRepository<Categoria, Long, Long>{
 
-	List<Categoria>findAllByGrupoGrupoAndIdPlanIdPlan(Long grupo,Long idPlan);
+	List<Categoria>findAllByGrupoGrupoAndIdPlanIdPlanOrderByCategoriaAsc(Long grupo,Long idPlan);
 }

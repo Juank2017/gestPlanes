@@ -22,7 +22,7 @@ public class OrganismoServiceImpl implements OrganismoService {
 	@Override
 	public List<Organismo> obtenerOrganismosPorPlan(Long idPlan) {
 		
-		return organismoRepository.findAllByIdPlanIdPlan(idPlan);
+		return organismoRepository.findAllByIdPlanIdPlanOrderByNombreCortoOrganismoAsc(idPlan);
 	}
 
 }

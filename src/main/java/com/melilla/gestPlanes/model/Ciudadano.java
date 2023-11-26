@@ -24,6 +24,8 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.Email;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -31,6 +33,8 @@ import lombok.Setter;
 @RequiredArgsConstructor
 @Setter
 @Getter
+@AllArgsConstructor
+@Builder
 @Entity
 @Audited
 @SQLDelete(sql = "UPDATE ciudadano SET deleted=true, deleted_at= NOW() WHERE id=?")

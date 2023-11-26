@@ -8,11 +8,14 @@ import com.melilla.gestPlanes.model.Ciudadano;
 
 public interface CiudadanoService {
 	
-	List<Ciudadano> getCiudadanos();
+	List<Ciudadano> getCiudadanos(Long idPlan);
 	
 	Optional<Ciudadano> getCiudadano(Long idCiudadano);
 
 	Ciudadano crearCiudadano(Ciudadano ciudadano);
 	
 	Ciudadano crearTrabajador(CreateTrabajadorDTO trabajador);
+	
+	boolean existeTrabajador(String DNI);
+	
 }

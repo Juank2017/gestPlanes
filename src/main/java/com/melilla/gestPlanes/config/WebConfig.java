@@ -13,11 +13,12 @@ import org.springframework.data.envers.repository.support.EnversRevisionReposito
 
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-
+import org.springframework.format.FormatterRegistry;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.melilla.gestPlanes.envers.AuditorAwareImpl;
+import com.melilla.gestPlanes.util.StringToLocalDateConverter;
 
 
 
@@ -28,8 +29,15 @@ import com.melilla.gestPlanes.envers.AuditorAwareImpl;
 @EnableJpaAuditing(auditorAwareRef = "auditorProvider")
 @EnableJpaRepositories(basePackages = {"com.melilla.gestPlanes"},repositoryFactoryBeanClass = EnversRevisionRepositoryFactoryBean.class)
 @EnableTransactionManagement
-public class WebConfig {
+public class WebConfig implements WebMvcConfigurer{
 
+	@Override
+	public void addFormatters(FormatterRegistry registry) {
+		
+		WebMvcConfigurer.super.addFormatters(registry);
+		registry.addConverter(new StringToLocalDateConverter());
+		
+	}
 
 	@Bean
 	AuditorAware<String> auditorProvider(){

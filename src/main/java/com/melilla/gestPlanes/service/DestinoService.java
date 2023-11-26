@@ -8,5 +8,7 @@ public interface DestinoService {
 
 	List<Destino>obtenerDestinosOrganismo(Long idOrganismo);
 	
+	boolean existeDestino(String destino,Long idOrganismo);
 	
+	Destino crearDestino(Long idOrganismo,String destino);
 }

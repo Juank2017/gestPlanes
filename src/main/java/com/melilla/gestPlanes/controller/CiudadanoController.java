@@ -23,13 +23,13 @@ public class CiudadanoController {
 	@Autowired
 	private CiudadanoService ciudadanoService;
 	
-	@GetMapping("/ciudadanos")
-	public ResponseEntity<ApiResponse> getCiudadanos() {
+	@GetMapping("/ciudadanos/{idPlan}")
+	public ResponseEntity<ApiResponse> getCiudadanos(@PathVariable Long idPlan) {
 		
 		ApiResponse response = new ApiResponse();
 		
 		response.setEstado(HttpStatus.OK);
-		response.getPayload().addAll(ciudadanoService.getCiudadanos());
+		response.getPayload().addAll(ciudadanoService.getCiudadanos(idPlan));
 		response.setMensaje("Lista de ciudadanos");
 		
 		return ResponseEntity.ok(response);
@@ -55,10 +55,14 @@ public class CiudadanoController {
         
 		ApiResponse response = new ApiResponse();
 		
+		if(ciudadanoService.existeTrabajador(trabajador.getDNI())) {
+			response.setMensaje("El trabajador con DNI: "+trabajador.getDNI()+ " ya existe!");
+		}else {
+			response.getPayload().add(ciudadanoService.crearTrabajador(trabajador));
+			response.setMensaje("Registrado correctamente");
+		}
 		response.setEstado(HttpStatus.OK);
-		response.getPayload().add(null);
-		
-		
+				
 		return ResponseEntity.ok(response);
 		
 		

@@ -8,6 +8,6 @@ import com.melilla.gestPlanes.model.Organismo;
 
 public interface OrganismoRepository extends JpaRepository<Organismo, Long> {
 	
-	List<Organismo>findAllByIdPlanIdPlan(Long idPlan);
+	List<Organismo>findAllByIdPlanIdPlanOrderByNombreCortoOrganismoAsc(Long idPlan);
 
 }

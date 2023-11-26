@@ -23,11 +23,15 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 
 @Entity
 @Data
 @Audited
+@Builder
+@AllArgsConstructor
 @SQLDelete(sql = "UPDATE contrato SET deleted=true, deleted_at= NOW() WHERE id=?")
 public class Contrato {
 	

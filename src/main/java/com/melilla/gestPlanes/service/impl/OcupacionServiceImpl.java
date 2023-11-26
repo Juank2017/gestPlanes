@@ -22,7 +22,7 @@ public class OcupacionServiceImpl implements OcupacionService {
 	@Override
 	public List<Ocupacion> obtenerOcupacionesPorCategoria(Long idCategoria) {
 		
-		return ocupacionRepository.findAllByCategoriaIdCategoria(idCategoria);
+		return ocupacionRepository.findAllByCategoriaIdCategoriaOrderByOcupacionAsc(idCategoria);
 	}
 
 }

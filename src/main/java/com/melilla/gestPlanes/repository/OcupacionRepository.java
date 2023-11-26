@@ -9,5 +9,5 @@ import com.melilla.gestPlanes.model.Ocupacion;
 
 public interface OcupacionRepository extends JpaRepository<Ocupacion, Long>, RevisionRepository<Ocupacion, Long, Long> {
 
-	List<Ocupacion>findAllByCategoriaIdCategoria(Long idCategoria);
+	List<Ocupacion>findAllByCategoriaIdCategoriaOrderByOcupacionAsc(Long idCategoria);
 }

@@ -24,7 +24,7 @@ public class CreateTrabajadorDTO {
 	Long gc;
 	Long categoria;
 	Long ocu;
-	String duracion;
+	int duracion;
 	Date fechaInicio;
 	Date fechaFinal;
 	String turno;

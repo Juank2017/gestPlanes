@@ -13,9 +13,13 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import com.melilla.gestPlanes.exceptions.exceptions.CategoriaNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.CiudadanoNotFoundException;
+import com.melilla.gestPlanes.exceptions.exceptions.ConvertStringToDateException;
+import com.melilla.gestPlanes.exceptions.exceptions.DestinoNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.ExpedienteNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.MyFileNotFoundException;
+import com.melilla.gestPlanes.exceptions.exceptions.OrganismoNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.PlanNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.FileStorageException;
 import com.melilla.gestPlanes.exceptions.exceptions.TokenRefreshException;
@@ -39,11 +43,11 @@ public class GlobalControllerAdvice extends ResponseEntityExceptionHandler {
         return new ResponseEntity<Object>(
           "Access denied message here", new HttpHeaders(), HttpStatus.FORBIDDEN);
     }
-//	@ExceptionHandler({  })
-//	public ResponseEntity<ApiError> handleEntityCreateError(Exception e) {
-//		ApiError apiError = new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
-//		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(apiError);
-//	}
+	@ExceptionHandler({ConvertStringToDateException.class  })
+	public ResponseEntity<ApiError> handleEntityCreateError(Exception e) {
+		ApiError apiError = new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(apiError);
+	}
 
 	@ExceptionHandler({io.jsonwebtoken.security.SignatureException.class})
 	public ResponseEntity<ApiError> handleForbiden(Exception e) {
@@ -70,7 +74,10 @@ public class GlobalControllerAdvice extends ResponseEntityExceptionHandler {
 		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(apiError);
 	}
 
-	@ExceptionHandler({ 
+	@ExceptionHandler({
+		CategoriaNotFoundException.class,
+		DestinoNotFoundException.class,
+		OrganismoNotFoundException.class,
 		ExpedienteNotFoundException.class,
 		CiudadanoNotFoundException.class,
 		MyFileNotFoundException.class,
