@@ -26,12 +26,14 @@ import jakarta.persistence.TemporalType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
 @Audited
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 @SQLDelete(sql = "UPDATE contrato SET deleted=true, deleted_at= NOW() WHERE id=?")
 public class Contrato {
 	

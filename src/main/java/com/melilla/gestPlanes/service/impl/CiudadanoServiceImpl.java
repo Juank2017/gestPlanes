@@ -69,7 +69,23 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 	public Ciudadano crearTrabajador(CreateTrabajadorDTO trabajador) {
 		
 		
-		
+		Ciudadano nuevoCiudadano = ciudadanoRepository.save(
+				Ciudadano.builder()
+				.nombre(trabajador.getNombre().toUpperCase())
+				.apellido1(trabajador.getApellido1().toUpperCase())
+				.apellido2(trabajador.getApellido2().toUpperCase())
+				.DNI(trabajador.getDNI().toUpperCase())
+				.email(trabajador.getEmail())
+				.esJefeEquipo(false)
+				.telefono(trabajador.getTelefono())
+				.sexo(trabajador.getSexo())
+				.seguridadSocial(trabajador.getSeguridadSocial())
+				.idPlan(planService.getPlanActivo())
+				.fechaRegistro(trabajador.getFechaRegistro())
+				.fechaNacimiento(trabajador.getFechaNacimiento())
+				.estado(trabajador.getEstado())
+				
+				.build());
 		Contrato nuevoContrato =contratoRepository.save( Contrato
 				.builder()
 				.base(trabajador.getBase())
@@ -86,25 +102,10 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 				.turno(trabajador.getTurno())
 				.porcentajeHoras("63")
 				.gc(trabajador.getGc().toString())
+				.ciudadano(nuevoCiudadano)
 				.build());
 		//log.info(nuevoContrato.toString());
-		Ciudadano nuevoCiudadano = ciudadanoRepository.save(
-				Ciudadano.builder()
-				.nombre(trabajador.getNombre().toUpperCase())
-				.apellido1(trabajador.getApellido1().toUpperCase())
-				.apellido2(trabajador.getApellido2().toUpperCase())
-				.DNI(trabajador.getDNI().toUpperCase())
-				.email(trabajador.getEmail())
-				.esJefeEquipo(false)
-				.telefono(trabajador.getTelefono())
-				.sexo(trabajador.getSexo())
-				.seguridadSocial(trabajador.getSeguridadSocial())
-				.idPlan(planService.getPlanActivo())
-				.fechaRegistro(trabajador.getFechaRegistro())
-				.fechaNacimiento(trabajador.getFechaNacimiento())
-				.estado(trabajador.getEstado())
-				.contrato(nuevoContrato)
-				.build());
+
 		
 		
 		return nuevoCiudadano;
