@@ -3,6 +3,9 @@ package com.melilla.gestPlanes.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
+
 import com.melilla.gestPlanes.DTO.CreateTrabajadorDTO;
 import com.melilla.gestPlanes.model.Ciudadano;
 
@@ -17,5 +20,7 @@ public interface CiudadanoService {
 	Ciudadano crearTrabajador(CreateTrabajadorDTO trabajador);
 	
 	boolean existeTrabajador(String DNI);
+	
+	Page<Ciudadano>getTrabajadores(Long idPlan,int pageNumber,int pageSize,Sort sort);
 	
 }

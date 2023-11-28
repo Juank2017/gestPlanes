@@ -3,6 +3,8 @@ package com.melilla.gestPlanes.repository;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.history.RevisionRepository;
 
@@ -15,7 +17,8 @@ public interface CiudadanoRepository extends JpaRepository<Ciudadano, Long> ,Rev
 	
 	Optional<Ciudadano> findByDNI(String DNI);
 	boolean existsByDNI(String DNI);
-	List<Ciudadano>findAllByIdPlanIdPlan(Long idPlan);
+	 Page<Ciudadano> findAllByIdPlanIdPlan(Long idPlan,Pageable page);
+	
 
 }
 

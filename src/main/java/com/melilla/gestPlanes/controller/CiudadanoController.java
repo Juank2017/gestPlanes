@@ -1,12 +1,21 @@
 package com.melilla.gestPlanes.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Order;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.melilla.gestPlanes.DTO.CreateTrabajadorDTO;
@@ -23,13 +32,39 @@ public class CiudadanoController {
 	@Autowired
 	private CiudadanoService ciudadanoService;
 	
-	@GetMapping("/ciudadanos/{idPlan}")
-	public ResponseEntity<ApiResponse> getCiudadanos(@PathVariable Long idPlan) {
+	@GetMapping("/ciudadanos")
+	public ResponseEntity<ApiResponse> getCiudadanos(
+			@RequestParam Long idPlan,
+			@RequestParam int pageNumber,
+			@RequestParam int pageSize,
+			//@RequestParam(required = false) String[] sort,
+			@RequestBody Map<String,String> order) {
+		
 		
 		ApiResponse response = new ApiResponse();
+		log.info(order.toString());
+		
+		Sort sort1 = null;
+		List<Order> orders = new ArrayList<>();
+		
+		for (Map.Entry<String, String> o : order.entrySet()) {
+			String campo = o.getKey();
+			String direccion = o.getValue();
+			Order orden= null;
+			
+			if (direccion.equals("asc")){
+			 orden = Order.asc(campo);
+			}else {
+			 orden= Order.desc(campo);
+			}
+			
+			orders.add(orden);
+		}
+		sort1 = Sort.by(orders);
+		
 		
 		response.setEstado(HttpStatus.OK);
-		response.getPayload().addAll(ciudadanoService.getCiudadanos(idPlan));
+		response.getPayload().addAll(ciudadanoService.getTrabajadores(idPlan, pageNumber, pageSize, sort1).getContent());
 		response.setMensaje("Lista de ciudadanos");
 		
 		return ResponseEntity.ok(response);
