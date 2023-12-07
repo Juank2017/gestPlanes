@@ -1,5 +1,6 @@
 package com.melilla.gestPlanes.model;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
@@ -9,7 +10,9 @@ import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
 import org.springframework.data.annotation.CreatedDate;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -52,8 +55,9 @@ public class Ciudadano {
 	
 	private String sexo;
 	
+	@JsonProperty("DNI")
 	private String DNI;
-	
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", locale = "es_ES" )
 	private String fechaNacimiento;
 	
 	private String estadoCivil;
@@ -69,8 +73,8 @@ public class Ciudadano {
 	
 	private String telefono;
 	
-	@Temporal(TemporalType.DATE)
-	private Date fechaRegistro;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", locale = "es_ES" )
+	private LocalDate fechaRegistro;
 	
 	@NotAudited
 	@OneToMany(mappedBy = "ciudadano", cascade= CascadeType.ALL)

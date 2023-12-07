@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Order;
 import org.springframework.data.repository.query.Param;
@@ -18,6 +19,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.melilla.gestPlanes.DTO.CiudadanoCriterioBusqueda;
+import com.melilla.gestPlanes.DTO.CiudadanoCriterioOrden;
+import com.melilla.gestPlanes.DTO.CiudadanoOrdenBusqueda;
 import com.melilla.gestPlanes.DTO.CreateTrabajadorDTO;
 import com.melilla.gestPlanes.model.ApiResponse;
 import com.melilla.gestPlanes.model.Ciudadano;
@@ -32,39 +36,42 @@ public class CiudadanoController {
 	@Autowired
 	private CiudadanoService ciudadanoService;
 	
-	@GetMapping("/ciudadanos")
+	@PostMapping("/ciudadanos")
 	public ResponseEntity<ApiResponse> getCiudadanos(
-			@RequestParam Long idPlan,
-			@RequestParam int pageNumber,
-			@RequestParam int pageSize,
-			//@RequestParam(required = false) String[] sort,
-			@RequestBody Map<String,String> order) {
+	
+			@RequestBody CiudadanoOrdenBusqueda ordenBusqueda
+			) {
 		
 		
 		ApiResponse response = new ApiResponse();
-		log.info(order.toString());
+		log.info(ordenBusqueda.toString());
 		
 		Sort sort1 = null;
 		List<Order> orders = new ArrayList<>();
 		
-		for (Map.Entry<String, String> o : order.entrySet()) {
-			String campo = o.getKey();
-			String direccion = o.getValue();
-			Order orden= null;
-			
-			if (direccion.equals("asc")){
-			 orden = Order.asc(campo);
-			}else {
-			 orden= Order.desc(campo);
-			}
-			
-			orders.add(orden);
-		}
+		
+		
+//		for (Map.Entry<String, String> o : order.entrySet()) {
+//			String campo = o.getKey();
+//			String direccion = o.getValue();
+//			Order orden= null;
+//			
+//			if (direccion.equals("asc")){
+//			 orden = Order.asc(campo);
+//			}else {
+//			 orden= Order.desc(campo);
+//			}
+//			
+//			orders.add(orden);
+//		}
 		sort1 = Sort.by(orders);
 		
 		
 		response.setEstado(HttpStatus.OK);
-		response.getPayload().addAll(ciudadanoService.getTrabajadores(idPlan, pageNumber, pageSize, sort1).getContent());
+		Page<Ciudadano> respuesta = ciudadanoService.getTrabajadores(ordenBusqueda);
+		
+		response.getPayload().add(respuesta);
+		
 		response.setMensaje("Lista de ciudadanos");
 		
 		return ResponseEntity.ok(response);

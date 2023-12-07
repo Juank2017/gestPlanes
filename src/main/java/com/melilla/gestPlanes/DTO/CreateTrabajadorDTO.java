@@ -1,5 +1,6 @@
 package com.melilla.gestPlanes.DTO;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 import lombok.Builder;
@@ -20,13 +21,13 @@ public class CreateTrabajadorDTO {
 	String estado;
 	String email;
 	String telefono;
-	Date fechaRegistro;
+	LocalDate fechaRegistro;
 	Long gc;
 	Long categoria;
 	Long ocu;
 	int duracion;
-	Date fechaInicio;
-	Date fechaFinal;
+	LocalDate fechaInicio;
+	LocalDate fechaFinal;
 	String turno;
 	Long entidad;
 	Long destino;

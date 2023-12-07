@@ -1,5 +1,6 @@
 package com.melilla.gestPlanes.model;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
@@ -41,14 +42,14 @@ public class Contrato {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long idContrato;
 	
-	@Temporal(TemporalType.DATE)
-	private Date fechaInicio;
 	
-	@Temporal(TemporalType.DATE)
-	private Date fechaFinal;
+	private LocalDate fechaInicio;
 	
-	@Temporal(TemporalType.DATE)
-	private Date fechaExtincion;
+	
+	private LocalDate fechaFinal;
+	
+	
+	private LocalDate fechaExtincion;
 	
 	
 	@NotAudited
