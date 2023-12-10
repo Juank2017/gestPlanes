@@ -167,4 +167,10 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 
 	}
 
+	@Override
+	public Optional<Ciudadano> getTrabajadorPorDNI(String DNI) {
+		
+		return ciudadanoRepository.findByDNI(DNI);
+	}
+
 }

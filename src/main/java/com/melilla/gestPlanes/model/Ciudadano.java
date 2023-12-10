@@ -2,6 +2,7 @@ package com.melilla.gestPlanes.model;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -10,7 +11,9 @@ import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
 import org.springframework.data.annotation.CreatedDate;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -103,8 +106,9 @@ public class Ciudadano {
 	@NotAudited
 	private Plan idPlan;
 	
+	@JsonManagedReference
 	@OneToMany(mappedBy = "ciudadano", cascade = CascadeType.ALL)
-	private List<Documento> documentos;
+	private List<Documento> documentos= new ArrayList<Documento>();
 	
 	private boolean esJefeEquipo;
 	

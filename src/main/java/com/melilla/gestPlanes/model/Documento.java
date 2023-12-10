@@ -6,6 +6,10 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.envers.Audited;
 import org.springframework.data.annotation.CreatedDate;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -32,6 +36,7 @@ public class Documento {
 	
 	private String observaciones;
 	
+	@JsonBackReference
 	@ManyToOne
 	@JoinColumn(name="idCiudadano")
 	private Ciudadano ciudadano;

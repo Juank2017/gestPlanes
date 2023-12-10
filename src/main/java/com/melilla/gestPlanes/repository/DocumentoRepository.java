@@ -7,4 +7,5 @@ import com.melilla.gestPlanes.model.Documento;
 
 public interface DocumentoRepository extends JpaRepository<Documento, Long>, RevisionRepository<Documento, Long, Long>{
 
+	
 }

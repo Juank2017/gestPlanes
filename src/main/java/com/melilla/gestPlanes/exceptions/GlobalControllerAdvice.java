@@ -17,6 +17,7 @@ import com.melilla.gestPlanes.exceptions.exceptions.CategoriaNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.CiudadanoNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.ConvertStringToDateException;
 import com.melilla.gestPlanes.exceptions.exceptions.DestinoNotFoundException;
+import com.melilla.gestPlanes.exceptions.exceptions.DocumentoNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.ExpedienteNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.MyFileNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.OcupacionNotFoundException;
@@ -76,6 +77,7 @@ public class GlobalControllerAdvice extends ResponseEntityExceptionHandler {
 	}
 
 	@ExceptionHandler({
+		DocumentoNotFoundException.class,
 		OcupacionNotFoundException.class,
 		CategoriaNotFoundException.class,
 		DestinoNotFoundException.class,

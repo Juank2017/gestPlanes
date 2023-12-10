@@ -23,5 +23,7 @@ public interface CiudadanoService {
 	boolean existeTrabajador(String DNI);
 	
 	Page<Ciudadano>getTrabajadores(CiudadanoOrdenBusqueda ordenBusqueda);
+	Optional<Ciudadano>getTrabajadorPorDNI(String DNI);
+	
 	
 }
