@@ -1,13 +1,17 @@
 package com.melilla.gestPlanes.service;
 
 import java.util.List;
+import java.util.zip.ZipOutputStream;
 
 import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.melilla.gestPlanes.DTO.DocumentoAZip;
 import com.melilla.gestPlanes.DTO.GeneraContratoDTO;
 import com.melilla.gestPlanes.DTO.GeneraContratoResponseDTO;
 import com.melilla.gestPlanes.model.Documento;
+
+import jakarta.servlet.http.HttpServletResponse;
 
 public interface DocumentoService {
 	
@@ -23,5 +27,7 @@ public interface DocumentoService {
 	List<GeneraContratoResponseDTO> generarContrato(List<GeneraContratoDTO> trabajadores);
 	
 	Documento obtenerDocumentoPorNombreIdCiudadano(String fileName,Long idCiduadano);
+	
+	void downloadDocumentsAsZipFile(HttpServletResponse response,List<DocumentoAZip> docs);
 
 }

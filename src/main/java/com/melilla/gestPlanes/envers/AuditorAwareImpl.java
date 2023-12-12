@@ -7,6 +7,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 
@@ -24,8 +25,8 @@ public class AuditorAwareImpl implements AuditorAware<String> {
 				
 				.map(Authentication::getPrincipal)
 				
-				.map(User.class::cast)
-				.map(User::getUsername);
+				.map(UserDetails.class::cast)
+				.map(UserDetails::getUsername);
 			
 				
 				

@@ -8,10 +8,12 @@ import java.util.List;
 
 import org.hibernate.annotations.SQLDelete;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
@@ -19,6 +21,7 @@ import jakarta.persistence.Basic;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -44,6 +47,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name="user")
 @SQLDelete(sql = "UPDATE user SET deleted=true, deleted_at= NOW() WHERE id=?")
+@EntityListeners(AuditingEntityListener.class)
 public class User implements UserDetails {
 
 	/**
@@ -119,6 +123,7 @@ public class User implements UserDetails {
     }
     
 	@CreatedDate
+	@JsonFormat(shape = JsonFormat.Shape.STRING,  pattern = "dd/MM/yyy")
 	private LocalDateTime createdAt;
 	
 	private boolean deleted;

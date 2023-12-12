@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.melilla.gestPlanes.DTO.DocumentoAZip;
 import com.melilla.gestPlanes.DTO.GeneraContratoDTO;
 import com.melilla.gestPlanes.exceptions.exceptions.FileStorageException;
 import com.melilla.gestPlanes.model.ApiResponse;
@@ -26,6 +27,7 @@ import com.melilla.gestPlanes.model.DocumentoResponse;
 import com.melilla.gestPlanes.service.DocumentoService;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 
@@ -86,6 +88,12 @@ public class DocumentoController {
 		response.getPayload().add(documentoService.generarContrato(trabajadores));
 			
 		return ResponseEntity.ok(response);
+	}
+	
+	@PostMapping("/downloadZip")
+	void descargaDocumentosZip(HttpServletResponse response,@RequestBody List<DocumentoAZip> docs) {
+		
+		documentoService.downloadDocumentsAsZipFile(response, docs);
 	}
 	
 }

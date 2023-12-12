@@ -5,8 +5,12 @@ import java.util.Date;
 
 import org.hibernate.annotations.SQLDelete;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -17,6 +21,7 @@ import lombok.Data;
 @Data
 @Entity
 @SQLDelete(sql = "UPDATE vacaciones SET deleted=true, deleted_at= NOW() WHERE id=?")
+@EntityListeners(AuditingEntityListener.class)
 public class Vacaciones {
 
 	@Id
@@ -34,6 +39,7 @@ public class Vacaciones {
 	private Contrato contrato;
 	
 	@CreatedDate
+	@JsonFormat(shape = JsonFormat.Shape.STRING,  pattern = "dd/MM/yyy")
 	private LocalDateTime createdAt;
 	
 	private boolean deleted;

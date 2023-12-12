@@ -2,6 +2,7 @@ package com.melilla.gestPlanes.service.impl;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
@@ -16,6 +17,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import org.apache.pdfbox.cos.COSDictionary;
 import org.apache.pdfbox.cos.COSDocument;
@@ -34,14 +37,18 @@ import org.apache.pdfbox.pdmodel.interactive.form.PDRadioButton;
 import org.apache.pdfbox.pdmodel.interactive.form.PDTextField;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.io.UrlResource;
+
 import org.springframework.stereotype.Service;
+import org.springframework.util.StreamUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.melilla.gestPlanes.DTO.DocumentoAZip;
 import com.melilla.gestPlanes.DTO.GeneraContratoDTO;
 import com.melilla.gestPlanes.DTO.GeneraContratoResponseDTO;
 import com.melilla.gestPlanes.exceptions.exceptions.CiudadanoNotFoundException;
@@ -55,6 +62,7 @@ import com.melilla.gestPlanes.repository.DocumentoRepository;
 import com.melilla.gestPlanes.service.CiudadanoService;
 import com.melilla.gestPlanes.service.DocumentoService;
 
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 
@@ -130,13 +138,16 @@ public class DocumentoServiceImpl implements DocumentoService {
 	}
 
 	@Override
-	public Resource loadDocumentAsResource(Long idCiudadano, String filename,Long idDocumento) {
+	public Resource loadDocumentAsResource(Long idCiudadano, String filename, Long idDocumento) {
 		Ciudadano ciudadano = ciudadanoService.getCiudadano(idCiudadano)
 				.orElseThrow(() -> new CiudadanoNotFoundException(idCiudadano));
-		
-		Documento doc = documentoRepository.findById(idDocumento).orElseThrow(()->new DocumentoNotFoundException(idDocumento));
 
-		String nombreCarpeta =ciudadano.getContrato().getOcupacion().getOcupacion()+"\\" +ciudadano.getApellido1() + "_" + ciudadano.getApellido2() + "_" + ciudadano.getNombre()+"\\"+doc.getTipo()+"\\";
+		Documento doc = documentoRepository.findById(idDocumento)
+				.orElseThrow(() -> new DocumentoNotFoundException(idDocumento));
+
+		String nombreCarpeta = ciudadano.getContrato().getOcupacion().getOcupacion().trim() + "\\"
+				+ ciudadano.getApellido1() + "_" + ciudadano.getApellido2() + "_" + ciudadano.getNombre() + "\\"
+				+ doc.getTipo() + "\\";
 		try {
 			Path fileStorageLocation = Paths.get(uploadDir + nombreCarpeta + filename).toAbsolutePath().normalize();
 			log.info(fileStorageLocation.toString());
@@ -271,7 +282,7 @@ public class DocumentoServiceImpl implements DocumentoService {
 
 				formulario.getField("C2_BO1").setValue("Elección2");// A tiempo parcial
 				formulario.getField("C204").setValue("25,20");
-				
+
 				formulario.getField("C2_BO2").setValue("Elección2");// a la semana
 
 				formulario.getField("C3_BO3").setValue("Elección2");
@@ -297,7 +308,7 @@ public class DocumentoServiceImpl implements DocumentoService {
 				formulario.getField("P2302").setValue("MELILLA");
 
 				formulario.getField("P2303").setValue("" + contrato.getFechaInicio().getDayOfMonth());
-				formulario.getField("P2304").setValue(mesFechaFirma);
+				formulario.getField("P2304").setValue(mesFechaFirma.toUpperCase());
 				formulario.getField("P2305").setValue("" + contrato.getFechaInicio().getYear());
 
 				// nombre del fichero
@@ -306,7 +317,7 @@ public class DocumentoServiceImpl implements DocumentoService {
 
 				// carpeta
 				// ocupacion del ciudadano
-				String ocupacion = trabajador.getContrato().getOcupacion().getOcupacion() + "\\";
+				String ocupacion = trabajador.getContrato().getOcupacion().getOcupacion().trim() + "\\";
 				// forma el nombre de la capeta con apellidos_nombre
 				String nombreCarpeta = ocupacion + trabajador.getApellido1() + "_" + trabajador.getApellido2() + "_"
 						+ trabajador.getNombre() + "\\CONTRATO";
@@ -339,17 +350,12 @@ public class DocumentoServiceImpl implements DocumentoService {
 				response.setApellido2(trabajador.getApellido2());
 				response.setDNI(trabajador.getDNI());
 				response.setDocumento(guardarBBDD(documento));
-				
+
 				listaContratosGenerados.add(response);
-				
 
 				trabajador.getDocumentos().add(documento);
 				ciudadanoService.crearCiudadano(trabajador);
-		
-				
 
-				
-				
 			}
 
 		} catch (Exception e) {
@@ -362,8 +368,45 @@ public class DocumentoServiceImpl implements DocumentoService {
 
 	@Override
 	public Documento obtenerDocumentoPorNombreIdCiudadano(String fileName, Long idCiduadano) {
+
+		return null;
+	}
+
+	@Override
+	public void downloadDocumentsAsZipFile(HttpServletResponse response,List<DocumentoAZip> docs) {
+
+		response.setContentType("application/zip");
+        response.setHeader("Content-Disposition", "attachment; filename=download.zip");
+		try {
+
 		
-		return  null;
+			ZipOutputStream zipOutput = new ZipOutputStream(response.getOutputStream());
+
+			for (DocumentoAZip documentoAZip : docs) {
+
+				Documento documento = documentoRepository.findById(documentoAZip.getIdDocumento())
+						.orElseThrow(() -> new DocumentoNotFoundException(documentoAZip.getIdDocumento()));
+
+				Resource ficheroAComprimir = loadDocumentAsResource(documentoAZip.getIdCiudadano(),
+						documento.getNombre(), documento.getIdDocumento());
+
+				ZipEntry zipEntry = new ZipEntry(ficheroAComprimir.getFilename());
+				zipEntry.setSize(ficheroAComprimir.getFile().length());
+				zipEntry.setTime(System.currentTimeMillis());
+				zipOutput.putNextEntry(zipEntry);
+
+				StreamUtils.copy(ficheroAComprimir.getInputStream(), zipOutput);
+				zipOutput.closeEntry();
+
+			}
+			zipOutput.finish();
+			
+
+		} catch (Exception e) {
+			log.info(e.getMessage());
+			
+		}
+
 	}
 
 }
