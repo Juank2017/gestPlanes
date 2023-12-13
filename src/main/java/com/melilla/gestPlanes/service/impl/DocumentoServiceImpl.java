@@ -58,9 +58,11 @@ import com.melilla.gestPlanes.exceptions.exceptions.MyFileNotFoundException;
 import com.melilla.gestPlanes.model.Ciudadano;
 import com.melilla.gestPlanes.model.Contrato;
 import com.melilla.gestPlanes.model.Documento;
+import com.melilla.gestPlanes.model.Plan;
 import com.melilla.gestPlanes.repository.DocumentoRepository;
 import com.melilla.gestPlanes.service.CiudadanoService;
 import com.melilla.gestPlanes.service.DocumentoService;
+import com.melilla.gestPlanes.service.PlanService;
 
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -76,6 +78,9 @@ public class DocumentoServiceImpl implements DocumentoService {
 
 	@Autowired
 	private DocumentoRepository documentoRepository;
+	
+	@Autowired
+	PlanService planService;
 
 	@Value("${file.upload-dir}")
 	private String uploadDir;
@@ -124,10 +129,11 @@ public class DocumentoServiceImpl implements DocumentoService {
 					.path(fileName).toUriString();
 
 			Documento documento = new Documento();
-
+			
 			documento.setCiudadano(ciudadano);
 			documento.setNombre(fileName);
 			documento.setRuta(fileDownladUri);
+			documento.setIdPlan(planService.getPlanActivo());
 			documento.setTipo(tipo);
 
 			return documento;
@@ -264,7 +270,7 @@ public class DocumentoServiceImpl implements DocumentoService {
 						trabajador.getNombre() + " " + trabajador.getApellido1() + " " + trabajador.getApellido2());
 				formulario.getField("AA0402-DNI").setValue(trabajador.getDNI());
 				formulario.getField("AA0403-FE").setValue(fechaNacimiento);
-				formulario.getField("AA0404-E12").setValue(trabajador.getSeguridadSocial());
+				formulario.getField("AA0404-E12").setValue(trabajador.getSeguridadSocial().replaceAll("/", ""));
 				formulario.getField("AA0405").setValue(contrato.getCategoria().getCategoria());
 				formulario.getField("AA0407").setValue("ESPAÑOLA");
 				formulario.getField("AA0409").setValue("MELILLA");
@@ -305,6 +311,9 @@ public class DocumentoServiceImpl implements DocumentoService {
 				formulario.getField("P1108").setValue(
 						"Programa de colaboración con órganos de la Administración General del Estado que contraten trabajadores desempleados para la realización de obras y servicios de interés general y social en el ámbito de la Orden del Ministerios de Trabajo y Asuntos Sociales de 19 de diciembre de 1997, modificada por la Orden TAS/2435/2004, de 20 de julio y por la Orden ESS 974/2013, de 20 de mayo, establece las bases reguladoras de la concesión de subvenciones públicas por los Servicios Públicos de Empleo en el ámbito de la colaboración con órganos de la Administración General del Estado y sus organismos autónomos, universidades públicas e instituciones sin ánimo de lucro, que contraten trabajadores desempleados para la realización de obras y servicios de interés general y social.");
 
+				//Literal contrato
+				formulario.getField("P2301").setValue(contrato.getEntidad().getLiteralContrato());
+				
 				formulario.getField("P2302").setValue("MELILLA");
 
 				formulario.getField("P2303").setValue("" + contrato.getFechaInicio().getDayOfMonth());
@@ -337,7 +346,7 @@ public class DocumentoServiceImpl implements DocumentoService {
 						.path(nombreFichero).toUriString();
 
 				Documento documento = new Documento();
-
+				documento.setIdPlan(planService.getPlanActivo());
 				documento.setCiudadano(trabajador);
 				documento.setNombre(nombreFichero);
 				documento.setRuta(fileDownladUri);

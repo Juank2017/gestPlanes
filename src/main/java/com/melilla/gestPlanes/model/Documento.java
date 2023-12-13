@@ -5,6 +5,7 @@ import java.util.TimeZone;
 
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -20,6 +21,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import lombok.Data;
 
 @Entity
@@ -45,6 +47,11 @@ public class Documento {
 	@ManyToOne
 	@JoinColumn(name="idCiudadano")
 	private Ciudadano ciudadano;
+	
+	@OneToOne
+	@JoinColumn(name="idPlan")
+	@NotAudited
+	private Plan idPlan;
 	
 	@CreatedDate
 	@JsonFormat(shape = JsonFormat.Shape.STRING,  pattern = "dd/MM/yyy")
