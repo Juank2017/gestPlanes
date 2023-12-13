@@ -33,7 +33,7 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Data
-@Audited
+//@Audited
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor

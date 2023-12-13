@@ -224,7 +224,7 @@ public class DocumentoServiceImpl implements DocumentoService {
 
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/uuuu", new Locale("es", "ES"));
 
-				String fechaNacimiento = LocalDate.parse(trabajador.getFechaNacimiento())
+				String fechaNacimiento = LocalDate.parse(trabajador.getFechaNacimiento(),formatter)
 						.format(DateTimeFormatter.ofPattern("dd/MM/uuuu", new Locale("es", "ES"))).toString();
 				String fechaInicio = contrato.getFechaInicio()
 						.format(DateTimeFormatter.ofPattern("dd/MM/uuu", new Locale("es", "ES")));
