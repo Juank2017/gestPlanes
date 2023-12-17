@@ -2,6 +2,8 @@ package com.melilla.gestPlanes.security;
 
 
 
+import java.util.Arrays;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,7 +20,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.CorsUtils;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -36,7 +41,9 @@ public class SecurityConfig {
 
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(AbstractHttpConfigurer::disable)
+       
+        http.csrf(AbstractHttpConfigurer::disable).cors((cors) -> cors
+				.configurationSource(corsConfigurationSource()))
         
                 .authorizeHttpRequests(
                         request -> request
@@ -56,7 +63,7 @@ public class SecurityConfig {
                 	handling.authenticationEntryPoint(new RestAuthenticationEntryPoint());
                 	handling.accessDeniedHandler(new CustomAccessDeniedHandler());
                 });
-        http.cors();
+    
         	
 		return http.build();
 	}
@@ -80,16 +87,29 @@ public class SecurityConfig {
 	}
 	
 	@Bean
-	public WebMvcConfigurer corsConfigurer() {
-		return new WebMvcConfigurer() {
-
-			@Override
-			public void addCorsMappings(CorsRegistry registry) {
-				registry.addMapping("/**")
-				.allowedMethods("*")
-				.allowedOrigins("http://localhost:5173","http://127.0.0.1:5173","http://localhost","http://localhost:3000");
-			}
-			
-		};
+	CorsConfigurationSource corsConfigurationSource() {
+	    CorsConfiguration configuration = new CorsConfiguration();
+	    configuration.setAllowedOrigins(Arrays.asList("http://x520marina001","http://localhost","http://localhost:3000"));
+	    configuration.setAllowedMethods(Arrays.asList("GET","POST","PUT","DELETE","OPTIONS"));
+	    configuration.setAllowedHeaders(Arrays.asList("Content-Type","Authorization","authorization"));
+	    
+	    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+	    
+	    source.registerCorsConfiguration("/**", configuration);
+	    return source;
 	}
+	
+//	@Bean
+//	public WebMvcConfigurer corsConfigurer() {
+//		return new WebMvcConfigurer() {
+//
+//			@Override
+//			public void addCorsMappings(CorsRegistry registry) {
+//				registry.addMapping("/**")
+//				.allowedMethods("*")
+//				.allowedOrigins("http://x520marina001","http://localhost","http://localhost:3000");
+//			}
+//			
+//		};
+//	}
 }
