@@ -3,6 +3,7 @@ package com.melilla.gestPlanes.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.melilla.gestPlanes.model.EstadoCiudadano;
@@ -21,7 +22,7 @@ public class EstadoCiudadanoServiceImpl implements EstadoCiudadanoService {
 	@Override
 	public List<EstadoCiudadano> obtenerEstados() {
 
-		return estadoCiudadanoRepository.findAll();
+		return estadoCiudadanoRepository.findAll(Sort.by(Sort.Direction.ASC, "estado"));
 	}
 
 }

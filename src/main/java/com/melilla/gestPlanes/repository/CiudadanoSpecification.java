@@ -12,11 +12,14 @@ import org.springframework.data.jpa.domain.Specification;
 
 import com.melilla.gestPlanes.DTO.CiudadanoCriterioBusqueda;
 import com.melilla.gestPlanes.model.Ciudadano;
+import com.melilla.gestPlanes.model.Contrato;
+import com.melilla.gestPlanes.model.Ocupacion;
 import com.melilla.gestPlanes.model.Plan;
 import com.melilla.gestPlanes.service.PlanService;
 
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.Path;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
@@ -44,6 +47,13 @@ private PlanService planService;
 	@Override
 	public Predicate toPredicate(Root<Ciudadano> root, CriteriaQuery<?> query, CriteriaBuilder builder) {
 		
+		Join<Ciudadano, Contrato> contratoCiudadano = root.join("contrato");
+		Join<Contrato,Ocupacion> ocupacionContrato = contratoCiudadano.join("ocupacion");
+		
+		Path<Object> mio = contratoCiudadano.get("ocupacion");
+		
+		log.warning("path "+mio.get("ocupacion"));
+		
 		Plan plan = planService.getPlanActivo();
 		Long idPlan = plan.getIdPlan();
 		Predicate likePredicate = null;
@@ -69,7 +79,13 @@ private PlanService planService;
 			}
 
 		}else {
-			 likePredicate = builder.like(root.<String>get(criteria.getId()), "%" + criteria.getValue() + "%");	
+			if(criteria.getId().equals("contrato.ocupacion.ocupacion")){
+				likePredicate = builder.like(ocupacionContrato.get("ocupacion"), "%"+criteria.getValue()+"%");
+				
+			}else {
+				 likePredicate = builder.like(root.<String>get(criteria.getId()), "%" + criteria.getValue() + "%");	
+			}
+				
 		}
 		
 		
