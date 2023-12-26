@@ -16,7 +16,7 @@ public class CreateTrabajadorDTO {
 	String sexo;
 	String DNI;
 	String seguridadSocial;
-	String fechaNacimiento;
+	LocalDate fechaNacimiento;
 	String ccc;
 	String estado;
 	String email;

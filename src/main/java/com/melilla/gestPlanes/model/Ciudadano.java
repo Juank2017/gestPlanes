@@ -64,7 +64,7 @@ public class Ciudadano {
 	@JsonProperty("DNI")
 	private String DNI;
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", locale = "es_ES" )
-	private String fechaNacimiento;
+	private LocalDate fechaNacimiento;
 	
 	private String estadoCivil;
 	

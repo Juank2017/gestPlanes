@@ -41,7 +41,8 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.io.UrlResource;
-
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StreamUtils;
 import org.springframework.util.StringUtils;
@@ -49,6 +50,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.melilla.gestPlanes.DTO.DocumentoAZip;
+import com.melilla.gestPlanes.DTO.DocumentoCriterioBusqueda;
 import com.melilla.gestPlanes.DTO.GeneraContratoDTO;
 import com.melilla.gestPlanes.DTO.GeneraContratoResponseDTO;
 import com.melilla.gestPlanes.exceptions.exceptions.CiudadanoNotFoundException;
@@ -59,7 +61,11 @@ import com.melilla.gestPlanes.model.Ciudadano;
 import com.melilla.gestPlanes.model.Contrato;
 import com.melilla.gestPlanes.model.Documento;
 import com.melilla.gestPlanes.model.Plan;
+import com.melilla.gestPlanes.model.TipoDocumento;
 import com.melilla.gestPlanes.repository.DocumentoRepository;
+import com.melilla.gestPlanes.repository.DocumentoSpecification;
+import com.melilla.gestPlanes.repository.DocumentoSpecificationBuilder;
+import com.melilla.gestPlanes.repository.TipoDocumentoRepository;
 import com.melilla.gestPlanes.service.CiudadanoService;
 import com.melilla.gestPlanes.service.DocumentoService;
 import com.melilla.gestPlanes.service.PlanService;
@@ -80,6 +86,9 @@ public class DocumentoServiceImpl implements DocumentoService {
 	private DocumentoRepository documentoRepository;
 	
 	@Autowired
+	private TipoDocumentoRepository tipoDocumentoRepository;
+	
+	@Autowired
 	PlanService planService;
 
 	@Value("${file.upload-dir}")
@@ -90,6 +99,9 @@ public class DocumentoServiceImpl implements DocumentoService {
 
 	@Autowired
 	ResourceLoader resourceLoader;
+	
+	@Autowired 
+	PlanService planservice;
 
 	@Override
 	public Documento guardarDocumento(Long idCiudadano, MultipartFile file, String tipo) {
@@ -230,8 +242,8 @@ public class DocumentoServiceImpl implements DocumentoService {
 
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/uuuu", new Locale("es", "ES"));
 
-				String fechaNacimiento = LocalDate.parse(trabajador.getFechaNacimiento(),formatter)
-						.format(DateTimeFormatter.ofPattern("dd/MM/uuuu", new Locale("es", "ES"))).toString();
+				String fechaNacimiento =  trabajador.getFechaNacimiento()
+						.format(DateTimeFormatter.ofPattern("dd/MM/uuu", new Locale("es", "ES")));
 				String fechaInicio = contrato.getFechaInicio()
 						.format(DateTimeFormatter.ofPattern("dd/MM/uuu", new Locale("es", "ES")));
 				String fechaFinal = contrato.getFechaFinal()
@@ -416,6 +428,50 @@ public class DocumentoServiceImpl implements DocumentoService {
 			
 		}
 
+	}
+
+	@Override
+	public List<GeneraContratoResponseDTO> buscarDocumentos(List<DocumentoCriterioBusqueda> criterios) {
+		
+		List<GeneraContratoResponseDTO> response = new ArrayList<GeneraContratoResponseDTO>();
+		
+
+		DocumentoSpecificationBuilder consulta = new DocumentoSpecificationBuilder(criterios, planService);
+		
+		
+		
+
+		List<Documento> documentos = documentoRepository.findAll(consulta.build());
+		
+		
+		
+		for (Documento documento : documentos) {
+			
+			GeneraContratoResponseDTO generaContratoResponseDTO = new GeneraContratoResponseDTO();
+			 if (documento.getCiudadano() != null) {
+				 generaContratoResponseDTO.setIdCiudadano(documento.getCiudadano().getIdCiudadano());
+				 
+					generaContratoResponseDTO.setNombre(documento.getCiudadano().getNombre());
+					generaContratoResponseDTO.setApellido1(documento.getCiudadano().getApellido1());
+					generaContratoResponseDTO.setApellido2(documento.getCiudadano().getApellido2());
+					generaContratoResponseDTO.setDNI(documento.getCiudadano().getDNI());
+			 }
+				
+			generaContratoResponseDTO.setDocumento(documento);
+			
+			response.add(generaContratoResponseDTO);
+			
+			
+			
+		}
+		
+		return response;
+	}
+
+	@Override
+	public List<TipoDocumento> tipoDocumentos() {
+		
+		return tipoDocumentoRepository.findAll(Sort.by(Sort.Direction.ASC, "tipo")) ;
 	}
 
 }

@@ -67,7 +67,7 @@ public class CiudadanoSpecification implements Specification<Ciudadano> {
 		Predicate planPredicate = builder.equal(root.get("idPlan"), plan);
 
 		if (this.criteria.getId().equals("fechaRegistro") || this.criteria.getId().equals("fechaInicio")
-				|| this.criteria.getId().equals("fechaFin") || this.criteria.getId().equals("fechaExtincion")) {
+				|| this.criteria.getId().equals("fechaFin") || this.criteria.getId().equals("fechaNacimiento") ||this.criteria.getId().equals("fechaExtincion")) {
 
 			// convertir el valor a fecha
 			String valor = this.criteria.getValue();

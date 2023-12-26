@@ -1,6 +1,7 @@
 package com.melilla.gestPlanes.controller;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.melilla.gestPlanes.DTO.DocumentoAZip;
+import com.melilla.gestPlanes.DTO.DocumentoCriterioBusqueda;
 import com.melilla.gestPlanes.DTO.GeneraContratoDTO;
 import com.melilla.gestPlanes.exceptions.exceptions.FileStorageException;
 import com.melilla.gestPlanes.model.ApiResponse;
@@ -38,62 +40,96 @@ public class DocumentoController {
 
 	@Autowired
 	private DocumentoService documentoService;
-	
-	
+
 	@PostMapping("/subirDocumento")
-	public ResponseEntity<ApiResponse> subirDocumento(@RequestPart MultipartFile file,@RequestPart String tipo, @RequestPart String idCiudadano) {
-		
+	public ResponseEntity<ApiResponse> subirDocumento(@RequestPart MultipartFile file, @RequestPart String tipo,
+			@RequestPart String idCiudadano) {
+
 		ApiResponse response = new ApiResponse();
-		
-		Documento doc = documentoService.guardarDocumento(Long.parseLong(idCiudadano), file,tipo);
-		
+
+		Documento doc = documentoService.guardarDocumento(Long.parseLong(idCiudadano), file, tipo);
+
 		response.setEstado(HttpStatus.OK);
 		response.getPayload().add(documentoService.guardarBBDD(doc));
 		response.setMensaje("Lista de ciudadanos");
-		
+
 		return ResponseEntity.ok(response);
-		
+
 	}
-	
+
 	@GetMapping("/descargaDocumento/{fileName:.+}/{idCiudadano}/{idDocumento}")
-    public ResponseEntity<Resource> downloadFile(@PathVariable String fileName, @PathVariable Long idCiudadano,@PathVariable Long idDocumento,  HttpServletRequest request) {
-        // Load file as Resource
-        Resource resource = documentoService.loadDocumentAsResource(idCiudadano,fileName,idDocumento);
+	public ResponseEntity<Resource> downloadFile(@PathVariable String fileName, @PathVariable Long idCiudadano,
+			@PathVariable Long idDocumento, HttpServletRequest request) {
+		// Load file as Resource
+		Resource resource = documentoService.loadDocumentAsResource(idCiudadano, fileName, idDocumento);
 
-        // Try to determine file's content type
-        String contentType = null;
-        try {
-            contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
-        } catch (IOException ex) {
-        	throw new FileStorageException("Could not determine file type.");
-        }
+		// Try to determine file's content type
+		String contentType = null;
+		try {
+			contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
+		} catch (IOException ex) {
+			throw new FileStorageException("Could not determine file type.");
+		}
 
-        // Fallback to the default content type if type could not be determined
-        if(contentType == null) {
-            contentType = "application/octet-stream";
-        }
+		// Fallback to the default content type if type could not be determined
+		if (contentType == null) {
+			contentType = "application/octet-stream";
+		}
 
-        return ResponseEntity.ok()
-                .contentType(MediaType.parseMediaType(contentType))
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
-                .body(resource);
-    }
-	
+		return ResponseEntity.ok().contentType(MediaType.parseMediaType(contentType))
+				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+				.body(resource);
+	}
+
 	@PostMapping("/generaContrato")
-	ResponseEntity<ApiResponse>generaContrato(@RequestBody List<GeneraContratoDTO> trabajadores){
-		
+	ResponseEntity<ApiResponse> generaContrato(@RequestBody List<GeneraContratoDTO> trabajadores) {
+
 		log.warning(trabajadores.toString());
 		ApiResponse response = new ApiResponse();
-		
+
 		response.getPayload().add(documentoService.generarContrato(trabajadores));
-			
+
+		return ResponseEntity.ok(response);
+	}
+
+	@PostMapping("/downloadZip")
+	void descargaDocumentosZip(HttpServletResponse response, @RequestBody List<DocumentoAZip> docs) {
+
+		documentoService.downloadDocumentsAsZipFile(response, docs);
+	}
+
+	@PostMapping("/buscaDocumentos")
+	ResponseEntity<ApiResponse> buscaDocumentos(@RequestBody List<DocumentoCriterioBusqueda> criterios) {
+
+//		DocumentoCriterioBusqueda criterios = new DocumentoCriterioBusqueda();
+//
+//		if (tipo != null)
+//			criterios.setTipo(tipo);
+//		if (fechaInicial != null)
+//			criterios.setFechaInicial(fechaInicial);
+//		if (fechaFinal != null)
+//			criterios.setFechaFinal(fechaFinal);
+//		if (dni != null)
+//			criterios.setDni(dni);
+
+		ApiResponse response = new ApiResponse();
+
+		response.setEstado(HttpStatus.OK);
+		response.getPayload().addAll(documentoService.buscarDocumentos(criterios));
+		response.setMensaje("Lista de documentos");
+
 		return ResponseEntity.ok(response);
 	}
 	
-	@PostMapping("/downloadZip")
-	void descargaDocumentosZip(HttpServletResponse response,@RequestBody List<DocumentoAZip> docs) {
+	@GetMapping("/tipoDocumentos")
+	ResponseEntity<ApiResponse>tiposDeDocumentos(){
+		ApiResponse response= new ApiResponse();
+		response.setEstado(HttpStatus.OK);
+		response.getPayload().addAll(documentoService.tipoDocumentos());
+		response.setMensaje("");
 		
-		documentoService.downloadDocumentsAsZipFile(response, docs);
+		return ResponseEntity.ok(response);
+		
 	}
-	
+
 }

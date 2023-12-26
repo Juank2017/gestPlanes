@@ -7,9 +7,11 @@ import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.melilla.gestPlanes.DTO.DocumentoAZip;
+import com.melilla.gestPlanes.DTO.DocumentoCriterioBusqueda;
 import com.melilla.gestPlanes.DTO.GeneraContratoDTO;
 import com.melilla.gestPlanes.DTO.GeneraContratoResponseDTO;
 import com.melilla.gestPlanes.model.Documento;
+import com.melilla.gestPlanes.model.TipoDocumento;
 
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -30,4 +32,7 @@ public interface DocumentoService {
 	
 	void downloadDocumentsAsZipFile(HttpServletResponse response,List<DocumentoAZip> docs);
 
+	List<GeneraContratoResponseDTO> buscarDocumentos(List<DocumentoCriterioBusqueda> criterios);
+	
+	List<TipoDocumento> tipoDocumentos();
 }
