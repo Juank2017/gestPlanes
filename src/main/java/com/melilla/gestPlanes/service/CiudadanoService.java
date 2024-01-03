@@ -14,7 +14,7 @@ public interface CiudadanoService {
 	
 	List<Ciudadano> getCiudadanos(Long idPlan);
 	
-	Optional<Ciudadano> getCiudadano(Long idCiudadano);
+	Ciudadano getCiudadano(Long idCiudadano);
 
 	Ciudadano crearCiudadano(Ciudadano ciudadano);
 	

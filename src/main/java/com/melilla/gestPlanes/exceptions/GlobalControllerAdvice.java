@@ -43,7 +43,7 @@ public class GlobalControllerAdvice extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> handleAccessDeniedException(
       Exception ex, WebRequest request) {
         return new ResponseEntity<Object>(
-          "Access denied message here", new HttpHeaders(), HttpStatus.FORBIDDEN);
+          "Access denied message here", new HttpHeaders(), HttpStatus.UNAUTHORIZED);
     }
 	@ExceptionHandler({ConvertStringToDateException.class  })
 	public ResponseEntity<ApiError> handleEntityCreateError(Exception e) {
@@ -66,8 +66,8 @@ public class GlobalControllerAdvice extends ResponseEntityExceptionHandler {
 	
 	@ExceptionHandler({ExpiredJwtException.class  })
 	public ResponseEntity<ApiError> handleExpiredJwt(Exception ex) {
-		ApiError apiError = new ApiError(HttpStatus.FORBIDDEN, ex.getMessage());
-		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(apiError);
+		ApiError apiError = new ApiError(HttpStatus.UNAUTHORIZED, ex.getMessage());
+		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(apiError);
 
 	}
 	@ExceptionHandler({ TokenRefreshException.class })

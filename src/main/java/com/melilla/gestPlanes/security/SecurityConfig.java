@@ -52,6 +52,7 @@ public class SecurityConfig {
                                 .requestMatchers("/v3/**").permitAll()
                                 .requestMatchers("/refreshtoken").permitAll()
                                 .requestMatchers("/checkToken").permitAll()
+                                .requestMatchers("/error").permitAll()
                                 .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                                 .anyRequest().authenticated())
                 .logout((logout) -> logout.logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler()))

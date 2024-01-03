@@ -18,8 +18,10 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import lombok.extern.java.Log;
 
 @Service
+@Log
 public class JWTServiceImpl implements JWTService {
 	 @Value("${token.signing.key}")
 	    private String jwtSigningKey;
@@ -48,9 +50,11 @@ public class JWTServiceImpl implements JWTService {
 	    }
 
 	    private <T> T extractClaim(String token, Function<Claims, T> claimsResolvers) {
-	        
+	       
 	        	final Claims claims = extractAllClaims(token);
 	        	 return claimsResolvers.apply(claims);
+			
+	        	
 		
 	    	
 	       
@@ -72,8 +76,17 @@ public class JWTServiceImpl implements JWTService {
 	    }
 
 	    private Claims extractAllClaims(String token) {
-	        return Jwts.parserBuilder().setSigningKey(getSigningKey()).build().parseClaimsJws(token)
-	                .getBody();
+	    	Claims claims =Jwts.claims();
+	    	try {
+		    	claims = Jwts.parserBuilder().setSigningKey(getSigningKey()).build().parseClaimsJws(token)
+		                .getBody();
+			} catch (ExpiredJwtException e) {
+				//throw new ExpiredJwtException(null, claims, token);
+				log.warning(e.getMessage());
+			}
+
+	    	
+	        return claims;
 	    }
 
 	    private Key getSigningKey() {

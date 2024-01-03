@@ -77,6 +77,15 @@ public class CiudadanoController {
 		return ResponseEntity.ok(response);
 		
 	}
+	
+	@GetMapping("/ciudadano/{idCiudadano}")
+	public ResponseEntity<ApiResponse>obtenerCiudadano(@PathVariable Long idCiudadano){
+		ApiResponse response = new ApiResponse();
+		
+		response.getPayload().add(ciudadanoService.getCiudadano(idCiudadano));
+		
+		return ResponseEntity.ok(response);
+	}
 
 	@PostMapping("/crearCiudadano")
 	public ResponseEntity<ApiResponse>crearCiudadano(@RequestBody Ciudadano ciudadano){

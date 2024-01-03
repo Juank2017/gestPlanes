@@ -106,8 +106,7 @@ public class DocumentoServiceImpl implements DocumentoService {
 	@Override
 	public Documento guardarDocumento(Long idCiudadano, MultipartFile file, String tipo) {
 		// Obtiene el ciudadano
-		Ciudadano ciudadano = ciudadanoService.getCiudadano(idCiudadano)
-				.orElseThrow(() -> new CiudadanoNotFoundException(idCiudadano));
+		Ciudadano ciudadano = ciudadanoService.getCiudadano(idCiudadano);
 		// ocupacion del ciudadano
 		String ocupacion = ciudadano.getContrato().getOcupacion() + "\\";
 		// forma el nombre de la capeta con apellidos_nombre
@@ -147,7 +146,7 @@ public class DocumentoServiceImpl implements DocumentoService {
 			documento.setRuta(fileDownladUri);
 			documento.setIdPlan(planService.getPlanActivo());
 			documento.setTipo(tipo);
-
+			documentoRepository.save(documento);
 			return documento;
 		} catch (IOException ex) {
 			throw new FileStorageException("No se pudo subir el documento " + fileName + ". Intentelo de nuevo!");
@@ -157,8 +156,7 @@ public class DocumentoServiceImpl implements DocumentoService {
 
 	@Override
 	public Resource loadDocumentAsResource(Long idCiudadano, String filename, Long idDocumento) {
-		Ciudadano ciudadano = ciudadanoService.getCiudadano(idCiudadano)
-				.orElseThrow(() -> new CiudadanoNotFoundException(idCiudadano));
+		Ciudadano ciudadano = ciudadanoService.getCiudadano(idCiudadano);
 
 		Documento doc = documentoRepository.findById(idDocumento)
 				.orElseThrow(() -> new DocumentoNotFoundException(idDocumento));
