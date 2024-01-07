@@ -17,6 +17,7 @@ import com.melilla.gestPlanes.exceptions.exceptions.CategoriaNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.CiudadanoNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.ConvertStringToDateException;
 import com.melilla.gestPlanes.exceptions.exceptions.DestinoNotFoundException;
+import com.melilla.gestPlanes.exceptions.exceptions.DocumentCreationException;
 import com.melilla.gestPlanes.exceptions.exceptions.DocumentoNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.ExpedienteNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.MyFileNotFoundException;
@@ -29,76 +30,65 @@ import com.melilla.gestPlanes.exceptions.exceptions.UserNotFoundException;
 
 import io.jsonwebtoken.ExpiredJwtException;
 
-
 @ControllerAdvice
 public class GlobalControllerAdvice extends ResponseEntityExceptionHandler {
 
-	
 	protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body, HttpHeaders headers,
 			HttpStatus status, WebRequest request) {
 		ApiError apiError = new ApiError(status, ex.getMessage());
 		return ResponseEntity.status(status).headers(headers).body(apiError);
 	}
-    @ExceptionHandler({ AccessDeniedException.class })
-    public ResponseEntity<Object> handleAccessDeniedException(
-      Exception ex, WebRequest request) {
-        return new ResponseEntity<Object>(
-          "Access denied message here", new HttpHeaders(), HttpStatus.UNAUTHORIZED);
-    }
-	@ExceptionHandler({ConvertStringToDateException.class  })
+
+	@ExceptionHandler({ AccessDeniedException.class })
+	public ResponseEntity<Object> handleAccessDeniedException(Exception ex, WebRequest request) {
+		return new ResponseEntity<Object>("Access denied message here", new HttpHeaders(), HttpStatus.UNAUTHORIZED);
+	}
+
+	@ExceptionHandler({ ConvertStringToDateException.class })
 	public ResponseEntity<ApiError> handleEntityCreateError(Exception e) {
 		ApiError apiError = new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(apiError);
 	}
 
-	@ExceptionHandler({io.jsonwebtoken.security.SignatureException.class})
+	@ExceptionHandler({ io.jsonwebtoken.security.SignatureException.class })
 	public ResponseEntity<ApiError> handleForbiden(Exception e) {
 		ApiError apiError = new ApiError(HttpStatus.FORBIDDEN, e.getMessage());
 		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(apiError);
 	}
 
-	@ExceptionHandler({BadCredentialsException.class , NumberFormatException.class })
+	@ExceptionHandler({ BadCredentialsException.class, NumberFormatException.class })
 	public ResponseEntity<ApiError> handleBadRequest(Exception ex) {
 		ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, ex.getMessage());
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiError);
 
 	}
-	
-	@ExceptionHandler({ExpiredJwtException.class  })
+
+	@ExceptionHandler({ ExpiredJwtException.class })
 	public ResponseEntity<ApiError> handleExpiredJwt(Exception ex) {
 		ApiError apiError = new ApiError(HttpStatus.UNAUTHORIZED, ex.getMessage());
 		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(apiError);
 
 	}
+
 	@ExceptionHandler({ TokenRefreshException.class })
 	public ResponseEntity<ApiError> handleTokenRefresh(Exception ex) {
 		ApiError apiError = new ApiError(HttpStatus.FORBIDDEN, ex.getMessage());
 		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(apiError);
 	}
 
-	@ExceptionHandler({
-		DocumentoNotFoundException.class,
-		OcupacionNotFoundException.class,
-		CategoriaNotFoundException.class,
-		DestinoNotFoundException.class,
-		OrganismoNotFoundException.class,
-		ExpedienteNotFoundException.class,
-		CiudadanoNotFoundException.class,
-		MyFileNotFoundException.class,
-		PlanNotFoundException.class,
-		UserNotFoundException.class,
-		RoleNotFoundException.class})
+	@ExceptionHandler({ DocumentoNotFoundException.class, OcupacionNotFoundException.class,
+			CategoriaNotFoundException.class, DestinoNotFoundException.class, OrganismoNotFoundException.class,
+			ExpedienteNotFoundException.class, CiudadanoNotFoundException.class, MyFileNotFoundException.class,
+			PlanNotFoundException.class, UserNotFoundException.class, RoleNotFoundException.class })
 	public ResponseEntity<ApiError> handleNoEncontrado(Exception ex) {
 		ApiError apiError = new ApiError(HttpStatus.NOT_FOUND, ex.getMessage());
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(apiError);
 	}
-	
-	@ExceptionHandler({FileStorageException.class})
-	public ResponseEntity<ApiError> handleStoragException(Exception ex){
+
+	@ExceptionHandler({ FileStorageException.class, DocumentCreationException.class })
+	public ResponseEntity<ApiError> handleStoragException(Exception ex) {
 		ApiError apiError = new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(apiError);
 	}
-	
-	
-	
+
 }

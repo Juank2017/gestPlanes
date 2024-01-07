@@ -1,48 +1,31 @@
 package com.melilla.gestPlanes.service.impl;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.time.LocalDate;
-import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import org.apache.pdfbox.cos.COSDictionary;
-import org.apache.pdfbox.cos.COSDocument;
-import org.apache.pdfbox.cos.COSName;
-import org.apache.pdfbox.cos.COSString;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDResources;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType0Font;
-import org.apache.pdfbox.pdmodel.font.PDType1Font;
-import org.apache.pdfbox.pdmodel.interactive.action.PDFormFieldAdditionalActions;
 import org.apache.pdfbox.pdmodel.interactive.form.PDAcroForm;
-import org.apache.pdfbox.pdmodel.interactive.form.PDButton;
-import org.apache.pdfbox.pdmodel.interactive.form.PDField;
-import org.apache.pdfbox.pdmodel.interactive.form.PDRadioButton;
 import org.apache.pdfbox.pdmodel.interactive.form.PDTextField;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StreamUtils;
 import org.springframework.util.StringUtils;
@@ -54,16 +37,16 @@ import com.melilla.gestPlanes.DTO.DocumentoCriterioBusqueda;
 import com.melilla.gestPlanes.DTO.GeneraContratoDTO;
 import com.melilla.gestPlanes.DTO.GeneraContratoResponseDTO;
 import com.melilla.gestPlanes.exceptions.exceptions.CiudadanoNotFoundException;
+import com.melilla.gestPlanes.exceptions.exceptions.DocumentCreationException;
 import com.melilla.gestPlanes.exceptions.exceptions.DocumentoNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.FileStorageException;
 import com.melilla.gestPlanes.exceptions.exceptions.MyFileNotFoundException;
 import com.melilla.gestPlanes.model.Ciudadano;
 import com.melilla.gestPlanes.model.Contrato;
 import com.melilla.gestPlanes.model.Documento;
-import com.melilla.gestPlanes.model.Plan;
+import com.melilla.gestPlanes.model.Ocupacion;
 import com.melilla.gestPlanes.model.TipoDocumento;
 import com.melilla.gestPlanes.repository.DocumentoRepository;
-import com.melilla.gestPlanes.repository.DocumentoSpecification;
 import com.melilla.gestPlanes.repository.DocumentoSpecificationBuilder;
 import com.melilla.gestPlanes.repository.TipoDocumentoRepository;
 import com.melilla.gestPlanes.service.CiudadanoService;
@@ -108,7 +91,8 @@ public class DocumentoServiceImpl implements DocumentoService {
 		// Obtiene el ciudadano
 		Ciudadano ciudadano = ciudadanoService.getCiudadano(idCiudadano);
 		// ocupacion del ciudadano
-		String ocupacion = ciudadano.getContrato().getOcupacion() + "\\";
+		Ocupacion ocupacionCiudadano =  ciudadano.getContrato().getOcupacion();
+		String ocupacion = ocupacionCiudadano.getOcupacion() + "\\";
 		// forma el nombre de la capeta con apellidos_nombre
 		String nombreCarpeta = ocupacion + ciudadano.getApellido1() + "_" + ciudadano.getApellido2() + "_"
 				+ ciudadano.getNombre() + "\\" + tipo;
@@ -146,7 +130,7 @@ public class DocumentoServiceImpl implements DocumentoService {
 			documento.setRuta(fileDownladUri);
 			documento.setIdPlan(planService.getPlanActivo());
 			documento.setTipo(tipo);
-			documentoRepository.save(documento);
+			//documentoRepository.save(documento);
 			return documento;
 		} catch (IOException ex) {
 			throw new FileStorageException("No se pudo subir el documento " + fileName + ". Intentelo de nuevo!");
@@ -380,6 +364,7 @@ public class DocumentoServiceImpl implements DocumentoService {
 		} catch (Exception e) {
 			log.warning(e.getMessage());
 			e.printStackTrace();
+			throw new DocumentCreationException(e.getMessage());
 		}
 		return listaContratosGenerados;
 
