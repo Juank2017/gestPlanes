@@ -88,14 +88,30 @@ public class DocumentoServiceImpl implements DocumentoService {
 
 	@Override
 	public Documento guardarDocumento(Long idCiudadano, MultipartFile file, String tipo) {
+		
+		String ocupacion;
+		String nombreCarpeta;
+		String estado;
+		
 		// Obtiene el ciudadano
 		Ciudadano ciudadano = ciudadanoService.getCiudadano(idCiudadano);
-		// ocupacion del ciudadano
-		Ocupacion ocupacionCiudadano =  ciudadano.getContrato().getOcupacion();
-		String ocupacion = ocupacionCiudadano.getOcupacion() + "\\";
-		// forma el nombre de la capeta con apellidos_nombre
-		String nombreCarpeta = ocupacion + ciudadano.getApellido1() + "_" + ciudadano.getApellido2() + "_"
-				+ ciudadano.getNombre() + "\\" + tipo;
+		estado= ciudadano.getEstado().replace("/", "_")+"\\";
+		
+		if(ciudadano.getContrato() != null) {
+			// ocupacion del ciudadano
+			Ocupacion ocupacionCiudadano =  ciudadano.getContrato().getOcupacion();
+			ocupacion = ocupacionCiudadano.getOcupacion().replace(" ", "_") + "\\";
+			// forma el nombre de la capeta con apellidos_nombre
+			nombreCarpeta =estado+ ocupacion + ciudadano.getApellido1() + "_" + ciudadano.getApellido2() + "_"
+					+ ciudadano.getNombre() + "\\" + tipo;
+		}else {
+			
+			nombreCarpeta = estado + ciudadano.getApellido1() + "_" + ciudadano.getApellido2() + "_"
+					+ ciudadano.getNombre() + "\\" + tipo;
+		}
+		
+
+
 		// obtiene el path absoluto debe ser S:\PLANES DE
 		// EMPLEO\ocupacion\apellidos_nombre
 		Path fileStorageLocation = Paths.get(uploadDir + nombreCarpeta).toAbsolutePath().normalize();
@@ -185,9 +201,12 @@ public class DocumentoServiceImpl implements DocumentoService {
 			File plantilla = classPahtResource.getFile();
 
 			for (GeneraContratoDTO generaContratoDTO : trabajadores) {
+				
+								
 				// Carga el trabajador
 				Ciudadano trabajador = ciudadanoService.getTrabajadorPorDNI(generaContratoDTO.getIdent())
 						.orElseThrow(() -> new CiudadanoNotFoundException(generaContratoDTO.getId()));
+				if (trabajador.getContrato() == null ) continue;
 				// extrae el contrato del trabajador
 				Contrato contrato = trabajador.getContrato();
 
@@ -455,6 +474,12 @@ public class DocumentoServiceImpl implements DocumentoService {
 	public List<TipoDocumento> tipoDocumentos() {
 		
 		return tipoDocumentoRepository.findAll(Sort.by(Sort.Direction.ASC, "tipo")) ;
+	}
+
+	@Override
+	public List<Documento> obtenerDocumentosTrabajador(Long idCiudadano) {
+		
+		return documentoRepository.findAllByCiudadanoIdCiudadano(idCiudadano);
 	}
 
 }

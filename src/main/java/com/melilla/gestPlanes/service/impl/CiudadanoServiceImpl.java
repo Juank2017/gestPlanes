@@ -94,21 +94,24 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 				.fechaNacimiento(trabajador.getFechaNacimiento()).estado(trabajador.getEstado())
 
 				.build());
-		Contrato nuevoContrato = contratoRepository
-				.save(Contrato.builder().base(trabajador.getBase()).prorratas(trabajador.getProrratas())
-						.residencia(trabajador.getResidencia()).total(trabajador.getTotal())
-						.entidad(organismoRepository.findById(trabajador.getEntidad())
-								.orElseThrow(() -> new OrganismoNotFoundException(trabajador.getEntidad())))
-						.destino(destinoRepository.findById(trabajador.getDestino())
-								.orElseThrow(() -> new DestinoNotFoundException(trabajador.getDestino())))
-						.categoria(categoriaRepository.findById(trabajador.getCategoria())
-								.orElseThrow(() -> new CategoriaNotFoundException(trabajador.getCategoria())))
-						.ocupacion(ocupacionRepository.findById(trabajador.getOcu())
-								.orElseThrow(()-> new OcupacionNotFoundException(trabajador.getOcu())))
-						.diasVacaciones(trabajador.getDuracion() == 6 ? 15 : null).duracion(trabajador.getDuracion())
-						.fechaInicio(trabajador.getFechaInicio()).fechaFinal(trabajador.getFechaFinal())
-						.turno(trabajador.getTurno()).porcentajeHoras("63").gc(trabajador.getGc().toString())
-						.ciudadano(nuevoCiudadano).build());
+		if(trabajador.getGc() != null) {
+			Contrato nuevoContrato = contratoRepository
+					.save(Contrato.builder().base(trabajador.getBase()).prorratas(trabajador.getProrratas())
+							.residencia(trabajador.getResidencia()).total(trabajador.getTotal())
+							.entidad(organismoRepository.findById(trabajador.getEntidad())
+									.orElseThrow(() -> new OrganismoNotFoundException(trabajador.getEntidad())))
+							.destino(destinoRepository.findById(trabajador.getDestino())
+									.orElseThrow(() -> new DestinoNotFoundException(trabajador.getDestino())))
+							.categoria(categoriaRepository.findById(trabajador.getCategoria())
+									.orElseThrow(() -> new CategoriaNotFoundException(trabajador.getCategoria())))
+							.ocupacion(ocupacionRepository.findById(trabajador.getOcu())
+									.orElseThrow(()-> new OcupacionNotFoundException(trabajador.getOcu())))
+							.diasVacaciones(trabajador.getDuracion() == 6 ? 15 : null).duracion(trabajador.getDuracion())
+							.fechaInicio(trabajador.getFechaInicio()).fechaFinal(trabajador.getFechaFinal())
+							.turno(trabajador.getTurno()).porcentajeHoras("63").gc(trabajador.getGc().toString())
+							.ciudadano(nuevoCiudadano).build());
+		}
+
 		// log.info(nuevoContrato.toString());
 
 		return nuevoCiudadano;
