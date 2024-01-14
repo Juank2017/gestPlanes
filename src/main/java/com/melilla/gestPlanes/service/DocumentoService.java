@@ -35,4 +35,6 @@ public interface DocumentoService {
 	List<GeneraContratoResponseDTO> buscarDocumentos(List<DocumentoCriterioBusqueda> criterios);
 	
 	List<TipoDocumento> tipoDocumentos();
+	
+	List<Documento>obtenerDocumentosTrabajador(Long idCiudadano);
 }

@@ -131,5 +131,15 @@ public class DocumentoController {
 		return ResponseEntity.ok(response);
 		
 	}
+	
+	@GetMapping("/documentosTrabajador/{idCiudadano}")
+	ResponseEntity<ApiResponse>obtenerDocumentosTrabajador(@PathVariable Long idCiudadano){
+		ApiResponse response = new ApiResponse();
+		response.setEstado(HttpStatus.OK);
+		response.getPayload().add(documentoService.obtenerDocumentosTrabajador(idCiudadano));
+		response.setMensaje("Lista documentos");
+		
+		return ResponseEntity.ok(response);
+	}
 
 }
