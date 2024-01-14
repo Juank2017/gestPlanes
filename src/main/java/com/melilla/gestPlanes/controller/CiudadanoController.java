@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,6 +24,7 @@ import com.melilla.gestPlanes.DTO.CiudadanoCriterioBusqueda;
 import com.melilla.gestPlanes.DTO.CiudadanoCriterioOrden;
 import com.melilla.gestPlanes.DTO.CiudadanoOrdenBusqueda;
 import com.melilla.gestPlanes.DTO.CreateTrabajadorDTO;
+import com.melilla.gestPlanes.DTO.UpdateTrabajadorDTO2;
 import com.melilla.gestPlanes.model.ApiResponse;
 import com.melilla.gestPlanes.model.Ciudadano;
 import com.melilla.gestPlanes.service.CiudadanoService;
@@ -117,5 +119,15 @@ public class CiudadanoController {
 		return ResponseEntity.ok(response);
 		
 		
+	}
+	
+	@PutMapping("/actualizaTrabajador")
+	public ResponseEntity<ApiResponse>actualizaTrabajador(@RequestBody UpdateTrabajadorDTO2 trabajador){
+		ApiResponse response = new ApiResponse();
+		
+		response.getPayload().add(ciudadanoService.editaTrabajador(trabajador));
+		response.setMensaje("Trabajador actualizado");
+		
+		return ResponseEntity.ok(response);
 	}
 }

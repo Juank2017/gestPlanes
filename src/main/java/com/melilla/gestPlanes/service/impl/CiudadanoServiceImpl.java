@@ -16,13 +16,18 @@ import org.springframework.stereotype.Service;
 import com.melilla.gestPlanes.DTO.CiudadanoCriterioOrden;
 import com.melilla.gestPlanes.DTO.CiudadanoOrdenBusqueda;
 import com.melilla.gestPlanes.DTO.CreateTrabajadorDTO;
+import com.melilla.gestPlanes.DTO.UpdateTrabajadorDTO2;
 import com.melilla.gestPlanes.exceptions.exceptions.CategoriaNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.CiudadanoNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.DestinoNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.OcupacionNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.OrganismoNotFoundException;
+import com.melilla.gestPlanes.model.Categoria;
 import com.melilla.gestPlanes.model.Ciudadano;
 import com.melilla.gestPlanes.model.Contrato;
+import com.melilla.gestPlanes.model.Destino;
+import com.melilla.gestPlanes.model.Ocupacion;
+import com.melilla.gestPlanes.model.Organismo;
 import com.melilla.gestPlanes.repository.CategoriaRepository;
 import com.melilla.gestPlanes.repository.CiudadanoRepository;
 import com.melilla.gestPlanes.repository.CiudadanoSpecification;
@@ -172,6 +177,65 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 	public Optional<Ciudadano> getTrabajadorPorDNI(String DNI) {
 		
 		return ciudadanoRepository.findByDNI(DNI);
+	}
+
+	@Override
+	public Ciudadano editaTrabajador(UpdateTrabajadorDTO2 trabajador) {
+
+		Ciudadano ciudadano = ciudadanoRepository.findByDNI(trabajador.getDNI()).orElseThrow(()->new CiudadanoNotFoundException(1l));
+		
+		ciudadano.setNombre(trabajador.getNombre());
+		ciudadano.setApellido1(trabajador.getApellido1());
+		ciudadano.setApellido2(trabajador.getApellido2());
+		ciudadano.setDNI(trabajador.getDNI());
+		ciudadano.setEmail(trabajador.getEmail());
+		ciudadano.setEstado(trabajador.getEstado());
+		ciudadano.setFechaNacimiento(trabajador.getFechaNacimiento());
+		ciudadano.setSeguridadSocial(trabajador.getSeguridadSocial());
+		ciudadano.setTelefono(trabajador.getTelefono());
+		ciudadano.setSexo(trabajador.getSexo());
+		
+		if(trabajador.getGc() != null) {
+			Contrato contrato = ciudadano.getContrato();
+			contrato.setGc(trabajador.getGc().toString());
+			if(trabajador.getFechaInicio() != contrato.getFechaInicio()) {
+				contrato.setFechaInicio(trabajador.getFechaInicio());
+			}
+			if(trabajador.getFechaFinal() != contrato.getFechaFinal()) {
+				contrato.setFechaFinal(trabajador.getFechaFinal());
+			}
+			if (trabajador.getFechaExtincion() != contrato.getFechaExtincion()) {
+				contrato.setFechaExtincion(trabajador.getFechaExtincion());
+			}
+			if (trabajador.getDuracion() != contrato.getDuracion()) {
+				contrato.setDuracion(trabajador.getDuracion());
+				}
+			if (trabajador.getTurno() != contrato.getTurno()) {
+				contrato.setTurno(trabajador.getTurno());
+				}
+			
+			if (trabajador.getCategoria() != contrato.getCategoria().getIdCategoria()) {
+				Categoria categoria = categoriaRepository.findById(trabajador.getCategoria()).orElseThrow(()->new CategoriaNotFoundException(trabajador.getCategoria()));
+				contrato.setCategoria(categoria);
+			}
+			if (trabajador.getOcu() != contrato.getOcupacion().getIdOcupacion()) {
+				Ocupacion ocupacion = ocupacionRepository.findById(trabajador.getOcu()).orElseThrow(()->new OcupacionNotFoundException(trabajador.getOcu()));
+				contrato.setOcupacion(ocupacion);	
+				}
+			if (trabajador.getEntidad() != contrato.getEntidad().getIdOrganismo()) {
+				Organismo organismo = organismoRepository.findById(trabajador.getEntidad()).orElseThrow(()->new OrganismoNotFoundException(trabajador.getEntidad()));
+				contrato.setEntidad(organismo);
+			}
+			if (trabajador.getDestino() != contrato.getDestino().getIdDestino()) {
+				Destino destino = destinoRepository.findById(trabajador.getDestino()).orElseThrow(()-> new DestinoNotFoundException(trabajador.getDestino()));
+				contrato.setDestino(destino);
+				}
+			ciudadano.setContrato(contrato);
+			
+		}
+		
+		
+		return ciudadanoRepository.saveAndFlush(ciudadano);
 	}
 
 }
