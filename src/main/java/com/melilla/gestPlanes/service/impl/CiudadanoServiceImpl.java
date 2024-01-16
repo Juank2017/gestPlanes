@@ -185,7 +185,7 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 	@Override
 	public Ciudadano editaTrabajador(UpdateTrabajadorDTO2 trabajador) {
 
-		Ciudadano ciudadano = ciudadanoRepository.findByDNI(trabajador.getDNI()).orElseThrow(()->new CiudadanoNotFoundException(1l));
+		Ciudadano ciudadano = ciudadanoRepository.findById(trabajador.getIdCiudadano()).orElseThrow(()->new CiudadanoNotFoundException(trabajador.getIdCiudadano()));
 		
 		ciudadano.setNombre(trabajador.getNombre());
 		ciudadano.setApellido1(trabajador.getApellido1());

@@ -9,7 +9,7 @@ import lombok.Data;
 @Data
 @Builder
 public class UpdateTrabajadorDTO2 {
-
+	Long idCiudadano;
 	String nombre;
 	String apellido1;
 	String apellido2;
