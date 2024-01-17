@@ -22,6 +22,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.melilla.gestPlanes.DTO.DocumentoAZip;
 import com.melilla.gestPlanes.DTO.DocumentoCriterioBusqueda;
 import com.melilla.gestPlanes.DTO.GeneraContratoDTO;
+import com.melilla.gestPlanes.DTO.GeneraPresentacionDTO;
 import com.melilla.gestPlanes.exceptions.exceptions.FileStorageException;
 import com.melilla.gestPlanes.model.ApiResponse;
 import com.melilla.gestPlanes.model.Documento;
@@ -88,6 +89,17 @@ public class DocumentoController {
 		ApiResponse response = new ApiResponse();
 
 		response.getPayload().add(documentoService.generarContrato(trabajadores));
+
+		return ResponseEntity.ok(response);
+	}
+	
+	@PostMapping("/generaPresentacion")
+	ResponseEntity<ApiResponse> generaPresentacion(@RequestBody List<GeneraPresentacionDTO> trabajadores) {
+
+		log.warning(trabajadores.toString());
+		ApiResponse response = new ApiResponse();
+
+		response.getPayload().add(documentoService.generarPresentacion(trabajadores));
 
 		return ResponseEntity.ok(response);
 	}

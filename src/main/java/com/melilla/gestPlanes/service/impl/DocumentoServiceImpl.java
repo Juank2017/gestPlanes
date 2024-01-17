@@ -36,18 +36,22 @@ import com.melilla.gestPlanes.DTO.DocumentoAZip;
 import com.melilla.gestPlanes.DTO.DocumentoCriterioBusqueda;
 import com.melilla.gestPlanes.DTO.GeneraContratoDTO;
 import com.melilla.gestPlanes.DTO.GeneraContratoResponseDTO;
+import com.melilla.gestPlanes.DTO.GeneraPresentacionDTO;
 import com.melilla.gestPlanes.exceptions.exceptions.CiudadanoNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.DocumentCreationException;
 import com.melilla.gestPlanes.exceptions.exceptions.DocumentoNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.FileStorageException;
 import com.melilla.gestPlanes.exceptions.exceptions.MyFileNotFoundException;
+import com.melilla.gestPlanes.exceptions.exceptions.PresentacionNotFoundException;
 import com.melilla.gestPlanes.model.Ciudadano;
 import com.melilla.gestPlanes.model.Contrato;
 import com.melilla.gestPlanes.model.Documento;
 import com.melilla.gestPlanes.model.Ocupacion;
+import com.melilla.gestPlanes.model.Presentacion;
 import com.melilla.gestPlanes.model.TipoDocumento;
 import com.melilla.gestPlanes.repository.DocumentoRepository;
 import com.melilla.gestPlanes.repository.DocumentoSpecificationBuilder;
+import com.melilla.gestPlanes.repository.PresentacionRepository;
 import com.melilla.gestPlanes.repository.TipoDocumentoRepository;
 import com.melilla.gestPlanes.service.CiudadanoService;
 import com.melilla.gestPlanes.service.DocumentoService;
@@ -72,6 +76,9 @@ public class DocumentoServiceImpl implements DocumentoService {
 	private TipoDocumentoRepository tipoDocumentoRepository;
 	
 	@Autowired
+	private PresentacionRepository presentacionRepository;
+	
+	@Autowired
 	PlanService planService;
 
 	@Value("${file.upload-dir}")
@@ -79,6 +86,9 @@ public class DocumentoServiceImpl implements DocumentoService {
 
 	@Value("${file.contrato}")
 	private String plantillaContrato;
+	
+	@Value("${file.presentacion}")
+	private String plantillaPresentacion;
 
 	@Autowired
 	ResourceLoader resourceLoader;
@@ -480,6 +490,109 @@ public class DocumentoServiceImpl implements DocumentoService {
 	public List<Documento> obtenerDocumentosTrabajador(Long idCiudadano) {
 		
 		return documentoRepository.findAllByCiudadanoIdCiudadano(idCiudadano);
+	}
+
+	@Override
+	public List<GeneraContratoResponseDTO> generarPresentacion(List<GeneraPresentacionDTO> trabajadores) {
+		List<GeneraContratoResponseDTO> listaPresentacionesGeneradas = new ArrayList<>();
+
+		try {
+			// carga el fichero de la plantilla de resources
+			Resource classPahtResource = resourceLoader.getResource("classpath:" + plantillaPresentacion);
+			File plantilla = classPahtResource.getFile();
+
+			for (GeneraPresentacionDTO generaPresentacionDTO : trabajadores) {
+				
+				//Datos de la plantilla
+				Presentacion presentacion = presentacionRepository.findById(generaPresentacionDTO.getIdPresentacion()).orElseThrow(()->new PresentacionNotFoundException()); 
+				
+				
+				// Carga el trabajador
+				Ciudadano trabajador = ciudadanoService.getTrabajadorPorDNI(generaPresentacionDTO.getIdent())
+						.orElseThrow(() -> new CiudadanoNotFoundException(generaPresentacionDTO.getId()));
+				if (trabajador.getContrato() == null ) continue;
+				// extrae el contrato del trabajador
+				Contrato contrato = trabajador.getContrato();
+
+				// carga la plantilla como pdf
+				PDDocument nuevoContrato = PDDocument.load(plantilla);
+				nuevoContrato.setAllSecurityToBeRemoved(true);
+				// obtiene el formulario del documento
+				PDAcroForm formulario = nuevoContrato.getDocumentCatalog().getAcroForm();
+				
+				// FORMATEO DE FECHAS
+
+				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/uuuu", new Locale("es", "ES"));
+
+
+				String fechaInicio = contrato.getFechaInicio()
+						.format(DateTimeFormatter.ofPattern("dd/MM/uuu", new Locale("es", "ES")));
+				String fechaFinal = contrato.getFechaFinal()
+						.format(DateTimeFormatter.ofPattern("dd/MM/uuu", new Locale("es", "ES")));
+				
+				formulario.getField("responsable").setValue(presentacion.getResponsable());
+				formulario.getField("nombre").setValue(trabajador.getNombre());
+				formulario.getField("apellidos").setValue(trabajador.getApellido1()+" "+trabajador.getApellido2());
+				formulario.getField("DNI").setValue(trabajador.getDNI());
+				formulario.getField("fechaInicio").setValue(fechaInicio);
+				formulario.getField("fechaBaja").setValue(fechaFinal);
+				formulario.getField("vacaciones").setValue(presentacion.getVacaciones());
+				formulario.getField("observaciones").setValue(presentacion.getObservaciones());
+				
+				
+				// nombre del fichero
+				String nombreFichero = trabajador.getApellido1() + "_" + trabajador.getApellido2() + "_"
+						+ trabajador.getNombre() + "_" + trabajador.getDNI() + "_PRESENTACION.pdf";
+
+				// carpeta
+				// ocupacion del ciudadano
+				String ocupacion = trabajador.getContrato().getOcupacion().getOcupacion().trim() + "\\";
+				// forma el nombre de la capeta con apellidos_nombre
+				String nombreCarpeta = ocupacion + trabajador.getApellido1() + "_" + trabajador.getApellido2() + "_"
+						+ trabajador.getNombre() + "\\PRESENTACION";
+				// obtiene el path absoluto debe ser S:\PLANES DE
+				// EMPLEO\ocupacion\apellidos_nombre
+				Path fileStorageLocation = Paths.get(uploadDir + nombreCarpeta).toAbsolutePath().normalize();
+				// log.info(fileStorageLocation.toString());
+				// Intenta crear el directorio si no existe.
+				try {
+					Files.createDirectories(fileStorageLocation);
+				} catch (Exception e) {
+					throw new FileStorageException("No se ha podido crear el directorio: " + fileStorageLocation);
+				}
+				nuevoContrato.save(fileStorageLocation + "\\" + nombreFichero);
+				nuevoContrato.close();
+				String fileDownladUri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/descargaDocumento/")
+						.path(nombreFichero).toUriString();
+
+				Documento documento = new Documento();
+				documento.setIdPlan(planService.getPlanActivo());
+				documento.setCiudadano(trabajador);
+				documento.setNombre(nombreFichero);
+				documento.setRuta(fileDownladUri);
+				documento.setTipo("PRESENTACION");
+
+				GeneraContratoResponseDTO response = new GeneraContratoResponseDTO();
+				response.setIdCiudadano(trabajador.getIdCiudadano());
+				response.setNombre(trabajador.getNombre());
+				response.setApellido1(trabajador.getApellido1());
+				response.setApellido2(trabajador.getApellido2());
+				response.setDNI(trabajador.getDNI());
+				response.setDocumento(guardarBBDD(documento));
+
+				listaPresentacionesGeneradas.add(response);
+
+				trabajador.getDocumentos().add(documento);
+				ciudadanoService.crearCiudadano(trabajador);
+
+			}
+
+		} catch (Exception e) {
+			log.warning(e.getMessage());
+			e.printStackTrace();
+			throw new DocumentCreationException(e.getMessage());
+		}
+		return listaPresentacionesGeneradas;
 	}
 
 }

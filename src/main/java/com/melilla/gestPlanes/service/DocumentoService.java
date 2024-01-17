@@ -10,6 +10,7 @@ import com.melilla.gestPlanes.DTO.DocumentoAZip;
 import com.melilla.gestPlanes.DTO.DocumentoCriterioBusqueda;
 import com.melilla.gestPlanes.DTO.GeneraContratoDTO;
 import com.melilla.gestPlanes.DTO.GeneraContratoResponseDTO;
+import com.melilla.gestPlanes.DTO.GeneraPresentacionDTO;
 import com.melilla.gestPlanes.model.Documento;
 import com.melilla.gestPlanes.model.TipoDocumento;
 
@@ -27,6 +28,8 @@ public interface DocumentoService {
 	public Documento guardarBBDD(Documento documento);
 	
 	List<GeneraContratoResponseDTO> generarContrato(List<GeneraContratoDTO> trabajadores);
+	
+	List<GeneraContratoResponseDTO> generarPresentacion(List<GeneraPresentacionDTO> trabajadores);
 	
 	Documento obtenerDocumentoPorNombreIdCiudadano(String fileName,Long idCiduadano);
 	
