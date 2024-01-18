@@ -165,19 +165,23 @@ public class DocumentoServiceImpl implements DocumentoService {
 	}
 
 	@Override
-	public Resource loadDocumentAsResource(Long idCiudadano, String filename, Long idDocumento) {
+	public Resource loadDocumentAsResource(Long idCiudadano, String filename, Long idDocumento)  {
 		Ciudadano ciudadano = ciudadanoService.getCiudadano(idCiudadano);
-
+		String estado= null;
 		Documento doc = documentoRepository.findById(idDocumento)
 				.orElseThrow(() -> new DocumentoNotFoundException(idDocumento));
-
-		String nombreCarpeta = ciudadano.getContrato().getOcupacion().getOcupacion().trim() + "\\"
+		estado= ciudadano.getEstado().replace("/", "_")+"\\";
+		Ocupacion ocupacionCiudadano =  ciudadano.getContrato().getOcupacion();
+		String ocupacion = ocupacionCiudadano.getOcupacion().replace(" ", "_") + "\\";
+		String nombreCarpeta =estado+ ocupacion
 				+ ciudadano.getApellido1() + "_" + ciudadano.getApellido2() + "_" + ciudadano.getNombre() + "\\"
 				+ doc.getTipo() + "\\";
 		try {
 			Path fileStorageLocation = Paths.get(uploadDir + nombreCarpeta + filename).toAbsolutePath().normalize();
 			log.info(fileStorageLocation.toString());
+			log.info(fileStorageLocation.toUri().toString());
 			Resource resource = new UrlResource(fileStorageLocation.toUri());
+			
 			if (resource.exists()) {
 				return resource;
 			} else {
@@ -349,7 +353,8 @@ public class DocumentoServiceImpl implements DocumentoService {
 
 				// carpeta
 				// ocupacion del ciudadano
-				String ocupacion = trabajador.getContrato().getOcupacion().getOcupacion().trim() + "\\";
+				Ocupacion ocupacionCiudadano =  trabajador.getContrato().getOcupacion();
+				String ocupacion = ocupacionCiudadano.getOcupacion().replace(" ", "_") + "\\";
 				// forma el nombre de la capeta con apellidos_nombre
 				String nombreCarpeta = ocupacion + trabajador.getApellido1() + "_" + trabajador.getApellido2() + "_"
 						+ trabajador.getNombre() + "\\CONTRATO";
@@ -523,12 +528,15 @@ public class DocumentoServiceImpl implements DocumentoService {
 				// FORMATEO DE FECHAS
 
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/uuuu", new Locale("es", "ES"));
+				String fechaInicio = "00/00/0000";
+				String fechaFinal="00/00/000";
+				if (contrato.getFechaInicio() != null && contrato.getFechaFinal() != null) {
+					 fechaInicio = contrato.getFechaInicio()
+							.format(DateTimeFormatter.ofPattern("dd/MM/uuu", new Locale("es", "ES")));
+					 fechaFinal = contrato.getFechaFinal()
+							.format(DateTimeFormatter.ofPattern("dd/MM/uuu", new Locale("es", "ES")));
+				}
 
-
-				String fechaInicio = contrato.getFechaInicio()
-						.format(DateTimeFormatter.ofPattern("dd/MM/uuu", new Locale("es", "ES")));
-				String fechaFinal = contrato.getFechaFinal()
-						.format(DateTimeFormatter.ofPattern("dd/MM/uuu", new Locale("es", "ES")));
 				
 				formulario.getField("responsable").setValue(presentacion.getResponsable());
 				formulario.getField("nombre").setValue(trabajador.getNombre());
@@ -538,6 +546,8 @@ public class DocumentoServiceImpl implements DocumentoService {
 				formulario.getField("fechaBaja").setValue(fechaFinal);
 				formulario.getField("vacaciones").setValue(presentacion.getVacaciones());
 				formulario.getField("observaciones").setValue(presentacion.getObservaciones());
+				formulario.getField("categoria").setValue(contrato.getCategoria().getCategoria());
+				formulario.getField("destino").setValue(contrato.getDestino().getDestino());
 				
 				
 				// nombre del fichero
@@ -546,7 +556,8 @@ public class DocumentoServiceImpl implements DocumentoService {
 
 				// carpeta
 				// ocupacion del ciudadano
-				String ocupacion = trabajador.getContrato().getOcupacion().getOcupacion().trim() + "\\";
+				Ocupacion ocupacionCiudadano =  trabajador.getContrato().getOcupacion();
+				String ocupacion = ocupacionCiudadano.getOcupacion().replace(" ", "_") + "\\";
 				// forma el nombre de la capeta con apellidos_nombre
 				String nombreCarpeta = ocupacion + trabajador.getApellido1() + "_" + trabajador.getApellido2() + "_"
 						+ trabajador.getNombre() + "\\PRESENTACION";
