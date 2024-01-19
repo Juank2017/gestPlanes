@@ -71,13 +71,13 @@ public class DocumentoServiceImpl implements DocumentoService {
 
 	@Autowired
 	private DocumentoRepository documentoRepository;
-	
+
 	@Autowired
 	private TipoDocumentoRepository tipoDocumentoRepository;
-	
+
 	@Autowired
 	private PresentacionRepository presentacionRepository;
-	
+
 	@Autowired
 	PlanService planService;
 
@@ -86,41 +86,39 @@ public class DocumentoServiceImpl implements DocumentoService {
 
 	@Value("${file.contrato}")
 	private String plantillaContrato;
-	
+
 	@Value("${file.presentacion}")
 	private String plantillaPresentacion;
 
 	@Autowired
 	ResourceLoader resourceLoader;
-	
-	@Autowired 
+
+	@Autowired
 	PlanService planservice;
 
 	@Override
 	public Documento guardarDocumento(Long idCiudadano, MultipartFile file, String tipo) {
-		
+
 		String ocupacion;
 		String nombreCarpeta;
 		String estado;
-		
+
 		// Obtiene el ciudadano
 		Ciudadano ciudadano = ciudadanoService.getCiudadano(idCiudadano);
-		estado= ciudadano.getEstado().replace("/", "_")+"\\";
-		
-		if(ciudadano.getContrato() != null) {
+		estado = ciudadano.getEstado().replace("/", "_") + "\\";
+
+		if (ciudadano.getContrato() != null) {
 			// ocupacion del ciudadano
-			Ocupacion ocupacionCiudadano =  ciudadano.getContrato().getOcupacion();
+			Ocupacion ocupacionCiudadano = ciudadano.getContrato().getOcupacion();
 			ocupacion = ocupacionCiudadano.getOcupacion().replace(" ", "_") + "\\";
 			// forma el nombre de la capeta con apellidos_nombre
-			nombreCarpeta =estado+ ocupacion + ciudadano.getApellido1() + "_" + ciudadano.getApellido2() + "_"
+			nombreCarpeta = estado + ocupacion + ciudadano.getApellido1() + "_" + ciudadano.getApellido2() + "_"
 					+ ciudadano.getNombre() + "\\" + tipo;
-		}else {
-			
+		} else {
+
 			nombreCarpeta = estado + ciudadano.getApellido1() + "_" + ciudadano.getApellido2() + "_"
 					+ ciudadano.getNombre() + "\\" + tipo;
 		}
-		
-
 
 		// obtiene el path absoluto debe ser S:\PLANES DE
 		// EMPLEO\ocupacion\apellidos_nombre
@@ -150,13 +148,13 @@ public class DocumentoServiceImpl implements DocumentoService {
 					.path(fileName).toUriString();
 
 			Documento documento = new Documento();
-			
+
 			documento.setCiudadano(ciudadano);
 			documento.setNombre(fileName);
 			documento.setRuta(fileDownladUri);
 			documento.setIdPlan(planService.getPlanActivo());
 			documento.setTipo(tipo);
-			//documentoRepository.save(documento);
+			// documentoRepository.save(documento);
 			return documento;
 		} catch (IOException ex) {
 			throw new FileStorageException("No se pudo subir el documento " + fileName + ". Intentelo de nuevo!");
@@ -165,23 +163,22 @@ public class DocumentoServiceImpl implements DocumentoService {
 	}
 
 	@Override
-	public Resource loadDocumentAsResource(Long idCiudadano, String filename, Long idDocumento)  {
+	public Resource loadDocumentAsResource(Long idCiudadano, String filename, Long idDocumento) {
 		Ciudadano ciudadano = ciudadanoService.getCiudadano(idCiudadano);
-		String estado= null;
+		String estado = null;
 		Documento doc = documentoRepository.findById(idDocumento)
 				.orElseThrow(() -> new DocumentoNotFoundException(idDocumento));
-		estado= ciudadano.getEstado().replace("/", "_")+"\\";
-		Ocupacion ocupacionCiudadano =  ciudadano.getContrato().getOcupacion();
+		estado = ciudadano.getEstado().replace("/", "_") + "\\";
+		Ocupacion ocupacionCiudadano = ciudadano.getContrato().getOcupacion();
 		String ocupacion = ocupacionCiudadano.getOcupacion().replace(" ", "_") + "\\";
-		String nombreCarpeta =estado+ ocupacion
-				+ ciudadano.getApellido1() + "_" + ciudadano.getApellido2() + "_" + ciudadano.getNombre() + "\\"
-				+ doc.getTipo() + "\\";
+		String nombreCarpeta = estado + ocupacion + ciudadano.getApellido1() + "_" + ciudadano.getApellido2() + "_"
+				+ ciudadano.getNombre() + "\\" + doc.getTipo() + "\\";
 		try {
 			Path fileStorageLocation = Paths.get(uploadDir + nombreCarpeta + filename).toAbsolutePath().normalize();
 			log.info(fileStorageLocation.toString());
 			log.info(fileStorageLocation.toUri().toString());
 			Resource resource = new UrlResource(fileStorageLocation.toUri());
-			
+
 			if (resource.exists()) {
 				return resource;
 			} else {
@@ -215,12 +212,12 @@ public class DocumentoServiceImpl implements DocumentoService {
 			File plantilla = classPahtResource.getFile();
 
 			for (GeneraContratoDTO generaContratoDTO : trabajadores) {
-				
-								
+
 				// Carga el trabajador
 				Ciudadano trabajador = ciudadanoService.getTrabajadorPorDNI(generaContratoDTO.getIdent())
 						.orElseThrow(() -> new CiudadanoNotFoundException(generaContratoDTO.getId()));
-				if (trabajador.getContrato() == null ) continue;
+				if (trabajador.getContrato() == null)
+					continue;
 				// extrae el contrato del trabajador
 				Contrato contrato = trabajador.getContrato();
 
@@ -257,14 +254,20 @@ public class DocumentoServiceImpl implements DocumentoService {
 
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/uuuu", new Locale("es", "ES"));
 
-				String fechaNacimiento =  trabajador.getFechaNacimiento()
+				String fechaNacimiento = trabajador.getFechaNacimiento()
 						.format(DateTimeFormatter.ofPattern("dd/MM/uuu", new Locale("es", "ES")));
-				String fechaInicio = contrato.getFechaInicio()
-						.format(DateTimeFormatter.ofPattern("dd/MM/uuu", new Locale("es", "ES")));
-				String fechaFinal = contrato.getFechaFinal()
-						.format(DateTimeFormatter.ofPattern("dd/MM/uuu", new Locale("es", "ES")));
-				String mesFechaFirma = contrato.getFechaInicio()
-						.format(DateTimeFormatter.ofPattern("MMMM", new Locale("es", "ES")));
+				String mesFechaFirma="00/00/0000";
+				String fechaInicio = "00/00/0000";
+				String fechaFinal = "00/00/000";
+				if (contrato.getFechaInicio() != null && contrato.getFechaFinal() != null) {
+					fechaInicio = contrato.getFechaInicio()
+							.format(DateTimeFormatter.ofPattern("dd/MM/uuu", new Locale("es", "ES")));
+					fechaFinal = contrato.getFechaFinal()
+							.format(DateTimeFormatter.ofPattern("dd/MM/uuu", new Locale("es", "ES")));
+					 mesFechaFirma = contrato.getFechaInicio()
+							.format(DateTimeFormatter.ofPattern("MMMM", new Locale("es", "ES")));
+
+				}
 
 				formulario.getField("AA0101-DNI").setValue("S2916002E");
 
@@ -338,9 +341,9 @@ public class DocumentoServiceImpl implements DocumentoService {
 				formulario.getField("P1108").setValue(
 						"Programa de colaboración con órganos de la Administración General del Estado que contraten trabajadores desempleados para la realización de obras y servicios de interés general y social en el ámbito de la Orden del Ministerios de Trabajo y Asuntos Sociales de 19 de diciembre de 1997, modificada por la Orden TAS/2435/2004, de 20 de julio y por la Orden ESS 974/2013, de 20 de mayo, establece las bases reguladoras de la concesión de subvenciones públicas por los Servicios Públicos de Empleo en el ámbito de la colaboración con órganos de la Administración General del Estado y sus organismos autónomos, universidades públicas e instituciones sin ánimo de lucro, que contraten trabajadores desempleados para la realización de obras y servicios de interés general y social.");
 
-				//Literal contrato
+				// Literal contrato
 				formulario.getField("P2301").setValue(contrato.getEntidad().getLiteralContrato());
-				
+
 				formulario.getField("P2302").setValue("MELILLA");
 
 				formulario.getField("P2303").setValue("" + contrato.getFechaInicio().getDayOfMonth());
@@ -353,10 +356,12 @@ public class DocumentoServiceImpl implements DocumentoService {
 
 				// carpeta
 				// ocupacion del ciudadano
-				Ocupacion ocupacionCiudadano =  trabajador.getContrato().getOcupacion();
+				Ocupacion ocupacionCiudadano = trabajador.getContrato().getOcupacion();
 				String ocupacion = ocupacionCiudadano.getOcupacion().replace(" ", "_") + "\\";
+				//estado
+				String estado = trabajador.getEstado().replace("/", "_") +"\\";
 				// forma el nombre de la capeta con apellidos_nombre
-				String nombreCarpeta = ocupacion + trabajador.getApellido1() + "_" + trabajador.getApellido2() + "_"
+				String nombreCarpeta = estado + ocupacion + trabajador.getApellido1() + "_" + trabajador.getApellido2() + "_"
 						+ trabajador.getNombre() + "\\CONTRATO";
 				// obtiene el path absoluto debe ser S:\PLANES DE
 				// EMPLEO\ocupacion\apellidos_nombre
@@ -411,13 +416,12 @@ public class DocumentoServiceImpl implements DocumentoService {
 	}
 
 	@Override
-	public void downloadDocumentsAsZipFile(HttpServletResponse response,List<DocumentoAZip> docs) {
+	public void downloadDocumentsAsZipFile(HttpServletResponse response, List<DocumentoAZip> docs) {
 
 		response.setContentType("application/zip");
-        response.setHeader("Content-Disposition", "attachment; filename=download.zip");
+		response.setHeader("Content-Disposition", "attachment; filename=download.zip");
 		try {
 
-		
 			ZipOutputStream zipOutput = new ZipOutputStream(response.getOutputStream());
 
 			for (DocumentoAZip documentoAZip : docs) {
@@ -438,62 +442,53 @@ public class DocumentoServiceImpl implements DocumentoService {
 
 			}
 			zipOutput.finish();
-			
 
 		} catch (Exception e) {
 			log.info(e.getMessage());
-			
+
 		}
 
 	}
 
 	@Override
 	public List<GeneraContratoResponseDTO> buscarDocumentos(List<DocumentoCriterioBusqueda> criterios) {
-		
+
 		List<GeneraContratoResponseDTO> response = new ArrayList<GeneraContratoResponseDTO>();
-		
 
 		DocumentoSpecificationBuilder consulta = new DocumentoSpecificationBuilder(criterios, planService);
-		
-		
-		
 
 		List<Documento> documentos = documentoRepository.findAll(consulta.build());
-		
-		
-		
+
 		for (Documento documento : documentos) {
-			
+
 			GeneraContratoResponseDTO generaContratoResponseDTO = new GeneraContratoResponseDTO();
-			 if (documento.getCiudadano() != null) {
-				 generaContratoResponseDTO.setIdCiudadano(documento.getCiudadano().getIdCiudadano());
-				 
-					generaContratoResponseDTO.setNombre(documento.getCiudadano().getNombre());
-					generaContratoResponseDTO.setApellido1(documento.getCiudadano().getApellido1());
-					generaContratoResponseDTO.setApellido2(documento.getCiudadano().getApellido2());
-					generaContratoResponseDTO.setDNI(documento.getCiudadano().getDNI());
-			 }
-				
+			if (documento.getCiudadano() != null) {
+				generaContratoResponseDTO.setIdCiudadano(documento.getCiudadano().getIdCiudadano());
+
+				generaContratoResponseDTO.setNombre(documento.getCiudadano().getNombre());
+				generaContratoResponseDTO.setApellido1(documento.getCiudadano().getApellido1());
+				generaContratoResponseDTO.setApellido2(documento.getCiudadano().getApellido2());
+				generaContratoResponseDTO.setDNI(documento.getCiudadano().getDNI());
+			}
+
 			generaContratoResponseDTO.setDocumento(documento);
-			
+
 			response.add(generaContratoResponseDTO);
-			
-			
-			
+
 		}
-		
+
 		return response;
 	}
 
 	@Override
 	public List<TipoDocumento> tipoDocumentos() {
-		
-		return tipoDocumentoRepository.findAll(Sort.by(Sort.Direction.ASC, "tipo")) ;
+
+		return tipoDocumentoRepository.findAll(Sort.by(Sort.Direction.ASC, "tipo"));
 	}
 
 	@Override
 	public List<Documento> obtenerDocumentosTrabajador(Long idCiudadano) {
-		
+
 		return documentoRepository.findAllByCiudadanoIdCiudadano(idCiudadano);
 	}
 
@@ -507,15 +502,16 @@ public class DocumentoServiceImpl implements DocumentoService {
 			File plantilla = classPahtResource.getFile();
 
 			for (GeneraPresentacionDTO generaPresentacionDTO : trabajadores) {
-				
-				//Datos de la plantilla
-				Presentacion presentacion = presentacionRepository.findById(generaPresentacionDTO.getIdPresentacion()).orElseThrow(()->new PresentacionNotFoundException()); 
-				
-				
+
+				// Datos de la plantilla
+				Presentacion presentacion = presentacionRepository.findById(generaPresentacionDTO.getIdPresentacion())
+						.orElseThrow(() -> new PresentacionNotFoundException());
+
 				// Carga el trabajador
 				Ciudadano trabajador = ciudadanoService.getTrabajadorPorDNI(generaPresentacionDTO.getIdent())
 						.orElseThrow(() -> new CiudadanoNotFoundException(generaPresentacionDTO.getId()));
-				if (trabajador.getContrato() == null ) continue;
+				if (trabajador.getContrato() == null)
+					continue;
 				// extrae el contrato del trabajador
 				Contrato contrato = trabajador.getContrato();
 
@@ -524,23 +520,22 @@ public class DocumentoServiceImpl implements DocumentoService {
 				nuevoContrato.setAllSecurityToBeRemoved(true);
 				// obtiene el formulario del documento
 				PDAcroForm formulario = nuevoContrato.getDocumentCatalog().getAcroForm();
-				
+
 				// FORMATEO DE FECHAS
 
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/uuuu", new Locale("es", "ES"));
 				String fechaInicio = "00/00/0000";
-				String fechaFinal="00/00/000";
+				String fechaFinal = "00/00/000";
 				if (contrato.getFechaInicio() != null && contrato.getFechaFinal() != null) {
-					 fechaInicio = contrato.getFechaInicio()
+					fechaInicio = contrato.getFechaInicio()
 							.format(DateTimeFormatter.ofPattern("dd/MM/uuu", new Locale("es", "ES")));
-					 fechaFinal = contrato.getFechaFinal()
+					fechaFinal = contrato.getFechaFinal()
 							.format(DateTimeFormatter.ofPattern("dd/MM/uuu", new Locale("es", "ES")));
 				}
 
-				
 				formulario.getField("responsable").setValue(presentacion.getResponsable());
 				formulario.getField("nombre").setValue(trabajador.getNombre());
-				formulario.getField("apellidos").setValue(trabajador.getApellido1()+" "+trabajador.getApellido2());
+				formulario.getField("apellidos").setValue(trabajador.getApellido1() + " " + trabajador.getApellido2());
 				formulario.getField("DNI").setValue(trabajador.getDNI());
 				formulario.getField("fechaInicio").setValue(fechaInicio);
 				formulario.getField("fechaBaja").setValue(fechaFinal);
@@ -548,18 +543,19 @@ public class DocumentoServiceImpl implements DocumentoService {
 				formulario.getField("observaciones").setValue(presentacion.getObservaciones());
 				formulario.getField("categoria").setValue(contrato.getCategoria().getCategoria());
 				formulario.getField("destino").setValue(contrato.getDestino().getDestino());
-				
-				
+
 				// nombre del fichero
 				String nombreFichero = trabajador.getApellido1() + "_" + trabajador.getApellido2() + "_"
 						+ trabajador.getNombre() + "_" + trabajador.getDNI() + "_PRESENTACION.pdf";
 
 				// carpeta
 				// ocupacion del ciudadano
-				Ocupacion ocupacionCiudadano =  trabajador.getContrato().getOcupacion();
+				Ocupacion ocupacionCiudadano = trabajador.getContrato().getOcupacion();
 				String ocupacion = ocupacionCiudadano.getOcupacion().replace(" ", "_") + "\\";
+				//estado
+				String estado = trabajador.getEstado().replace("/", "_") +"\\";
 				// forma el nombre de la capeta con apellidos_nombre
-				String nombreCarpeta = ocupacion + trabajador.getApellido1() + "_" + trabajador.getApellido2() + "_"
+				String nombreCarpeta = estado + ocupacion + trabajador.getApellido1() + "_" + trabajador.getApellido2() + "_"
 						+ trabajador.getNombre() + "\\PRESENTACION";
 				// obtiene el path absoluto debe ser S:\PLANES DE
 				// EMPLEO\ocupacion\apellidos_nombre
