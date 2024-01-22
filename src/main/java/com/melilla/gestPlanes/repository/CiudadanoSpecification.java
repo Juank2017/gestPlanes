@@ -23,6 +23,7 @@ import com.melilla.gestPlanes.service.PlanService;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Path;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
@@ -50,11 +51,11 @@ public class CiudadanoSpecification implements Specification<Ciudadano> {
 	@Override
 	public Predicate toPredicate(Root<Ciudadano> root, CriteriaQuery<?> query, CriteriaBuilder builder) {
 
-		Join<Ciudadano, Contrato> contratoCiudadano = root.join("contrato");
-		Join<Contrato, Ocupacion> ocupacionContrato = contratoCiudadano.join("ocupacion");
-		Join<Contrato, Categoria> categoriaContrato = contratoCiudadano.join("categoria");
-		Join<Contrato, Organismo> organismoContrato = contratoCiudadano.join("entidad");
-		Join<Contrato, Destino> destinoContrato = contratoCiudadano.join("destino");
+		Join<Ciudadano, Contrato> contratoCiudadano = root.join("contrato",JoinType.LEFT);
+		Join<Contrato, Ocupacion> ocupacionContrato = contratoCiudadano.join("ocupacion",JoinType.LEFT);
+		Join<Contrato, Categoria> categoriaContrato = contratoCiudadano.join("categoria",JoinType.LEFT);
+		Join<Contrato, Organismo> organismoContrato = contratoCiudadano.join("entidad",JoinType.LEFT);
+		Join<Contrato, Destino> destinoContrato = contratoCiudadano.join("destino",JoinType.LEFT);
 
 		Path<Object> mio = contratoCiudadano.get("ocupacion");
 
