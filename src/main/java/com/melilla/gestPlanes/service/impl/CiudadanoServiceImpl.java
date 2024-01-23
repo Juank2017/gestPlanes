@@ -2,6 +2,7 @@ package com.melilla.gestPlanes.service.impl;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 import com.melilla.gestPlanes.DTO.CiudadanoCriterioOrden;
 import com.melilla.gestPlanes.DTO.CiudadanoOrdenBusqueda;
 import com.melilla.gestPlanes.DTO.CreateTrabajadorDTO;
+import com.melilla.gestPlanes.DTO.ModificaEstadoDTO;
 import com.melilla.gestPlanes.DTO.UpdateTrabajadorDTO2;
 import com.melilla.gestPlanes.exceptions.exceptions.CategoriaNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.CiudadanoNotFoundException;
@@ -291,6 +293,31 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 		
 		
 		return ciudadanoRepository.saveAndFlush(ciudadano);
+	}
+
+	@Override
+	public List<Ciudadano> modificarEstado(List<ModificaEstadoDTO> trabajadores) {
+		
+		
+		for (ModificaEstadoDTO modificaEstadoDTO : trabajadores) {
+			
+			Ciudadano trabajador = ciudadanoRepository.findByDNI(modificaEstadoDTO.getDNI()).orElseThrow(()->new CiudadanoNotFoundException(modificaEstadoDTO.getIdCiudadano()));
+			
+			if(modificaEstadoDTO.getEstado().contains("FINALIZADO/A")) {
+				trabajador.setEstado(modificaEstadoDTO.getEstado());
+				if(trabajador.getContrato() != null) {
+					Contrato contrato = trabajador.getContrato();
+					contrato.setFechaExtincion(modificaEstadoDTO.getFecha());
+					contratoRepository.save(contrato);
+				}
+			}else {
+				trabajador.setEstado(modificaEstadoDTO.getEstado());
+			}
+			
+			ciudadanoRepository.save(trabajador);
+		}
+		
+		return null;
 	}
 
 }

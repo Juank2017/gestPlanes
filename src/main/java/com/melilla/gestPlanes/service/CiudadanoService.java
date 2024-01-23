@@ -8,6 +8,7 @@ import org.springframework.data.domain.Sort;
 
 import com.melilla.gestPlanes.DTO.CiudadanoOrdenBusqueda;
 import com.melilla.gestPlanes.DTO.CreateTrabajadorDTO;
+import com.melilla.gestPlanes.DTO.ModificaEstadoDTO;
 import com.melilla.gestPlanes.DTO.UpdateTrabajadorDTO2;
 import com.melilla.gestPlanes.model.Ciudadano;
 
@@ -27,5 +28,7 @@ public interface CiudadanoService {
 	Optional<Ciudadano>getTrabajadorPorDNI(String DNI);
 	
 	Ciudadano editaTrabajador(UpdateTrabajadorDTO2 trabajador);
+	
+	List<Ciudadano>modificarEstado(List<ModificaEstadoDTO> trabajadores );
 	
 }
