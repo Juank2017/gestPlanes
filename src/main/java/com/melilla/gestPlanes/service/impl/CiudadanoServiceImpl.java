@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
+import java.lang.Math;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -116,7 +117,7 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 									.orElseThrow(() -> new CategoriaNotFoundException(trabajador.getCategoria())):null)
 							.ocupacion((trabajador.getOcu()!=null)?ocupacionRepository.findById(trabajador.getOcu())
 									.orElseThrow(()-> new OcupacionNotFoundException(trabajador.getOcu())):null)
-							.diasVacaciones(trabajador.getDuracion() == 6 ? 15 : 0)
+							.diasVacaciones((int)Math.round((trabajador.getDuracion()/30)*2.5))
 							.duracion(trabajador.getDuracion())
 							.fechaInicio((trabajador.getFechaInicio() != null)?trabajador.getFechaInicio(): LocalDate.now())
 							.fechaFinal((trabajador.getFechaFinal()!= null)?trabajador.getFechaFinal():LocalDate.now())
@@ -298,16 +299,25 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 	@Override
 	public List<Ciudadano> modificarEstado(List<ModificaEstadoDTO> trabajadores) {
 		
+		List<Ciudadano> trabajadoresModificados = new ArrayList<Ciudadano>();
 		
 		for (ModificaEstadoDTO modificaEstadoDTO : trabajadores) {
 			
-			Ciudadano trabajador = ciudadanoRepository.findByDNI(modificaEstadoDTO.getDNI()).orElseThrow(()->new CiudadanoNotFoundException(modificaEstadoDTO.getIdCiudadano()));
+			Ciudadano trabajador = ciudadanoRepository.findByDNI(modificaEstadoDTO.getDni()).orElseThrow(()->new CiudadanoNotFoundException(modificaEstadoDTO.getIdCiudadano()));
 			
 			if(modificaEstadoDTO.getEstado().contains("FINALIZADO/A")) {
 				trabajador.setEstado(modificaEstadoDTO.getEstado());
 				if(trabajador.getContrato() != null) {
 					Contrato contrato = trabajador.getContrato();
 					contrato.setFechaExtincion(modificaEstadoDTO.getFecha());
+					
+					if(contrato.getFechaInicio() != null) {
+						LocalDate fechaInicio = contrato.getFechaInicio();
+						
+						
+					}
+					
+					
 					contratoRepository.save(contrato);
 				}
 			}else {
@@ -315,9 +325,10 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 			}
 			
 			ciudadanoRepository.save(trabajador);
+			trabajadoresModificados.add(trabajador);
 		}
 		
-		return null;
+		return trabajadoresModificados;
 	}
 
 }

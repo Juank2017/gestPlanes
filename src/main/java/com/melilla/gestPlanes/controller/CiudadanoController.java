@@ -24,6 +24,7 @@ import com.melilla.gestPlanes.DTO.CiudadanoCriterioBusqueda;
 import com.melilla.gestPlanes.DTO.CiudadanoCriterioOrden;
 import com.melilla.gestPlanes.DTO.CiudadanoOrdenBusqueda;
 import com.melilla.gestPlanes.DTO.CreateTrabajadorDTO;
+import com.melilla.gestPlanes.DTO.ModificaEstadoDTO;
 import com.melilla.gestPlanes.DTO.UpdateTrabajadorDTO2;
 import com.melilla.gestPlanes.model.ApiResponse;
 import com.melilla.gestPlanes.model.Ciudadano;
@@ -127,6 +128,16 @@ public class CiudadanoController {
 		
 		response.getPayload().add(ciudadanoService.editaTrabajador(trabajador));
 		response.setMensaje("Trabajador actualizado");
+		
+		return ResponseEntity.ok(response);
+	}
+	
+	@PostMapping("/modificaEstado")
+	public ResponseEntity<ApiResponse>modificaEstadoTrabajador(@RequestBody List<ModificaEstadoDTO> trabajadores){
+		ApiResponse response = new ApiResponse();
+		
+		response.getPayload().add(ciudadanoService.modificarEstado(trabajadores));
+		response.setMensaje("Estado del trabajador actualizado");
 		
 		return ResponseEntity.ok(response);
 	}
