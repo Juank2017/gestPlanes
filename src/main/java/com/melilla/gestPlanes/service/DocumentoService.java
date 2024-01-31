@@ -23,7 +23,7 @@ public interface DocumentoService {
 	
 	public Resource loadDocumentAsResource(Long idCiudadano,String filename,Long idDocumento);
 	
-	public String eliminarDocumento(Long idCiudadano, String nombreDocumento);
+	public void eliminarDocumento(Long idDocumento);
 	
 	public Documento guardarBBDD(Documento documento);
 	

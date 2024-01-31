@@ -1,4 +1,4 @@
-package com.melilla.gestPlanes.service;
+package com.melilla.gestPlanes.service.impl;
 
 import java.util.List;
 
@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.melilla.gestPlanes.exceptions.exceptions.PresentacionNotFoundException;
 import com.melilla.gestPlanes.model.Presentacion;
 import com.melilla.gestPlanes.repository.PresentacionRepository;
+import com.melilla.gestPlanes.service.PresentacionService;
 
 @Service
 public class PresentacionServiceIMPL implements PresentacionService {

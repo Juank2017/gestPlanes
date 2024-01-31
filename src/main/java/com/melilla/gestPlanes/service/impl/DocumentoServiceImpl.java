@@ -190,9 +190,9 @@ public class DocumentoServiceImpl implements DocumentoService {
 	}
 
 	@Override
-	public String eliminarDocumento(Long idCiudadano, String nombreDocumento) {
-		// TODO Auto-generated method stub
-		return null;
+	public void eliminarDocumento(Long idDocumento) {
+		
+		 documentoRepository.deleteById(idDocumento);;
 	}
 
 	@Override
