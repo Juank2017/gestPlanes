@@ -3,6 +3,7 @@ package com.melilla.gestPlanes.service.impl;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -142,7 +143,7 @@ public class DocumentoServiceImpl implements DocumentoService {
 			}
 			// Copy file to the target location (Replacing existing file with the same name)
 			Path targetLocation = fileStorageLocation.resolve(fileName);
-			Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
+			Files.copy(file.getInputStream(), targetLocation);
 
 			String fileDownladUri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/descargaDocumento/")
 					.path(fileName).toUriString();
@@ -156,7 +157,10 @@ public class DocumentoServiceImpl implements DocumentoService {
 			documento.setTipo(tipo);
 			// documentoRepository.save(documento);
 			return documento;
-		} catch (IOException ex) {
+		}catch (FileAlreadyExistsException e) {
+			throw new FileStorageException("El archivo "+ fileName +" ya existe");
+		}
+		catch (IOException ex) {
 			throw new FileStorageException("No se pudo subir el documento " + fileName + ". Intentelo de nuevo!");
 		}
 
