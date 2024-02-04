@@ -331,4 +331,10 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 		return trabajadoresModificados;
 	}
 
+	@Override
+	public int trabajadoresContratadosOrganismoOcupacion(Long idOrganismo, Long idOcupacion) {
+		List<Ciudadano>trabajadores = ciudadanoRepository.findByEstadoAndContratoEntidadIdOrganismoAndContratoOcupacionIdOcupacion("CONTRATADO/A", idOrganismo, idOcupacion);
+		return (trabajadores != null)?trabajadores.size():0;
+	}
+
 }

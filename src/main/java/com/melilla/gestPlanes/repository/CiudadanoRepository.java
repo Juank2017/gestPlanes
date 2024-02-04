@@ -20,6 +20,8 @@ public interface CiudadanoRepository extends JpaRepository<Ciudadano, Long> ,Rev
 	Optional<Ciudadano> findByDNI(String DNI);
 	boolean existsByDNI(String DNI);
 	 Page<Ciudadano> findAll(Specification<Ciudadano> spec,Pageable page);
+	 
+	 List<Ciudadano> findByEstadoAndContratoEntidadIdOrganismoAndContratoOcupacionIdOcupacion(String estado,long idOrganismo,long idOcupacion);
 
 }
 

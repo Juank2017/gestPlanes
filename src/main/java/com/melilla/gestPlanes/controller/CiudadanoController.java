@@ -141,4 +141,16 @@ public class CiudadanoController {
 		
 		return ResponseEntity.ok(response);
 	}
+	
+	@GetMapping("/contratados/{idOrganismo}/{idOcupacion}")
+	public ResponseEntity<ApiResponse>trabajadoresContratadosPorOrganismoOcupacion(@PathVariable Long idOrganismo,@PathVariable Long idOcupacion){
+ApiResponse response = new ApiResponse();
+		
+		response.getPayload().add(ciudadanoService.trabajadoresContratadosOrganismoOcupacion(idOrganismo, idOcupacion));
+		response.setMensaje("Trabajadores contratados");
+		
+		return ResponseEntity.ok(response);
+	}
+
+	
 }

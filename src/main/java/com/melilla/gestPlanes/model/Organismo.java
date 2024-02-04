@@ -21,6 +21,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import lombok.Data;
@@ -52,7 +53,7 @@ public class Organismo {
 	
 
 	
-	@OneToMany(mappedBy = "organismo",
+	@OneToMany(mappedBy = "organismo" , 
             cascade = CascadeType.ALL)
 	private Set<OrganismoOcupacion> organismoOcupacion = new HashSet<OrganismoOcupacion>();
 	

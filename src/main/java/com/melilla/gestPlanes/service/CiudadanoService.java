@@ -31,4 +31,6 @@ public interface CiudadanoService {
 	
 	List<Ciudadano>modificarEstado(List<ModificaEstadoDTO> trabajadores );
 	
+	int trabajadoresContratadosOrganismoOcupacion(Long idOrganismo,Long idOcupacion);
+	
 }
