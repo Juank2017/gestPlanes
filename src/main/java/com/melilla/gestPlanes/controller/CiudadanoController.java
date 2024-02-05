@@ -35,25 +35,21 @@ import lombok.extern.java.Log;
 @RestController
 @Log
 public class CiudadanoController {
-	
+
 	@Autowired
 	private CiudadanoService ciudadanoService;
-	
+
 	@PostMapping("/ciudadanos")
 	public ResponseEntity<ApiResponse> getCiudadanos(
-	
-			@RequestBody CiudadanoOrdenBusqueda ordenBusqueda
-			) {
-		
-		
+
+			@RequestBody CiudadanoOrdenBusqueda ordenBusqueda) {
+
 		ApiResponse response = new ApiResponse();
 		log.info(ordenBusqueda.toString());
-		
+
 		Sort sort1 = null;
 		List<Order> orders = new ArrayList<>();
-		
-		
-		
+
 //		for (Map.Entry<String, String> o : order.entrySet()) {
 //			String campo = o.getKey();
 //			String direccion = o.getValue();
@@ -68,89 +64,87 @@ public class CiudadanoController {
 //			orders.add(orden);
 //		}
 		sort1 = Sort.by(orders);
-		
-		
+
 		response.setEstado(HttpStatus.OK);
 		Page<Ciudadano> respuesta = ciudadanoService.getTrabajadores(ordenBusqueda);
-		
+
 		response.getPayload().add(respuesta);
-		
+
 		response.setMensaje("Lista de ciudadanos");
-		
+
 		return ResponseEntity.ok(response);
-		
+
 	}
-	
+
 	@GetMapping("/ciudadano/{idCiudadano}")
-	public ResponseEntity<ApiResponse>obtenerCiudadano(@PathVariable Long idCiudadano){
+	public ResponseEntity<ApiResponse> obtenerCiudadano(@PathVariable Long idCiudadano) {
 		ApiResponse response = new ApiResponse();
-		
+
 		response.getPayload().add(ciudadanoService.getCiudadano(idCiudadano));
-		
+
 		return ResponseEntity.ok(response);
 	}
 
 	@PostMapping("/crearCiudadano")
-	public ResponseEntity<ApiResponse>crearCiudadano(@RequestBody Ciudadano ciudadano){
-		
+	public ResponseEntity<ApiResponse> crearCiudadano(@RequestBody Ciudadano ciudadano) {
+
 		ApiResponse response = new ApiResponse();
-		
+
 		response.setEstado(HttpStatus.OK);
 		response.getPayload().add(ciudadanoService.crearCiudadano(ciudadano));
-		
-		
+
 		return ResponseEntity.ok(response);
 	}
-	
+
 	@PostMapping("/crearTrabajador/{idPlan}")
-	public ResponseEntity<ApiResponse>crearTrabajador(@RequestBody CreateTrabajadorDTO trabajador,@PathVariable Long idPlan){
-		
+	public ResponseEntity<ApiResponse> crearTrabajador(@RequestBody CreateTrabajadorDTO trabajador,
+			@PathVariable Long idPlan) {
+
 		log.info(trabajador.toString());
-        
+
 		ApiResponse response = new ApiResponse();
-		
-		if(ciudadanoService.existeTrabajador(trabajador.getDNI())) {
-			response.setMensaje("El trabajador con DNI: "+trabajador.getDNI()+ " ya existe!");
-		}else {
+
+		if (ciudadanoService.existeTrabajador(trabajador.getDNI())) {
+			response.setMensaje("El trabajador con DNI: " + trabajador.getDNI() + " ya existe!");
+		} else {
 			response.getPayload().add(ciudadanoService.crearTrabajador(trabajador));
 			response.setMensaje("Registrado correctamente");
 		}
 		response.setEstado(HttpStatus.OK);
-				
+
 		return ResponseEntity.ok(response);
-		
-		
+
 	}
-	
+
 	@PutMapping("/actualizaTrabajador")
-	public ResponseEntity<ApiResponse>actualizaTrabajador(@RequestBody UpdateTrabajadorDTO2 trabajador){
+	public ResponseEntity<ApiResponse> actualizaTrabajador(@RequestBody UpdateTrabajadorDTO2 trabajador) {
 		ApiResponse response = new ApiResponse();
-		
+
 		response.getPayload().add(ciudadanoService.editaTrabajador(trabajador));
 		response.setMensaje("Trabajador actualizado");
-		
-		return ResponseEntity.ok(response);
-	}
-	
-	@PostMapping("/modificaEstado")
-	public ResponseEntity<ApiResponse>modificaEstadoTrabajador(@RequestBody List<ModificaEstadoDTO> trabajadores){
-		ApiResponse response = new ApiResponse();
-		
-		response.getPayload().add(ciudadanoService.modificarEstado(trabajadores));
-		response.setMensaje("Estado del trabajador actualizado");
-		
-		return ResponseEntity.ok(response);
-	}
-	
-	@GetMapping("/contratados/{idOrganismo}/{idOcupacion}")
-	public ResponseEntity<ApiResponse>trabajadoresContratadosPorOrganismoOcupacion(@PathVariable Long idOrganismo,@PathVariable Long idOcupacion){
-ApiResponse response = new ApiResponse();
-		
-		response.getPayload().add(ciudadanoService.trabajadoresContratadosOrganismoOcupacion(idOrganismo, idOcupacion));
-		response.setMensaje("Trabajadores contratados");
-		
+
 		return ResponseEntity.ok(response);
 	}
 
-	
+	@PostMapping("/modificaEstado")
+	public ResponseEntity<ApiResponse> modificaEstadoTrabajador(@RequestBody List<ModificaEstadoDTO> trabajadores) {
+		ApiResponse response = new ApiResponse();
+
+		response.getPayload().add(ciudadanoService.modificarEstado(trabajadores));
+		response.setMensaje("Estado del trabajador actualizado");
+
+		return ResponseEntity.ok(response);
+	}
+
+	@GetMapping("/vacantes/{idOrganismo}/{idOcupacion}")
+	public ResponseEntity<ApiResponse> trabajadoresContratadosPorOrganismoOcupacion(@PathVariable Long idOrganismo,
+			@PathVariable Long idOcupacion) {
+		ApiResponse response = new ApiResponse();
+
+		response.getPayload().add(ciudadanoService.vacantesOrganismoOcupacion(idOrganismo, idOcupacion));
+		response.setMensaje("Trabajadores contratados");
+
+		return ResponseEntity.ok(response);
+	}
+
 }

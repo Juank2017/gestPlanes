@@ -9,4 +9,6 @@ import com.melilla.gestPlanes.model.OrganismoOcupacion;
 public interface OrganismoOcupacionRepository extends JpaRepository<OrganismoOcupacion, Long> {
 
 	List<OrganismoOcupacion>findAllByOrganismoIdOrganismo(Long idOrganismo);
+	
+	OrganismoOcupacion findByOrganismoIdOrganismoAndOcupacionIdOcupacion(Long idOrganismo,Long idOcupacion);
 }

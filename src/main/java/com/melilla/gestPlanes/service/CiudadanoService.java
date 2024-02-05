@@ -10,6 +10,7 @@ import com.melilla.gestPlanes.DTO.CiudadanoOrdenBusqueda;
 import com.melilla.gestPlanes.DTO.CreateTrabajadorDTO;
 import com.melilla.gestPlanes.DTO.ModificaEstadoDTO;
 import com.melilla.gestPlanes.DTO.UpdateTrabajadorDTO2;
+import com.melilla.gestPlanes.DTO.VacantesResponseDTO;
 import com.melilla.gestPlanes.model.Ciudadano;
 
 public interface CiudadanoService {
@@ -33,4 +34,7 @@ public interface CiudadanoService {
 	
 	int trabajadoresContratadosOrganismoOcupacion(Long idOrganismo,Long idOcupacion);
 	
+	int trabajadoresPrevistosOrganismoOcupacion(Long idOrganismo,Long idOcupacion);
+	
+	VacantesResponseDTO vacantesOrganismoOcupacion(Long idOrganismo,Long idOcupacion);
 }

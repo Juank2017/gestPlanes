@@ -21,6 +21,7 @@ import com.melilla.gestPlanes.DTO.CiudadanoOrdenBusqueda;
 import com.melilla.gestPlanes.DTO.CreateTrabajadorDTO;
 import com.melilla.gestPlanes.DTO.ModificaEstadoDTO;
 import com.melilla.gestPlanes.DTO.UpdateTrabajadorDTO2;
+import com.melilla.gestPlanes.DTO.VacantesResponseDTO;
 import com.melilla.gestPlanes.exceptions.exceptions.CategoriaNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.CiudadanoNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.DestinoNotFoundException;
@@ -32,6 +33,7 @@ import com.melilla.gestPlanes.model.Contrato;
 import com.melilla.gestPlanes.model.Destino;
 import com.melilla.gestPlanes.model.Ocupacion;
 import com.melilla.gestPlanes.model.Organismo;
+import com.melilla.gestPlanes.model.OrganismoOcupacion;
 import com.melilla.gestPlanes.repository.CategoriaRepository;
 import com.melilla.gestPlanes.repository.CiudadanoRepository;
 import com.melilla.gestPlanes.repository.CiudadanoSpecification;
@@ -39,6 +41,7 @@ import com.melilla.gestPlanes.repository.CiudadanoSpecificationBuilder;
 import com.melilla.gestPlanes.repository.ContratoRepository;
 import com.melilla.gestPlanes.repository.DestinoRepository;
 import com.melilla.gestPlanes.repository.OcupacionRepository;
+import com.melilla.gestPlanes.repository.OrganismoOcupacionRepository;
 import com.melilla.gestPlanes.repository.OrganismoRepository;
 import com.melilla.gestPlanes.repository.PlanRepository;
 import com.melilla.gestPlanes.service.CiudadanoService;
@@ -72,6 +75,9 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 	
 	@Autowired
 	private OcupacionRepository ocupacionRepository;
+	
+	@Autowired
+	private OrganismoOcupacionRepository organismoOcupacionRepository;
 
 	@Override
 	public List<Ciudadano> getCiudadanos(Long idPlan) {
@@ -337,6 +343,27 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 	public int trabajadoresContratadosOrganismoOcupacion(Long idOrganismo, Long idOcupacion) {
 		List<Ciudadano>trabajadores = ciudadanoRepository.findByEstadoAndContratoEntidadIdOrganismoAndContratoOcupacionIdOcupacion("CONTRATADO/A", idOrganismo, idOcupacion);
 		return (trabajadores != null)?trabajadores.size():0;
+	}
+
+	@Override
+	public int trabajadoresPrevistosOrganismoOcupacion(Long idOrganismo, Long idOcupacion) {
+		OrganismoOcupacion orgOcu = organismoOcupacionRepository.findByOrganismoIdOrganismoAndOcupacionIdOcupacion(idOrganismo, idOcupacion);
+		return (orgOcu != null)?orgOcu.getNTrabajadores():0;
+	}
+
+	@Override
+	public VacantesResponseDTO vacantesOrganismoOcupacion(Long idOrganismo, Long idOcupacion) {
+		int contratados = trabajadoresContratadosOrganismoOcupacion(idOrganismo, idOcupacion);
+		OrganismoOcupacion orgOcu = organismoOcupacionRepository.findByOrganismoIdOrganismoAndOcupacionIdOcupacion(idOrganismo, idOcupacion);
+		
+		VacantesResponseDTO vacantes = new VacantesResponseDTO();
+		
+		vacantes.setOrganismo((orgOcu != null)?orgOcu.getOrganismo().getNombreCortoOrganismo():"");
+		vacantes.setOcupacion((orgOcu != null)?orgOcu.getOcupacion().getOcupacion():ocupacionRepository.findById(idOcupacion).orElseThrow(()->new OcupacionNotFoundException(idOcupacion)).getOcupacion());
+		vacantes.setContratados(contratados);
+		vacantes.setPrevistos((orgOcu != null)?orgOcu.getNTrabajadores():0);
+		vacantes.setVacantes((orgOcu != null)?orgOcu.getNTrabajadores()-contratados:0-contratados);
+		return vacantes;
 	}
 
 }
