@@ -101,6 +101,7 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 				.sexo(trabajador.getSexo()).seguridadSocial(trabajador.getSeguridadSocial())
 				.idPlan(planService.getPlanActivo()).fechaRegistro(trabajador.getFechaRegistro())
 				.fechaNacimiento(trabajador.getFechaNacimiento()).estado(trabajador.getEstado())
+				.numeroOrdenSepe(trabajador.getNumeroOrdenSepe())
 
 				.build());
 		if(trabajador.getGc() != null) {
@@ -207,6 +208,7 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 		ciudadano.setSeguridadSocial(trabajador.getSeguridadSocial());
 		ciudadano.setTelefono(trabajador.getTelefono());
 		ciudadano.setSexo(trabajador.getSexo());
+		ciudadano.setNumeroOrdenSepe(trabajador.getNumeroOrdenSepe());
 		
 		if(trabajador.getGc() != null) {
 			Contrato contrato = ciudadano.getContrato();

@@ -74,6 +74,8 @@ public class Ciudadano {
 	
 	private String estado;
 	
+	private String numeroOrdenSepe;
+	
 	@Email
 	private String email;
 	

@@ -19,6 +19,7 @@ public class CreateTrabajadorDTO {
 	LocalDate fechaNacimiento;
 	String ccc;
 	String estado;
+	String numeroOrdenSepe;
 	String email;
 	String telefono;
 	LocalDate fechaRegistro;
