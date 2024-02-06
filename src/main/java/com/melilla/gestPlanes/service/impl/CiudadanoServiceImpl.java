@@ -373,10 +373,8 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 	}
 
 	@Override
-	public int trabajadoresContratadosOrganismoOcupacion(Long idOrganismo, Long idOcupacion) {
-		List<String> estados = new ArrayList<String>();
-		estados.add("CONTRATADO/A");
-		estados.add("FINALIZADO/A");
+	public int trabajadoresContratadosOrganismoOcupacion(Long idOrganismo, Long idOcupacion,List<String> estados) {
+
 		List<Ciudadano>trabajadores = ciudadanoRepository.findByContratoEntidadIdOrganismoAndContratoOcupacionIdOcupacionAndEstadoIn(idOrganismo, idOcupacion,estados);
 		return (trabajadores != null)?trabajadores.size():0;
 	}
@@ -389,8 +387,14 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 
 	@Override
 	public VacantesResponseDTO vacantesOrganismoOcupacion(Long idOrganismo, Long idOcupacion) {
-		int contratados = trabajadoresContratadosOrganismoOcupacion(idOrganismo, idOcupacion);
-		//int previstos = Integer.parseInt(organismoOcupacionRepository.countByOrganismoIdOrganismoAndOcupacionIdOcupacion(idOrganismo, idOcupacion).toString());
+		List<String> estados = new ArrayList<String>();
+		estados.add("CONTRATADO/A");
+		estados.add("FINALIZADO/A");
+		int contratados = trabajadoresContratadosOrganismoOcupacion(idOrganismo, idOcupacion,estados);
+		estados = new ArrayList<String>();
+		estados.add("DESPEDIDO/A");
+		estados.add("RENUNCIA");
+		int parciales = trabajadoresContratadosOrganismoOcupacion(idOrganismo, idOcupacion,estados);
 		List<OrganismoOcupacion> orgOcu = organismoOcupacionRepository.findByOrganismoIdOrganismoAndOcupacionIdOcupacion(idOrganismo, idOcupacion);
 		int previstos = 0;
 		for (OrganismoOcupacion organismoOcupacion : orgOcu) {
@@ -405,8 +409,9 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 		vacantes.setOrganismo(org.getNombreCortoOrganismo());
 		vacantes.setOcupacion(ocu.getOcupacion());
 		vacantes.setContratados(contratados);
+		vacantes.setParciales(parciales);
 		vacantes.setPrevistos(previstos);
-		vacantes.setVacantes(previstos-contratados);
+		vacantes.setVacantes(previstos-(contratados+parciales));
 		return vacantes;
 	}
 

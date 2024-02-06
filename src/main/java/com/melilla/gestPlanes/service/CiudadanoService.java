@@ -32,7 +32,7 @@ public interface CiudadanoService {
 	
 	List<Ciudadano>modificarEstado(List<ModificaEstadoDTO> trabajadores );
 	
-	int trabajadoresContratadosOrganismoOcupacion(Long idOrganismo,Long idOcupacion);
+	int trabajadoresContratadosOrganismoOcupacion(Long idOrganismo,Long idOcupacion,List<String>estados);
 	
 	int trabajadoresPrevistosOrganismoOcupacion(Long idOrganismo,Long idOcupacion);
 	

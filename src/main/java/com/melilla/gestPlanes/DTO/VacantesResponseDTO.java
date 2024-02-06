@@ -9,6 +9,7 @@ public class VacantesResponseDTO {
 	private String ocupacion;
 	private int previstos;
 	private int contratados;
+	private int parciales;
 	private int vacantes;
 
 }
