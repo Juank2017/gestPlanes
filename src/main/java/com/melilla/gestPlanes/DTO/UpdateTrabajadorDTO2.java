@@ -37,5 +37,7 @@ public class UpdateTrabajadorDTO2 {
 	String prorratas;
 	String residencia;
 	String total;
+	boolean bajaLaboral;
+	boolean bajaMaternal;
 
 }

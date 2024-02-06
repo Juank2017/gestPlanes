@@ -10,5 +10,7 @@ public interface OrganismoOcupacionRepository extends JpaRepository<OrganismoOcu
 
 	List<OrganismoOcupacion>findAllByOrganismoIdOrganismo(Long idOrganismo);
 	
-	OrganismoOcupacion findByOrganismoIdOrganismoAndOcupacionIdOcupacion(Long idOrganismo,Long idOcupacion);
+	List<OrganismoOcupacion> findByOrganismoIdOrganismoAndOcupacionIdOcupacion(Long idOrganismo,Long idOcupacion);
+	
+	Long countByOrganismoIdOrganismoAndOcupacionIdOcupacion(Long idOrganismo,Long idOcupacion);
 }

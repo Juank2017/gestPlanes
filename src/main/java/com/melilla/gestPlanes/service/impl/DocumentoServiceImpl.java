@@ -50,6 +50,7 @@ import com.melilla.gestPlanes.model.Documento;
 import com.melilla.gestPlanes.model.Ocupacion;
 import com.melilla.gestPlanes.model.Presentacion;
 import com.melilla.gestPlanes.model.TipoDocumento;
+import com.melilla.gestPlanes.repository.CiudadanoRepository;
 import com.melilla.gestPlanes.repository.DocumentoRepository;
 import com.melilla.gestPlanes.repository.DocumentoSpecificationBuilder;
 import com.melilla.gestPlanes.repository.PresentacionRepository;
@@ -69,6 +70,9 @@ public class DocumentoServiceImpl implements DocumentoService {
 
 	@Autowired
 	private CiudadanoService ciudadanoService;
+	
+	@Autowired
+	private CiudadanoRepository ciudadanoRepository;
 
 	@Autowired
 	private DocumentoRepository documentoRepository;
@@ -218,7 +222,7 @@ public class DocumentoServiceImpl implements DocumentoService {
 			for (GeneraContratoDTO generaContratoDTO : trabajadores) {
 
 				// Carga el trabajador
-				Ciudadano trabajador = ciudadanoService.getTrabajadorPorDNI(generaContratoDTO.getIdent())
+				Ciudadano trabajador = ciudadanoRepository.findById(generaContratoDTO.getId())
 						.orElseThrow(() -> new CiudadanoNotFoundException(generaContratoDTO.getId()));
 				if (trabajador.getContrato() == null)
 					continue;
@@ -258,11 +262,17 @@ public class DocumentoServiceImpl implements DocumentoService {
 
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/uuuu", new Locale("es", "ES"));
 
-				String fechaNacimiento = trabajador.getFechaNacimiento()
-						.format(DateTimeFormatter.ofPattern("dd/MM/uuu", new Locale("es", "ES")));
+				String fechaNacimiento= null;
+				if(trabajador.getFechaNacimiento() != null) {
+					 fechaNacimiento = trabajador.getFechaNacimiento()
+							.format(DateTimeFormatter.ofPattern("dd/MM/uuu", new Locale("es", "ES")));
+				}else {
+					throw new DocumentCreationException("La fecha de nacimiento no puede ser nula");
+				}
+
 				String mesFechaFirma="00/00/0000";
 				String fechaInicio = "00/00/0000";
-				String fechaFinal = "00/00/000";
+				String fechaFinal = "00/00/0000";
 				if (contrato.getFechaInicio() != null && contrato.getFechaFinal() != null) {
 					fechaInicio = contrato.getFechaInicio()
 							.format(DateTimeFormatter.ofPattern("dd/MM/uuu", new Locale("es", "ES")));
@@ -271,6 +281,8 @@ public class DocumentoServiceImpl implements DocumentoService {
 					 mesFechaFirma = contrato.getFechaInicio()
 							.format(DateTimeFormatter.ofPattern("MMMM", new Locale("es", "ES")));
 
+				}else {
+					throw new DocumentCreationException("Fecha alta o fecha baja incorrectas");
 				}
 
 				formulario.getField("AA0101-DNI").setValue("S2916002E");
@@ -512,7 +524,7 @@ public class DocumentoServiceImpl implements DocumentoService {
 						.orElseThrow(() -> new PresentacionNotFoundException());
 
 				// Carga el trabajador
-				Ciudadano trabajador = ciudadanoService.getTrabajadorPorDNI(generaPresentacionDTO.getIdent())
+				Ciudadano trabajador = ciudadanoRepository.findById(generaPresentacionDTO.getId())
 						.orElseThrow(() -> new CiudadanoNotFoundException(generaPresentacionDTO.getId()));
 				if (trabajador.getContrato() == null)
 					continue;

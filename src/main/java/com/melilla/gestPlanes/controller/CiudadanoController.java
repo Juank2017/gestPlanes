@@ -104,12 +104,14 @@ public class CiudadanoController {
 
 		ApiResponse response = new ApiResponse();
 
-		if (ciudadanoService.existeTrabajador(trabajador.getDNI())) {
-			response.setMensaje("El trabajador con DNI: " + trabajador.getDNI() + " ya existe!");
-		} else {
-			response.getPayload().add(ciudadanoService.crearTrabajador(trabajador));
-			response.setMensaje("Registrado correctamente");
-		}
+//		if (ciudadanoService.existeTrabajador(trabajador.getDNI())) {
+//			response.setMensaje("El trabajador con DNI: " + trabajador.getDNI() + " ya existe!");
+//		} else {
+//			response.getPayload().add(ciudadanoService.crearTrabajador(trabajador));
+//			response.setMensaje("Registrado correctamente");
+//		}
+		response.getPayload().add(ciudadanoService.crearTrabajador(trabajador));
+		response.setMensaje("Registrado correctamente");
 		response.setEstado(HttpStatus.OK);
 
 		return ResponseEntity.ok(response);
