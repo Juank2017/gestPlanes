@@ -8,6 +8,7 @@ import java.util.Optional;
 import java.lang.Math;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -45,6 +46,7 @@ import com.melilla.gestPlanes.repository.OrganismoOcupacionRepository;
 import com.melilla.gestPlanes.repository.OrganismoRepository;
 import com.melilla.gestPlanes.repository.PlanRepository;
 import com.melilla.gestPlanes.service.CiudadanoService;
+import com.melilla.gestPlanes.service.DocumentoService;
 import com.melilla.gestPlanes.service.PlanService;
 
 import lombok.RequiredArgsConstructor;
@@ -79,6 +81,10 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 	@Autowired
 	private OrganismoOcupacionRepository organismoOcupacionRepository;
 
+	@Value("${file.upload-dir}")
+	private String uploadDir;
+	
+	
 	@Override
 	public List<Ciudadano> getCiudadanos(Long idPlan) {
 
@@ -218,6 +224,16 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 		ciudadano.setNumeroOrdenSepe(trabajador.getNumeroOrdenSepe());
 		ciudadano.setBajaLaboral(trabajador.isBajaLaboral());
 		ciudadano.setBajaMaternal(trabajador.isBajaMaternal());
+		
+//		if(ciudadano.getEstado().contains("CANDIDATO/A")) {
+//			if(!trabajador.getEstado().equals("CANDIDATO/A")) {
+//				if(ciudadano.getContrato() != null) {
+//					
+//				}
+//			}
+//		}
+		
+		
 		
 		if(trabajador.getGc() != null) {
 			Contrato contrato = ciudadano.getContrato();
@@ -414,5 +430,26 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 		vacantes.setVacantes(previstos-(contratados+parciales));
 		return vacantes;
 	}
+
+	@Override
+	public List<VacantesResponseDTO> listadoVacantes() {
+		List<OrganismoOcupacion> previstosPorOrganismoOcupacion = organismoOcupacionRepository.findAllAgrupados();
+		
+		List<VacantesResponseDTO>listado = new ArrayList<VacantesResponseDTO>();
+		
+		
+		
+		for (OrganismoOcupacion organismoOcupacion : previstosPorOrganismoOcupacion) {
+		
+			VacantesResponseDTO vacante = vacantesOrganismoOcupacion(organismoOcupacion.getOrganismo().getIdOrganismo(), organismoOcupacion.getOcupacion().getIdOcupacion());
+			vacante.setId(organismoOcupacion.getId());
+			listado.add(vacante);
+			
+		}
+		
+		return listado;
+	}
+	
+	
 
 }

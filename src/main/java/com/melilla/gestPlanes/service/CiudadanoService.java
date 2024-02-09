@@ -37,4 +37,6 @@ public interface CiudadanoService {
 	int trabajadoresPrevistosOrganismoOcupacion(Long idOrganismo,Long idOcupacion);
 	
 	VacantesResponseDTO vacantesOrganismoOcupacion(Long idOrganismo,Long idOcupacion);
+	
+	List<VacantesResponseDTO>listadoVacantes();
 }

@@ -60,6 +60,7 @@ import com.melilla.gestPlanes.service.DocumentoService;
 import com.melilla.gestPlanes.service.PlanService;
 
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 
@@ -111,7 +112,24 @@ public class DocumentoServiceImpl implements DocumentoService {
 		// Obtiene el ciudadano
 		Ciudadano ciudadano = ciudadanoService.getCiudadano(idCiudadano);
 		estado = ciudadano.getEstado().replace("/", "_") + "\\";
+		
+		switch (estado) {
+		case "FINALIZADO_A\\" : 
+			log.warning("case: "+estado);
+			estado = "CONTRATADO_A\\";
+			break;
+		case "DESPEDIDO_A\\": 
+			
+			estado= "CONTRATADO_A\\";
+			break;
 
+		case "RENUNCIA\\": 
+			
+			estado= "CONTRATADO_A\\";
+			break;
+		
+		}
+		log.warning(estado);
 		if (ciudadano.getContrato() != null) {
 			// ocupacion del ciudadano
 			Ocupacion ocupacionCiudadano = ciudadano.getContrato().getOcupacion();

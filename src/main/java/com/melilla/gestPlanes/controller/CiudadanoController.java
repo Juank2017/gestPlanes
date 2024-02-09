@@ -144,7 +144,17 @@ public class CiudadanoController {
 		ApiResponse response = new ApiResponse();
 
 		response.getPayload().add(ciudadanoService.vacantesOrganismoOcupacion(idOrganismo, idOcupacion));
-		response.setMensaje("Trabajadores contratados");
+		response.setMensaje("Vacantes");
+
+		return ResponseEntity.ok(response);
+	}
+	
+	@GetMapping("/listadoVacantes")
+	public ResponseEntity<ApiResponse>listadoVacantes(){
+		ApiResponse response = new ApiResponse();
+
+		response.getPayload().addAll(ciudadanoService.listadoVacantes());
+		response.setMensaje("Listado de vacantes");
 
 		return ResponseEntity.ok(response);
 	}
