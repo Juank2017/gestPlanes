@@ -108,6 +108,7 @@ public class DocumentoServiceImpl implements DocumentoService {
 		String ocupacion;
 		String nombreCarpeta;
 		String estado;
+		String apellido="_";
 
 		// Obtiene el ciudadano
 		Ciudadano ciudadano = ciudadanoService.getCiudadano(idCiudadano);
@@ -134,12 +135,14 @@ public class DocumentoServiceImpl implements DocumentoService {
 			// ocupacion del ciudadano
 			Ocupacion ocupacionCiudadano = ciudadano.getContrato().getOcupacion();
 			ocupacion = ocupacionCiudadano.getOcupacion().replace(" ", "_") + "\\";
+			//obtiene el apellido y sustituye los espacios por _
+			apellido = ciudadano.getApellido1().replace(" ","_");
 			// forma el nombre de la capeta con apellidos_nombre
-			nombreCarpeta = estado + ocupacion + ciudadano.getApellido1() + "_" + ciudadano.getApellido2() + "_"
+			nombreCarpeta = estado + ocupacion + apellido  + "_" + ciudadano.getApellido2() + "_"
 					+ ciudadano.getNombre() + "\\" + tipo;
 		} else {
 
-			nombreCarpeta = estado + ciudadano.getApellido1() + "_" + ciudadano.getApellido2() + "_"
+			nombreCarpeta = estado + apellido + "_" + ciudadano.getApellido2() + "_"
 					+ ciudadano.getNombre() + "\\" + tipo;
 		}
 
@@ -192,8 +195,11 @@ public class DocumentoServiceImpl implements DocumentoService {
 	public Resource loadDocumentAsResource(Long idCiudadano, String filename, Long idDocumento) {
 		Ciudadano ciudadano = ciudadanoService.getCiudadano(idCiudadano);
 		String estado = null;
+		String apellido="_";
 		Documento doc = documentoRepository.findById(idDocumento)
 				.orElseThrow(() -> new DocumentoNotFoundException(idDocumento));
+		//obtiene el apellido y sustituye los espacios por _
+		apellido = ciudadano.getApellido1().replace(" ","_");
 		estado = ciudadano.getEstado().replace("/", "_") + "\\";
 		Ocupacion ocupacionCiudadano = ciudadano.getContrato().getOcupacion();
 		String ocupacion = ocupacionCiudadano.getOcupacion().replace(" ", "_") + "\\";
