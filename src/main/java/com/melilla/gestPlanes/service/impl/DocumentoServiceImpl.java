@@ -3,11 +3,15 @@ package com.melilla.gestPlanes.service.impl;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.nio.file.CopyOption;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.sql.Time;
+import java.time.Instant;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -89,6 +93,9 @@ public class DocumentoServiceImpl implements DocumentoService {
 
 	@Value("${file.upload-dir}")
 	private String uploadDir;
+	
+	@Value("${file.trashcan-dir}")
+	private String trashcanDir;
 
 	@Value("${file.contrato}")
 	private String plantillaContrato;
@@ -224,7 +231,41 @@ public class DocumentoServiceImpl implements DocumentoService {
 	@Override
 	public void eliminarDocumento(Long idDocumento) {
 		
-		 documentoRepository.deleteById(idDocumento);;
+		String estado = null;
+		String apellido="_";
+		Documento doc = documentoRepository.findById(idDocumento).orElseThrow(()-> new DocumentoNotFoundException(idDocumento));
+		String filename = doc.getNombre();
+		Ciudadano ciudadano = doc.getCiudadano();
+		//obtiene el apellido y sustituye los espacios por _
+				apellido = ciudadano.getApellido1().replace(" ","_");
+				estado = ciudadano.getEstado().replace("/", "_") + "\\";
+				Ocupacion ocupacionCiudadano = ciudadano.getContrato().getOcupacion();
+				String ocupacion = ocupacionCiudadano.getOcupacion().replace(" ", "_") + "\\";
+				String nombreCarpeta = estado + ocupacion + ciudadano.getApellido1() + "_" + ciudadano.getApellido2() + "_"
+						+ ciudadano.getNombre() + "\\" + doc.getTipo() + "\\";
+				try {
+					Path fileStorageLocation = Paths.get(uploadDir + nombreCarpeta + filename).toAbsolutePath().normalize();
+					log.info(fileStorageLocation.toString());
+					log.info(fileStorageLocation.toUri().toString());
+					Resource resource = new UrlResource(fileStorageLocation.toUri());
+
+					if (resource.exists()) {
+						File fichero = resource.getFile();
+						Path fileTrashcanLocartion= Paths.get(trashcanDir + Instant.now().toEpochMilli()+"_" + fichero.getName()).toAbsolutePath().normalize();
+						 Files.move(fileStorageLocation, fileTrashcanLocartion, StandardCopyOption.REPLACE_EXISTING);
+						 documentoRepository.deleteById(idDocumento);
+					} else {
+						throw new MyFileNotFoundException("File not found " + filename);
+					}
+				} catch (MalformedURLException ex) {
+					throw new MyFileNotFoundException("File not found " + filename);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		
+		
+		
 	}
 
 	@Override
@@ -529,7 +570,7 @@ public class DocumentoServiceImpl implements DocumentoService {
 	@Override
 	public List<Documento> obtenerDocumentosTrabajador(Long idCiudadano) {
 
-		return documentoRepository.findAllByCiudadanoIdCiudadano(idCiudadano);
+		return documentoRepository.findAllByCiudadanoIdCiudadanoAndDeletedFalse(idCiudadano);
 	}
 
 	@Override
