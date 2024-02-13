@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.melilla.gestPlanes.model.ApiResponse;
 import com.melilla.gestPlanes.service.DestinoService;
+import com.melilla.gestPlanes.service.TipoDocumentoPlanService;
 import com.melilla.gestPlanes.service.TipoDocumentoService;
 
 import lombok.RequiredArgsConstructor;
@@ -20,7 +21,8 @@ public class TipoDocumentoController {
 	
 	@Autowired
 	private TipoDocumentoService tipoDocumentoService;
-	
+	@Autowired
+	private TipoDocumentoPlanService tipoDocumentoPlanService;
 
 	
 	
@@ -43,6 +45,30 @@ public class TipoDocumentoController {
 		ApiResponse response = new ApiResponse();
 		response.setEstado(HttpStatus.OK);
 		response.getPayload().add(tipoDocumentoService.crearTipoDocumento( tipoDocumento));
+		response.setMensaje("Creado el tipoDocumento "+tipoDocumento);
+		
+		return ResponseEntity.ok(response);
+	}
+	
+	@GetMapping("/existeTipoDocPlan/{tipoDocumento}")
+	ResponseEntity<ApiResponse>existeTipoDocumentoPlan(@PathVariable String tipoDocumento){
+			
+		
+		ApiResponse response = new ApiResponse();
+		response.setEstado(HttpStatus.OK);
+		boolean resultado =  tipoDocumentoPlanService.existeTipoDocumento(tipoDocumento );
+		response.getPayload().add(resultado);
+		String mensaje = (resultado)?"El tipoDocumento "+tipoDocumento+" ya existe.":"El tipoDocumento no existe"; 
+		response.setMensaje(mensaje);
+		return ResponseEntity.ok(response);
+	}
+	
+	@PostMapping("/crearTipoDocPlan/{tipoDocumento}")
+	ResponseEntity<ApiResponse>crearTipoDocumentoPlan(@PathVariable String tipoDocumento){
+
+		ApiResponse response = new ApiResponse();
+		response.setEstado(HttpStatus.OK);
+		response.getPayload().add(tipoDocumentoPlanService.crearTipoDocumento( tipoDocumento));
 		response.setMensaje("Creado el tipoDocumento "+tipoDocumento);
 		
 		return ResponseEntity.ok(response);

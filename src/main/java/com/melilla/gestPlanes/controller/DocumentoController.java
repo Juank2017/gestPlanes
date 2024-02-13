@@ -27,8 +27,11 @@ import com.melilla.gestPlanes.DTO.GeneraPresentacionDTO;
 import com.melilla.gestPlanes.exceptions.exceptions.FileStorageException;
 import com.melilla.gestPlanes.model.ApiResponse;
 import com.melilla.gestPlanes.model.Documento;
+import com.melilla.gestPlanes.model.DocumentoPlan;
 import com.melilla.gestPlanes.model.DocumentoResponse;
 import com.melilla.gestPlanes.service.DocumentoService;
+import com.melilla.gestPlanes.service.PlanService;
+import com.melilla.gestPlanes.service.TipoDocumentoPlanService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -42,6 +45,11 @@ public class DocumentoController {
 
 	@Autowired
 	private DocumentoService documentoService;
+	
+	
+	
+	@Autowired
+	private PlanService planService;
 
 	@PostMapping("/subirDocumento")
 	public ResponseEntity<ApiResponse> subirDocumento(@RequestPart MultipartFile file, @RequestPart String tipo,
@@ -53,6 +61,22 @@ public class DocumentoController {
 
 		response.setEstado(HttpStatus.OK);
 		response.getPayload().add(documentoService.guardarBBDD(doc));
+		response.setMensaje("Lista de ciudadanos");
+
+		return ResponseEntity.ok(response);
+
+	}
+	
+	@PostMapping("/subirDocumentoPlan" )
+	public ResponseEntity<ApiResponse> subirDocumentoPlan(@RequestPart MultipartFile file, @RequestPart String tipo,
+			@RequestPart Long idPlan) {
+
+		ApiResponse response = new ApiResponse();
+
+		
+
+		response.setEstado(HttpStatus.OK);
+		response.getPayload().add(documentoService.guardarDocumentoPlan(planService.getPlanActivo().getIdPlan(), file, tipo));
 		response.setMensaje("Lista de ciudadanos");
 
 		return ResponseEntity.ok(response);
@@ -134,11 +158,45 @@ public class DocumentoController {
 		return ResponseEntity.ok(response);
 	}
 	
+	@PostMapping("/buscaDocumentosPlan")
+	ResponseEntity<ApiResponse> buscaDocumentosPlan(@RequestBody List<DocumentoCriterioBusqueda> criterios) {
+
+//		DocumentoCriterioBusqueda criterios = new DocumentoCriterioBusqueda();
+//
+//		if (tipo != null)
+//			criterios.setTipo(tipo);
+//		if (fechaInicial != null)
+//			criterios.setFechaInicial(fechaInicial);
+//		if (fechaFinal != null)
+//			criterios.setFechaFinal(fechaFinal);
+//		if (dni != null)
+//			criterios.setDni(dni);
+
+		ApiResponse response = new ApiResponse();
+
+		response.setEstado(HttpStatus.OK);
+		response.getPayload().addAll(documentoService.buscarDocumentosPlan(criterios));
+		response.setMensaje("Lista de documentos");
+
+		return ResponseEntity.ok(response);
+	}
+	
 	@GetMapping("/tipoDocumentos")
 	ResponseEntity<ApiResponse>tiposDeDocumentos(){
 		ApiResponse response= new ApiResponse();
 		response.setEstado(HttpStatus.OK);
 		response.getPayload().addAll(documentoService.tipoDocumentos());
+		response.setMensaje("");
+		
+		return ResponseEntity.ok(response);
+		
+	}
+	
+	@GetMapping("/tipoDocumentosPlan")
+	ResponseEntity<ApiResponse>tiposDeDocumentosPlan(){
+		ApiResponse response= new ApiResponse();
+		response.setEstado(HttpStatus.OK);
+		response.getPayload().addAll(documentoService.tipoDocumentosPlan());
 		response.setMensaje("");
 		
 		return ResponseEntity.ok(response);

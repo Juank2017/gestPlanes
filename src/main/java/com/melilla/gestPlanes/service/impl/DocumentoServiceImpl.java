@@ -51,13 +51,18 @@ import com.melilla.gestPlanes.exceptions.exceptions.PresentacionNotFoundExceptio
 import com.melilla.gestPlanes.model.Ciudadano;
 import com.melilla.gestPlanes.model.Contrato;
 import com.melilla.gestPlanes.model.Documento;
+import com.melilla.gestPlanes.model.DocumentoPlan;
 import com.melilla.gestPlanes.model.Ocupacion;
 import com.melilla.gestPlanes.model.Presentacion;
 import com.melilla.gestPlanes.model.TipoDocumento;
+import com.melilla.gestPlanes.model.TipoDocumentoPlan;
 import com.melilla.gestPlanes.repository.CiudadanoRepository;
+import com.melilla.gestPlanes.repository.DocumentoPlanRepository;
+import com.melilla.gestPlanes.repository.DocumentoPlanSpecificationBuilder;
 import com.melilla.gestPlanes.repository.DocumentoRepository;
 import com.melilla.gestPlanes.repository.DocumentoSpecificationBuilder;
 import com.melilla.gestPlanes.repository.PresentacionRepository;
+import com.melilla.gestPlanes.repository.TipoDocumentoPlanRepository;
 import com.melilla.gestPlanes.repository.TipoDocumentoRepository;
 import com.melilla.gestPlanes.service.CiudadanoService;
 import com.melilla.gestPlanes.service.DocumentoService;
@@ -81,9 +86,15 @@ public class DocumentoServiceImpl implements DocumentoService {
 
 	@Autowired
 	private DocumentoRepository documentoRepository;
+	
+	@Autowired
+	private DocumentoPlanRepository documentoPlanRepository;
 
 	@Autowired
 	private TipoDocumentoRepository tipoDocumentoRepository;
+	
+	@Autowired
+	private TipoDocumentoPlanRepository tipoDocumentoPlanRepository;
 
 	@Autowired
 	private PresentacionRepository presentacionRepository;
@@ -198,6 +209,95 @@ public class DocumentoServiceImpl implements DocumentoService {
 
 	}
 
+	@Override
+	public DocumentoPlan guardarDocumentoPlan(Long idPlan, MultipartFile file, String tipo) {
+
+		//String ocupacion;
+		String nombreCarpeta= "PLAN";
+		//String estado;
+		//String apellido="_";
+
+		// Obtiene el ciudadano
+		//Ciudadano ciudadano = ciudadanoService.getCiudadano(idCiudadano);
+		//estado = ciudadano.getEstado().replace("/", "_") + "\\";
+		
+//		switch (estado) {
+//		case "FINALIZADO_A\\" : 
+//			log.warning("case: "+estado);
+//			estado = "CONTRATADO_A\\";
+//			break;
+//		case "DESPEDIDO_A\\": 
+//			
+//			estado= "CONTRATADO_A\\";
+//			break;
+//
+//		case "RENUNCIA\\": 
+//			
+//			estado= "CONTRATADO_A\\";
+//			break;
+//		
+//		}
+//		log.warning(estado);
+//		if (ciudadano.getContrato() != null) {
+//			// ocupacion del ciudadano
+//			Ocupacion ocupacionCiudadano = ciudadano.getContrato().getOcupacion();
+//			ocupacion = ocupacionCiudadano.getOcupacion().replace(" ", "_") + "\\";
+//			//obtiene el apellido y sustituye los espacios por _
+//			apellido = ciudadano.getApellido1().replace(" ","_");
+//			// forma el nombre de la capeta con apellidos_nombre
+//			nombreCarpeta = estado + ocupacion + apellido  + "_" + ciudadano.getApellido2() + "_"
+//					+ ciudadano.getNombre() + "\\" + tipo;
+//		} else {
+//
+//			nombreCarpeta = estado + apellido + "_" + ciudadano.getApellido2() + "_"
+//					+ ciudadano.getNombre() + "\\" + tipo;
+//		}
+
+		// obtiene el path absoluto debe ser S:\PLANES DE
+		// EMPLEO\ocupacion\apellidos_nombre
+		nombreCarpeta= nombreCarpeta+"\\" + tipo;
+		Path fileStorageLocation = Paths.get(uploadDir + nombreCarpeta).toAbsolutePath().normalize();
+		log.info(fileStorageLocation.toString());
+		// Intenta crear el directorio si no existe.
+		try {
+			Files.createDirectories(fileStorageLocation);
+		} catch (Exception e) {
+			throw new FileStorageException("No se ha podido crear el directorio: " + fileStorageLocation);
+		}
+
+		// nombre del fichero
+		String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+		//fileName = tipo + "_" + fileName;
+		try {
+			// Check if the file's name contains invalid characters
+			if (fileName.contains("..")) {
+				throw new FileStorageException(
+						"El nombre de archivo tiene una secuencia de carácteres no válida " + fileName);
+			}
+			// Copy file to the target location (Replacing existing file with the same name)
+			Path targetLocation = fileStorageLocation.resolve(fileName);
+			Files.copy(file.getInputStream(), targetLocation);
+
+			String fileDownladUri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/descargaDocumento/")
+					.path(fileName).toUriString();
+
+			DocumentoPlan documento = new DocumentoPlan();
+
+			
+			documento.setNombre(fileName);
+			documento.setRuta(fileDownladUri);
+			documento.setIdPlan(planService.getPlanActivo());
+			documento.setTipo(tipo);
+			 
+			return documentoPlanRepository.save(documento);
+		}catch (FileAlreadyExistsException e) {
+			throw new FileStorageException("El archivo "+ fileName +" ya existe");
+		}
+		catch (IOException ex) {
+			throw new FileStorageException("No se pudo subir el documento " + fileName + ". Intentelo de nuevo!");
+		}
+
+	}
 	@Override
 	public Resource loadDocumentAsResource(Long idCiudadano, String filename, Long idDocumento) {
 		Ciudadano ciudadano = ciudadanoService.getCiudadano(idCiudadano);
@@ -560,11 +660,46 @@ public class DocumentoServiceImpl implements DocumentoService {
 
 		return response;
 	}
+	@Override
+	public List<DocumentoPlan> buscarDocumentosPlan(List<DocumentoCriterioBusqueda> criterios) {
+
+		//List<DocumentoPlan> response = new ArrayList<DocumentoPlan>();
+
+		DocumentoPlanSpecificationBuilder consulta = new DocumentoPlanSpecificationBuilder(criterios, planService);
+
+		List<DocumentoPlan> documentos = documentoPlanRepository.findAll(consulta.build());
+
+//		for (Documento documento : documentos) {
+//			DocumentoPlan documentoPlan = new DocumentoPlan();
+//		//	GeneraContratoResponseDTO generaContratoResponseDTO = new GeneraContratoResponseDTO();
+//			if (documento.getCiudadano() != null) {
+//				generaContratoResponseDTO.setIdCiudadano(documento.getCiudadano().getIdCiudadano());
+//
+//				generaContratoResponseDTO.setNombre(documento.getCiudadano().getNombre());
+//				generaContratoResponseDTO.setApellido1(documento.getCiudadano().getApellido1());
+//				generaContratoResponseDTO.setApellido2(documento.getCiudadano().getApellido2());
+//				generaContratoResponseDTO.setDNI(documento.getCiudadano().getDNI());
+//			}
+//
+//			generaContratoResponseDTO.setDocumento(documento);
+//
+//			response.add(generaContratoResponseDTO);
+//
+//		}
+
+		return documentos;
+	}
 
 	@Override
 	public List<TipoDocumento> tipoDocumentos() {
 
 		return tipoDocumentoRepository.findAll(Sort.by(Sort.Direction.ASC, "tipo"));
+	}
+	
+	@Override
+	public List<TipoDocumentoPlan> tipoDocumentosPlan() {
+
+		return tipoDocumentoPlanRepository.findAll(Sort.by(Sort.Direction.ASC, "tipo"));
 	}
 
 	@Override

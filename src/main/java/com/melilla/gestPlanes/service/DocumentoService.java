@@ -12,7 +12,9 @@ import com.melilla.gestPlanes.DTO.GeneraContratoDTO;
 import com.melilla.gestPlanes.DTO.GeneraContratoResponseDTO;
 import com.melilla.gestPlanes.DTO.GeneraPresentacionDTO;
 import com.melilla.gestPlanes.model.Documento;
+import com.melilla.gestPlanes.model.DocumentoPlan;
 import com.melilla.gestPlanes.model.TipoDocumento;
+import com.melilla.gestPlanes.model.TipoDocumentoPlan;
 
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -20,6 +22,8 @@ public interface DocumentoService {
 	
 	
 	public Documento guardarDocumento(Long idCiudadano,MultipartFile file,String tipo);
+	
+	public DocumentoPlan guardarDocumentoPlan(Long idPlan,MultipartFile file,String tipo);
 	
 	public Resource loadDocumentAsResource(Long idCiudadano,String filename,Long idDocumento);
 	
@@ -36,8 +40,10 @@ public interface DocumentoService {
 	void downloadDocumentsAsZipFile(HttpServletResponse response,List<DocumentoAZip> docs);
 
 	List<GeneraContratoResponseDTO> buscarDocumentos(List<DocumentoCriterioBusqueda> criterios);
+	List<DocumentoPlan> buscarDocumentosPlan(List<DocumentoCriterioBusqueda> criterios);
 	
 	List<TipoDocumento> tipoDocumentos();
+	List<TipoDocumentoPlan> tipoDocumentosPlan();
 	
 	List<Documento>obtenerDocumentosTrabajador(Long idCiudadano);
 }
