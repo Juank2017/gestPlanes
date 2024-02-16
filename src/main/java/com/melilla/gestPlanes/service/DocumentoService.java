@@ -26,8 +26,10 @@ public interface DocumentoService {
 	public DocumentoPlan guardarDocumentoPlan(Long idPlan,MultipartFile file,String tipo);
 	
 	public Resource loadDocumentAsResource(Long idCiudadano,String filename,Long idDocumento);
+	public Resource loadDocumentPlanAsResource( String filename, Long idDocumento);
 	
 	public void eliminarDocumento(Long idDocumento);
+	public void eliminarDocumentoPlan(Long idDocumento);
 	
 	public Documento guardarBBDD(Documento documento);
 	
@@ -38,6 +40,7 @@ public interface DocumentoService {
 	Documento obtenerDocumentoPorNombreIdCiudadano(String fileName,Long idCiduadano);
 	
 	void downloadDocumentsAsZipFile(HttpServletResponse response,List<DocumentoAZip> docs);
+	public void downloadDocumentsPlanAsZipFile(HttpServletResponse response, List<DocumentoAZip> docs);
 
 	List<GeneraContratoResponseDTO> buscarDocumentos(List<DocumentoCriterioBusqueda> criterios);
 	List<DocumentoPlan> buscarDocumentosPlan(List<DocumentoCriterioBusqueda> criterios);

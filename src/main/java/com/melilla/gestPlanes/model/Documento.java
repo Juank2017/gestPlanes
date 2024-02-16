@@ -26,7 +26,7 @@ import lombok.Data;
 
 @Entity
 @Data
-//@Audited
+@Audited
 @SQLDelete(sql = "UPDATE documento SET deleted=true, deleted_at= NOW() WHERE id_documento=?")
 @EntityListeners(AuditingEntityListener.class)
 public class Documento {

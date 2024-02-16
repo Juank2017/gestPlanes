@@ -44,7 +44,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 @Entity
-//@Audited
+@Audited
 @SQLDelete(sql = "UPDATE ciudadano SET deleted=true, deleted_at= NOW() WHERE id=?")
 @EntityListeners(AuditingEntityListener.class)
 public class Ciudadano {
@@ -96,6 +96,7 @@ public class Ciudadano {
 //	@ManyToMany(mappedBy = "interesados")
 //	private List<Expediente> expedientes;
 	
+	@JsonManagedReference
 	@ManyToOne
 	@JoinColumn(name="idEquipo")
 	@NotAudited

@@ -39,5 +39,6 @@ public class UpdateTrabajadorDTO2 {
 	String total;
 	boolean bajaLaboral;
 	boolean bajaMaternal;
+	boolean esJefeEquipo;
 
 }

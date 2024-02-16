@@ -116,8 +116,13 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 				.numeroOrdenSepe(trabajador.getNumeroOrdenSepe())
 				.bajaLaboral(false)
 				.bajaMaternal(false)
+				.esJefeEquipo(
+						(trabajador.getOcu()!=null)
+						?((trabajador.getOcu() == 983)?true:false)
+						:false)
 				.build());
-		if(trabajador.getGc() != null) {
+
+			
 			Contrato nuevoContrato = contratoRepository
 					.save(Contrato.builder().base(trabajador.getBase()).prorratas(trabajador.getProrratas())
 							.residencia(trabajador.getResidencia()).total(trabajador.getTotal())
@@ -139,7 +144,7 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 							.porcentajeHoras("63")
 							.gc(trabajador.getGc().toString())
 							.ciudadano(nuevoCiudadano).build());
-		}
+		
 
 		// log.info(nuevoContrato.toString());
 
@@ -224,7 +229,7 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 		ciudadano.setNumeroOrdenSepe(trabajador.getNumeroOrdenSepe());
 		ciudadano.setBajaLaboral(trabajador.isBajaLaboral());
 		ciudadano.setBajaMaternal(trabajador.isBajaMaternal());
-		
+		ciudadano.setEsJefeEquipo(trabajador.isEsJefeEquipo());
 //		if(ciudadano.getEstado().contains("CANDIDATO/A")) {
 //			if(!trabajador.getEstado().equals("CANDIDATO/A")) {
 //				if(ciudadano.getContrato() != null) {

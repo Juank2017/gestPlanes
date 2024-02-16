@@ -6,6 +6,7 @@ import java.net.MalformedURLException;
 import java.nio.file.CopyOption;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
+import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
@@ -212,46 +213,9 @@ public class DocumentoServiceImpl implements DocumentoService {
 	@Override
 	public DocumentoPlan guardarDocumentoPlan(Long idPlan, MultipartFile file, String tipo) {
 
-		//String ocupacion;
-		String nombreCarpeta= "PLAN";
-		//String estado;
-		//String apellido="_";
-
-		// Obtiene el ciudadano
-		//Ciudadano ciudadano = ciudadanoService.getCiudadano(idCiudadano);
-		//estado = ciudadano.getEstado().replace("/", "_") + "\\";
 		
-//		switch (estado) {
-//		case "FINALIZADO_A\\" : 
-//			log.warning("case: "+estado);
-//			estado = "CONTRATADO_A\\";
-//			break;
-//		case "DESPEDIDO_A\\": 
-//			
-//			estado= "CONTRATADO_A\\";
-//			break;
-//
-//		case "RENUNCIA\\": 
-//			
-//			estado= "CONTRATADO_A\\";
-//			break;
-//		
-//		}
-//		log.warning(estado);
-//		if (ciudadano.getContrato() != null) {
-//			// ocupacion del ciudadano
-//			Ocupacion ocupacionCiudadano = ciudadano.getContrato().getOcupacion();
-//			ocupacion = ocupacionCiudadano.getOcupacion().replace(" ", "_") + "\\";
-//			//obtiene el apellido y sustituye los espacios por _
-//			apellido = ciudadano.getApellido1().replace(" ","_");
-//			// forma el nombre de la capeta con apellidos_nombre
-//			nombreCarpeta = estado + ocupacion + apellido  + "_" + ciudadano.getApellido2() + "_"
-//					+ ciudadano.getNombre() + "\\" + tipo;
-//		} else {
-//
-//			nombreCarpeta = estado + apellido + "_" + ciudadano.getApellido2() + "_"
-//					+ ciudadano.getNombre() + "\\" + tipo;
-//		}
+		String nombreCarpeta= "PLAN";
+
 
 		// obtiene el path absoluto debe ser S:\PLANES DE
 		// EMPLEO\ocupacion\apellidos_nombre
@@ -278,7 +242,7 @@ public class DocumentoServiceImpl implements DocumentoService {
 			Path targetLocation = fileStorageLocation.resolve(fileName);
 			Files.copy(file.getInputStream(), targetLocation);
 
-			String fileDownladUri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/descargaDocumento/")
+			String fileDownladUri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/descargaDocumentoPlan/")
 					.path(fileName).toUriString();
 
 			DocumentoPlan documento = new DocumentoPlan();
@@ -327,6 +291,30 @@ public class DocumentoServiceImpl implements DocumentoService {
 			throw new MyFileNotFoundException("File not found " + filename);
 		}
 	}
+	
+	
+	@Override
+	public Resource loadDocumentPlanAsResource( String filename, Long idDocumento) {
+		
+		DocumentoPlan doc = documentoPlanRepository.findById(idDocumento)
+				.orElseThrow(() -> new DocumentoNotFoundException(idDocumento));
+		
+		String nombreCarpeta ="PLAN\\" + doc.getTipo() + "\\";
+		try {
+			Path fileStorageLocation = Paths.get(uploadDir + nombreCarpeta + filename).toAbsolutePath().normalize();
+			log.info(fileStorageLocation.toString());
+			log.info(fileStorageLocation.toUri().toString());
+			Resource resource = new UrlResource(fileStorageLocation.toUri());
+
+			if (resource.exists()) {
+				return resource;
+			} else {
+				throw new MyFileNotFoundException("File not found " + filename);
+			}
+		} catch (MalformedURLException ex) {
+			throw new MyFileNotFoundException("File not found " + filename);
+		}
+	}
 
 	@Override
 	public void eliminarDocumento(Long idDocumento) {
@@ -354,6 +342,40 @@ public class DocumentoServiceImpl implements DocumentoService {
 						Path fileTrashcanLocartion= Paths.get(trashcanDir + Instant.now().toEpochMilli()+"_" + fichero.getName()).toAbsolutePath().normalize();
 						 Files.move(fileStorageLocation, fileTrashcanLocartion, StandardCopyOption.REPLACE_EXISTING);
 						 documentoRepository.deleteById(idDocumento);
+					} else {
+						throw new MyFileNotFoundException("File not found " + filename);
+					}
+				} catch (MalformedURLException ex) {
+					throw new MyFileNotFoundException("File not found " + filename);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		
+		
+		
+	}
+	
+	@Override
+	public void eliminarDocumentoPlan(Long idDocumento) {
+		
+		String nombreCarpeta= "PLAN";
+		DocumentoPlan doc = documentoPlanRepository.findById(idDocumento).orElseThrow(()-> new DocumentoNotFoundException(idDocumento));
+		String filename = doc.getNombre();
+		
+		
+				 nombreCarpeta =nombreCarpeta+"\\"+  doc.getTipo() + "\\";
+				try {
+					Path fileStorageLocation = Paths.get(uploadDir + nombreCarpeta + filename).toAbsolutePath().normalize();
+					log.info(fileStorageLocation.toString());
+					log.info(fileStorageLocation.toUri().toString());
+					Resource resource = new UrlResource(fileStorageLocation.toUri());
+
+					if (resource.exists()) {
+						File fichero = resource.getFile();
+						Path fileTrashcanLocartion= Paths.get(trashcanDir + Instant.now().toEpochMilli()+"_" + fichero.getName()).toAbsolutePath().normalize();
+						 Files.move(fileStorageLocation, fileTrashcanLocartion, StandardCopyOption.REPLACE_EXISTING);
+						 documentoPlanRepository.deleteById(idDocumento);
 					} else {
 						throw new MyFileNotFoundException("File not found " + filename);
 					}
@@ -510,17 +532,17 @@ public class DocumentoServiceImpl implements DocumentoService {
 
 				formulario.getField("C401").setValue(contrato.getTotal());
 				formulario.getField("C402").setValue("MENSUALES");
-				formulario.getField("C403").setValue("Salario base: " + contrato.getBase() + "€, prorata extra: "
-						+ contrato.getProrratas() + "€, residencia: " + contrato.getResidencia() + "€");
+//				formulario.getField("C403").setValue("Salario base: " + contrato.getBase() + "€, prorata extra: "
+//						+ contrato.getProrratas() + "€, residencia: " + contrato.getResidencia() + "€");
 
-				formulario.getField("C501").setValue("30 DÍAS ANUALES");
+				formulario.getField("C501").setValue("30 DÍAS NATURALES EN UN PERÍODO DE UN AÑO");
 
 				formulario.getField("C801").setValue("MELILLA");
 
 				formulario.getField("P11BO1").setValue("Elección2");
 				formulario.getField("P11BO2").setValue("Elección2");
 				formulario.getField("P1108").setValue(
-						"Programa de colaboración con órganos de la Administración General del Estado que contraten trabajadores desempleados para la realización de obras y servicios de interés general y social en el ámbito de la Orden del Ministerios de Trabajo y Asuntos Sociales de 19 de diciembre de 1997, modificada por la Orden TAS/2435/2004, de 20 de julio y por la Orden ESS 974/2013, de 20 de mayo, establece las bases reguladoras de la concesión de subvenciones públicas por los Servicios Públicos de Empleo en el ámbito de la colaboración con órganos de la Administración General del Estado y sus organismos autónomos, universidades públicas e instituciones sin ánimo de lucro, que contraten trabajadores desempleados para la realización de obras y servicios de interés general y social.");
+						"Programa común de inserción laboral a través de obras y servicios de interés general y social, recogido en la subsección 1ª de la sección 3ª del Capitulo V del Real Decreto 818/2021 de 28 de septiembre y la orden TES/1077/2023  de 28 de septiembre y la convocatoria para la concesión de subvenciones destinadas al anterior programa en colaboración con órganos de la AGE en el ámbito territorial de las ciudades de Ceuta y Melilla, aprobada por resolución de 7/11/2023 de la Dirección General del SEPE.");
 
 				// Literal contrato
 				formulario.getField("P2301").setValue(contrato.getEntidad().getLiteralContrato());
@@ -530,10 +552,12 @@ public class DocumentoServiceImpl implements DocumentoService {
 				formulario.getField("P2303").setValue("" + contrato.getFechaInicio().getDayOfMonth());
 				formulario.getField("P2304").setValue(mesFechaFirma.toUpperCase());
 				formulario.getField("P2305").setValue("" + contrato.getFechaInicio().getYear());
+				
+				formulario.flatten();
 
 				// nombre del fichero
 				String nombreFichero = trabajador.getApellido1() + "_" + trabajador.getApellido2() + "_"
-						+ trabajador.getNombre() + "_" + trabajador.getDNI() + "_CONTRATO.pdf";
+						+ trabajador.getNombre() + "_" + trabajador.getDNI() + ".pdf";
 
 				// carpeta
 				// ocupacion del ciudadano
@@ -554,7 +578,17 @@ public class DocumentoServiceImpl implements DocumentoService {
 				} catch (Exception e) {
 					throw new FileStorageException("No se ha podido crear el directorio: " + fileStorageLocation);
 				}
-				nuevoContrato.save(fileStorageLocation + "\\" + nombreFichero);
+				
+				Path fichero = Paths.get(uploadDir + nombreCarpeta+ "\\" + nombreFichero).toAbsolutePath().normalize();
+				String contratoParaGuardar;
+				if (Files.exists(fichero, LinkOption.NOFOLLOW_LINKS)) {
+					nombreFichero = Instant.now().toEpochMilli() +"_"+nombreFichero;
+					contratoParaGuardar= fileStorageLocation + "\\" + nombreFichero;
+				}else {
+					contratoParaGuardar= fileStorageLocation + "\\" +nombreFichero;
+				};
+				
+				nuevoContrato.save(contratoParaGuardar);
 				nuevoContrato.close();
 				String fileDownladUri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/descargaDocumento/")
 						.path(nombreFichero).toUriString();
@@ -612,6 +646,41 @@ public class DocumentoServiceImpl implements DocumentoService {
 
 				Resource ficheroAComprimir = loadDocumentAsResource(documentoAZip.getIdCiudadano(),
 						documento.getNombre(), documento.getIdDocumento());
+
+				ZipEntry zipEntry = new ZipEntry(ficheroAComprimir.getFilename());
+				zipEntry.setSize(ficheroAComprimir.getFile().length());
+				zipEntry.setTime(System.currentTimeMillis());
+				zipOutput.putNextEntry(zipEntry);
+
+				StreamUtils.copy(ficheroAComprimir.getInputStream(), zipOutput);
+				zipOutput.closeEntry();
+
+			}
+			zipOutput.finish();
+
+		} catch (Exception e) {
+			log.info(e.getMessage());
+
+		}
+
+	}
+	
+	@Override
+	public void downloadDocumentsPlanAsZipFile(HttpServletResponse response, List<DocumentoAZip> docs) {
+
+		response.setContentType("application/zip");
+		response.setHeader("Content-Disposition", "attachment; filename=download.zip");
+		try {
+
+			ZipOutputStream zipOutput = new ZipOutputStream(response.getOutputStream());
+
+			for (DocumentoAZip documentoAZip : docs) {
+
+				DocumentoPlan documento = documentoPlanRepository.findById(documentoAZip.getIdDocumento())
+						.orElseThrow(() -> new DocumentoNotFoundException(documentoAZip.getIdDocumento()));
+
+				Resource ficheroAComprimir = loadDocumentPlanAsResource(
+						documento.getNombre(), documento.getIdDocumentoPlan());
 
 				ZipEntry zipEntry = new ZipEntry(ficheroAComprimir.getFilename());
 				zipEntry.setSize(ficheroAComprimir.getFile().length());
@@ -759,6 +828,8 @@ public class DocumentoServiceImpl implements DocumentoService {
 				formulario.getField("observaciones").setValue(presentacion.getObservaciones());
 				formulario.getField("categoria").setValue(contrato.getCategoria().getCategoria());
 				formulario.getField("destino").setValue(contrato.getDestino().getDestino());
+				
+				formulario.flatten();
 
 				// nombre del fichero
 				String nombreFichero = trabajador.getApellido1() + "_" + trabajador.getApellido2() + "_"
@@ -783,7 +854,17 @@ public class DocumentoServiceImpl implements DocumentoService {
 				} catch (Exception e) {
 					throw new FileStorageException("No se ha podido crear el directorio: " + fileStorageLocation);
 				}
-				nuevoContrato.save(fileStorageLocation + "\\" + nombreFichero);
+				Path fichero = Paths.get(uploadDir + nombreCarpeta+ "\\" + nombreFichero).toAbsolutePath().normalize();
+				String contratoParaGuardar;
+				if (Files.exists(fichero, LinkOption.NOFOLLOW_LINKS)) {
+					nombreFichero = Instant.now().toEpochMilli() +"_"+nombreFichero;
+					contratoParaGuardar= fileStorageLocation + "\\" + nombreFichero;
+				}else {
+					contratoParaGuardar= fileStorageLocation + "\\" +nombreFichero;
+				};
+				
+				
+				nuevoContrato.save(contratoParaGuardar);
 				nuevoContrato.close();
 				String fileDownladUri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/descargaDocumento/")
 						.path(nombreFichero).toUriString();

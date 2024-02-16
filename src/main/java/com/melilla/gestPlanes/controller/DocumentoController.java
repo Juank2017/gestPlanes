@@ -67,9 +67,9 @@ public class DocumentoController {
 
 	}
 	
-	@PostMapping("/subirDocumentoPlan" )
+	@PostMapping("/subirDocumentoPlan")
 	public ResponseEntity<ApiResponse> subirDocumentoPlan(@RequestPart MultipartFile file, @RequestPart String tipo,
-			@RequestPart Long idPlan) {
+			@RequestPart String idPlan) {
 
 		ApiResponse response = new ApiResponse();
 
@@ -106,6 +106,30 @@ public class DocumentoController {
 				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
 				.body(resource);
 	}
+	
+	@GetMapping("/descargaDocumentoPlan/{fileName:.+}/{idDocumento}")
+	public ResponseEntity<Resource> downloadFilePlan(@PathVariable String fileName,
+			@PathVariable Long idDocumento, HttpServletRequest request) {
+		// Load file as Resource
+		Resource resource = documentoService.loadDocumentPlanAsResource( fileName, idDocumento);
+
+		// Try to determine file's content type
+		String contentType = null;
+		try {
+			contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
+		} catch (IOException ex) {
+			throw new FileStorageException("Could not determine file type.");
+		}
+
+		// Fallback to the default content type if type could not be determined
+		if (contentType == null) {
+			contentType = "application/octet-stream";
+		}
+
+		return ResponseEntity.ok().contentType(MediaType.parseMediaType(contentType))
+				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+				.body(resource);
+	}
 
 	@PostMapping("/generaContrato")
 	ResponseEntity<ApiResponse> generaContrato(@RequestBody List<GeneraContratoDTO> trabajadores) {
@@ -113,7 +137,7 @@ public class DocumentoController {
 		log.warning(trabajadores.toString());
 		ApiResponse response = new ApiResponse();
 
-		response.getPayload().add(documentoService.generarContrato(trabajadores));
+		response.getPayload().addAll(documentoService.generarContrato(trabajadores));
 
 		return ResponseEntity.ok(response);
 	}
@@ -133,6 +157,12 @@ public class DocumentoController {
 	void descargaDocumentosZip(HttpServletResponse response, @RequestBody List<DocumentoAZip> docs) {
 
 		documentoService.downloadDocumentsAsZipFile(response, docs);
+	}
+	
+	@PostMapping("/downloadZipPlan")
+	void descargaDocumentosPlanZip(HttpServletResponse response, @RequestBody List<DocumentoAZip> docs) {
+
+		documentoService.downloadDocumentsPlanAsZipFile(response, docs);
 	}
 
 	@PostMapping("/buscaDocumentos")
@@ -218,6 +248,16 @@ public class DocumentoController {
 		ApiResponse response = new ApiResponse();
 		response.setEstado(HttpStatus.OK);
 		documentoService.eliminarDocumento(idDocumento);
+		response.setMensaje("Documento eliminado");
+		
+		return ResponseEntity.ok(response);
+	}
+	
+	@DeleteMapping("/eliminarDocumentoPlan/{idDocumento}")
+	ResponseEntity<ApiResponse>eliminarDocumentoPlan(@PathVariable Long idDocumento){
+		ApiResponse response = new ApiResponse();
+		response.setEstado(HttpStatus.OK);
+		documentoService.eliminarDocumentoPlan(idDocumento);
 		response.setMensaje("Documento eliminado");
 		
 		return ResponseEntity.ok(response);

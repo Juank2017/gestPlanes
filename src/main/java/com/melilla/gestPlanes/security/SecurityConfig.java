@@ -49,6 +49,7 @@ public class SecurityConfig {
                         request -> request
                                 .requestMatchers("/login").permitAll()
                                 .requestMatchers("/swagger-ui/**").permitAll()
+                                .requestMatchers("/actuator/**").permitAll()
                                 .requestMatchers("/v3/**").permitAll()
                                 .requestMatchers("/refreshtoken").permitAll()
                                 .requestMatchers("/checkToken").permitAll()
@@ -90,7 +91,7 @@ public class SecurityConfig {
 	@Bean
 	CorsConfigurationSource corsConfigurationSource() {
 	    CorsConfiguration configuration = new CorsConfiguration();
-	    configuration.setAllowedOrigins(Arrays.asList("*"));//"http://x520marina001","http://localhost","http://localhost:3000"
+	    configuration.setAllowedOrigins(Arrays.asList("*"));//"http://x520marina001","http://x520marina001:9092","http://localhost","http://localhost:3000"
 	    configuration.setAllowedMethods(Arrays.asList("*"));//"GET","POST","PUT","DELETE","OPTIONS"
 	    configuration.setAllowedHeaders(Arrays.asList("*"));//"Content-Type","Authorization","authorization"
 	    

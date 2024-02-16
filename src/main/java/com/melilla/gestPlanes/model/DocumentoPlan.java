@@ -4,6 +4,7 @@ package com.melilla.gestPlanes.model;
 import java.time.LocalDateTime;
 
 import org.hibernate.annotations.SQLDelete;
+import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -23,8 +24,8 @@ import lombok.Data;
 
 @Entity
 @Data
-//@Audited
-@SQLDelete(sql = "UPDATE documento_plan SET deleted=true, deleted_at= NOW() WHERE id=?")
+@Audited
+@SQLDelete(sql = "UPDATE documento_plan SET deleted=true, deleted_at= NOW() WHERE id_documento_plan=?")
 @EntityListeners(AuditingEntityListener.class)
 public class DocumentoPlan {
 	@Id
