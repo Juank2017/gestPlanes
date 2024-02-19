@@ -1,4 +1,4 @@
-package com.melilla.gestPlanes.service.impl;
+package com.melilla.gestPlanes.service;
 
 import java.util.List;
 
@@ -7,9 +7,11 @@ import com.melilla.gestPlanes.model.Equipo;
 
 public interface EquipoService {
 	
-	List<Equipo>equipos();
+	List<Equipo>equipos(Long idPlan);
 	
-	Equipo crearEquipo(String nombre,Ciudadano jefeEquipo);
+	Equipo equipo(Long idEquipo);
+	
+	Equipo crearEquipo(Equipo equipo);
 	
 	Equipo editarEquipo(Equipo equipo);
 	

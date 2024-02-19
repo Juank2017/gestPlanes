@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.hibernate.annotations.SQLDelete;
+import org.hibernate.envers.NotAudited;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -40,6 +41,11 @@ public class Equipo {
 	@OneToOne
 	@JoinColumn(name="idCiudadano")
 	private Ciudadano jefeEquipo;
+	
+	@OneToOne
+	@JoinColumn(name="idPlan")
+	@NotAudited
+	private Plan idPlan;
 	
 	@CreatedDate
 	@JsonFormat(shape = JsonFormat.Shape.STRING,  pattern = "dd/MM/yyy")

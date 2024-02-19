@@ -5,9 +5,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.melilla.gestPlanes.exceptions.exceptions.EquipoNoEncontradoException;
 import com.melilla.gestPlanes.model.Ciudadano;
 import com.melilla.gestPlanes.model.Equipo;
 import com.melilla.gestPlanes.repository.EquipoRepository;
+import com.melilla.gestPlanes.service.EquipoService;
 
 import lombok.Data;
 
@@ -19,15 +21,15 @@ public class EquipoServiceImpl implements EquipoService{
 	private EquipoRepository equipoRepository;
 	
 	@Override
-	public List<Equipo> equipos() {
+	public List<Equipo> equipos(Long idPlan) {
 		
-		return equipoRepository.findAll();
+		return equipoRepository.findAllByIdPlanIdPlan(idPlan);
 	}
 
 	@Override
-	public Equipo crearEquipo(String nombre, Ciudadano jefeEquipo) {
-		// TODO Auto-generated method stub
-		return null;
+	public Equipo crearEquipo(Equipo equipo) {
+		
+		return equipoRepository.save(equipo);
 	}
 
 	@Override
@@ -52,6 +54,12 @@ public class EquipoServiceImpl implements EquipoService{
 	public void eliminaEquipo(Long idEquipo) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public Equipo equipo(Long idEquipo) {
+		
+		return equipoRepository.findById(idEquipo).orElseThrow(()->new EquipoNoEncontradoException(idEquipo));
 	}
 
 }

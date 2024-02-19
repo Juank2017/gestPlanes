@@ -32,6 +32,7 @@ import com.melilla.gestPlanes.model.Categoria;
 import com.melilla.gestPlanes.model.Ciudadano;
 import com.melilla.gestPlanes.model.Contrato;
 import com.melilla.gestPlanes.model.Destino;
+import com.melilla.gestPlanes.model.Equipo;
 import com.melilla.gestPlanes.model.Ocupacion;
 import com.melilla.gestPlanes.model.Organismo;
 import com.melilla.gestPlanes.model.OrganismoOcupacion;
@@ -47,6 +48,7 @@ import com.melilla.gestPlanes.repository.OrganismoRepository;
 import com.melilla.gestPlanes.repository.PlanRepository;
 import com.melilla.gestPlanes.service.CiudadanoService;
 import com.melilla.gestPlanes.service.DocumentoService;
+import com.melilla.gestPlanes.service.EquipoService;
 import com.melilla.gestPlanes.service.PlanService;
 
 import lombok.RequiredArgsConstructor;
@@ -80,6 +82,9 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 	
 	@Autowired
 	private OrganismoOcupacionRepository organismoOcupacionRepository;
+	
+	@Autowired
+	private EquipoService equipoService;
 
 	@Value("${file.upload-dir}")
 	private String uploadDir;
@@ -116,11 +121,24 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 				.numeroOrdenSepe(trabajador.getNumeroOrdenSepe())
 				.bajaLaboral(false)
 				.bajaMaternal(false)
+				.equipo(
+						(trabajador.getEquipo() != null)
+						?equipoService.equipo(trabajador.getEquipo())
+						:null
+						)
 				.esJefeEquipo(
 						(trabajador.getOcu()!=null)
 						?((trabajador.getOcu() == 983)?true:false)
 						:false)
 				.build());
+		
+			if(trabajador.getOcu() != null && trabajador.getOcu() == 983) {
+				Equipo equipo = new Equipo();
+				equipo.setNombreEquipo(trabajador.getNombre()+" "+trabajador.getApellido1());
+				equipo.setJefeEquipo(nuevoCiudadano);
+				equipo.setIdPlan(planService.getPlanActivo());
+				equipoService.crearEquipo(equipo); 
+			}
 
 			
 			Contrato nuevoContrato = contratoRepository

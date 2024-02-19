@@ -36,5 +36,6 @@ public class CreateTrabajadorDTO {
 	String prorratas;
 	String residencia;
 	String total;
+	Long equipo;
 
 }
