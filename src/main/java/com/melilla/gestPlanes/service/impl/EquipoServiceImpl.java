@@ -57,9 +57,9 @@ public class EquipoServiceImpl implements EquipoService{
 	}
 
 	@Override
-	public Equipo equipo(Long idEquipo) {
+	public Equipo equipo(Long idPlan,Long idEquipo) {
 		
-		return equipoRepository.findById(idEquipo).orElseThrow(()->new EquipoNoEncontradoException(idEquipo));
+		return equipoRepository.findByIdPlanIdPlanAndIdEquipo(idPlan, idEquipo).orElseThrow(()->new EquipoNoEncontradoException(idEquipo));
 	}
 
 }

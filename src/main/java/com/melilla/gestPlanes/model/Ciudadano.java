@@ -14,9 +14,11 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -45,6 +47,7 @@ import lombok.Setter;
 @Builder
 @Entity
 @Audited
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "idCiudadano")
 @SQLDelete(sql = "UPDATE ciudadano SET deleted=true, deleted_at= NOW() WHERE id=?")
 @EntityListeners(AuditingEntityListener.class)
 public class Ciudadano {
@@ -96,7 +99,8 @@ public class Ciudadano {
 //	@ManyToMany(mappedBy = "interesados")
 //	private List<Expediente> expedientes;
 	
-	@JsonManagedReference
+	
+	//@JsonBackReference
 	@ManyToOne
 	@JoinColumn(name="idEquipo")
 	@NotAudited

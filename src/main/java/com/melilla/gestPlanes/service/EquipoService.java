@@ -9,7 +9,7 @@ public interface EquipoService {
 	
 	List<Equipo>equipos(Long idPlan);
 	
-	Equipo equipo(Long idEquipo);
+	Equipo equipo(Long idPlan,Long idEquipo);
 	
 	Equipo crearEquipo(Equipo equipo);
 	

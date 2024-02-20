@@ -30,5 +30,16 @@ public class EquipoController {
 		
 		return ResponseEntity.ok(response);
 	}
-
+	
+	@GetMapping("/equipo/{idPlan}/{idEquipo}")
+	ResponseEntity<ApiResponse>equipo(@PathVariable Long idPlan, @PathVariable Long idEquipo){
+		
+		ApiResponse response = new ApiResponse();
+		
+		response.setEstado(HttpStatus.OK);
+		response.getPayload().add(equipoService.equipo(idPlan,idEquipo));
+		response.setMensaje("Equipo "+ idEquipo);
+		
+		return ResponseEntity.ok(response);
+	}
 }
