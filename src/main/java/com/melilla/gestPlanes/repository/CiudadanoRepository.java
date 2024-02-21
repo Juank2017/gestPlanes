@@ -18,6 +18,8 @@ import com.melilla.gestPlanes.model.Ciudadano;
 public interface CiudadanoRepository extends JpaRepository<Ciudadano, Long> ,RevisionRepository<Ciudadano, Long, Long>, JpaSpecificationExecutor<Ciudadano> {
 	
 	Optional<Ciudadano> findByDNI(String DNI);
+	Optional<Ciudadano>findByDNIAndEstado(String DNI, String estado);
+	List<Ciudadano>findAllByDNIAndEstado(String DNI, String estado);
 	boolean existsByDNI(String DNI);
 	 Page<Ciudadano> findAll(Specification<Ciudadano> spec,Pageable page);
 	 

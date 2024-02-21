@@ -320,9 +320,12 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 					}
 					
 				}else {
-					Categoria categoria = categoriaRepository.findById(trabajador.getCategoria()).orElseThrow(()->new CategoriaNotFoundException(trabajador.getCategoria()));
-					
-					contrato.setCategoria(categoria);
+					if (trabajador.getCategoria()!=null) {
+						Categoria categoria = categoriaRepository.findById(trabajador.getCategoria()).orElseThrow(()->new CategoriaNotFoundException(trabajador.getCategoria()));
+						
+						contrato.setCategoria(categoria);
+					}
+			
 				}
 				
 				if(contrato.getOcupacion() != null) {
@@ -471,6 +474,18 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 		}
 		
 		return listado;
+	}
+
+	@Override
+	public Ciudadano getTrabajadorByDNIAndEstado(String DNI, String estado) {
+		
+		return ciudadanoRepository.findByDNIAndEstado(DNI, estado).orElseThrow(()->new CiudadanoNotFoundException(1l));	
+		}
+
+	@Override
+	public List<Ciudadano> getAllTrabajadorByDNIAndEstado(String DNI, String estado) {
+		
+		return ciudadanoRepository.findAllByDNIAndEstado(DNI, estado);
 	}
 	
 	

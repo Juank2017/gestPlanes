@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.melilla.gestPlanes.exceptions.exceptions.ComponenteEquipoDuplicadoException;
 import com.melilla.gestPlanes.exceptions.exceptions.EquipoNoEncontradoException;
 import com.melilla.gestPlanes.model.Ciudadano;
 import com.melilla.gestPlanes.model.Equipo;
@@ -46,8 +47,12 @@ public class EquipoServiceImpl implements EquipoService{
 
 	@Override
 	public Equipo addComponente(Equipo equipo,Ciudadano ciudadano) {
-		// TODO Auto-generated method stub
-		return null;
+
+		if(equipo.getComponentes() != null && equipo.getComponentes().contains(ciudadano)) throw new ComponenteEquipoDuplicadoException("Ya existe el trabajador "+ciudadano.getNombre()+" "+ciudadano.getApellido1()+" en el equipo.");
+		ciudadano.setEquipo(equipo);
+		ciudadanoRepository.saveAndFlush(ciudadano);
+		equipo.getComponentes().add(ciudadano);
+		return equipoRepository.saveAndFlush(equipo);
 	}
 
 	@Override

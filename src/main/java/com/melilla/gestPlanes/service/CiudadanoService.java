@@ -18,6 +18,10 @@ public interface CiudadanoService {
 	List<Ciudadano> getCiudadanos(Long idPlan);
 	
 	Ciudadano getCiudadano(Long idCiudadano);
+	
+	Ciudadano getTrabajadorByDNIAndEstado(String DNI,String estado);
+	
+	List<Ciudadano>getAllTrabajadorByDNIAndEstado(String DNI, String estado);
 
 	Ciudadano crearCiudadano(Ciudadano ciudadano);
 	

@@ -15,6 +15,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import com.melilla.gestPlanes.exceptions.exceptions.CategoriaNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.CiudadanoNotFoundException;
+import com.melilla.gestPlanes.exceptions.exceptions.ComponenteEquipoDuplicadoException;
 import com.melilla.gestPlanes.exceptions.exceptions.ConvertStringToDateException;
 import com.melilla.gestPlanes.exceptions.exceptions.DestinoNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.DocumentCreationException;
@@ -57,7 +58,7 @@ public class GlobalControllerAdvice extends ResponseEntityExceptionHandler {
 		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(apiError);
 	}
 
-	@ExceptionHandler({ BadCredentialsException.class, NumberFormatException.class })
+	@ExceptionHandler({ BadCredentialsException.class, NumberFormatException.class, ComponenteEquipoDuplicadoException.class })
 	public ResponseEntity<ApiError> handleBadRequest(Exception ex) {
 		ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, ex.getMessage());
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiError);
