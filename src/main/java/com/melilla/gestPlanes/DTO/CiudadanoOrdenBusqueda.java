@@ -3,8 +3,6 @@ package com.melilla.gestPlanes.DTO;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.web.bind.annotation.RequestParam;
-
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 

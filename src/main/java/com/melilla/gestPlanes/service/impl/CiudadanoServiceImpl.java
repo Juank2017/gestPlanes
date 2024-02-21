@@ -123,7 +123,7 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 				.bajaMaternal(false)
 				.equipo(
 						(trabajador.getEquipo() != null)
-						?equipoService.equipo(trabajador.getEquipo())
+						?equipoService.equipo(planService.getPlanActivo().getIdPlan(), trabajador.getEquipo())
 						:null
 						)
 				.esJefeEquipo(
