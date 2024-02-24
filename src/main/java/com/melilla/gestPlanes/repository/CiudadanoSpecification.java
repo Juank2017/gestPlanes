@@ -57,20 +57,21 @@ public class CiudadanoSpecification implements Specification<Ciudadano> {
 		Join<Contrato, Organismo> organismoContrato = contratoCiudadano.join("entidad",JoinType.LEFT);
 		Join<Contrato, Destino> destinoContrato = contratoCiudadano.join("destino",JoinType.LEFT);
 
-		Path<Object> mio = contratoCiudadano.get("ocupacion");
+		//Path<Object> mio = contratoCiudadano.get("fechaExtincion");
 
-		log.warning("path " + mio.get("ocupacion"));
+		//log.warning("path " + mio.get("fechaExtincion"));
 
 		Plan plan = planService.getPlanActivo();
 		Long idPlan = plan.getIdPlan();
 		Predicate likePredicate = null;
 		Predicate fechaPredicate = null;
+		Predicate equalPredicate = null;
 		Predicate planPredicate = builder.equal(root.get("idPlan"), plan);
 
-		if (this.criteria.getId().equals("fechaRegistro") || this.criteria.getId().equals("fechaInicio")
-				|| this.criteria.getId().equals("fechaFin") || this.criteria.getId().equals("fechaNacimiento") ||this.criteria.getId().equals("fechaExtincion")) {
-
-			// convertir el valor a fecha
+		switch (criteria.getId()) {
+		
+		case "fechaRegistro": case "fechaNacimiento":{
+			 //convertir el valor a fecha
 			String valor = this.criteria.getValue();
 			try {
 				LocalDate fecha = LocalDate.parse(valor, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
@@ -80,10 +81,24 @@ public class CiudadanoSpecification implements Specification<Ciudadano> {
 
 				return null;
 			}
-
 		}
+		break;
+		
+		case "contrato.fechaInicio": case "contrato.fechaFin": case "contrato.fechaExtincion":{
+			
+			// convertir el valor a fecha
+			String valor = this.criteria.getValue();
+			try {
+				LocalDate fecha = LocalDate.parse(valor, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
 
-		switch (criteria.getId()) {
+				fechaPredicate = builder.equal(contratoCiudadano.get(this.criteria.getId().replace("contrato.", "")), fecha);
+			} catch (Exception e) {
+
+				return null;
+			}
+			break;
+		}
+		
 		case "contrato.ocupacion.ocupacion": {
 
 			likePredicate = builder.like(ocupacionContrato.get("ocupacion"), "%" + criteria.getValue() + "%");
@@ -102,8 +117,24 @@ public class CiudadanoSpecification implements Specification<Ciudadano> {
 			likePredicate = builder.like(destinoContrato.get("destino"), "%" + criteria.getValue() + "%");
 			break;
 		}
-		default:
-			likePredicate = builder.like(root.<String>get(criteria.getId()), "%" + criteria.getValue() + "%");
+		case "idCiudadano":{
+			equalPredicate = builder.equal(root.get("idCiudadano"), criteria.getValue());
+			break;
+		}
+		case "DNI":{
+			likePredicate = builder.like(root.get("DNI"), "%" + criteria.getValue() + "%");
+			break;	
+		}
+		case "seguridadSocial":{
+			likePredicate = builder.like(root.get("seguridadSocial"), "%" + criteria.getValue() + "%");
+			break;	
+		}
+		case "estado":{
+			likePredicate = builder.like(root.get("estado"), "%" + criteria.getValue() + "%");
+			break;	
+		}
+//		default:
+	//		likePredicate = builder.like(root.<String>get(criteria.getId()), "%" + criteria.getValue() + "%");
 		}
 
 		List<Predicate> predicados = new ArrayList<>();
@@ -112,6 +143,7 @@ public class CiudadanoSpecification implements Specification<Ciudadano> {
 			predicados.add(likePredicate);
 		if (fechaPredicate != null)
 			predicados.add(fechaPredicate);
+		if(equalPredicate != null) predicados.add(equalPredicate);
 		return builder.and(predicados.toArray(new Predicate[predicados.size()]));
 //		 if (root.get(criteria.getId()).getJavaType() == String.class) {
 //			 
