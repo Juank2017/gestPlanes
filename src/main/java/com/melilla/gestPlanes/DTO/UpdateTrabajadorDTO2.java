@@ -40,5 +40,6 @@ public class UpdateTrabajadorDTO2 {
 	boolean bajaLaboral;
 	boolean bajaMaternal;
 	boolean esJefeEquipo;
+	Long equipo;
 
 }

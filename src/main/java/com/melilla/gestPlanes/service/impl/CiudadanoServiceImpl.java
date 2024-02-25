@@ -248,13 +248,11 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 		ciudadano.setBajaLaboral(trabajador.isBajaLaboral());
 		ciudadano.setBajaMaternal(trabajador.isBajaMaternal());
 		ciudadano.setEsJefeEquipo(trabajador.isEsJefeEquipo());
-//		if(ciudadano.getEstado().contains("CANDIDATO/A")) {
-//			if(!trabajador.getEstado().equals("CANDIDATO/A")) {
-//				if(ciudadano.getContrato() != null) {
-//					
-//				}
-//			}
-//		}
+		ciudadano.setEquipo(
+				(trabajador.getEquipo() != null)
+				?equipoService.equipo(planService.getPlanActivo().getIdPlan() ,trabajador.getEquipo())
+				:null);
+
 		
 		
 		
@@ -330,6 +328,11 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 				
 				if(contrato.getOcupacion() != null) {
 					if (trabajador.getOcu() != contrato.getOcupacion().getIdOcupacion()) {
+						if(contrato.getOcupacion().getIdOcupacion()== 983) ciudadano.setEsJefeEquipo(false);
+						if(trabajador.getOcu() == 983) {
+							ciudadano.setEsJefeEquipo(true);
+							ciudadano.setEquipo(null);
+						}
 						Ocupacion ocupacion = ocupacionRepository.findById(trabajador.getOcu()).orElseThrow(()->new OcupacionNotFoundException(trabajador.getOcu()));
 						contrato.setOcupacion(ocupacion);	
 						}
