@@ -28,6 +28,7 @@ import com.melilla.gestPlanes.exceptions.exceptions.CiudadanoNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.DestinoNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.OcupacionNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.OrganismoNotFoundException;
+import com.melilla.gestPlanes.exceptions.exceptions.TrabajadorYaContratadoException;
 import com.melilla.gestPlanes.model.Categoria;
 import com.melilla.gestPlanes.model.Ciudadano;
 import com.melilla.gestPlanes.model.Contrato;
@@ -110,6 +111,13 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 
 	@Override
 	public Ciudadano crearTrabajador(CreateTrabajadorDTO trabajador) {
+		
+		Ciudadano trabajadorYaContratado = ciudadanoRepository.findByEstadoAndDNI("CONTRATADO/A", trabajador.getDNI());
+		
+		if(trabajadorYaContratado != null) {
+			throw new TrabajadorYaContratadoException("El trabajador con DNI "+trabajador.getDNI()+ " ya aparece en estado contratado.");
+		}
+		
 
 		Ciudadano nuevoCiudadano = ciudadanoRepository.save(Ciudadano.builder()
 				.nombre(trabajador.getNombre().toUpperCase()).apellido1(trabajador.getApellido1().toUpperCase())
@@ -132,13 +140,13 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 						:false)
 				.build());
 		
-			if(trabajador.getOcu() != null && trabajador.getOcu() == 983) {
-				Equipo equipo = new Equipo();
-				equipo.setNombreEquipo(trabajador.getNombre()+" "+trabajador.getApellido1());
-				equipo.setJefeEquipo(nuevoCiudadano);
-				equipo.setIdPlan(planService.getPlanActivo());
-				equipoService.crearEquipo(equipo); 
-			}
+//			if(trabajador.getOcu() != null && trabajador.getOcu() == 983) {
+//				Equipo equipo = new Equipo();
+//				equipo.setNombreEquipo(trabajador.getNombre()+" "+trabajador.getApellido1());
+//				equipo.setJefeEquipo(nuevoCiudadano);
+//				equipo.setIdPlan(planService.getPlanActivo());
+//				equipoService.crearEquipo(equipo); 
+//			}
 
 			
 			Contrato nuevoContrato = contratoRepository
