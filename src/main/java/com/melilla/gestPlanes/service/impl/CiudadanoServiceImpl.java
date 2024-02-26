@@ -239,6 +239,13 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 		ciudadano.setApellido2(trabajador.getApellido2());
 		ciudadano.setDNI(trabajador.getDNI());
 		ciudadano.setEmail(trabajador.getEmail());
+		if(trabajador.getEstado() != ciudadano.getEstado()) {
+			if(trabajador.getEstado()== "CONTRATADO/A") {
+				if(existeTrabajadorEnEstadoContratado(trabajador.getDNI())) {
+					throw new 
+				}
+			}
+		}
 		ciudadano.setEstado(trabajador.getEstado());
 		ciudadano.setFechaNacimiento(trabajador.getFechaNacimiento());
 		ciudadano.setSeguridadSocial(trabajador.getSeguridadSocial());
@@ -489,6 +496,12 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 	public List<Ciudadano> getAllTrabajadorByDNIAndEstado(String DNI, String estado) {
 		
 		return ciudadanoRepository.findAllByDNIAndEstado(DNI, estado);
+	}
+
+	@Override
+	public boolean existeTrabajadorEnEstadoContratado(String DNI) {
+		
+		return (ciudadanoRepository.findAllByDNIAndEstado(DNI, "CONTRATADO/A").size()>0)?true:false ;
 	}
 	
 	
