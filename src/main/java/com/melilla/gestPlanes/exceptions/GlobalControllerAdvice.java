@@ -28,6 +28,7 @@ import com.melilla.gestPlanes.exceptions.exceptions.OrganismoNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.PlanNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.FileStorageException;
 import com.melilla.gestPlanes.exceptions.exceptions.TokenRefreshException;
+import com.melilla.gestPlanes.exceptions.exceptions.TrabajadorYaContratadoException;
 import com.melilla.gestPlanes.exceptions.exceptions.UserNotFoundException;
 
 import io.jsonwebtoken.ExpiredJwtException;
@@ -58,7 +59,7 @@ public class GlobalControllerAdvice extends ResponseEntityExceptionHandler {
 		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(apiError);
 	}
 
-	@ExceptionHandler({ BadCredentialsException.class, NumberFormatException.class, ComponenteEquipoDuplicadoException.class })
+	@ExceptionHandler({ BadCredentialsException.class, NumberFormatException.class, TrabajadorYaContratadoException.class,ComponenteEquipoDuplicadoException.class })
 	public ResponseEntity<ApiError> handleBadRequest(Exception ex) {
 		ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, ex.getMessage());
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiError);
