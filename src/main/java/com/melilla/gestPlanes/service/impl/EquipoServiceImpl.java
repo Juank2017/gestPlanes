@@ -5,15 +5,18 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.melilla.gestPlanes.DTO.CreateEquipoDTO;
 import com.melilla.gestPlanes.DTO.EditaEquipoDTO;
 import com.melilla.gestPlanes.exceptions.exceptions.CiudadanoNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.ComponenteEquipoDuplicadoException;
 import com.melilla.gestPlanes.exceptions.exceptions.EquipoNoEncontradoException;
+import com.melilla.gestPlanes.exceptions.exceptions.TrabajadorNoEsJefeException;
 import com.melilla.gestPlanes.model.Ciudadano;
 import com.melilla.gestPlanes.model.Equipo;
 import com.melilla.gestPlanes.repository.CiudadanoRepository;
 import com.melilla.gestPlanes.repository.EquipoRepository;
 import com.melilla.gestPlanes.service.EquipoService;
+import com.melilla.gestPlanes.service.PlanService;
 
 import lombok.Data;
 import lombok.extern.java.Log;
@@ -29,6 +32,9 @@ public class EquipoServiceImpl implements EquipoService {
 	@Autowired
 	private CiudadanoRepository ciudadanoRepository;
 
+	@Autowired
+	private PlanService planService;
+
 	@Override
 	public List<Equipo> equipos(Long idPlan) {
 
@@ -36,9 +42,30 @@ public class EquipoServiceImpl implements EquipoService {
 	}
 
 	@Override
-	public Equipo crearEquipo(Equipo equipo) {
+	public Equipo crearEquipo(CreateEquipoDTO equipo) {
 
-		return equipoRepository.save(equipo);
+		Equipo e = new Equipo();
+
+		e.setNombreEquipo(equipo.getNombreEquipo());
+		if (equipo.getDNI() != null) {
+			Ciudadano jefe = ciudadanoRepository.findByEstadoAndDNI("CONTRATADO/A", equipo.getDNI());
+			if (jefe == null) {
+				throw new CiudadanoNotFoundException(1l);
+
+			} else {
+				if (!jefe.isEsJefeEquipo()) {
+					throw new TrabajadorNoEsJefeException(
+							"El trabajador con DNI: " + equipo.getDNI() + " no es Jefe de equipo");
+				} else {
+					e.setJefeEquipo(jefe);
+				}
+			}
+		} else {
+			e.setJefeEquipo(null);
+		}
+
+		e.setIdPlan(planService.getPlanActivo());
+		return equipoRepository.save(e);
 	}
 
 	@Override
@@ -55,14 +82,14 @@ public class EquipoServiceImpl implements EquipoService {
 		} else {
 			if (nuevojefeEquipo.size() > 1) {
 				throw new ComponenteEquipoDuplicadoException(equipo.getDNI());
-			}else {
+			} else {
 				Ciudadano ciudadano = nuevojefeEquipo.get(0);
-				
+
 				ciudadano.setEsJefeEquipo(true);
 				ciudadano.setEquipo(null);
 				ciudadanoRepository.saveAndFlush(ciudadano);
 				equipoAEditar.setJefeEquipo(ciudadano);
-				
+
 			}
 		}
 
@@ -71,10 +98,11 @@ public class EquipoServiceImpl implements EquipoService {
 
 	@Override
 	public Equipo addComponente(Equipo equipo, Ciudadano ciudadano) {
-
+		if(ciudadano.isEsJefeEquipo())throw new ComponenteEquipoDuplicadoException("El trabajador es Jefe de Equipo. No se puede agregar un Jefe como componete de equipo");
 		if (equipo.getComponentes() != null && equipo.getComponentes().contains(ciudadano))
 			throw new ComponenteEquipoDuplicadoException("Ya existe el trabajador " + ciudadano.getNombre() + " "
 					+ ciudadano.getApellido1() + " en el equipo.");
+		
 		ciudadano.setEquipo(equipo);
 		ciudadanoRepository.saveAndFlush(ciudadano);
 		equipo.getComponentes().add(ciudadano);

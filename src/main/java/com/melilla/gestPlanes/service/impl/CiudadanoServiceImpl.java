@@ -112,9 +112,9 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 	@Override
 	public Ciudadano crearTrabajador(CreateTrabajadorDTO trabajador) {
 		
-		Ciudadano trabajadorYaContratado = ciudadanoRepository.findByEstadoAndDNI("CONTRATADO/A", trabajador.getDNI());
 		
-		if(trabajadorYaContratado != null) {
+		
+		if(existeTrabajadorEnEstadoContratado(trabajador.getDNI())) {
 			throw new TrabajadorYaContratadoException("El trabajador con DNI "+trabajador.getDNI()+ " ya aparece en estado contratado.");
 		}
 		
@@ -247,10 +247,10 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 		ciudadano.setApellido2(trabajador.getApellido2());
 		ciudadano.setDNI(trabajador.getDNI());
 		ciudadano.setEmail(trabajador.getEmail());
-		if(trabajador.getEstado() != ciudadano.getEstado()) {
-			if(trabajador.getEstado()== "CONTRATADO/A") {
+		if(!trabajador.getEstado().equals(ciudadano.getEstado())) {
+			if(trabajador.getEstado().equals("CONTRATADO/A")) {
 				if(existeTrabajadorEnEstadoContratado(trabajador.getDNI())) {
-					throw new 
+					throw new TrabajadorYaContratadoException("El trabajador con DNI "+trabajador.getDNI()+ " ya aparece en estado contratado.");
 				}
 			}
 		}

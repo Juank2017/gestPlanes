@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.melilla.gestPlanes.DTO.CreateEquipoDTO;
 import com.melilla.gestPlanes.DTO.EditaEquipoDTO;
 import com.melilla.gestPlanes.exceptions.exceptions.CiudadanoNotFoundException;
 import com.melilla.gestPlanes.model.ApiResponse;
@@ -32,6 +33,8 @@ public class EquipoController {
 
 	@Autowired
 	private CiudadanoService ciudadanoService;
+	
+	
 
 	@GetMapping("/equipos/{idPlan}")
 	ResponseEntity<ApiResponse> equipos(@PathVariable Long idPlan) {
@@ -112,6 +115,19 @@ public class EquipoController {
 		response.setMensaje("Equipo actualizado");
 
 		return ResponseEntity.ok(response);
+	}
+	
+	@PostMapping("/crearEquipo")
+	ResponseEntity<ApiResponse>crearEquipo(@RequestBody CreateEquipoDTO equipo){
+		ApiResponse response = new ApiResponse();
+		
+		response.setEstado(HttpStatus.OK);
+		Equipo equipoNuevo = equipoService.crearEquipo(equipo);
+		response.getPayload().addAll(equipoService.equipos(equipo.getIdPlan()));
+		response.setMensaje("Equipo creado");
+
+		return ResponseEntity.ok(response);
+		
 	}
 
 }

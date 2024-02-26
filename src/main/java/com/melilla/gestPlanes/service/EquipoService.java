@@ -2,6 +2,7 @@ package com.melilla.gestPlanes.service;
 
 import java.util.List;
 
+import com.melilla.gestPlanes.DTO.CreateEquipoDTO;
 import com.melilla.gestPlanes.DTO.EditaEquipoDTO;
 import com.melilla.gestPlanes.model.Ciudadano;
 import com.melilla.gestPlanes.model.Equipo;
@@ -12,7 +13,7 @@ public interface EquipoService {
 	
 	Equipo equipo(Long idPlan,Long idEquipo);
 	
-	Equipo crearEquipo(Equipo equipo);
+	Equipo crearEquipo(CreateEquipoDTO equipo);
 	
 	Equipo editarEquipo(EditaEquipoDTO equipo);
 	
