@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.melilla.gestPlanes.DTO.crearPresentacionDTO;
 import com.melilla.gestPlanes.model.ApiResponse;
 import com.melilla.gestPlanes.model.Presentacion;
 import com.melilla.gestPlanes.service.PresentacionService;
@@ -48,11 +49,18 @@ public class PresentacionController {
 	}
 
 	@PostMapping("/crearPresentacion")
-	public ResponseEntity<ApiResponse> crearPresentacion(@RequestBody Presentacion presentacion) {
+	public ResponseEntity<ApiResponse> crearPresentacion(@RequestBody crearPresentacionDTO presentacion) {
 		ApiResponse response = new ApiResponse();
 
+		Presentacion present = new Presentacion();
+		
+		present.setPresentacion(presentacion.getPresentacion());
+		present.setObservaciones(presentacion.getObservaciones());
+		present.setResponsable(presentacion.getResponsable());
+		present.setVacaciones(presentacion.getVacaciones());
+		
 		response.setEstado(HttpStatus.OK);
-		response.getPayload().add(presentacionService.crearPresentacion(presentacion));
+		response.getPayload().add(presentacionService.crearPresentacion(present));
 		response.setMensaje("Presentacion creada");
 
 		return ResponseEntity.ok(response);
