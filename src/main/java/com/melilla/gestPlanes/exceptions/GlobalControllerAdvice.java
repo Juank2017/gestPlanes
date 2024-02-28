@@ -20,6 +20,7 @@ import com.melilla.gestPlanes.exceptions.exceptions.ConvertStringToDateException
 import com.melilla.gestPlanes.exceptions.exceptions.DestinoNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.DocumentCreationException;
 import com.melilla.gestPlanes.exceptions.exceptions.DocumentoNotFoundException;
+import com.melilla.gestPlanes.exceptions.exceptions.EquipoCreationException;
 import com.melilla.gestPlanes.exceptions.exceptions.EquipoNoEncontradoException;
 import com.melilla.gestPlanes.exceptions.exceptions.ExpedienteNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.MyFileNotFoundException;
@@ -60,7 +61,7 @@ public class GlobalControllerAdvice extends ResponseEntityExceptionHandler {
 		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(apiError);
 	}
 
-	@ExceptionHandler({ BadCredentialsException.class,TrabajadorNoEsJefeException.class, NumberFormatException.class, TrabajadorYaContratadoException.class,ComponenteEquipoDuplicadoException.class })
+	@ExceptionHandler({ BadCredentialsException.class,EquipoCreationException.class,TrabajadorNoEsJefeException.class, NumberFormatException.class, TrabajadorYaContratadoException.class,ComponenteEquipoDuplicadoException.class })
 	public ResponseEntity<ApiError> handleBadRequest(Exception ex) {
 		ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, ex.getMessage());
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiError);

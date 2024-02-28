@@ -114,7 +114,7 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 		
 		
 		
-		if(existeTrabajadorEnEstadoContratado(trabajador.getDNI())) {
+		if(trabajador.getEstado().equals("CONTRATADO/A") && existeTrabajadorEnEstadoContratado(trabajador.getDNI())) {
 			throw new TrabajadorYaContratadoException("El trabajador con DNI "+trabajador.getDNI()+ " ya aparece en estado contratado.");
 		}
 		
@@ -342,7 +342,11 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 				}
 				
 				if(contrato.getOcupacion() != null) {
-					if (trabajador.getOcu() != contrato.getOcupacion().getIdOcupacion()) {
+					long nuevaOcu = trabajador.getOcu();
+					long ocuBBDD = contrato.getOcupacion().getIdOcupacion();
+					if (nuevaOcu != ocuBBDD) {
+						log.warning((trabajador.getOcu() != contrato.getOcupacion().getIdOcupacion())+ " " );
+						log.warning(trabajador.getOcu()+ " "+contrato.getOcupacion().getIdOcupacion());
 						if(contrato.getOcupacion().getIdOcupacion()== 983) ciudadano.setEsJefeEquipo(false);
 						if(trabajador.getOcu() == 983) {
 							ciudadano.setEsJefeEquipo(true);
@@ -422,6 +426,9 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 					contratoRepository.save(contrato);
 				}
 			}else {
+				if(modificaEstadoDTO.getEstado().equals("CONTRATADO/A")) {
+					if(existeTrabajadorEnEstadoContratado(modificaEstadoDTO.getDni())) continue;
+				}
 				trabajador.setEstado(modificaEstadoDTO.getEstado());
 			}
 			

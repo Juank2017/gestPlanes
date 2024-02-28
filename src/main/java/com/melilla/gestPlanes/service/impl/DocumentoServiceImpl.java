@@ -158,11 +158,11 @@ public class DocumentoServiceImpl implements DocumentoService {
 			apellido = ciudadano.getApellido1().replace(" ","_");
 			// forma el nombre de la capeta con apellidos_nombre
 			nombreCarpeta = estado + ocupacion + apellido  + "_" + ciudadano.getApellido2() + "_"
-					+ ciudadano.getNombre() + "\\" + tipo;
+					+ ciudadano.getNombre();
 		} else {
 
 			nombreCarpeta = estado + apellido + "_" + ciudadano.getApellido2() + "_"
-					+ ciudadano.getNombre() + "\\" + tipo;
+					+ ciudadano.getNombre();
 		}
 
 		// obtiene el path absoluto debe ser S:\PLANES DE
@@ -270,12 +270,12 @@ public class DocumentoServiceImpl implements DocumentoService {
 		Documento doc = documentoRepository.findById(idDocumento)
 				.orElseThrow(() -> new DocumentoNotFoundException(idDocumento));
 		//obtiene el apellido y sustituye los espacios por _
-		apellido = ciudadano.getApellido1().replace(" ","_");
+		apellido =(ciudadano.getApellido1()!= null)? ciudadano.getApellido1().replace(" ","_"):"null";
 		estado = ciudadano.getEstado().replace("/", "_") + "\\";
 		Ocupacion ocupacionCiudadano = ciudadano.getContrato().getOcupacion();
 		String ocupacion = ocupacionCiudadano.getOcupacion().replace(" ", "_") + "\\";
 		String nombreCarpeta = estado + ocupacion + ciudadano.getApellido1() + "_" + ciudadano.getApellido2() + "_"
-				+ ciudadano.getNombre() + "\\" + doc.getTipo() + "\\";
+				+ ciudadano.getNombre()+"\\";
 		try {
 			Path fileStorageLocation = Paths.get(uploadDir + nombreCarpeta + filename).toAbsolutePath().normalize();
 			log.info(fileStorageLocation.toString());
@@ -330,7 +330,7 @@ public class DocumentoServiceImpl implements DocumentoService {
 				Ocupacion ocupacionCiudadano = ciudadano.getContrato().getOcupacion();
 				String ocupacion = ocupacionCiudadano.getOcupacion().replace(" ", "_") + "\\";
 				String nombreCarpeta = estado + ocupacion + ciudadano.getApellido1() + "_" + ciudadano.getApellido2() + "_"
-						+ ciudadano.getNombre() + "\\" + doc.getTipo() + "\\";
+						+ ciudadano.getNombre()+"\\";
 				try {
 					Path fileStorageLocation = Paths.get(uploadDir + nombreCarpeta + filename).toAbsolutePath().normalize();
 					log.info(fileStorageLocation.toString());
@@ -539,6 +539,7 @@ public class DocumentoServiceImpl implements DocumentoService {
 
 				formulario.getField("C801").setValue("MELILLA");
 
+				formulario.getField("P11CV1").setValue("Sí");
 				formulario.getField("P11BO1").setValue("Elección2");
 				formulario.getField("P11BO2").setValue("Elección2");
 				formulario.getField("P1108").setValue(
@@ -557,7 +558,7 @@ public class DocumentoServiceImpl implements DocumentoService {
 
 				// nombre del fichero
 				String nombreFichero = trabajador.getApellido1() + "_" + trabajador.getApellido2() + "_"
-						+ trabajador.getNombre() + "_" + trabajador.getDNI() + ".pdf";
+						+ trabajador.getNombre() + "_" + trabajador.getDNI() + "_CONTRATO.pdf";
 
 				// carpeta
 				// ocupacion del ciudadano
@@ -567,7 +568,7 @@ public class DocumentoServiceImpl implements DocumentoService {
 				String estado = trabajador.getEstado().replace("/", "_") +"\\";
 				// forma el nombre de la capeta con apellidos_nombre
 				String nombreCarpeta = estado + ocupacion + trabajador.getApellido1() + "_" + trabajador.getApellido2() + "_"
-						+ trabajador.getNombre() + "\\CONTRATO";
+						+ trabajador.getNombre();
 				// obtiene el path absoluto debe ser S:\PLANES DE
 				// EMPLEO\ocupacion\apellidos_nombre
 				Path fileStorageLocation = Paths.get(uploadDir + nombreCarpeta).toAbsolutePath().normalize();
@@ -827,7 +828,7 @@ public class DocumentoServiceImpl implements DocumentoService {
 				formulario.getField("vacaciones").setValue(presentacion.getVacaciones());
 				formulario.getField("observaciones").setValue(presentacion.getObservaciones());
 				formulario.getField("categoria").setValue(contrato.getCategoria().getCategoria());
-				formulario.getField("destino").setValue(contrato.getDestino().getDestino());
+				formulario.getField("destino").setValue(contrato.getEntidad().getNombreCortoOrganismo()+ " / " + contrato.getDestino().getDestino());
 				
 				formulario.flatten();
 
@@ -843,7 +844,7 @@ public class DocumentoServiceImpl implements DocumentoService {
 				String estado = trabajador.getEstado().replace("/", "_") +"\\";
 				// forma el nombre de la capeta con apellidos_nombre
 				String nombreCarpeta = estado + ocupacion + trabajador.getApellido1() + "_" + trabajador.getApellido2() + "_"
-						+ trabajador.getNombre() + "\\PRESENTACION";
+						+ trabajador.getNombre();
 				// obtiene el path absoluto debe ser S:\PLANES DE
 				// EMPLEO\ocupacion\apellidos_nombre
 				Path fileStorageLocation = Paths.get(uploadDir + nombreCarpeta).toAbsolutePath().normalize();

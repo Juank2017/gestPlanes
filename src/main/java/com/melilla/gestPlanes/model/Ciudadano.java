@@ -126,6 +126,9 @@ public class Ciudadano {
 	
 	private boolean esJefeEquipo;
 	
+	private boolean cupo;
+	private boolean vg;
+	
 	@CreatedDate
 	private LocalDateTime createdAt;
 	

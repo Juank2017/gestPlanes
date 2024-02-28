@@ -3,12 +3,14 @@ package com.melilla.gestPlanes.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.melilla.gestPlanes.DTO.CreateEquipoDTO;
 import com.melilla.gestPlanes.DTO.EditaEquipoDTO;
 import com.melilla.gestPlanes.exceptions.exceptions.CiudadanoNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.ComponenteEquipoDuplicadoException;
+import com.melilla.gestPlanes.exceptions.exceptions.EquipoCreationException;
 import com.melilla.gestPlanes.exceptions.exceptions.EquipoNoEncontradoException;
 import com.melilla.gestPlanes.exceptions.exceptions.TrabajadorNoEsJefeException;
 import com.melilla.gestPlanes.model.Ciudadano;
@@ -18,6 +20,7 @@ import com.melilla.gestPlanes.repository.EquipoRepository;
 import com.melilla.gestPlanes.service.EquipoService;
 import com.melilla.gestPlanes.service.PlanService;
 
+import jakarta.persistence.NonUniqueResultException;
 import lombok.Data;
 import lombok.extern.java.Log;
 
@@ -45,27 +48,33 @@ public class EquipoServiceImpl implements EquipoService {
 	public Equipo crearEquipo(CreateEquipoDTO equipo) {
 
 		Equipo e = new Equipo();
+		try {
+			e.setNombreEquipo(equipo.getNombreEquipo());
+			if (equipo.getDNI() != null) {
+				Ciudadano jefe = ciudadanoRepository.findByEstadoAndDNI("CONTRATADO/A", equipo.getDNI());
+				if (jefe == null) {
+					throw new CiudadanoNotFoundException(1l);
 
-		e.setNombreEquipo(equipo.getNombreEquipo());
-		if (equipo.getDNI() != null) {
-			Ciudadano jefe = ciudadanoRepository.findByEstadoAndDNI("CONTRATADO/A", equipo.getDNI());
-			if (jefe == null) {
-				throw new CiudadanoNotFoundException(1l);
-
-			} else {
-				if (!jefe.isEsJefeEquipo()) {
-					throw new TrabajadorNoEsJefeException(
-							"El trabajador con DNI: " + equipo.getDNI() + " no es Jefe de equipo");
 				} else {
-					e.setJefeEquipo(jefe);
+					if (!jefe.isEsJefeEquipo()) {
+						throw new TrabajadorNoEsJefeException(
+								"El trabajador con DNI: " + equipo.getDNI() + " no es Jefe de equipo");
+					} else {
+						e.setJefeEquipo(jefe);
+					}
 				}
+			} else {
+				e.setJefeEquipo(null);
 			}
-		} else {
-			e.setJefeEquipo(null);
-		}
 
-		e.setIdPlan(planService.getPlanActivo());
-		return equipoRepository.save(e);
+			e.setIdPlan(planService.getPlanActivo());
+			return equipoRepository.save(e);
+		} catch (IncorrectResultSizeDataAccessException e2) {
+			log.warning(e2.getMessage());
+			throw new EquipoCreationException("No se ha podido crear. El DNI aparece en la BBDD más de una vez en estado CONTRATADO/A");
+		}
+		
+	
 	}
 
 	@Override
