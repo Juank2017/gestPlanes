@@ -28,5 +28,7 @@ public interface CiudadanoRepository extends JpaRepository<Ciudadano, Long> ,Rev
 	 List<Ciudadano> findByContratoEntidadIdOrganismoAndContratoOcupacionIdOcupacionAndEstadoIn(Long idOrganismo,Long idOcupacion,List<String>estados);
 	 
 	 Ciudadano findByEstadoAndDNI(String estado, String DNI);
+	 
+	 List<Ciudadano>findAllByPeriodosVacacionesIsNotNullAndIdPlanIdPlan(Long idPlan);
 }
 

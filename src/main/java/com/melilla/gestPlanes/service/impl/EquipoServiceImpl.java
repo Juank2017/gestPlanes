@@ -1,5 +1,6 @@
 package com.melilla.gestPlanes.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.melilla.gestPlanes.DTO.CreateEquipoDTO;
 import com.melilla.gestPlanes.DTO.EditaEquipoDTO;
+import com.melilla.gestPlanes.DTO.EquipoResponseDTO;
 import com.melilla.gestPlanes.exceptions.exceptions.CiudadanoNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.ComponenteEquipoDuplicadoException;
 import com.melilla.gestPlanes.exceptions.exceptions.EquipoCreationException;
@@ -39,9 +41,34 @@ public class EquipoServiceImpl implements EquipoService {
 	private PlanService planService;
 
 	@Override
-	public List<Equipo> equipos(Long idPlan) {
+	public List<EquipoResponseDTO> equipos(Long idPlan) {
 
-		return equipoRepository.findAllByIdPlanIdPlan(idPlan);
+		List<EquipoResponseDTO> listEquipos = new ArrayList<EquipoResponseDTO>();
+		List<Equipo> equipos = equipoRepository.findAllByIdPlanIdPlan(idPlan);
+		
+		for (Equipo equipo : equipos) {
+			
+			EquipoResponseDTO eq = new EquipoResponseDTO();
+			
+			eq.setIdEquipo(equipo.getIdEquipo());
+			eq.setNombreEquipo(equipo.getNombreEquipo());
+			eq.setNombreJefe(equipo.getJefeEquipo().getNombre());
+			eq.setApellido1Jefe(equipo.getJefeEquipo().getApellido1());
+			eq.setApellido2Jefe(equipo.getJefeEquipo().getApellido2());
+			eq.setDNIJefe(equipo.getJefeEquipo().getDNI());
+			eq.setTelefonoJefe(equipo.getJefeEquipo().getTelefono());
+			eq.setComponentes(equipo.getComponentes());
+			
+			listEquipos.add(eq);
+			
+			
+			
+		}
+		
+		
+		
+		
+		return listEquipos;
 	}
 
 	@Override

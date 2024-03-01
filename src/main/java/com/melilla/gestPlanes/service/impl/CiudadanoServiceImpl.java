@@ -140,13 +140,7 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 						:false)
 				.build());
 		
-//			if(trabajador.getOcu() != null && trabajador.getOcu() == 983) {
-//				Equipo equipo = new Equipo();
-//				equipo.setNombreEquipo(trabajador.getNombre()+" "+trabajador.getApellido1());
-//				equipo.setJefeEquipo(nuevoCiudadano);
-//				equipo.setIdPlan(planService.getPlanActivo());
-//				equipoService.crearEquipo(equipo); 
-//			}
+
 
 			
 			Contrato nuevoContrato = contratoRepository
@@ -172,7 +166,7 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 							.ciudadano(nuevoCiudadano).build());
 		
 
-		// log.info(nuevoContrato.toString());
+		
 
 		return nuevoCiudadano;
 	}
@@ -351,9 +345,17 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 						if(trabajador.getOcu() == 983) {
 							ciudadano.setEsJefeEquipo(true);
 							ciudadano.setEquipo(null);
+						}else {
+							ciudadano.setEsJefeEquipo(false);
 						}
 						Ocupacion ocupacion = ocupacionRepository.findById(trabajador.getOcu()).orElseThrow(()->new OcupacionNotFoundException(trabajador.getOcu()));
 						contrato.setOcupacion(ocupacion);	
+						}else {
+							if (contrato.getOcupacion().getIdOcupacion() == 983) 
+							{
+								ciudadano.setEsJefeEquipo(true);
+								}else ciudadano.setEsJefeEquipo(false);
+							
 						}
 				}else {
 					if(trabajador.getOcu() != null) {
@@ -517,6 +519,12 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 	public boolean existeTrabajadorEnEstadoContratado(String DNI) {
 		
 		return (ciudadanoRepository.findAllByDNIAndEstado(DNI, "CONTRATADO/A").size()>0)?true:false ;
+	}
+
+	@Override
+	public List<Ciudadano> trabajadoresConVacaciones(Long idPlan) {
+		
+		return ciudadanoRepository.findAllByPeriodosVacacionesIsNotNullAndIdPlanIdPlan(idPlan);
 	}
 	
 	

@@ -402,12 +402,13 @@ public class DocumentoServiceImpl implements DocumentoService {
 		List<GeneraContratoResponseDTO> listaContratosGenerados = new ArrayList<>();
 
 		try {
+			log.warning("Inicia genera contrato");
 			// carga el fichero de la plantilla de resources
 			Resource classPahtResource = resourceLoader.getResource("classpath:" + plantillaContrato);
 			File plantilla = classPahtResource.getFile();
 
 			for (GeneraContratoDTO generaContratoDTO : trabajadores) {
-
+				log.warning("Inicio Genera contrato: "+generaContratoDTO.getId());
 				// Carga el trabajador
 				Ciudadano trabajador = ciudadanoRepository.findById(generaContratoDTO.getId())
 						.orElseThrow(() -> new CiudadanoNotFoundException(generaContratoDTO.getId()));
@@ -572,7 +573,7 @@ public class DocumentoServiceImpl implements DocumentoService {
 				// obtiene el path absoluto debe ser S:\PLANES DE
 				// EMPLEO\ocupacion\apellidos_nombre
 				Path fileStorageLocation = Paths.get(uploadDir + nombreCarpeta).toAbsolutePath().normalize();
-				// log.info(fileStorageLocation.toString());
+				 log.info(fileStorageLocation.toString());
 				// Intenta crear el directorio si no existe.
 				try {
 					Files.createDirectories(fileStorageLocation);
@@ -588,9 +589,10 @@ public class DocumentoServiceImpl implements DocumentoService {
 				}else {
 					contratoParaGuardar= fileStorageLocation + "\\" +nombreFichero;
 				};
-				
+				log.warning("Genera contrato guardando el pdf a disco: "+generaContratoDTO.getId());
 				nuevoContrato.save(contratoParaGuardar);
 				nuevoContrato.close();
+				log.warning("Genera contrato guardado el pdf a disco: "+generaContratoDTO.getId());
 				String fileDownladUri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/descargaDocumento/")
 						.path(nombreFichero).toUriString();
 
@@ -613,7 +615,7 @@ public class DocumentoServiceImpl implements DocumentoService {
 
 				trabajador.getDocumentos().add(documento);
 				ciudadanoService.crearCiudadano(trabajador);
-
+				log.warning("fin Genera contrato: "+generaContratoDTO.getId());
 			}
 
 		} catch (Exception e) {

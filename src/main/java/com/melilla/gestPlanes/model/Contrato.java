@@ -96,9 +96,7 @@ public class Contrato {
 	
 	private int diasVacaciones;
 	
-	@NotAudited
-	@OneToMany(mappedBy = "contrato" , cascade= CascadeType.ALL)
-	private List<Vacaciones> periodosVacaciones;
+	
 	
 	@JsonBackReference
 	@OneToOne

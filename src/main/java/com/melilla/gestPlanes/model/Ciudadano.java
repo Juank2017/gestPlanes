@@ -120,6 +120,10 @@ public class Ciudadano {
 	@NotAudited
 	private Plan idPlan;
 	
+	@NotAudited
+	@OneToMany(mappedBy = "ciudadano" , cascade= CascadeType.ALL)
+	private List<Vacaciones> periodosVacaciones;
+	
 	@JsonManagedReference
 	@OneToMany(mappedBy = "ciudadano", cascade = CascadeType.ALL)
 	private List<Documento> documentos= new ArrayList<Documento>();

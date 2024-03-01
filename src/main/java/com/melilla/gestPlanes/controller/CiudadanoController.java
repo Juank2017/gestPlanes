@@ -158,5 +158,15 @@ public class CiudadanoController {
 
 		return ResponseEntity.ok(response);
 	}
+	
+	@GetMapping("/trabajadoresConVacaciones/{idPlan}")
+	public ResponseEntity<ApiResponse>trabajadoresConVacaciones(@PathVariable Long idPlan){
+		ApiResponse response = new ApiResponse();
+
+		response.getPayload().addAll(ciudadanoService.trabajadoresConVacaciones(idPlan));
+		response.setMensaje("Listado de vacantes");
+
+		return ResponseEntity.ok(response);
+	}
 
 }

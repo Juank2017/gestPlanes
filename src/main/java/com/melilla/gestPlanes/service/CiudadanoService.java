@@ -45,4 +45,6 @@ public interface CiudadanoService {
 	VacantesResponseDTO vacantesOrganismoOcupacion(Long idOrganismo,Long idOcupacion);
 	
 	List<VacantesResponseDTO>listadoVacantes();
+	
+	List<Ciudadano>trabajadoresConVacaciones(Long idPlan);
 }
