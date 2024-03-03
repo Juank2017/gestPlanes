@@ -10,5 +10,6 @@ public class AltaVacacionesDTO {
 	Long idCiudadano;
 	LocalDate fechaInicio;
 	LocalDate fechaFinal;
+	//int dias;
 	
 }

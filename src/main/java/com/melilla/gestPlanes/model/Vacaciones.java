@@ -26,7 +26,7 @@ import lombok.Data;
 @Data
 @Entity
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "idVacaciones")
-@SQLDelete(sql = "UPDATE vacaciones SET deleted=true, deleted_at= NOW() WHERE idVacaciones=?")
+@SQLDelete(sql = "UPDATE vacaciones SET deleted=true, deleted_at= NOW() WHERE id_vacaciones=?")
 @EntityListeners(AuditingEntityListener.class)
 public class Vacaciones {
 
