@@ -50,7 +50,7 @@ public class VacacionesServiceImpl implements VacacionesService {
 		nuevoPeriodo.setFechaInicio(periodo.getFechaInicio());
 		nuevoPeriodo.setFechaFin(periodo.getFechaFinal());
 		nuevoPeriodo.setIdPlan(planService.getPlanActivo());
-		nuevoPeriodo.setDias((int)ChronoUnit.DAYS.between(periodo.getFechaFinal(), periodo.getFechaInicio()));
+		nuevoPeriodo.setDias((int)(ChronoUnit.DAYS.between( periodo.getFechaInicio(),periodo.getFechaFinal())+1));
 		
 		
 		
