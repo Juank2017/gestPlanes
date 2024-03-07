@@ -34,7 +34,7 @@ public class NotaCiudadano {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long idNota;
 	
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", locale = "es_ES" )
+	//@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", locale = "es_ES" )
 	private LocalDate fechaNota;
 	
 	private String asunto;
