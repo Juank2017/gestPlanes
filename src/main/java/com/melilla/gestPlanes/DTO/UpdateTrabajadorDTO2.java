@@ -41,5 +41,6 @@ public class UpdateTrabajadorDTO2 {
 	boolean bajaMaternal;
 	boolean esJefeEquipo;
 	Long equipo;
+	String nacionalidad;
 
 }

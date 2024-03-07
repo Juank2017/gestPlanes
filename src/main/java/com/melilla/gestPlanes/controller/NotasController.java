@@ -43,7 +43,19 @@ public class NotasController {
 		response.setEstado(HttpStatus.OK);
 		notasService.borraNota(idNota);
 		response.getPayload().addAll(notasService.notasTrabajador(idCiudadano));
-		response.setMensaje("Notas trabajador");
+		response.setMensaje("Nota eliminada");
+		
+		return ResponseEntity.ok(response);
+	}
+	
+	@GetMapping("/nota/{idNota}")
+	ResponseEntity<ApiResponse>nota(@PathVariable Long idNota){
+		ApiResponse response  = new ApiResponse();
+		
+		response.setEstado(HttpStatus.OK);
+		
+		response.getPayload().add(notasService.nota(idNota));
+		response.setMensaje("Nota");
 		
 		return ResponseEntity.ok(response);
 	}

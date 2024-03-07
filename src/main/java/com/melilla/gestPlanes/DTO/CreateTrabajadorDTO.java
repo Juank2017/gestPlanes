@@ -37,5 +37,6 @@ public class CreateTrabajadorDTO {
 	String residencia;
 	String total;
 	Long equipo;
+	String nacionalidad;
 
 }

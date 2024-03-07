@@ -84,6 +84,8 @@ public class Ciudadano {
 	
 	private String telefono;
 	
+	private String nacionalidad;
+	
 	boolean bajaLaboral;
 	
 	boolean bajaMaternal;

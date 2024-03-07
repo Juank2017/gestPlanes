@@ -506,7 +506,7 @@ public class DocumentoServiceImpl implements DocumentoService {
 				formulario.getField("AA0403-FE").setValue(fechaNacimiento);
 				formulario.getField("AA0404-E12").setValue(trabajador.getSeguridadSocial().replaceAll("/", ""));
 				formulario.getField("AA0405").setValue(contrato.getCategoria().getCategoria());
-				formulario.getField("AA0407").setValue("ESPAÑOLA");
+				formulario.getField("AA0407").setValue(trabajador.getNacionalidad());
 				formulario.getField("AA0409").setValue("MELILLA");
 				formulario.getField("AA0410-E5").setValue("52001");
 				formulario.getField("AA0411").setValue("ESPAÑA");
@@ -533,8 +533,7 @@ public class DocumentoServiceImpl implements DocumentoService {
 
 				formulario.getField("C401").setValue(contrato.getTotal());
 				formulario.getField("C402").setValue("MENSUALES");
-//				formulario.getField("C403").setValue("Salario base: " + contrato.getBase() + "€, prorata extra: "
-//						+ contrato.getProrratas() + "€, residencia: " + contrato.getResidencia() + "€");
+				formulario.getField("C403").setValue(" Salario base, prorrata de las pagas extras e indemnización por residencia");
 
 				formulario.getField("C501").setValue("30 DÍAS NATURALES EN UN PERÍODO DE UN AÑO");
 

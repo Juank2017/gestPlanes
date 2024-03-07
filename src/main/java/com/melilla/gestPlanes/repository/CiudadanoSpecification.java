@@ -133,6 +133,10 @@ public class CiudadanoSpecification implements Specification<Ciudadano> {
 			likePredicate = builder.like(root.get("estado"), "%" + criteria.getValue() + "%");
 			break;	
 		}
+		case "nacionalidad":{
+			likePredicate = builder.like(root.get("nacionalidad"), "%" + criteria.getValue() + "%");
+			break;	
+		}
 //		default:
 	//		likePredicate = builder.like(root.<String>get(criteria.getId()), "%" + criteria.getValue() + "%");
 		}

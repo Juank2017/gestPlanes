@@ -127,6 +127,7 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 				.idPlan(planService.getPlanActivo()).fechaRegistro(trabajador.getFechaRegistro())
 				.fechaNacimiento(trabajador.getFechaNacimiento()).estado(trabajador.getEstado())
 				.numeroOrdenSepe(trabajador.getNumeroOrdenSepe())
+				.nacionalidad(trabajador.getNacionalidad())
 				.bajaLaboral(false)
 				.bajaMaternal(false)
 				.equipo(
@@ -241,6 +242,7 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 		ciudadano.setApellido2(trabajador.getApellido2());
 		ciudadano.setDNI(trabajador.getDNI());
 		ciudadano.setEmail(trabajador.getEmail());
+		ciudadano.setNacionalidad(trabajador.getNacionalidad());
 		if(!trabajador.getEstado().equals(ciudadano.getEstado())) {
 			if(trabajador.getEstado().equals("CONTRATADO/A")) {
 				if(existeTrabajadorEnEstadoContratado(trabajador.getDNI())) {
@@ -412,7 +414,7 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 			
 			Ciudadano trabajador = ciudadanoRepository.findById(modificaEstadoDTO.getIdCiudadano()).orElseThrow(()->new CiudadanoNotFoundException(modificaEstadoDTO.getIdCiudadano()));
 			
-			if(modificaEstadoDTO.getEstado().contains("FINALIZADO/A")) {
+			if(modificaEstadoDTO.getEstado().contains("FINALIZADO/A") || modificaEstadoDTO.getEstado().contains("RENUNCIA") || modificaEstadoDTO.getEstado().contains("DESPEDIDO/A") ) {
 				trabajador.setEstado(modificaEstadoDTO.getEstado());
 				if(trabajador.getContrato() != null) {
 					Contrato contrato = trabajador.getContrato();
