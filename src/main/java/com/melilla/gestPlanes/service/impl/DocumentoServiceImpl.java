@@ -533,9 +533,9 @@ public class DocumentoServiceImpl implements DocumentoService {
 
 				formulario.getField("C401").setValue(contrato.getTotal());
 				formulario.getField("C402").setValue("MENSUALES");
-				formulario.getField("C403").setValue(" Salario base, prorrata de las pagas extras e indemnización por residencia");
+				formulario.getField("C403").setValue(" SALARIO BASE + P.P.P.E + INDEMNIZACIÓN DE RESIDENCIA");
 
-				formulario.getField("C501").setValue("30 DÍAS NATURALES EN UN PERÍODO DE UN AÑO");
+				formulario.getField("C501").setValue("30 DÍAS NATURALES");
 
 				formulario.getField("C801").setValue("MELILLA");
 
