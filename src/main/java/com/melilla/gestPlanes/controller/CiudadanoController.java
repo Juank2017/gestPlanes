@@ -40,7 +40,7 @@ public class CiudadanoController {
 	private CiudadanoService ciudadanoService;
 
 	@PostMapping("/ciudadanos")
-	public ResponseEntity<ApiResponse> getCiudadanos(
+	public Page<Ciudadano> getCiudadanos(
 
 			@RequestBody CiudadanoOrdenBusqueda ordenBusqueda) {
 
@@ -72,9 +72,45 @@ public class CiudadanoController {
 
 		response.setMensaje("Lista de ciudadanos");
 
-		return ResponseEntity.ok(response);
+		return respuesta;
 
 	}
+//	@PostMapping("/ciudadanos")
+//	public ResponseEntity<ApiResponse> getCiudadanos(
+//
+//			@RequestBody CiudadanoOrdenBusqueda ordenBusqueda) {
+//
+//		ApiResponse response = new ApiResponse();
+//		log.info(ordenBusqueda.toString());
+//
+//		Sort sort1 = null;
+//		List<Order> orders = new ArrayList<>();
+//
+////		for (Map.Entry<String, String> o : order.entrySet()) {
+////			String campo = o.getKey();
+////			String direccion = o.getValue();
+////			Order orden= null;
+////			
+////			if (direccion.equals("asc")){
+////			 orden = Order.asc(campo);
+////			}else {
+////			 orden= Order.desc(campo);
+////			}
+////			
+////			orders.add(orden);
+////		}
+//		sort1 = Sort.by(orders);
+//
+//		response.setEstado(HttpStatus.OK);
+//		Page<Ciudadano> respuesta = ciudadanoService.getTrabajadores(ordenBusqueda);
+//
+//		response.getPayload().add(respuesta);
+//
+//		response.setMensaje("Lista de ciudadanos");
+//
+//		return ResponseEntity.ok(response);
+//
+//	}
 
 	@GetMapping("/ciudadano/{idCiudadano}")
 	public ResponseEntity<ApiResponse> obtenerCiudadano(@PathVariable Long idCiudadano) {

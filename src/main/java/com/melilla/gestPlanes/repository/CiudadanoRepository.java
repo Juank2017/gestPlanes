@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.history.RevisionRepository;
 
 import com.melilla.gestPlanes.model.Ciudadano;
@@ -30,5 +31,8 @@ public interface CiudadanoRepository extends JpaRepository<Ciudadano, Long> ,Rev
 	 Ciudadano findByEstadoAndDNI(String estado, String DNI);
 	 
 	 List<Ciudadano>findAllByPeriodosVacacionesIsNotNullAndIdPlanIdPlan(Long idPlan);
+	 
+	 @Query("SELECT c.estado ,sum(case when c.sexo = \"HOMBRE\" then 1 else 0 end) ,sum(case when c.sexo = \"MUJER\" then 1 else 0 end) FROM Ciudadano c WHERE c.idPlan.idPlan = ?1 GROUP BY c.estado")
+	 List<Object>findAllByIdPlanIdPlanGroupByEstado(Long idPlan);
 }
 
