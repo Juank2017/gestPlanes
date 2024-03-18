@@ -27,4 +27,11 @@ public class DashBoardController {
 		return ResponseEntity.ok(response);
 	}
 	
+	@GetMapping("/dashBoard/bajas/{idPlan}")
+	ResponseEntity<ApiResponse> trabajadoresdeBaja(@PathVariable Long idPlan){
+		ApiResponse response = new ApiResponse();
+		response.getPayload().addAll(dashBoardService.trabajadoresEnBaja(idPlan));
+		
+		return ResponseEntity.ok(response);
+	}
 }
