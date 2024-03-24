@@ -58,10 +58,11 @@ public class UserController {
 	ResponseEntity<ApiResponse>getUsuario(@PathVariable Long id){
 		ApiResponse response = new ApiResponse();
 		response.setEstado(HttpStatus.OK);
-		response.getPayload().add(userService.getUser(id));
+		UserDTO user= userService.getUser(id);
+		response.getPayload().add(user);
 		
 		response.setMensaje("Obtenido usuario "+id);
-		return ResponseEntity.ok(response);
+		return ResponseEntity.ok().eTag(user.getVersion().toString()).body(response);
 	}
 	
 	@PostMapping(value= "/crearUsuario")

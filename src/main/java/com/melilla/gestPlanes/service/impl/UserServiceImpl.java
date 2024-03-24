@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import com.melilla.gestPlanes.DTO.CreateUserDTO;
 import com.melilla.gestPlanes.DTO.EditUserDTO;
 import com.melilla.gestPlanes.DTO.UserDTO;
+import com.melilla.gestPlanes.exceptions.exceptions.DataStaleException;
 import com.melilla.gestPlanes.exceptions.exceptions.UserNotFoundException;
 import com.melilla.gestPlanes.model.Role;
 import com.melilla.gestPlanes.model.User;
@@ -98,10 +99,10 @@ public class UserServiceImpl implements UserService {
 	public User updateUser(EditUserDTO user) {
 		
 		User usuario = userRepository.findById(user.getId()).orElseThrow(()->new UserNotFoundException("usuario no encontrado"));
-		
+		if (user.getVersion() != usuario.getVersion()) throw new DataStaleException();
 		usuario.setUserName(user.getUserName());
 		usuario.setActive(user.isEnabled());
-		
+		usuario.setVersion(user.getVersion());
 		
 		List<Role> roles = new ArrayList<Role>();
 		try {

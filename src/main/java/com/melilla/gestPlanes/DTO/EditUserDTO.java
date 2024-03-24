@@ -14,4 +14,5 @@ public class EditUserDTO {
 	private String roles;
 	private Long id;
 	private boolean deleted;
+	private Long version;
 }

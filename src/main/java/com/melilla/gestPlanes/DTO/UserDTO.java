@@ -19,5 +19,7 @@ public interface UserDTO {
 	boolean isDeleted();
 
 	Collection<Role> getRoles();
+	
+	Long getVersion();
 
 }

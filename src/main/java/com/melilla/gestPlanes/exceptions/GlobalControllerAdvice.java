@@ -17,6 +17,7 @@ import com.melilla.gestPlanes.exceptions.exceptions.CategoriaNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.CiudadanoNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.ComponenteEquipoDuplicadoException;
 import com.melilla.gestPlanes.exceptions.exceptions.ConvertStringToDateException;
+import com.melilla.gestPlanes.exceptions.exceptions.DataStaleException;
 import com.melilla.gestPlanes.exceptions.exceptions.DestinoNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.DocumentCreationException;
 import com.melilla.gestPlanes.exceptions.exceptions.DocumentoNotFoundException;
@@ -45,6 +46,14 @@ public class GlobalControllerAdvice extends ResponseEntityExceptionHandler {
 		return ResponseEntity.status(status).headers(headers).body(apiError);
 	}
 
+
+	@ExceptionHandler({ DataStaleException.class })
+	public ResponseEntity<ApiError> handleDataStaleError(Exception e) {
+		ApiError apiError = new ApiError(HttpStatus.PRECONDITION_FAILED, e.getMessage());
+		return ResponseEntity.status(HttpStatus.PRECONDITION_FAILED).body(apiError);
+	}
+	
+	
 	@ExceptionHandler({ AccessDeniedException.class })
 	public ResponseEntity<Object> handleAccessDeniedException(Exception ex, WebRequest request) {
 		return new ResponseEntity<Object>("Access denied message here", new HttpHeaders(), HttpStatus.UNAUTHORIZED);
