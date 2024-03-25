@@ -29,6 +29,7 @@ import com.melilla.gestPlanes.exceptions.exceptions.NotaNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.OcupacionNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.OrganismoNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.PlanNotFoundException;
+import com.melilla.gestPlanes.exceptions.exceptions.SalarioNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.FileStorageException;
 import com.melilla.gestPlanes.exceptions.exceptions.TokenRefreshException;
 import com.melilla.gestPlanes.exceptions.exceptions.TrabajadorNoEsJefeException;
@@ -94,7 +95,7 @@ public class GlobalControllerAdvice extends ResponseEntityExceptionHandler {
 	@ExceptionHandler({ NotaNotFoundException.class, DocumentoNotFoundException.class, OcupacionNotFoundException.class,
 			CategoriaNotFoundException.class, DestinoNotFoundException.class, OrganismoNotFoundException.class,
 			ExpedienteNotFoundException.class, CiudadanoNotFoundException.class, MyFileNotFoundException.class,
-			PlanNotFoundException.class, UserNotFoundException.class, RoleNotFoundException.class, EquipoNoEncontradoException.class })
+			PlanNotFoundException.class, UserNotFoundException.class, RoleNotFoundException.class, EquipoNoEncontradoException.class, SalarioNotFoundException.class })
 	public ResponseEntity<ApiError> handleNoEncontrado(Exception ex) {
 		ApiError apiError = new ApiError(HttpStatus.NOT_FOUND, ex.getMessage());
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(apiError);

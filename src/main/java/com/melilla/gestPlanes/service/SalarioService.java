@@ -7,5 +7,7 @@ import com.melilla.gestPlanes.model.Salario;
 public interface SalarioService {
 	
 	List<Salario>obtenerSalarios(Long idPlan);
+	
+	List<Salario>actualizaSalario(Salario salario);
 
 }
