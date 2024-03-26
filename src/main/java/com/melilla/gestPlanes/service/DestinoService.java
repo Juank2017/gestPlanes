@@ -11,4 +11,7 @@ public interface DestinoService {
 	boolean existeDestino(String destino,Long idOrganismo);
 	
 	Destino crearDestino(Long idOrganismo,String destino);
+	
+	List<Destino> actualizarDestino(Destino destino);
+	
 }

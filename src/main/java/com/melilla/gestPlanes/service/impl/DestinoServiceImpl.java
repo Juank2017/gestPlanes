@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.melilla.gestPlanes.exceptions.exceptions.DestinoNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.OrganismoNotFoundException;
 import com.melilla.gestPlanes.model.Destino;
 import com.melilla.gestPlanes.model.Organismo;
@@ -49,6 +50,15 @@ public class DestinoServiceImpl implements DestinoService{
 		
 		
 		return destinoRepository.save(nuevoDestino);
+	}
+
+	@Override
+	public List<Destino> actualizarDestino(Destino destino) {
+		Destino destinoBBDD = destinoRepository.findById(destino.getIdDestino()).orElseThrow(()->new DestinoNotFoundException(destino.getIdDestino()));
+		
+		destinoBBDD.setDestino(destino.getDestino());
+		destinoRepository.save(destinoBBDD);
+		return destinoRepository.findAllByIdOrganismoIdOrganismoOrderByDestinoAsc(destinoBBDD.getIdOrganismo().getIdOrganismo());
 	}
 
 }

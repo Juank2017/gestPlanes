@@ -6,9 +6,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.melilla.gestPlanes.model.ApiResponse;
+import com.melilla.gestPlanes.model.Destino;
 import com.melilla.gestPlanes.service.DestinoService;
 
 import lombok.RequiredArgsConstructor;
@@ -52,6 +54,17 @@ public class DestinoController {
 		response.setEstado(HttpStatus.OK);
 		response.getPayload().add(destinoService.crearDestino(idOrganismo, destino));
 		response.setMensaje("Creado el destino "+destino);
+		
+		return ResponseEntity.ok(response);
+	}
+	
+	@PostMapping("/actualizarDestino")
+	ResponseEntity<ApiResponse>actualizarDestino(@RequestBody Destino destino){
+
+		ApiResponse response = new ApiResponse();
+		response.setEstado(HttpStatus.OK);
+		response.getPayload().addAll(destinoService.actualizarDestino(destino));
+		response.setMensaje("Actualizado el destino "+destino.getDestino());
 		
 		return ResponseEntity.ok(response);
 	}
