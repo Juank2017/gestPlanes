@@ -90,6 +90,8 @@ public class Ciudadano {
 	
 	boolean bajaMaternal;
 	
+	boolean sinClausula;
+	
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", locale = "es_ES" )
 	private LocalDate fechaRegistro;
 	

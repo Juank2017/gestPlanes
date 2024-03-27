@@ -22,7 +22,7 @@ import lombok.Data;
 
 @Entity
 @Data
-@SQLDelete(sql = "UPDATE destino SET deleted=true, deleted_at= NOW() WHERE id=?")
+@SQLDelete(sql = "UPDATE destino SET deleted=true, deleted_at= NOW() WHERE id_destino=?")
 @EntityListeners(AuditingEntityListener.class)
 public class Destino {
 	

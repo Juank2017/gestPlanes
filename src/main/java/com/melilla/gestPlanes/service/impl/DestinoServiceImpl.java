@@ -61,4 +61,11 @@ public class DestinoServiceImpl implements DestinoService{
 		return destinoRepository.findAllByIdOrganismoIdOrganismoOrderByDestinoAsc(destinoBBDD.getIdOrganismo().getIdOrganismo());
 	}
 
+	@Override
+	public void borrarDestino(Long idDestino) {
+
+		destinoRepository.deleteById(idDestino);
+		
+	}
+
 }

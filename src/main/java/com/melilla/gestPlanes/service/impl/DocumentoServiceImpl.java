@@ -111,6 +111,8 @@ public class DocumentoServiceImpl implements DocumentoService {
 
 	@Value("${file.contrato}")
 	private String plantillaContrato;
+	
+
 
 	@Value("${file.presentacion}")
 	private String plantillaPresentacion;
@@ -404,14 +406,16 @@ public class DocumentoServiceImpl implements DocumentoService {
 		try {
 			log.warning("Inicia genera contrato");
 			// carga el fichero de la plantilla de resources
+
 			Resource classPahtResource = resourceLoader.getResource("classpath:" + plantillaContrato);
 			File plantilla = classPahtResource.getFile();
-
 			for (GeneraContratoDTO generaContratoDTO : trabajadores) {
 				log.warning("Inicio Genera contrato: "+generaContratoDTO.getId());
 				// Carga el trabajador
 				Ciudadano trabajador = ciudadanoRepository.findById(generaContratoDTO.getId())
 						.orElseThrow(() -> new CiudadanoNotFoundException(generaContratoDTO.getId()));
+					
+				
 				if (trabajador.getContrato() == null)
 					continue;
 				// extrae el contrato del trabajador
@@ -529,7 +533,13 @@ public class DocumentoServiceImpl implements DocumentoService {
 
 				formulario.getField("C301_FE").setValue(fechaInicio);
 				formulario.getField("C302_FE").setValue(fechaFinal);
-				formulario.getField("C303").setValue("UN MES");
+				
+				if(!trabajador.isSinClausula()) {
+					formulario.getField("C303").setValue("UN MES");	
+				}else {
+					formulario.getField("C303").setValue("SIN PERIODO DE PRUEBA");
+				}
+				
 
 				formulario.getField("C401").setValue(contrato.getTotal());
 				formulario.getField("C402").setValue("MENSUALES");

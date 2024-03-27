@@ -77,20 +77,19 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 
 	@Autowired
 	private PlanService planService;
-	
+
 	@Autowired
 	private OcupacionRepository ocupacionRepository;
-	
+
 	@Autowired
 	private OrganismoOcupacionRepository organismoOcupacionRepository;
-	
+
 	@Autowired
 	private EquipoService equipoService;
 
 	@Value("${file.upload-dir}")
 	private String uploadDir;
-	
-	
+
 	@Override
 	public List<Ciudadano> getCiudadanos(Long idPlan) {
 
@@ -100,7 +99,7 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 	@Override
 	public Ciudadano getCiudadano(Long idCiudadano) {
 
-		return ciudadanoRepository.findById(idCiudadano).orElseThrow(()->new CiudadanoNotFoundException(idCiudadano));
+		return ciudadanoRepository.findById(idCiudadano).orElseThrow(() -> new CiudadanoNotFoundException(idCiudadano));
 	}
 
 	@Override
@@ -111,13 +110,11 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 
 	@Override
 	public Ciudadano crearTrabajador(CreateTrabajadorDTO trabajador) {
-		
-		
-		
-		if(trabajador.getEstado().equals("CONTRATADO/A") && existeTrabajadorEnEstadoContratado(trabajador.getDNI())) {
-			throw new TrabajadorYaContratadoException("El trabajador con DNI "+trabajador.getDNI()+ " ya aparece en estado contratado.");
+
+		if (trabajador.getEstado().equals("CONTRATADO/A") && existeTrabajadorEnEstadoContratado(trabajador.getDNI())) {
+			throw new TrabajadorYaContratadoException(
+					"El trabajador con DNI " + trabajador.getDNI() + " ya aparece en estado contratado.");
 		}
-		
 
 		Ciudadano nuevoCiudadano = ciudadanoRepository.save(Ciudadano.builder()
 				.nombre(trabajador.getNombre().toUpperCase()).apellido1(trabajador.getApellido1().toUpperCase())
@@ -126,48 +123,32 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 				.sexo(trabajador.getSexo()).seguridadSocial(trabajador.getSeguridadSocial())
 				.idPlan(planService.getPlanActivo()).fechaRegistro(trabajador.getFechaRegistro())
 				.fechaNacimiento(trabajador.getFechaNacimiento()).estado(trabajador.getEstado())
-				.numeroOrdenSepe(trabajador.getNumeroOrdenSepe())
-				.nacionalidad(trabajador.getNacionalidad())
-				.bajaLaboral(false)
-				.bajaMaternal(false)
-				.equipo(
-						(trabajador.getEquipo() != null)
-						?equipoService.equipo(planService.getPlanActivo().getIdPlan(), trabajador.getEquipo())
-						:null
-						)
-				.esJefeEquipo(
-						(trabajador.getOcu()!=null)
-						?((trabajador.getOcu() == 983)?true:false)
-						:false)
+				.numeroOrdenSepe(trabajador.getNumeroOrdenSepe()).nacionalidad(trabajador.getNacionalidad())
+				.bajaLaboral(false).bajaMaternal(false).ccc(trabajador.getCcc()).sinClausula(trabajador.isSinClausula())
+				.equipo((trabajador.getEquipo() != null)
+						? equipoService.equipo(planService.getPlanActivo().getIdPlan(), trabajador.getEquipo())
+						: null)
+				.esJefeEquipo((trabajador.getOcu() != null) ? ((trabajador.getOcu() == 983) ? true : false) : false)
 				.build());
-		
 
+		Contrato nuevoContrato = contratoRepository.save(Contrato.builder().base(trabajador.getBase())
+				.prorratas(trabajador.getProrratas()).residencia(trabajador.getResidencia())
+				.total(trabajador.getTotal())
+				.entidad((trabajador.getEntidad() != null) ? organismoRepository.findById(trabajador.getEntidad())
+						.orElseThrow(() -> new OrganismoNotFoundException(trabajador.getEntidad())) : null)
 
-			
-			Contrato nuevoContrato = contratoRepository
-					.save(Contrato.builder().base(trabajador.getBase()).prorratas(trabajador.getProrratas())
-							.residencia(trabajador.getResidencia()).total(trabajador.getTotal())
-							.entidad((trabajador.getEntidad() !=null)? 
-									organismoRepository.findById(trabajador.getEntidad())
-									.orElseThrow(()->new OrganismoNotFoundException(trabajador.getEntidad())):null)
-									
-							.destino((trabajador.getDestino() != null)? destinoRepository.findById(trabajador.getDestino())
-									.orElseThrow(() -> new DestinoNotFoundException(trabajador.getDestino())):null)
-							.categoria((trabajador.getCategoria()!= null)?categoriaRepository.findById(trabajador.getCategoria())
-									.orElseThrow(() -> new CategoriaNotFoundException(trabajador.getCategoria())):null)
-							.ocupacion((trabajador.getOcu()!=null)?ocupacionRepository.findById(trabajador.getOcu())
-									.orElseThrow(()-> new OcupacionNotFoundException(trabajador.getOcu())):null)
-							.diasVacaciones((int)Math.round((trabajador.getDuracion()/30)*2.5))
-							.duracion(trabajador.getDuracion())
-							.fechaInicio((trabajador.getFechaInicio() != null)?trabajador.getFechaInicio(): null)
-							.fechaFinal((trabajador.getFechaFinal()!= null)?trabajador.getFechaFinal():null)
-							.turno((trabajador.getTurno() != null)?trabajador.getTurno():"MAÑANA")
-							.porcentajeHoras("63")
-							.gc(trabajador.getGc().toString())
-							.ciudadano(nuevoCiudadano).build());
-		
-
-		
+				.destino((trabajador.getDestino() != null) ? destinoRepository.findById(trabajador.getDestino())
+						.orElseThrow(() -> new DestinoNotFoundException(trabajador.getDestino())) : null)
+				.categoria((trabajador.getCategoria() != null) ? categoriaRepository.findById(trabajador.getCategoria())
+						.orElseThrow(() -> new CategoriaNotFoundException(trabajador.getCategoria())) : null)
+				.ocupacion((trabajador.getOcu() != null) ? ocupacionRepository.findById(trabajador.getOcu())
+						.orElseThrow(() -> new OcupacionNotFoundException(trabajador.getOcu())) : null)
+				.diasVacaciones((int) Math.round((trabajador.getDuracion() / 30) * 2.5))
+				.duracion(trabajador.getDuracion())
+				.fechaInicio((trabajador.getFechaInicio() != null) ? trabajador.getFechaInicio() : null)
+				.fechaFinal((trabajador.getFechaFinal() != null) ? trabajador.getFechaFinal() : null)
+				.turno((trabajador.getTurno() != null) ? trabajador.getTurno() : "MAÑANA").porcentajeHoras("63")
+				.gc(trabajador.getGc().toString()).ciudadano(nuevoCiudadano).build());
 
 		return nuevoCiudadano;
 	}
@@ -185,68 +166,67 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 		Specification<Ciudadano> busqueda = null;
 		Sort sort = null;
 		Order orden = null;
-		
-		if (ordenBusqueda.getSorting() != null) {
-			
-			List<CiudadanoCriterioOrden> criterioOrden = ordenBusqueda.getSorting();
-			
-			List<Order> criteriosDeOrden = new ArrayList<>();
-			
 
-			
+		if (ordenBusqueda.getSorting() != null) {
+
+			List<CiudadanoCriterioOrden> criterioOrden = ordenBusqueda.getSorting();
+
+			List<Order> criteriosDeOrden = new ArrayList<>();
+
 			for (CiudadanoCriterioOrden criterio : criterioOrden) {
-				
-				
+
 				if (criterio.isDesc()) {
 					orden = Order.desc(criterio.getId());
-				}else {
+				} else {
 					orden = Order.asc(criterio.getId());
 				}
 				criteriosDeOrden.add(orden);
 			}
-			
-			sort = Sort.by(criteriosDeOrden);
-			
 
-		
-			
+			sort = Sort.by(criteriosDeOrden);
+
 			page = PageRequest.of(ordenBusqueda.getPageIndex(), ordenBusqueda.getPageSize(), sort);
 		} else {
 			page = PageRequest.of(ordenBusqueda.getPageIndex(), ordenBusqueda.getPageSize());
 		}
-		
-		if(ordenBusqueda.getColumnFilters() != null) {
-			CiudadanoSpecificationBuilder criterios = new CiudadanoSpecificationBuilder(ordenBusqueda.getColumnFilters(),planService);
-			
-			 busqueda = criterios.build();
-			 if(busqueda != null) log.info(busqueda.toString());
+
+		if (ordenBusqueda.getColumnFilters() != null) {
+			CiudadanoSpecificationBuilder criterios = new CiudadanoSpecificationBuilder(
+					ordenBusqueda.getColumnFilters(), planService);
+
+			busqueda = criterios.build();
+			if (busqueda != null)
+				log.info(busqueda.toString());
 		}
 
-		return ciudadanoRepository.findAll(busqueda,page);
+		return ciudadanoRepository.findAll(busqueda, page);
 
 	}
 
 	@Override
 	public Optional<Ciudadano> getTrabajadorPorDNI(String DNI) {
-		
+
 		return ciudadanoRepository.findByDNI(DNI);
 	}
 
 	@Override
 	public Ciudadano editaTrabajador(UpdateTrabajadorDTO2 trabajador) {
 
-		Ciudadano ciudadano = ciudadanoRepository.findById(trabajador.getIdCiudadano()).orElseThrow(()->new CiudadanoNotFoundException(trabajador.getIdCiudadano()));
-		
+		Ciudadano ciudadano = ciudadanoRepository.findById(trabajador.getIdCiudadano())
+				.orElseThrow(() -> new CiudadanoNotFoundException(trabajador.getIdCiudadano()));
+
 		ciudadano.setNombre(trabajador.getNombre());
 		ciudadano.setApellido1(trabajador.getApellido1());
 		ciudadano.setApellido2(trabajador.getApellido2());
 		ciudadano.setDNI(trabajador.getDNI());
 		ciudadano.setEmail(trabajador.getEmail());
+		ciudadano.setCcc(trabajador.getCcc());
 		ciudadano.setNacionalidad(trabajador.getNacionalidad());
-		if(!trabajador.getEstado().equals(ciudadano.getEstado())) {
-			if(trabajador.getEstado().equals("CONTRATADO/A")) {
-				if(existeTrabajadorEnEstadoContratado(trabajador.getDNI())) {
-					throw new TrabajadorYaContratadoException("El trabajador con DNI "+trabajador.getDNI()+ " ya aparece en estado contratado.");
+		if (!trabajador.getEstado().equals(ciudadano.getEstado())) {
+			if (trabajador.getEstado().equals("CONTRATADO/A")) {
+				if (existeTrabajadorEnEstadoContratado(trabajador.getDNI())) {
+					throw new TrabajadorYaContratadoException(
+							"El trabajador con DNI " + trabajador.getDNI() + " ya aparece en estado contratado.");
 				}
 			}
 		}
@@ -258,57 +238,54 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 		ciudadano.setNumeroOrdenSepe(trabajador.getNumeroOrdenSepe());
 		ciudadano.setBajaLaboral(trabajador.isBajaLaboral());
 		ciudadano.setBajaMaternal(trabajador.isBajaMaternal());
+		ciudadano.setSinClausula(trabajador.isSinClausula());
 		ciudadano.setEsJefeEquipo(trabajador.isEsJefeEquipo());
-		ciudadano.setEquipo(
-				(trabajador.getEquipo() != null)
-				?equipoService.equipo(planService.getPlanActivo().getIdPlan() ,trabajador.getEquipo())
-				:null);
+		ciudadano.setEquipo((trabajador.getEquipo() != null)
+				? equipoService.equipo(planService.getPlanActivo().getIdPlan(), trabajador.getEquipo())
+				: null);
 
-		
-		
-		
-		if(trabajador.getGc() != null) {
+		if (trabajador.getGc() != null) {
 			Contrato contrato = ciudadano.getContrato();
-			if(contrato == null) { 
-				contrato = Contrato
-						.builder()
-						.gc(trabajador.getGc().toString())
-						.fechaInicio((trabajador.getFechaInicio() != null)?trabajador.getFechaInicio():null)
-						.fechaFinal((trabajador.getFechaFinal()!=null)?trabajador.getFechaFinal():null)
-						.fechaExtincion((trabajador.getFechaExtincion() != null)?trabajador.getFechaExtincion():null)
-						.categoria((trabajador.getCategoria() != null)?categoriaRepository.findById(trabajador.getCategoria()).orElseThrow(()->new CategoriaNotFoundException(trabajador.getCategoria())):null)
-						.ocupacion((trabajador.getOcu() != null)?ocupacionRepository.findById(trabajador.getOcu()).orElseThrow(()->new OcupacionNotFoundException(trabajador.getOcu())):null)
-						.destino((trabajador.getDestino() != null)?destinoRepository.findById(trabajador.getDestino()).orElseThrow(()->new DestinoNotFoundException(trabajador.getDestino())):null)
-						.entidad((trabajador.getEntidad() != null)?organismoRepository.findById(trabajador.getEntidad()).orElseThrow(()->new OrganismoNotFoundException(trabajador.getEntidad())):null)
-						.porcentajeHoras("63")
-						.diasVacaciones(0)
-						.duracion(trabajador.getDuracion())
-						.base(trabajador.getBase())
-						.prorratas(trabajador.getProrratas())
-						.residencia(trabajador.getResidencia())
-						.total(trabajador.getTotal())
-						.ciudadano(ciudadano)
+			if (contrato == null) {
+				contrato = Contrato.builder().gc(trabajador.getGc().toString())
+						.fechaInicio((trabajador.getFechaInicio() != null) ? trabajador.getFechaInicio() : null)
+						.fechaFinal((trabajador.getFechaFinal() != null) ? trabajador.getFechaFinal() : null)
+						.fechaExtincion(
+								(trabajador.getFechaExtincion() != null) ? trabajador.getFechaExtincion() : null)
+						.categoria((trabajador.getCategoria() != null)
+								? categoriaRepository.findById(trabajador.getCategoria()).orElseThrow(
+										() -> new CategoriaNotFoundException(trabajador.getCategoria()))
+								: null)
+						.ocupacion((trabajador.getOcu() != null) ? ocupacionRepository.findById(trabajador.getOcu())
+								.orElseThrow(() -> new OcupacionNotFoundException(trabajador.getOcu())) : null)
+						.destino((trabajador.getDestino() != null)
+								? destinoRepository.findById(trabajador.getDestino())
+										.orElseThrow(() -> new DestinoNotFoundException(trabajador.getDestino()))
+								: null)
+						.entidad((trabajador.getEntidad() != null)
+								? organismoRepository.findById(trabajador.getEntidad()).orElseThrow(
+										() -> new OrganismoNotFoundException(trabajador.getEntidad()))
+								: null)
+						.porcentajeHoras("63").diasVacaciones(0).duracion(trabajador.getDuracion())
+						.base(trabajador.getBase()).prorratas(trabajador.getProrratas())
+						.residencia(trabajador.getResidencia()).total(trabajador.getTotal()).ciudadano(ciudadano)
 						.build();
-			//contrato.setCategoria(new Categoria());
-			//contrato.setOcupacion(new Ocupacion());
-			//contrato.setDestino(new Destino());
-			//contrato.setEntidad(new Organismo());
-			//contrato.setGc(trabajador.getGc().toString());
-			
-			
-				
-			contrato=contratoRepository.save(contrato);
-			
-			
-			
-			}else {
-				if(trabajador.getGc().toString() != contrato.getGc()) {
+				// contrato.setCategoria(new Categoria());
+				// contrato.setOcupacion(new Ocupacion());
+				// contrato.setDestino(new Destino());
+				// contrato.setEntidad(new Organismo());
+				// contrato.setGc(trabajador.getGc().toString());
+
+				contrato = contratoRepository.save(contrato);
+
+			} else {
+				if (trabajador.getGc().toString() != contrato.getGc()) {
 					contrato.setGc(trabajador.getGc().toString());
 				}
-				if(trabajador.getFechaInicio() != contrato.getFechaInicio()) {
+				if (trabajador.getFechaInicio() != contrato.getFechaInicio()) {
 					contrato.setFechaInicio(trabajador.getFechaInicio());
 				}
-				if(trabajador.getFechaFinal() != contrato.getFechaFinal()) {
+				if (trabajador.getFechaFinal() != contrato.getFechaFinal()) {
 					contrato.setFechaFinal(trabajador.getFechaFinal());
 				}
 				if (trabajador.getFechaExtincion() != contrato.getFechaExtincion()) {
@@ -316,143 +293,158 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 				}
 				if (trabajador.getDuracion() != contrato.getDuracion()) {
 					contrato.setDuracion(trabajador.getDuracion());
-					}
+				}
 				if (trabajador.getTurno() != contrato.getTurno()) {
 					contrato.setTurno(trabajador.getTurno());
-					}
-				if(contrato.getCategoria() != null) {
-					
-					if (trabajador.getCategoria() != contrato.getCategoria().getIdCategoria()) {
-						Categoria categoria = categoriaRepository.findById(trabajador.getCategoria()).orElseThrow(()->new CategoriaNotFoundException(trabajador.getCategoria()));
-						
-						contrato.setCategoria(categoria);
-					}
-					
-				}else {
-					if (trabajador.getCategoria()!=null) {
-						Categoria categoria = categoriaRepository.findById(trabajador.getCategoria()).orElseThrow(()->new CategoriaNotFoundException(trabajador.getCategoria()));
-						
-						contrato.setCategoria(categoria);
-					}
-			
 				}
-				
-				if(contrato.getOcupacion() != null) {
+				if (contrato.getCategoria() != null) {
+
+					if (trabajador.getCategoria() != contrato.getCategoria().getIdCategoria()) {
+						Categoria categoria = categoriaRepository.findById(trabajador.getCategoria())
+								.orElseThrow(() -> new CategoriaNotFoundException(trabajador.getCategoria()));
+
+						contrato.setCategoria(categoria);
+					}
+
+				} else {
+					if (trabajador.getCategoria() != null) {
+						Categoria categoria = categoriaRepository.findById(trabajador.getCategoria())
+								.orElseThrow(() -> new CategoriaNotFoundException(trabajador.getCategoria()));
+
+						contrato.setCategoria(categoria);
+					}
+
+				}
+
+				if (contrato.getOcupacion() != null) {
 					long nuevaOcu = trabajador.getOcu();
 					long ocuBBDD = contrato.getOcupacion().getIdOcupacion();
 					if (nuevaOcu != ocuBBDD) {
-						log.warning((trabajador.getOcu() != contrato.getOcupacion().getIdOcupacion())+ " " );
-						log.warning(trabajador.getOcu()+ " "+contrato.getOcupacion().getIdOcupacion());
-						if(contrato.getOcupacion().getIdOcupacion()== 983) ciudadano.setEsJefeEquipo(false);
-						if(trabajador.getOcu() == 983) {
+						log.warning((trabajador.getOcu() != contrato.getOcupacion().getIdOcupacion()) + " ");
+						log.warning(trabajador.getOcu() + " " + contrato.getOcupacion().getIdOcupacion());
+						if (contrato.getOcupacion().getIdOcupacion() == 983)
+							ciudadano.setEsJefeEquipo(false);
+						if (trabajador.getOcu() == 983) {
 							ciudadano.setEsJefeEquipo(true);
 							ciudadano.setEquipo(null);
-						}else {
+						} else {
 							ciudadano.setEsJefeEquipo(false);
 						}
-						Ocupacion ocupacion = ocupacionRepository.findById(trabajador.getOcu()).orElseThrow(()->new OcupacionNotFoundException(trabajador.getOcu()));
-						contrato.setOcupacion(ocupacion);	
-						}else {
-							if (contrato.getOcupacion().getIdOcupacion() == 983) 
-							{
-								ciudadano.setEsJefeEquipo(true);
-								}else ciudadano.setEsJefeEquipo(false);
-							
-						}
-				}else {
-					if(trabajador.getOcu() != null) {
-						Ocupacion ocupacion = ocupacionRepository.findById(trabajador.getOcu()).orElseThrow(()->new OcupacionNotFoundException(trabajador.getOcu()));
+						Ocupacion ocupacion = ocupacionRepository.findById(trabajador.getOcu())
+								.orElseThrow(() -> new OcupacionNotFoundException(trabajador.getOcu()));
+						contrato.setOcupacion(ocupacion);
+					} else {
+						if (contrato.getOcupacion().getIdOcupacion() == 983) {
+							ciudadano.setEsJefeEquipo(true);
+						} else
+							ciudadano.setEsJefeEquipo(false);
+
+					}
+				} else {
+					if (trabajador.getOcu() != null) {
+						Ocupacion ocupacion = ocupacionRepository.findById(trabajador.getOcu())
+								.orElseThrow(() -> new OcupacionNotFoundException(trabajador.getOcu()));
 						contrato.setOcupacion(ocupacion);
 					}
 
 				}
-		
-				if(contrato.getEntidad() != null) {
+
+				if (contrato.getEntidad() != null) {
 					if (trabajador.getEntidad() != contrato.getEntidad().getIdOrganismo()) {
-						Organismo organismo = organismoRepository.findById(trabajador.getEntidad()).orElseThrow(()->new OrganismoNotFoundException(trabajador.getEntidad()));
+						Organismo organismo = organismoRepository.findById(trabajador.getEntidad())
+								.orElseThrow(() -> new OrganismoNotFoundException(trabajador.getEntidad()));
 						contrato.setEntidad(organismo);
 					}
-				}else {
-					if(trabajador.getEntidad() != null) {
-						Organismo organismo = organismoRepository.findById(trabajador.getEntidad()).orElseThrow(()->new OrganismoNotFoundException(trabajador.getEntidad()));
+				} else {
+					if (trabajador.getEntidad() != null) {
+						Organismo organismo = organismoRepository.findById(trabajador.getEntidad())
+								.orElseThrow(() -> new OrganismoNotFoundException(trabajador.getEntidad()));
 						contrato.setEntidad(organismo);
 					}
 
 				}
-				
-				if(contrato.getDestino() != null) {
+
+				if (contrato.getDestino() != null) {
 					if (trabajador.getDestino() != contrato.getDestino().getIdDestino()) {
-						Destino destino = destinoRepository.findById(trabajador.getDestino()).orElseThrow(()-> new DestinoNotFoundException(trabajador.getDestino()));
+						Destino destino = destinoRepository.findById(trabajador.getDestino())
+								.orElseThrow(() -> new DestinoNotFoundException(trabajador.getDestino()));
 						contrato.setDestino(destino);
-						}
-				}else {
-					
-					if(trabajador.getDestino() != null) {
-						Destino destino = destinoRepository.findById(trabajador.getDestino()).orElseThrow(()-> new DestinoNotFoundException(trabajador.getDestino()));
+					}
+				} else {
+
+					if (trabajador.getDestino() != null) {
+						Destino destino = destinoRepository.findById(trabajador.getDestino())
+								.orElseThrow(() -> new DestinoNotFoundException(trabajador.getDestino()));
 						contrato.setDestino(destino);
 					}
 
 				}
-	
-				
+
+				contrato.setBase(trabajador.getBase());
+				contrato.setProrratas(trabajador.getProrratas());
+				contrato.setResidencia(trabajador.getResidencia());
+				contrato.setTotal(trabajador.getTotal());
 			}
-			
 
 			ciudadano.setContrato(contrato);
 		}
-		
-		
+
 		return ciudadanoRepository.saveAndFlush(ciudadano);
 	}
 
 	@Override
 	public List<Ciudadano> modificarEstado(List<ModificaEstadoDTO> trabajadores) {
-		
+
 		List<Ciudadano> trabajadoresModificados = new ArrayList<Ciudadano>();
-		
+
 		for (ModificaEstadoDTO modificaEstadoDTO : trabajadores) {
-			
-			Ciudadano trabajador = ciudadanoRepository.findById(modificaEstadoDTO.getIdCiudadano()).orElseThrow(()->new CiudadanoNotFoundException(modificaEstadoDTO.getIdCiudadano()));
-			
-			if(modificaEstadoDTO.getEstado().contains("FINALIZADO/A") || modificaEstadoDTO.getEstado().contains("RENUNCIA") || modificaEstadoDTO.getEstado().contains("DESPEDIDO/A") ) {
+
+			Ciudadano trabajador = ciudadanoRepository.findById(modificaEstadoDTO.getIdCiudadano())
+					.orElseThrow(() -> new CiudadanoNotFoundException(modificaEstadoDTO.getIdCiudadano()));
+
+			if (modificaEstadoDTO.getEstado().contains("FINALIZADO/A")
+					|| modificaEstadoDTO.getEstado().contains("RENUNCIA")
+					|| modificaEstadoDTO.getEstado().contains("DESPEDIDO/A")) {
 				trabajador.setEstado(modificaEstadoDTO.getEstado());
-				if(trabajador.getContrato() != null) {
+				if (trabajador.getContrato() != null) {
 					Contrato contrato = trabajador.getContrato();
 					contrato.setFechaExtincion(modificaEstadoDTO.getFecha());
-					
-					if(contrato.getFechaInicio() != null) {
+
+					if (contrato.getFechaInicio() != null) {
 						LocalDate fechaInicio = contrato.getFechaInicio();
-						
-						
+
 					}
-					
-					
+
 					contratoRepository.save(contrato);
 				}
-			}else {
-				if(modificaEstadoDTO.getEstado().equals("CONTRATADO/A")) {
-					if(existeTrabajadorEnEstadoContratado(modificaEstadoDTO.getDni())) continue;
+			} else {
+				if (modificaEstadoDTO.getEstado().equals("CONTRATADO/A")) {
+					if (existeTrabajadorEnEstadoContratado(modificaEstadoDTO.getDni()))
+						continue;
 				}
 				trabajador.setEstado(modificaEstadoDTO.getEstado());
 			}
-			
+
 			ciudadanoRepository.save(trabajador);
 			trabajadoresModificados.add(trabajador);
 		}
-		
+
 		return trabajadoresModificados;
 	}
 
 	@Override
-	public int trabajadoresContratadosOrganismoOcupacion(Long idOrganismo, Long idOcupacion,List<String> estados) {
+	public int trabajadoresContratadosOrganismoOcupacion(Long idOrganismo, Long idOcupacion, List<String> estados) {
 
-		List<Ciudadano>trabajadores = ciudadanoRepository.findByContratoEntidadIdOrganismoAndContratoOcupacionIdOcupacionAndEstadoIn(idOrganismo, idOcupacion,estados);
-		return (trabajadores != null)?trabajadores.size():0;
+		List<Ciudadano> trabajadores = ciudadanoRepository
+				.findByContratoEntidadIdOrganismoAndContratoOcupacionIdOcupacionAndEstadoIn(idOrganismo, idOcupacion,
+						estados);
+		return (trabajadores != null) ? trabajadores.size() : 0;
 	}
 
 	@Override
 	public int trabajadoresPrevistosOrganismoOcupacion(Long idOrganismo, Long idOcupacion) {
-		Long orgOcu = organismoOcupacionRepository.countByOrganismoIdOrganismoAndOcupacionIdOcupacion(idOrganismo, idOcupacion);
+		Long orgOcu = organismoOcupacionRepository.countByOrganismoIdOrganismoAndOcupacionIdOcupacion(idOrganismo,
+				idOcupacion);
 		return (Integer.parseInt(orgOcu.toString()));
 	}
 
@@ -461,74 +453,75 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 		List<String> estados = new ArrayList<String>();
 		estados.add("CONTRATADO/A");
 		estados.add("FINALIZADO/A");
-		int contratados = trabajadoresContratadosOrganismoOcupacion(idOrganismo, idOcupacion,estados);
+		int contratados = trabajadoresContratadosOrganismoOcupacion(idOrganismo, idOcupacion, estados);
 		estados = new ArrayList<String>();
 		estados.add("DESPEDIDO/A");
 		estados.add("RENUNCIA");
-		int parciales = trabajadoresContratadosOrganismoOcupacion(idOrganismo, idOcupacion,estados);
-		List<OrganismoOcupacion> orgOcu = organismoOcupacionRepository.findByOrganismoIdOrganismoAndOcupacionIdOcupacion(idOrganismo, idOcupacion);
+		int parciales = trabajadoresContratadosOrganismoOcupacion(idOrganismo, idOcupacion, estados);
+		List<OrganismoOcupacion> orgOcu = organismoOcupacionRepository
+				.findByOrganismoIdOrganismoAndOcupacionIdOcupacion(idOrganismo, idOcupacion);
 		int previstos = 0;
 		for (OrganismoOcupacion organismoOcupacion : orgOcu) {
 			previstos = previstos + organismoOcupacion.getNTrabajadores();
 		}
-		
-		Ocupacion ocu = ocupacionRepository.findById(idOcupacion).orElseThrow(()-> new OcupacionNotFoundException(idOcupacion));
-		Organismo org = organismoRepository.findById(idOrganismo).orElseThrow(()->new OrganismoNotFoundException(idOrganismo));
-		
+
+		Ocupacion ocu = ocupacionRepository.findById(idOcupacion)
+				.orElseThrow(() -> new OcupacionNotFoundException(idOcupacion));
+		Organismo org = organismoRepository.findById(idOrganismo)
+				.orElseThrow(() -> new OrganismoNotFoundException(idOrganismo));
+
 		VacantesResponseDTO vacantes = new VacantesResponseDTO();
-		
+
 		vacantes.setOrganismo(org.getNombreCortoOrganismo());
 		vacantes.setOcupacion(ocu.getOcupacion());
 		vacantes.setContratados(contratados);
 		vacantes.setParciales(parciales);
 		vacantes.setPrevistos(previstos);
-		vacantes.setVacantes(previstos-(contratados+parciales));
+		vacantes.setVacantes(previstos - (contratados + parciales));
 		return vacantes;
 	}
 
 	@Override
 	public List<VacantesResponseDTO> listadoVacantes() {
 		List<OrganismoOcupacion> previstosPorOrganismoOcupacion = organismoOcupacionRepository.findAllAgrupados();
-		
-		List<VacantesResponseDTO>listado = new ArrayList<VacantesResponseDTO>();
-		
-		
-		
+
+		List<VacantesResponseDTO> listado = new ArrayList<VacantesResponseDTO>();
+
 		for (OrganismoOcupacion organismoOcupacion : previstosPorOrganismoOcupacion) {
-		
-			VacantesResponseDTO vacante = vacantesOrganismoOcupacion(organismoOcupacion.getOrganismo().getIdOrganismo(), organismoOcupacion.getOcupacion().getIdOcupacion());
+
+			VacantesResponseDTO vacante = vacantesOrganismoOcupacion(organismoOcupacion.getOrganismo().getIdOrganismo(),
+					organismoOcupacion.getOcupacion().getIdOcupacion());
 			vacante.setId(organismoOcupacion.getId());
 			listado.add(vacante);
-			
+
 		}
-		
+
 		return listado;
 	}
 
 	@Override
 	public Ciudadano getTrabajadorByDNIAndEstado(String DNI, String estado) {
-		
-		return ciudadanoRepository.findByDNIAndEstado(DNI, estado).orElseThrow(()->new CiudadanoNotFoundException(1l));	
-		}
+
+		return ciudadanoRepository.findByDNIAndEstado(DNI, estado)
+				.orElseThrow(() -> new CiudadanoNotFoundException(1l));
+	}
 
 	@Override
 	public List<Ciudadano> getAllTrabajadorByDNIAndEstado(String DNI, String estado) {
-		
+
 		return ciudadanoRepository.findAllByDNIAndEstado(DNI, estado);
 	}
 
 	@Override
 	public boolean existeTrabajadorEnEstadoContratado(String DNI) {
-		
-		return (ciudadanoRepository.findAllByDNIAndEstado(DNI, "CONTRATADO/A").size()>0)?true:false ;
+
+		return (ciudadanoRepository.findAllByDNIAndEstado(DNI, "CONTRATADO/A").size() > 0) ? true : false;
 	}
 
 	@Override
 	public List<Ciudadano> trabajadoresConVacaciones(Long idPlan) {
-		
+
 		return ciudadanoRepository.findAllByPeriodosVacacionesIsNotNullAndIdPlanIdPlan(idPlan);
 	}
-	
-	
 
 }

@@ -38,5 +38,6 @@ public class CreateTrabajadorDTO {
 	String total;
 	Long equipo;
 	String nacionalidad;
+	boolean sinClausula;
 
 }

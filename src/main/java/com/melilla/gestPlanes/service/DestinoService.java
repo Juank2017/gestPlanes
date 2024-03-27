@@ -14,4 +14,6 @@ public interface DestinoService {
 	
 	List<Destino> actualizarDestino(Destino destino);
 	
+	void borrarDestino(Long idDestino);
+	
 }
