@@ -69,8 +69,10 @@ public class CiudadanoSpecification implements Specification<Ciudadano> {
 		Predicate planPredicate = builder.equal(root.get("idPlan"), plan);
 
 		switch (criteria.getId()) {
+
 		
-		case "fechaRegistro": case "fechaNacimiento":{
+		
+		case "fechaRegistro": case "fechaNacimiento": case "fechaListadoSepe":{
 			 //convertir el valor a fecha
 			String valor = this.criteria.getValue();
 			try {

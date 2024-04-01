@@ -39,5 +39,6 @@ public class CreateTrabajadorDTO {
 	Long equipo;
 	String nacionalidad;
 	boolean sinClausula;
+	LocalDate fechaListadoSepe;
 
 }

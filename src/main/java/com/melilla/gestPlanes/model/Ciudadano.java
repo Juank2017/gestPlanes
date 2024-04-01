@@ -79,6 +79,9 @@ public class Ciudadano {
 	
 	private String numeroOrdenSepe;
 	
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", locale = "es_ES" )
+	private LocalDate fechaListadoSepe;
+	
 	@Email
 	private String email;
 	

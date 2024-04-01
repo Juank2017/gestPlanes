@@ -43,5 +43,6 @@ public class UpdateTrabajadorDTO2 {
 	Long equipo;
 	String nacionalidad;
 	boolean sinClausula;
+	LocalDate fechaListadoSepe;
 
 }

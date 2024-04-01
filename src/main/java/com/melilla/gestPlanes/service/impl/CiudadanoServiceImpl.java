@@ -123,7 +123,7 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 				.sexo(trabajador.getSexo()).seguridadSocial(trabajador.getSeguridadSocial())
 				.idPlan(planService.getPlanActivo()).fechaRegistro(trabajador.getFechaRegistro())
 				.fechaNacimiento(trabajador.getFechaNacimiento()).estado(trabajador.getEstado())
-				.numeroOrdenSepe(trabajador.getNumeroOrdenSepe()).nacionalidad(trabajador.getNacionalidad())
+				.numeroOrdenSepe(trabajador.getNumeroOrdenSepe()).fechaListadoSepe(trabajador.getFechaListadoSepe()).nacionalidad(trabajador.getNacionalidad())
 				.bajaLaboral(false).bajaMaternal(false).ccc(trabajador.getCcc()).sinClausula(trabajador.isSinClausula())
 				.equipo((trabajador.getEquipo() != null)
 						? equipoService.equipo(planService.getPlanActivo().getIdPlan(), trabajador.getEquipo())
@@ -236,6 +236,7 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 		ciudadano.setTelefono(trabajador.getTelefono());
 		ciudadano.setSexo(trabajador.getSexo());
 		ciudadano.setNumeroOrdenSepe(trabajador.getNumeroOrdenSepe());
+		ciudadano.setFechaListadoSepe(trabajador.getFechaListadoSepe());
 		ciudadano.setBajaLaboral(trabajador.isBajaLaboral());
 		ciudadano.setBajaMaternal(trabajador.isBajaMaternal());
 		ciudadano.setSinClausula(trabajador.isSinClausula());
