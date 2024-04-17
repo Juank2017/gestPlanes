@@ -2,8 +2,6 @@ package com.melilla.gestPlanes.model;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
-
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.envers.NotAudited;
 import org.springframework.data.annotation.CreatedDate;

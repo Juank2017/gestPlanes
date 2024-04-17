@@ -1,7 +1,5 @@
 package com.melilla.gestPlanes.DTO;
 
-import java.time.LocalDate;
-
 import lombok.Data;
 
 @Data

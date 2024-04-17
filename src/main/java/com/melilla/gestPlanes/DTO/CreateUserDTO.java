@@ -1,9 +1,5 @@
 package com.melilla.gestPlanes.DTO;
 
-import java.util.List;
-
-import com.melilla.gestPlanes.model.Role;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

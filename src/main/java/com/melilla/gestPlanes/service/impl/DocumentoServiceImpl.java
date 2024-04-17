@@ -3,16 +3,13 @@ package com.melilla.gestPlanes.service.impl;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.nio.file.CopyOption;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.sql.Time;
 import java.time.Instant;
-import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -70,7 +67,6 @@ import com.melilla.gestPlanes.service.DocumentoService;
 import com.melilla.gestPlanes.service.PlanService;
 
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 
@@ -201,7 +197,7 @@ public class DocumentoServiceImpl implements DocumentoService {
 			documento.setRuta(fileDownladUri);
 			documento.setIdPlan(planService.getPlanActivo());
 			documento.setTipo(tipo);
-			// documentoRepository.save(documento);
+			
 			return documento;
 		}catch (FileAlreadyExistsException e) {
 			throw new FileStorageException("El archivo "+ fileName +" ya existe");
@@ -452,6 +448,7 @@ public class DocumentoServiceImpl implements DocumentoService {
 
 				// FORMATEO DE FECHAS
 
+				@SuppressWarnings("deprecation")
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/uuuu", new Locale("es", "ES"));
 
 				String fechaNacimiento= null;
@@ -820,6 +817,7 @@ public class DocumentoServiceImpl implements DocumentoService {
 
 				// FORMATEO DE FECHAS
 
+				@SuppressWarnings("deprecation")
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/uuuu", new Locale("es", "ES"));
 				String fechaInicio = "00/00/0000";
 				String fechaFinal = "00/00/000";

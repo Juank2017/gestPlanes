@@ -6,12 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import com.melilla.gestPlanes.model.TipoDocumento;
 import com.melilla.gestPlanes.model.TipoDocumentoPlan;
 import com.melilla.gestPlanes.repository.TipoDocumentoPlanRepository;
-import com.melilla.gestPlanes.repository.TipoDocumentoRepository;
 import com.melilla.gestPlanes.service.TipoDocumentoPlanService;
-import com.melilla.gestPlanes.service.TipoDocumentoService;
 
 
 @Service

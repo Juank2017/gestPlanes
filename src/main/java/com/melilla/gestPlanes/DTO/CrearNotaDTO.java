@@ -2,8 +2,6 @@ package com.melilla.gestPlanes.DTO;
 
 import java.time.LocalDate;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 import lombok.Data;
 
 @Data

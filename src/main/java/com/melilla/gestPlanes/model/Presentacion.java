@@ -1,13 +1,9 @@
 package com.melilla.gestPlanes.model;
 
 import java.time.LocalDateTime;
-import java.util.List;
-
 import org.hibernate.annotations.SQLDelete;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;

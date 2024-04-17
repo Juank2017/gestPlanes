@@ -5,9 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 
-import com.melilla.gestPlanes.DTO.CiudadanoCriterioBusqueda;
 import com.melilla.gestPlanes.DTO.DocumentoCriterioBusqueda;
-import com.melilla.gestPlanes.model.Ciudadano;
 import com.melilla.gestPlanes.model.Documento;
 import com.melilla.gestPlanes.service.PlanService;
 

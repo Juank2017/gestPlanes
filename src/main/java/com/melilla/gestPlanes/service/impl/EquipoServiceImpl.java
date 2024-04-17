@@ -22,7 +22,6 @@ import com.melilla.gestPlanes.repository.EquipoRepository;
 import com.melilla.gestPlanes.service.EquipoService;
 import com.melilla.gestPlanes.service.PlanService;
 
-import jakarta.persistence.NonUniqueResultException;
 import lombok.Data;
 import lombok.extern.java.Log;
 

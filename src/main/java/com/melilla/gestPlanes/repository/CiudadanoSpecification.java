@@ -1,13 +1,10 @@
 package com.melilla.gestPlanes.repository;
 
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 
 import com.melilla.gestPlanes.DTO.CiudadanoCriterioBusqueda;
@@ -24,13 +21,11 @@ import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.JoinType;
-import jakarta.persistence.criteria.Path;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import lombok.ToString;
-import lombok.extern.java.Log;
 
-@Log
+
 @ToString
 public class CiudadanoSpecification implements Specification<Ciudadano> {
 
@@ -57,12 +52,10 @@ public class CiudadanoSpecification implements Specification<Ciudadano> {
 		Join<Contrato, Organismo> organismoContrato = contratoCiudadano.join("entidad",JoinType.LEFT);
 		Join<Contrato, Destino> destinoContrato = contratoCiudadano.join("destino",JoinType.LEFT);
 
-		//Path<Object> mio = contratoCiudadano.get("fechaExtincion");
-
-		//log.warning("path " + mio.get("fechaExtincion"));
+	
 
 		Plan plan = planService.getPlanActivo();
-		Long idPlan = plan.getIdPlan();
+		
 		Predicate likePredicate = null;
 		Predicate fechaPredicate = null;
 		Predicate equalPredicate = null;
@@ -139,8 +132,7 @@ public class CiudadanoSpecification implements Specification<Ciudadano> {
 			likePredicate = builder.like(root.get("nacionalidad"), "%" + criteria.getValue() + "%");
 			break;	
 		}
-//		default:
-	//		likePredicate = builder.like(root.<String>get(criteria.getId()), "%" + criteria.getValue() + "%");
+
 		}
 
 		List<Predicate> predicados = new ArrayList<>();
@@ -151,12 +143,7 @@ public class CiudadanoSpecification implements Specification<Ciudadano> {
 			predicados.add(fechaPredicate);
 		if(equalPredicate != null) predicados.add(equalPredicate);
 		return builder.and(predicados.toArray(new Predicate[predicados.size()]));
-//		 if (root.get(criteria.getId()).getJavaType() == String.class) {
-//			 
-//             return builder.and(predicados.toArray(new Predicate[predicados.size()]));
-//         } else {
-//             return builder.equal(root.get(criteria.getId()),criteria.getValue());
-//         }
+
 
 	}
 

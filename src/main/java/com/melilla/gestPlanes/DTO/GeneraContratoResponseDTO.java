@@ -1,6 +1,5 @@
 package com.melilla.gestPlanes.DTO;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.melilla.gestPlanes.model.Documento;
 

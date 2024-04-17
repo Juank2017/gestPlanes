@@ -1,7 +1,6 @@
 package com.melilla.gestPlanes.controller;
 
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +17,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
 import com.melilla.gestPlanes.DTO.DocumentoAZip;
 import com.melilla.gestPlanes.DTO.DocumentoCriterioBusqueda;
 import com.melilla.gestPlanes.DTO.GeneraContratoDTO;
@@ -27,12 +24,8 @@ import com.melilla.gestPlanes.DTO.GeneraPresentacionDTO;
 import com.melilla.gestPlanes.exceptions.exceptions.FileStorageException;
 import com.melilla.gestPlanes.model.ApiResponse;
 import com.melilla.gestPlanes.model.Documento;
-import com.melilla.gestPlanes.model.DocumentoPlan;
-import com.melilla.gestPlanes.model.DocumentoResponse;
 import com.melilla.gestPlanes.service.DocumentoService;
 import com.melilla.gestPlanes.service.PlanService;
-import com.melilla.gestPlanes.service.TipoDocumentoPlanService;
-
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
