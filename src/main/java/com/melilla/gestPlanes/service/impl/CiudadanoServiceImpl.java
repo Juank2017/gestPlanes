@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.lang.Math;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Order;
+import org.springframework.data.history.Revision;
+import org.springframework.data.history.RevisionSort;
+import org.springframework.data.history.Revisions;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -518,6 +522,36 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 	public List<Ciudadano> trabajadoresConVacaciones(Long idPlan) {
 
 		return ciudadanoRepository.findAllByPeriodosVacacionesIsNotNullAndIdPlanIdPlan(idPlan);
+	}
+
+	@Override
+	public List<Ciudadano> getCiudadanoHistoryById(Long id, Pageable pageable) {
+		if (!ciudadanoRepository.findById(id).isPresent())throw new CiudadanoNotFoundException(id);
+		List<Ciudadano> historia = null;
+		try {
+			
+			Pageable pagina = PageRequest.of(pageable.getPageNumber(),pageable.getPageSize(),RevisionSort.desc());
+			Page<Revision<Long, Ciudadano>> revisionesCiudadano = ciudadanoRepository.findRevisions(id, pagina);
+			historia = revisionesCiudadano.stream().map((r)->r.getEntity()).collect(Collectors.toList());
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return historia;
+	}
+
+	@Override
+	public List<Revision<Long, Ciudadano>> getCiudadanoRevisionsById(Long id, Pageable pageable) {
+		if (!ciudadanoRepository.findById(id).isPresent())throw new CiudadanoNotFoundException(id);
+		List<Revision<Long, Ciudadano>> historia = null;
+		try {
+			
+			Pageable pagina = PageRequest.of(pageable.getPageNumber(),pageable.getPageSize(),RevisionSort.desc());
+			Revisions<Long, Ciudadano> revisionesCiudadano = ciudadanoRepository.findRevisions(id);
+			historia = revisionesCiudadano.stream().collect(Collectors.toList());
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return historia;
 	}
 
 }

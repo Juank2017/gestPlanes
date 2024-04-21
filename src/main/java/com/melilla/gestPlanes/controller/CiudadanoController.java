@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Order;
 import org.springframework.http.HttpStatus;
@@ -194,6 +195,25 @@ public class CiudadanoController {
 
 		response.getPayload().addAll(ciudadanoService.trabajadoresConVacaciones(idPlan));
 		response.setMensaje("Listado de vacantes");
+
+		return ResponseEntity.ok(response);
+	}
+	
+	@GetMapping("/historialTrabajador/{idCiudadano}")
+	public ResponseEntity<ApiResponse>historialTrabajador(@PathVariable Long idCiudadano,Pageable pageable){
+		ApiResponse response = new ApiResponse();
+
+		response.getPayload().addAll(ciudadanoService.getCiudadanoHistoryById(idCiudadano, pageable));
+		response.setMensaje("Historial del ciudadano.");
+
+		return ResponseEntity.ok(response);
+	}
+	@GetMapping("/revisionesTrabajador/{idCiudadano}")
+	public ResponseEntity<ApiResponse>revisionesTrabajador(@PathVariable Long idCiudadano,Pageable pageable){
+		ApiResponse response = new ApiResponse();
+
+		response.getPayload().addAll(ciudadanoService.getCiudadanoRevisionsById(idCiudadano, pageable));
+		response.setMensaje("Historial del ciudadano.");
 
 		return ResponseEntity.ok(response);
 	}

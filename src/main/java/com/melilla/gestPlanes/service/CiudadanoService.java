@@ -3,7 +3,11 @@ package com.melilla.gestPlanes.service;
 import java.util.List;
 import java.util.Optional;
 
+
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.history.Revision;
+
 import com.melilla.gestPlanes.DTO.CiudadanoOrdenBusqueda;
 import com.melilla.gestPlanes.DTO.CreateTrabajadorDTO;
 import com.melilla.gestPlanes.DTO.ModificaEstadoDTO;
@@ -45,4 +49,7 @@ public interface CiudadanoService {
 	List<VacantesResponseDTO>listadoVacantes();
 	
 	List<Ciudadano>trabajadoresConVacaciones(Long idPlan);
+	
+	List<Ciudadano> getCiudadanoHistoryById(Long id,Pageable pageable);
+	List<Revision<Long,Ciudadano>> getCiudadanoRevisionsById(Long id,Pageable pageable);
 }
