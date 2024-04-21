@@ -29,7 +29,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@SQLDelete(sql = "UPDATE contrato SET deleted=true, deleted_at= NOW() WHERE id=?")
+@SQLDelete(sql = "UPDATE contrato SET deleted=true, deleted_at= NOW() WHERE id_contrato=?")
 @EntityListeners(AuditingEntityListener.class)
 public class Contrato {
 	

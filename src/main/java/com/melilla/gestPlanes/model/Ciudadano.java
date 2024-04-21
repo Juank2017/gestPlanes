@@ -43,7 +43,7 @@ import lombok.Setter;
 @Entity
 @Audited
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "idCiudadano")
-@SQLDelete(sql = "UPDATE ciudadano SET deleted=true, deleted_at= NOW() WHERE id=?")
+@SQLDelete(sql = "UPDATE ciudadano SET deleted=true, deleted_at= NOW() WHERE id_ciudadano=?")
 @EntityListeners(AuditingEntityListener.class)
 public class Ciudadano {
 	

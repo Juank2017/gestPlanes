@@ -520,4 +520,23 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 		return ciudadanoRepository.findAllByPeriodosVacacionesIsNotNullAndIdPlanIdPlan(idPlan);
 	}
 
+	@Override
+	public void deleteTrabajador(Long idTrabajador) {
+		if (!ciudadanoRepository.findById(idTrabajador).isPresent()) throw new CiudadanoNotFoundException(idTrabajador);
+		
+		 ciudadanoRepository.deleteById(idTrabajador);
+		
+	}
+
+	@Override
+	public void restoreTrabajador(Long idTrabajador) {
+		
+		Ciudadano trabajador = ciudadanoRepository.findById(idTrabajador).orElseThrow(()->new CiudadanoNotFoundException(idTrabajador));
+		
+		trabajador.setDeleted(false);
+		
+		ciudadanoRepository.saveAndFlush(trabajador);
+		
+	}
+
 }

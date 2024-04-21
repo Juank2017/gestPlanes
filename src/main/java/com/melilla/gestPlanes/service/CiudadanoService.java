@@ -45,4 +45,8 @@ public interface CiudadanoService {
 	List<VacantesResponseDTO>listadoVacantes();
 	
 	List<Ciudadano>trabajadoresConVacaciones(Long idPlan);
+	
+	void deleteTrabajador(Long idTrabajador);
+	
+	void restoreTrabajador(Long idTrabajador);
 }

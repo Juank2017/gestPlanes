@@ -8,6 +8,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -194,6 +195,26 @@ public class CiudadanoController {
 
 		response.getPayload().addAll(ciudadanoService.trabajadoresConVacaciones(idPlan));
 		response.setMensaje("Listado de vacantes");
+
+		return ResponseEntity.ok(response);
+	}
+	
+	@DeleteMapping("/borraTrabajador/{idCiudadano}")
+	public ResponseEntity<ApiResponse>deleteTrabajador(@PathVariable Long idCiudadano){
+		ApiResponse response = new ApiResponse();
+
+		ciudadanoService.deleteTrabajador(idCiudadano);
+		response.setMensaje("Trabajador eliminado.");
+
+		return ResponseEntity.ok(response);
+	}
+	
+	@PutMapping("/restauraTrabajador/{idCiudadano}")
+	public ResponseEntity<ApiResponse>restauraTrabajador(@PathVariable Long idCiudadano){
+		ApiResponse response = new ApiResponse();
+
+		ciudadanoService.restoreTrabajador(idCiudadano);
+		response.setMensaje("Trabajador restaurado.");
 
 		return ResponseEntity.ok(response);
 	}
