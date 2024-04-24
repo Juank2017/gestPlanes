@@ -235,6 +235,11 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 		ciudadano.setBajaLaboral(trabajador.isBajaLaboral());
 		ciudadano.setBajaMaternal(trabajador.isBajaMaternal());
 		ciudadano.setSinClausula(trabajador.isSinClausula());
+		ciudadano.setAntecedentes(trabajador.isAntecedentes());
+		ciudadano.setAltaSS(trabajador.isAltaSS());
+		ciudadano.setContrata(trabajador.isContrata());
+		ciudadano.setEscaneado(trabajador.isEscaneado());
+		ciudadano.setNedaes(trabajador.isNedaes());
 		ciudadano.setEsJefeEquipo(trabajador.isEsJefeEquipo());
 		ciudadano.setEquipo((trabajador.getEquipo() != null)
 				? equipoService.equipo(planService.getPlanActivo().getIdPlan(), trabajador.getEquipo())

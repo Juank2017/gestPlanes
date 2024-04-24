@@ -37,6 +37,11 @@ public class CreateTrabajadorDTO {
 	Long equipo;
 	String nacionalidad;
 	boolean sinClausula;
+	boolean antecedentes;
+	boolean altaSS;
+	boolean contrata;
+	boolean escaneado;
+	boolean nedaes;
 	LocalDate fechaListadoSepe;
 
 }
