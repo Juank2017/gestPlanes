@@ -7,6 +7,8 @@ import org.springframework.data.domain.Page;
 import com.melilla.gestPlanes.DTO.CiudadanoOrdenBusqueda;
 import com.melilla.gestPlanes.DTO.CreateTrabajadorDTO;
 import com.melilla.gestPlanes.DTO.ModificaEstadoDTO;
+import com.melilla.gestPlanes.DTO.ModificaFechaContratoDTO;
+import com.melilla.gestPlanes.DTO.ModificarOrganismoContrato;
 import com.melilla.gestPlanes.DTO.UpdateTrabajadorDTO2;
 import com.melilla.gestPlanes.DTO.VacantesResponseDTO;
 import com.melilla.gestPlanes.model.Ciudadano;
@@ -35,6 +37,10 @@ public interface CiudadanoService {
 	Ciudadano editaTrabajador(UpdateTrabajadorDTO2 trabajador);
 	
 	List<Ciudadano>modificarEstado(List<ModificaEstadoDTO> trabajadores );
+	
+	List<Ciudadano>modificarFechaContrato(List<ModificaFechaContratoDTO> trabajadores );
+	
+	List<Ciudadano>modificarOrganismoContrato(List<ModificarOrganismoContrato> trabajadores );
 	
 	int trabajadoresContratadosOrganismoOcupacion(Long idOrganismo,Long idOcupacion,List<String>estados);
 	

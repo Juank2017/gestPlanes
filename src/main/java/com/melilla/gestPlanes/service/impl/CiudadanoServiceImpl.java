@@ -20,6 +20,8 @@ import com.melilla.gestPlanes.DTO.CiudadanoCriterioOrden;
 import com.melilla.gestPlanes.DTO.CiudadanoOrdenBusqueda;
 import com.melilla.gestPlanes.DTO.CreateTrabajadorDTO;
 import com.melilla.gestPlanes.DTO.ModificaEstadoDTO;
+import com.melilla.gestPlanes.DTO.ModificaFechaContratoDTO;
+import com.melilla.gestPlanes.DTO.ModificarOrganismoContrato;
 import com.melilla.gestPlanes.DTO.UpdateTrabajadorDTO2;
 import com.melilla.gestPlanes.DTO.VacantesResponseDTO;
 import com.melilla.gestPlanes.exceptions.exceptions.CategoriaNotFoundException;
@@ -542,6 +544,61 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 		
 		ciudadanoRepository.saveAndFlush(trabajador);
 		
+	}
+
+	@Override
+	public List<Ciudadano> modificarFechaContrato(List<ModificaFechaContratoDTO> trabajadores) {
+		List<Ciudadano> trabajadoresModificados = new ArrayList<Ciudadano>();
+
+		for (ModificaFechaContratoDTO modificaFechaContrato : trabajadores) {
+
+			Ciudadano trabajador = ciudadanoRepository.findById(modificaFechaContrato.getIdCiudadano())
+					.orElseThrow(() -> new CiudadanoNotFoundException(modificaFechaContrato.getIdCiudadano()));
+			if(trabajador.getEstado().equals("CONTRATADO/A")) {
+				Contrato contrato = trabajador.getContrato();
+				if (contrato != null) {
+					contrato.setFechaInicio(modificaFechaContrato.getFechaInicio());
+					contrato.setFechaFinal(modificaFechaContrato.getFechaFinal());
+					
+					trabajador.setContrato(contrato);
+					ciudadanoRepository.save(trabajador);
+					trabajadoresModificados.add(trabajador);
+				}
+			}
+
+		}
+
+		return trabajadoresModificados;
+	}
+
+	@Override
+	public List<Ciudadano> modificarOrganismoContrato(List<ModificarOrganismoContrato> trabajadores) {
+		List<Ciudadano> trabajadoresModificados = new ArrayList<Ciudadano>();
+
+		for (ModificarOrganismoContrato tr : trabajadores) {
+
+			Ciudadano trabajador = ciudadanoRepository.findById(tr.getIdCiudadano())
+					.orElseThrow(() -> new CiudadanoNotFoundException(tr.getIdCiudadano()));
+			if(trabajador.getEstado().equals("CONTRATADO/A")) {
+				Contrato contrato = trabajador.getContrato();
+				if (contrato != null) {
+					contrato.setEntidad(organismoRepository.findById(tr.getOrganismo()).orElseThrow(()->new OrganismoNotFoundException(tr.getOrganismo())));
+					if(tr.getDestino() != null) {
+						contrato.setDestino(destinoRepository.findById(tr.getDestino()).orElseThrow(()->new DestinoNotFoundException(tr.getDestino())));
+					}else {
+						contrato.setDestino(null);
+					}
+					
+					
+					trabajador.setContrato(contrato);
+					ciudadanoRepository.save(trabajador);
+					trabajadoresModificados.add(trabajador);
+				}
+			}
+
+		}
+
+		return trabajadoresModificados;
 	}
 
 }
