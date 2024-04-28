@@ -120,6 +120,18 @@ public class CiudadanoSpecification implements Specification<Ciudadano> {
 			likePredicate = builder.like(root.get("DNI"), "%" + criteria.getValue() + "%");
 			break;	
 		}
+		case "nombre":{
+			likePredicate = builder.like(root.get("nombre"), "%" + criteria.getValue() + "%");
+			break;	
+		}
+		case "apellido1":{
+			likePredicate = builder.like(root.get("apellido1"), "%" + criteria.getValue() + "%");
+			break;	
+		}
+		case "apellido2":{
+			likePredicate = builder.like(root.get("apellido2"), "%" + criteria.getValue() + "%");
+			break;	
+		}
 		case "seguridadSocial":{
 			likePredicate = builder.like(root.get("seguridadSocial"), "%" + criteria.getValue() + "%");
 			break;	

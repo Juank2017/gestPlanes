@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.melilla.gestPlanes.DTO.CiudadanoOrdenBusqueda;
 import com.melilla.gestPlanes.DTO.CreateTrabajadorDTO;
 import com.melilla.gestPlanes.DTO.ModificaEstadoDTO;
+import com.melilla.gestPlanes.DTO.ModificaFechaContratoDTO;
+import com.melilla.gestPlanes.DTO.ModificarOrganismoContrato;
 import com.melilla.gestPlanes.DTO.UpdateTrabajadorDTO2;
 import com.melilla.gestPlanes.model.ApiResponse;
 import com.melilla.gestPlanes.model.Ciudadano;
@@ -167,7 +169,27 @@ public class CiudadanoController {
 
 		return ResponseEntity.ok(response);
 	}
+	
+	@PostMapping("/modificaFechaContrato")
+	public ResponseEntity<ApiResponse> modificaFechaContratoTrabajador(@RequestBody List<ModificaFechaContratoDTO> trabajadores) {
+		ApiResponse response = new ApiResponse();
 
+		response.getPayload().add(ciudadanoService.modificarFechaContrato(trabajadores));
+		response.setMensaje("Estado del trabajador actualizado");
+
+		return ResponseEntity.ok(response);
+	}
+
+	@PostMapping("/modificaOrganismoContrato")
+	public ResponseEntity<ApiResponse> modificaOrganismoContratoTrabajador(@RequestBody List<ModificarOrganismoContrato> trabajadores) {
+		ApiResponse response = new ApiResponse();
+
+		response.getPayload().add(ciudadanoService.modificarOrganismoContrato(trabajadores));
+		response.setMensaje("Estado del trabajador actualizado");
+
+		return ResponseEntity.ok(response);
+	}
+	
 	@GetMapping("/vacantes/{idOrganismo}/{idOcupacion}")
 	public ResponseEntity<ApiResponse> trabajadoresContratadosPorOrganismoOcupacion(@PathVariable Long idOrganismo,
 			@PathVariable Long idOcupacion) {

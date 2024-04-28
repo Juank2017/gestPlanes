@@ -553,7 +553,7 @@ public class DocumentoServiceImpl implements DocumentoService {
 						"Programa común de inserción laboral a través de obras y servicios de interés general y social, recogido en la subsección 1ª de la sección 3ª del Capitulo V del Real Decreto 818/2021 de 28 de septiembre y la orden TES/1077/2023  de 28 de septiembre y la convocatoria para la concesión de subvenciones destinadas al anterior programa en colaboración con órganos de la AGE en el ámbito territorial de las ciudades de Ceuta y Melilla, aprobada por resolución de 7/11/2023 de la Dirección General del SEPE.");
 
 				// Literal contrato
-				formulario.getField("P2301").setValue(contrato.getEntidad().getLiteralContrato());
+				formulario.getField("P2301").setValue("El presente contrato se formaliza para participar en los programas, o en su caso programa, contenidos en el documento de colaboración formalizado entre la Delegación del Gobierno y la entidad donde va a desarrollar la actividad laboral el trabajador contratado, para el desarrollo del Plan de Empleo 2023-2024.");
 
 				formulario.getField("P2302").setValue("MELILLA");
 
@@ -836,7 +836,7 @@ public class DocumentoServiceImpl implements DocumentoService {
 				formulario.getField("fechaBaja").setValue(fechaFinal);
 				formulario.getField("vacaciones").setValue(presentacion.getVacaciones());
 				formulario.getField("observaciones").setValue(presentacion.getObservaciones());
-				formulario.getField("categoria").setValue(contrato.getCategoria().getCategoria());
+				formulario.getField("categoria").setValue(contrato.getOcupacion().getOcupacion());
 				formulario.getField("destino").setValue(contrato.getEntidad().getNombreCortoOrganismo()+ " / " + contrato.getDestino().getDestino());
 				
 				formulario.flatten();
