@@ -590,7 +590,7 @@ public class DocumentoServiceImpl implements DocumentoService {
 				Path fichero = Paths.get(uploadDir + nombreCarpeta+ "\\" + nombreFichero).toAbsolutePath().normalize();
 				String contratoParaGuardar;
 				if (Files.exists(fichero, LinkOption.NOFOLLOW_LINKS)) {
-					nombreFichero = Instant.now().toEpochMilli() +"_"+nombreFichero;
+					nombreFichero = nombreFichero.replace("_CONTRATO","_"+Instant.now().toEpochMilli() +"_" );
 					contratoParaGuardar= fileStorageLocation + "\\" + nombreFichero;
 				}else {
 					contratoParaGuardar= fileStorageLocation + "\\" +nombreFichero;
@@ -867,7 +867,7 @@ public class DocumentoServiceImpl implements DocumentoService {
 				Path fichero = Paths.get(uploadDir + nombreCarpeta+ "\\" + nombreFichero).toAbsolutePath().normalize();
 				String contratoParaGuardar;
 				if (Files.exists(fichero, LinkOption.NOFOLLOW_LINKS)) {
-					nombreFichero = Instant.now().toEpochMilli() +"_"+nombreFichero;
+					nombreFichero = nombreFichero.replace("_PRESENTACION","_"+Instant.now().toEpochMilli() +"_" );
 					contratoParaGuardar= fileStorageLocation + "\\" + nombreFichero;
 				}else {
 					contratoParaGuardar= fileStorageLocation + "\\" +nombreFichero;

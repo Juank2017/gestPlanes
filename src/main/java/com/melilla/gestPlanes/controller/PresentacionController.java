@@ -54,9 +54,9 @@ public class PresentacionController {
 
 		Presentacion present = new Presentacion();
 		
-		present.setPresentacion(presentacion.getPresentacion());
-		present.setObservaciones(presentacion.getObservaciones());
-		present.setResponsable(presentacion.getResponsable());
+		present.setPresentacion(presentacion.getPresentacion().toUpperCase());
+		present.setObservaciones(presentacion.getObservaciones().toUpperCase());
+		present.setResponsable(presentacion.getResponsable().toUpperCase());
 		present.setVacaciones(presentacion.getVacaciones());
 		
 		response.setEstado(HttpStatus.OK);
@@ -75,5 +75,7 @@ public class PresentacionController {
 
 		return ResponseEntity.ok(response);
 	}
+	
+	
 
 }

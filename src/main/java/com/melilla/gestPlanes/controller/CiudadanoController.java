@@ -22,6 +22,7 @@ import com.melilla.gestPlanes.DTO.ModificaEstadoDTO;
 import com.melilla.gestPlanes.DTO.ModificaFechaContratoDTO;
 import com.melilla.gestPlanes.DTO.ModificarOrganismoContrato;
 import com.melilla.gestPlanes.DTO.UpdateTrabajadorDTO2;
+import com.melilla.gestPlanes.DTO.listadoTrabajadoresDTO;
 import com.melilla.gestPlanes.model.ApiResponse;
 import com.melilla.gestPlanes.model.Ciudadano;
 import com.melilla.gestPlanes.service.CiudadanoService;
@@ -36,77 +37,69 @@ public class CiudadanoController {
 	private CiudadanoService ciudadanoService;
 
 	@PostMapping("/ciudadanos")
-	public Page<Ciudadano> getCiudadanos(
+	public List<listadoTrabajadoresDTO> getCiudadanos(
 
 			@RequestBody CiudadanoOrdenBusqueda ordenBusqueda) {
 
 		ApiResponse response = new ApiResponse();
 		log.info(ordenBusqueda.toString());
-
+		List<listadoTrabajadoresDTO> listado = new ArrayList<listadoTrabajadoresDTO>();
 		Sort sort1 = null;
 		List<Order> orders = new ArrayList<>();
 
-//		for (Map.Entry<String, String> o : order.entrySet()) {
-//			String campo = o.getKey();
-//			String direccion = o.getValue();
-//			Order orden= null;
-//			
-//			if (direccion.equals("asc")){
-//			 orden = Order.asc(campo);
-//			}else {
-//			 orden= Order.desc(campo);
-//			}
-//			
-//			orders.add(orden);
-//		}
+
 		sort1 = Sort.by(orders);
 
 		response.setEstado(HttpStatus.OK);
 		Page<Ciudadano> respuesta = ciudadanoService.getTrabajadores(ordenBusqueda);
-
+		
+		for (Ciudadano ciudadano : respuesta) {
+			listadoTrabajadoresDTO item = new listadoTrabajadoresDTO();
+			item.setIdCiudadano(ciudadano.getIdCiudadano());
+			item.setNumeroOrdenSepe(ciudadano.getNumeroOrdenSepe());
+			item.setSinClausula(ciudadano.isSinClausula());
+			item.setBajaLaboral(ciudadano.isBajaLaboral());
+			item.setBajaMaternal(ciudadano.isBajaMaternal());
+			item.setEstado(ciudadano.getEstado());
+			item.setFechaRegistro(ciudadano.getFechaRegistro());
+			item.setFechaListadoSepe(ciudadano.getFechaListadoSepe());
+			item.setCcc(ciudadano.getCcc());
+			item.setNacionalidad(ciudadano.getNacionalidad());
+			if(ciudadano.getContrato() != null) {
+				item.setFechaInicio(ciudadano.getContrato().getFechaInicio());
+				item.setFechaFinal(ciudadano.getContrato().getFechaFinal());
+				item.setFechaExtincion(ciudadano.getContrato().getFechaExtincion());
+				item.setTotal((ciudadano.getContrato().getTotal()!=null)?ciudadano.getContrato().getTotal():null);
+				item.setCategoria((ciudadano.getContrato().getCategoria()!= null)?ciudadano.getContrato().getCategoria().getCategoria(): null);
+				item.setOcupacion((ciudadano.getContrato().getOcupacion()!= null)?ciudadano.getContrato().getOcupacion().getOcupacion():null);
+				item.setOrganismo((ciudadano.getContrato().getEntidad()!= null)?ciudadano.getContrato().getEntidad().getOrganismo():null);
+				item.setDestino((ciudadano.getContrato().getDestino()!=null)?ciudadano.getContrato().getDestino().getDestino():null);
+			}
+			item.setNombre(ciudadano.getNombre());
+			item.setApellido1(ciudadano.getApellido1());
+			item.setApellido2(ciudadano.getApellido2());
+			item.setDNI(ciudadano.getDNI());
+			item.setSeguridadSocial(ciudadano.getSeguridadSocial());
+			item.setFechaNacimiento(ciudadano.getFechaNacimiento());
+			item.setAntecedentes(ciudadano.isAntecedentes());
+			item.setAltaSS(ciudadano.isAltaSS());
+			item.setContrata(ciudadano.isContrata());
+			item.setEscaneado(ciudadano.isEscaneado());
+			item.setNedaes(ciudadano.isNedaes());
+			item.setTelefono(ciudadano.getTelefono());
+			item.setSexo(ciudadano.getSexo());
+			item.setDeleted(ciudadano.isDeleted());
+			item.setTotalElements(respuesta.getTotalElements());
+			listado.add(item);
+		}
 		response.getPayload().add(respuesta);
 
 		response.setMensaje("Lista de ciudadanos");
 
-		return respuesta;
+		return listado;
 
 	}
-//	@PostMapping("/ciudadanos")
-//	public ResponseEntity<ApiResponse> getCiudadanos(
-//
-//			@RequestBody CiudadanoOrdenBusqueda ordenBusqueda) {
-//
-//		ApiResponse response = new ApiResponse();
-//		log.info(ordenBusqueda.toString());
-//
-//		Sort sort1 = null;
-//		List<Order> orders = new ArrayList<>();
-//
-////		for (Map.Entry<String, String> o : order.entrySet()) {
-////			String campo = o.getKey();
-////			String direccion = o.getValue();
-////			Order orden= null;
-////			
-////			if (direccion.equals("asc")){
-////			 orden = Order.asc(campo);
-////			}else {
-////			 orden= Order.desc(campo);
-////			}
-////			
-////			orders.add(orden);
-////		}
-//		sort1 = Sort.by(orders);
-//
-//		response.setEstado(HttpStatus.OK);
-//		Page<Ciudadano> respuesta = ciudadanoService.getTrabajadores(ordenBusqueda);
-//
-//		response.getPayload().add(respuesta);
-//
-//		response.setMensaje("Lista de ciudadanos");
-//
-//		return ResponseEntity.ok(response);
-//
-//	}
+
 
 	@GetMapping("/ciudadano/{idCiudadano}")
 	public ResponseEntity<ApiResponse> obtenerCiudadano(@PathVariable Long idCiudadano) {
