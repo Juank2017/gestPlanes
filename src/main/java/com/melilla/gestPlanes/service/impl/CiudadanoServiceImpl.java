@@ -120,7 +120,7 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 				.sexo(trabajador.getSexo()).seguridadSocial(trabajador.getSeguridadSocial())
 				.idPlan(planService.getPlanActivo()).fechaRegistro(trabajador.getFechaRegistro())
 				.fechaNacimiento(trabajador.getFechaNacimiento()).estado(trabajador.getEstado())
-				.numeroOrdenSepe(trabajador.getNumeroOrdenSepe()).fechaListadoSepe(trabajador.getFechaListadoSepe()).nacionalidad(trabajador.getNacionalidad())
+				.numeroOrdenSepe(trabajador.getNumeroOrdenSepe()).fechaListadoSepe(trabajador.getFechaListadoSepe()).nacionalidad(trabajador.getNacionalidad().toUpperCase())
 				.bajaLaboral(false).bajaMaternal(false).ccc(trabajador.getCcc()).sinClausula(trabajador.isSinClausula())
 				.equipo((trabajador.getEquipo() != null)
 						? equipoService.equipo(planService.getPlanActivo().getIdPlan(), trabajador.getEquipo())
@@ -171,11 +171,22 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 			List<Order> criteriosDeOrden = new ArrayList<>();
 
 			for (CiudadanoCriterioOrden criterio : criterioOrden) {
+				
+				String columna = criterio.getId();
+				
+				switch(columna) {
+				case "fechaInicio": case "fechaFinal": case "fechaExtincion": case "ocupacion": case "categoria":  case "destino":
+					columna = "contrato."+columna;
+				break;
+				case "organismo":
+					columna ="contrato.entidad";
+				break;
+				}
 
 				if (criterio.isDesc()) {
-					orden = Order.desc(criterio.getId());
+					orden = Order.desc(columna);
 				} else {
-					orden = Order.asc(criterio.getId());
+					orden = Order.asc(columna);
 				}
 				criteriosDeOrden.add(orden);
 			}
@@ -212,13 +223,13 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 		Ciudadano ciudadano = ciudadanoRepository.findById(trabajador.getIdCiudadano())
 				.orElseThrow(() -> new CiudadanoNotFoundException(trabajador.getIdCiudadano()));
 
-		ciudadano.setNombre(trabajador.getNombre());
-		ciudadano.setApellido1(trabajador.getApellido1());
-		ciudadano.setApellido2(trabajador.getApellido2());
-		ciudadano.setDNI(trabajador.getDNI());
+		ciudadano.setNombre(trabajador.getNombre().toUpperCase());
+		ciudadano.setApellido1(trabajador.getApellido1().toUpperCase());
+		ciudadano.setApellido2(trabajador.getApellido2().toUpperCase());
+		ciudadano.setDNI(trabajador.getDNI().toUpperCase());
 		ciudadano.setEmail(trabajador.getEmail());
-		ciudadano.setCcc(trabajador.getCcc());
-		ciudadano.setNacionalidad(trabajador.getNacionalidad());
+		ciudadano.setCcc(trabajador.getCcc().toUpperCase());
+		ciudadano.setNacionalidad(trabajador.getNacionalidad().toUpperCase());
 		if (!trabajador.getEstado().equals(ciudadano.getEstado())) {
 			if (trabajador.getEstado().equals("CONTRATADO/A")) {
 				if (existeTrabajadorEnEstadoContratado(trabajador.getDNI())) {

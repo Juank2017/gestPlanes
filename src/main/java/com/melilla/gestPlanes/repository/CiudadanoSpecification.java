@@ -79,14 +79,14 @@ public class CiudadanoSpecification implements Specification<Ciudadano> {
 		}
 		break;
 		
-		case "contrato.fechaInicio": case "contrato.fechaFin": case "contrato.fechaExtincion":{
+		case "fechaInicio": case "fechaFinal": case "fechaExtincion":{
 			
 			// convertir el valor a fecha
 			String valor = this.criteria.getValue();
 			try {
 				LocalDate fecha = LocalDate.parse(valor, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
 
-				fechaPredicate = builder.equal(contratoCiudadano.get(this.criteria.getId().replace("contrato.", "")), fecha);
+				fechaPredicate = builder.equal(contratoCiudadano.get(this.criteria.getId()), fecha);
 			} catch (Exception e) {
 
 				return null;
@@ -94,21 +94,21 @@ public class CiudadanoSpecification implements Specification<Ciudadano> {
 			break;
 		}
 		
-		case "contrato.ocupacion.ocupacion": {
+		case "ocupacion": {
 
 			likePredicate = builder.like(ocupacionContrato.get("ocupacion"), "%" + criteria.getValue() + "%");
 			break;
 		}
-		case "contrato.categoria.categoria": {
+		case "categoria": {
 			likePredicate = builder.like(categoriaContrato.get("categoria"), "%" + criteria.getValue() + "%");
 			break;
 		}
-		case "contrato.entidad.nombreCortoOrganismo": {
+		case "organismo": {
 			likePredicate = builder.like(organismoContrato.get("nombreCortoOrganismo"),
 					"%" + criteria.getValue() + "%");
 			break;
 		}
-		case "contrato.destino.destino": {
+		case "destino": {
 			likePredicate = builder.like(destinoContrato.get("destino"), "%" + criteria.getValue() + "%");
 			break;
 		}
