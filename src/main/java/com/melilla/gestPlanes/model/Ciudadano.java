@@ -137,10 +137,17 @@ public class Ciudadano {
 	@OneToMany(mappedBy = "ciudadano", cascade = CascadeType.ALL)
 	private List<Documento> documentos= new ArrayList<Documento>();
 	
+
+	
+	@OneToMany(mappedBy = "ciudadano" , cascade= CascadeType.ALL)
+	private List<Procedimiento>procedimientos;
+	
 	private boolean esJefeEquipo;
 	
 	private boolean cupo;
 	private boolean vg;
+	
+	private boolean reclamaSalarios;
 	
 	@CreatedDate
 	private LocalDateTime createdAt;
