@@ -11,6 +11,7 @@ import org.hibernate.envers.NotAudited;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -119,6 +120,9 @@ public class Ciudadano {
 	@OneToOne(mappedBy = "ciudadano")
 	private Contrato contrato;
 	
+	@OneToMany(mappedBy="ciudadano",cascade=CascadeType.ALL)
+	private List<ContratoReclamado>contratosReclamados;
+	
 	@JsonManagedReference
 	@OneToMany(mappedBy = "ciudadano", cascade = CascadeType.ALL)
 	@NotAudited
@@ -137,10 +141,13 @@ public class Ciudadano {
 	@OneToMany(mappedBy = "ciudadano", cascade = CascadeType.ALL)
 	private List<Documento> documentos= new ArrayList<Documento>();
 	
-
 	
-	@OneToMany(mappedBy = "ciudadano" , cascade= CascadeType.ALL)
-	private List<Procedimiento>procedimientos;
+//	@JsonBackReference
+//	@OneToOne
+//	@JoinColumn(name="idProcedimiento")
+//	private Procedimiento procedimiento;
+	
+	
 	
 	private boolean esJefeEquipo;
 	

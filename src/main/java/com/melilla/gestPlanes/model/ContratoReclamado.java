@@ -1,7 +1,6 @@
 package com.melilla.gestPlanes.model;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 import org.hibernate.annotations.SQLDelete;
@@ -10,7 +9,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.CascadeType;
@@ -36,32 +35,31 @@ import lombok.Setter;
 @Builder
 @Entity
 @Audited
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "idAbogado")
-@SQLDelete(sql = "UPDATE abogado SET deleted=true, deleted_at= NOW() WHERE id_abogado=?")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "idContratoReclamado")
+@SQLDelete(sql = "UPDATE contrato_reclamado SET deleted=true, deleted_at= NOW() WHERE id_contrato_reclamado=?")
 @EntityListeners(AuditingEntityListener.class)
-public class Abogado {
+public class ContratoReclamado {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long idAbogado;
+	private Long idContratoReclamado;
 	
-	private String nombre;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", locale = "es_ES" )
+	private LocalDate fechaInicio;
 	
-	private String apellido1;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", locale = "es_ES" )
+	private LocalDate fechaFinal;
 	
-	private String apellido2;
+	private String jornada;
+	
+	private String ocupacion;
+	
+	@OneToOne
+	@JoinColumn(name="idCiudadano")
+	private Ciudadano ciudadano;
+	
+	@JsonManagedReference
+	@OneToMany(mappedBy = "contrato", cascade=CascadeType.ALL)
+	private List<NominasReclamadas> nominasReclamadas;
 
-	private String numeroColegiado;
-	
-	private String telefono;
-	
-	private String email;
-	
-	
-	
-	@OneToMany(mappedBy = "abogado", cascade = CascadeType.ALL)
-	private List<Procedimiento> procedimiento;
-	
-	
-	
 }

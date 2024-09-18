@@ -43,5 +43,6 @@ public class CreateTrabajadorDTO {
 	boolean escaneado;
 	boolean nedaes;
 	LocalDate fechaListadoSepe;
+	boolean reclamaSalarios;
 
 }
