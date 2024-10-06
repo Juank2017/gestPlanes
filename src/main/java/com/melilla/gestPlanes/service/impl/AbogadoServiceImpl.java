@@ -46,4 +46,10 @@ public class AbogadoServiceImpl implements AbogadoService {
 
 	}
 
+	@Override
+	public Abogado getAbogado(Long idAbogado) {
+		
+		return abogadoRepository.getById(idAbogado);
+	}
+
 }

@@ -613,4 +613,10 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 		return trabajadoresModificados;
 	}
 
+	@Override
+	public List<Ciudadano> ciudadanosPorDNI(String dni) {
+		
+		return ciudadanoRepository.findAllByDNI(dni);
+	}
+
 }

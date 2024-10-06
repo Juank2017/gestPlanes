@@ -7,12 +7,18 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.melilla.gestPlanes.DTO.CreatePeriodosReclamadosDTO;
+import com.melilla.gestPlanes.DTO.CreateProcedimientoDTO;
+
 import com.melilla.gestPlanes.DTO.ProcedimientoDTO;
+import com.melilla.gestPlanes.exceptions.exceptions.ProcedimientoNotFoundException;
 import com.melilla.gestPlanes.model.Abogado;
 import com.melilla.gestPlanes.model.Ciudadano;
 import com.melilla.gestPlanes.model.ContratoReclamado;
 import com.melilla.gestPlanes.model.Procedimiento;
 import com.melilla.gestPlanes.repository.ProcedimientoRepository;
+import com.melilla.gestPlanes.service.AbogadoService;
+import com.melilla.gestPlanes.service.CiudadanoService;
 import com.melilla.gestPlanes.service.ContratoReclamadoService;
 import com.melilla.gestPlanes.service.ProcedimientoService;
 
@@ -27,6 +33,12 @@ public class ProcedimientoServiceImpl implements ProcedimientoService {
 
 	@Autowired
 	ContratoReclamadoService contratoReclamadoService;
+	
+	@Autowired
+	CiudadanoService ciudadanoService;
+	
+	@Autowired
+	AbogadoService abogadoService;
 
 	@Override
 	public List<ProcedimientoDTO> obtenerProcedimientos() {
@@ -73,7 +85,7 @@ public class ProcedimientoServiceImpl implements ProcedimientoService {
 					procedimientoDTO.setDNI(ciudadano.getDNI());
 					procedimientoDTO.setSeguridadSocial(ciudadano.getSeguridadSocial());
 
-					List<ContratoReclamado> contratos = ciudadano.getContratosReclamados();
+					List<ContratoReclamado> contratos = procedimiento.getPeriodos();
 
 					if (!contratos.isEmpty()) {
 
@@ -109,6 +121,75 @@ public class ProcedimientoServiceImpl implements ProcedimientoService {
 	public List<Procedimiento> procedimientos() {
 
 		return procedimientoRepository.findAll();
+	}
+
+	@Override
+	public Procedimiento crearProcedimiento(CreateProcedimientoDTO procedimientDTO) {
+		
+		Ciudadano demandante = new Ciudadano();
+		
+		Abogado abogado = abogadoService.getAbogado(procedimientDTO.getRepresentante());
+		
+		
+		if (ciudadanoService.existeTrabajador(procedimientDTO.getDni())) {
+			List<Ciudadano>demandantes = ciudadanoService.ciudadanosPorDNI(procedimientDTO.getDni()); 
+			if(!demandantes.isEmpty()) {
+				demandante = demandantes.get(0);
+			}
+		}else {
+			demandante.setNombre(procedimientDTO.getNombreTrabajador());
+			demandante.setApellido1(procedimientDTO.getApellido1Trabajador());
+			demandante.setApellido2(procedimientDTO.getApellido2Trabajador());
+			demandante.setDNI(procedimientDTO.getDni());
+			demandante.setSeguridadSocial(procedimientDTO.getSsTrabajador());
+			
+			demandante = ciudadanoService.crearCiudadano(demandante);
+		}
+		
+		Procedimiento nuevoProcedimiento = new Procedimiento();
+		
+		nuevoProcedimiento.setAbogado(abogado);
+		nuevoProcedimiento.setCiudadano(demandante);
+		nuevoProcedimiento.setNumeroProcedimiento(procedimientDTO.getNumeroProcedimiento());
+		nuevoProcedimiento.setSentencia(procedimientDTO.getSentencia());
+		
+		nuevoProcedimiento = procedimientoRepository.save(nuevoProcedimiento);
+		
+		List<ContratoReclamado> periodos = new ArrayList<>();
+		
+		List<CreatePeriodosReclamadosDTO> periodosReclamados = procedimientDTO.getPeriodos();
+		
+		if (!periodosReclamados.isEmpty()) {
+			for (CreatePeriodosReclamadosDTO createPeriodosReclamadosDTO : periodosReclamados) {
+				
+				ContratoReclamado periodo = new ContratoReclamado();
+				
+				periodo.setFechaInicio(createPeriodosReclamadosDTO.getFechaInicio());
+				periodo.setFechaFinal(createPeriodosReclamadosDTO.getFechaFin());
+				periodo.setProcedimiento(nuevoProcedimiento);
+				periodo.setGc(createPeriodosReclamadosDTO.getGc());
+				
+				
+				periodo = contratoReclamadoService.crearContratoReclamado(periodo);
+				
+				periodos.add(periodo);
+				
+			}
+		}
+		
+
+		nuevoProcedimiento.setPeriodos(periodos);
+		
+		
+		
+		
+		return nuevoProcedimiento;
+	}
+
+	@Override
+	public Procedimiento getProcedimiento(Long idProcedimiento) {
+		
+		return procedimientoRepository.findById(idProcedimiento).orElseThrow( ()-> new ProcedimientoNotFoundException(idProcedimiento) );
 	}
 
 }

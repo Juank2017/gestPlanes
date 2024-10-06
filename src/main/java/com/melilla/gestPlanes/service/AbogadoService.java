@@ -13,6 +13,6 @@ public interface AbogadoService {
 	
 	void borrarAbogado(Long idAbogado);
 	
-	
+	Abogado getAbogado(Long idAbogado);
 
 }

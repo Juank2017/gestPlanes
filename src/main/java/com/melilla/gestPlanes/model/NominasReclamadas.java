@@ -1,12 +1,16 @@
 package com.melilla.gestPlanes.model;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.envers.Audited;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -32,7 +36,7 @@ import lombok.Setter;
 @Entity
 @Audited
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "idNomina")
-@SQLDelete(sql = "UPDATE nomina_reclamada SET deleted=true, deleted_at= NOW() WHERE id_Nomina=?")
+@SQLDelete(sql = "UPDATE nominas_reclamadas SET deleted=true, deleted_at= NOW() WHERE id_Nomina=?")
 @EntityListeners(AuditingEntityListener.class)
 public class NominasReclamadas {
 	
@@ -40,9 +44,11 @@ public class NominasReclamadas {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long idNomina;
 	
-	private String mes;
+	//@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", locale = "es_ES" )
+	private LocalDate fechaFin;
 	
-	private String year;
+	//@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", locale = "es_ES" )
+	private LocalDate fechaInicio;
 	
 	//Importes que ha percibido
 	private BigDecimal basePercibida;
@@ -51,12 +57,20 @@ public class NominasReclamadas {
 	
 	private BigDecimal residenciaPercibida;
 	
-	//Importes que reclama el demandante
+	//Importes que el demandante die que debería haber recibido
 	private BigDecimal baseDevengada;
 	
 	private BigDecimal prorrataDevengada;
 	
 	private BigDecimal residenciaDevengada;
+	
+	
+	//Cantidades que reclama
+	private BigDecimal baseReclamada;
+	
+	private BigDecimal prorrataReclamada;
+	
+	private BigDecimal residenciaReclamada;
 	 
 	//Importes que calcula personal
 	private BigDecimal baseCalculada;
@@ -77,5 +91,13 @@ public class NominasReclamadas {
 	@ManyToOne
 	@JoinColumn(name="idContratoReclamado")
 	private ContratoReclamado contrato;
+	
+
+	@CreatedDate
+	private LocalDateTime createdAt;
+	
+	private boolean deleted;
+	
+	private LocalDateTime deletedAt;
 
 }

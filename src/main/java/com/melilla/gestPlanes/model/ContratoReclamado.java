@@ -1,14 +1,19 @@
 package com.melilla.gestPlanes.model;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.envers.Audited;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
@@ -50,16 +55,31 @@ public class ContratoReclamado {
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", locale = "es_ES" )
 	private LocalDate fechaFinal;
 	
-	private String jornada;
+
 	
-	private String ocupacion;
-	
-	@OneToOne
-	@JoinColumn(name="idCiudadano")
-	private Ciudadano ciudadano;
-	
+	private String gc;
+
+
 	@JsonManagedReference
 	@OneToMany(mappedBy = "contrato", cascade=CascadeType.ALL)
-	private List<NominasReclamadas> nominasReclamadas;
+	private List<NominasReclamadas> nominasReclamadas = new ArrayList<>();
+	
+	@JsonIgnore
+	@ManyToOne
+	@JoinColumn(name="idProcedimiento")
+	private Procedimiento procedimiento;
 
+
+	@CreatedDate
+	private LocalDateTime createdAt;
+	
+	private boolean deleted;
+	
+	private LocalDateTime deletedAt;
+	
+
+
+
+	
+	
 }

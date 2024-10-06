@@ -38,5 +38,6 @@ public interface CiudadanoRepository extends JpaRepository<Ciudadano, Long> ,Rev
 	 
 	 List<Ciudadano>findAllByidPlanIdPlanAndBajaLaboralTrue(Long idPlan);
 	 List<Ciudadano>findAllByidPlanIdPlanAndBajaMaternalTrue(Long idPlan);
+	 List<Ciudadano>findAllByDNI(String dni);
 }
 

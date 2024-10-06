@@ -4,8 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.melilla.gestPlanes.DTO.CreateProcedimientoDTO;
 import com.melilla.gestPlanes.model.ApiResponse;
 import com.melilla.gestPlanes.service.ProcedimientoService;
 
@@ -29,5 +32,16 @@ public class ProcedimientoController {
 		
 		return ResponseEntity.ok(response);
 	}
+	
+	@PostMapping("/crearProcedimiento")
+	public ResponseEntity<ApiResponse>crearProcedimiento(@RequestBody CreateProcedimientoDTO procedimiento){
 
+		ApiResponse response = new ApiResponse();
+		
+		response.setEstado(HttpStatus.OK);
+		response.getPayload().add(procedimientoService.crearProcedimiento(procedimiento));
+		response.setMensaje("Procedimiento Creado");
+		
+		return ResponseEntity.ok(response);
+		}
 }

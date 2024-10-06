@@ -120,8 +120,8 @@ public class Ciudadano {
 	@OneToOne(mappedBy = "ciudadano")
 	private Contrato contrato;
 	
-	@OneToMany(mappedBy="ciudadano",cascade=CascadeType.ALL)
-	private List<ContratoReclamado>contratosReclamados;
+//	@OneToMany(mappedBy="ciudadano",cascade=CascadeType.ALL)
+//	private List<ContratoReclamado>contratosReclamados;
 	
 	@JsonManagedReference
 	@OneToMany(mappedBy = "ciudadano", cascade = CascadeType.ALL)
@@ -142,10 +142,10 @@ public class Ciudadano {
 	private List<Documento> documentos= new ArrayList<Documento>();
 	
 	
-//	@JsonBackReference
-//	@OneToOne
-//	@JoinColumn(name="idProcedimiento")
-//	private Procedimiento procedimiento;
+	@JsonBackReference
+	@OneToOne
+	@JoinColumn(name="idProcedimiento")
+	private Procedimiento procedimiento;
 	
 	
 	

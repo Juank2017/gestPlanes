@@ -55,4 +55,6 @@ public interface CiudadanoService {
 	void deleteTrabajador(Long idTrabajador);
 	
 	void restoreTrabajador(Long idTrabajador);
+	
+	List<Ciudadano> ciudadanosPorDNI(String dni);
 }
