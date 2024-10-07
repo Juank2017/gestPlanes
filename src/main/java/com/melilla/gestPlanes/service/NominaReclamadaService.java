@@ -7,5 +7,7 @@ public interface NominaReclamadaService {
 	NominasReclamadas insertarNomina(NominasReclamadas nomina);
 	
 	void eliminaNomina(long idNomina);
+	
+	NominasReclamadas editarNomina(NominasReclamadas nomina);
 
 }
