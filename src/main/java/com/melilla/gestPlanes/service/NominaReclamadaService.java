@@ -9,5 +9,7 @@ public interface NominaReclamadaService {
 	void eliminaNomina(long idNomina);
 	
 	NominasReclamadas editarNomina(NominasReclamadas nomina);
+	
+	NominasReclamadas getNomina(long idNomina);
 
 }

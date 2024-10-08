@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -44,4 +45,17 @@ public class ProcedimientoController {
 		
 		return ResponseEntity.ok(response);
 		}
+	
+	@GetMapping("/obtenerProcedimiento/{idProcedimiento}")
+	public ResponseEntity<ApiResponse>obtenerProcedimiento(@PathVariable long idProcedimiento){
+		
+	ApiResponse response = new ApiResponse();
+		
+		response.setEstado(HttpStatus.OK);
+		response.getPayload().add(procedimientoService.getProcedimiento(idProcedimiento));
+		response.setMensaje("Procedimiento");
+		
+		return ResponseEntity.ok(response);
+		
+	}
 }

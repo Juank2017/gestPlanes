@@ -114,7 +114,7 @@ public class ContratoReclamadoServiceImpl implements ContratoReclamadoService{
 		
 		NominasReclamadas nominaReclamada = new NominasReclamadas();
 		
-		nominaReclamada.setBaseDevengada(BigDecimal.valueOf(nomina.getBaseDevengada()).setScale(2,RoundingMode.HALF_DOWN ));
+		nominaReclamada.setBaseDevengada( BigDecimal.valueOf(nomina.getBaseDevengada()).setScale(2,RoundingMode.HALF_DOWN ));
 		nominaReclamada.setProrrataDevengada(BigDecimal.valueOf(nomina.getProrrataDevengada()).setScale(2, RoundingMode.HALF_DOWN));
 		nominaReclamada.setResidenciaDevengada(BigDecimal.valueOf(nomina.getResidenciaDevengada()).setScale(2, RoundingMode.HALF_DOWN));
 		
@@ -126,6 +126,15 @@ public class ContratoReclamadoServiceImpl implements ContratoReclamadoService{
 		nominaReclamada.setBaseReclamada(BigDecimal.valueOf(nomina.getBaseReclamada()).setScale(2,RoundingMode.HALF_DOWN ));
 		nominaReclamada.setProrrataReclamada(BigDecimal.valueOf(nomina.getProrrataReclamada()).setScale(2, RoundingMode.HALF_DOWN));
 		nominaReclamada.setResidenciaReclamada(BigDecimal.valueOf(nomina.getResidenciaReclamada()).setScale(2, RoundingMode.HALF_DOWN));
+		
+		nominaReclamada.setDiferenciaCalculada(BigDecimal.ZERO);
+		nominaReclamada.setDiferenciaReclamada(BigDecimal.ZERO);
+		
+		nominaReclamada.setBaseCalculada(BigDecimal.ZERO);
+		nominaReclamada.setProrrataCalculada(BigDecimal.ZERO);
+		nominaReclamada.setResidenciaCalculada(BigDecimal.ZERO);
+		
+		
 		
 		nominaReclamada.setContrato(contrato);
 		

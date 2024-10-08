@@ -5,9 +5,11 @@ import java.time.LocalDate;
 import lombok.Data;
 
 @Data
-public class EditaNominaReclamada {
+public class EditaNominaReclamadaDTO {
 	
 	private long idNomina;
+	
+	private long idProcedimiento;
 	
 	private LocalDate fechaFin;
 	
