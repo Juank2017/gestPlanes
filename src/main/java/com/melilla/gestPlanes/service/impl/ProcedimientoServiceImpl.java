@@ -11,6 +11,7 @@ import com.melilla.gestPlanes.DTO.CreatePeriodosReclamadosDTO;
 import com.melilla.gestPlanes.DTO.CreateProcedimientoDTO;
 
 import com.melilla.gestPlanes.DTO.ProcedimientoDTO;
+import com.melilla.gestPlanes.DTO.UpdatePeriodosDTO;
 import com.melilla.gestPlanes.exceptions.exceptions.ProcedimientoNotFoundException;
 import com.melilla.gestPlanes.model.Abogado;
 import com.melilla.gestPlanes.model.Ciudadano;
@@ -190,6 +191,33 @@ public class ProcedimientoServiceImpl implements ProcedimientoService {
 	public Procedimiento getProcedimiento(Long idProcedimiento) {
 		
 		return procedimientoRepository.findById(idProcedimiento).orElseThrow( ()-> new ProcedimientoNotFoundException(idProcedimiento) );
+	}
+
+	@Override
+	public Procedimiento updateContratoReclamadoProcedimiento(UpdatePeriodosDTO periodo) {
+	
+		Procedimiento procedimiento = procedimientoRepository.findById(periodo.getIdProcedimiento()).orElseThrow(()->new ProcedimientoNotFoundException(periodo.getIdProcedimiento()));
+		ContratoReclamado contrato = new ContratoReclamado();
+		
+		if(periodo.getIdContratoReclamado() == 0) {
+			
+			contrato.setFechaInicio(periodo.getFechaInicio());
+			contrato.setFechaFinal(periodo.getFechaFinal());
+			contrato.setGc(periodo.getGc());
+			contrato.setProcedimiento(procedimiento);
+			contrato = contratoReclamadoService.crearContratoReclamado(contrato);
+			
+			procedimiento.getPeriodos().add(contrato);
+			
+		}else {
+			contrato = contratoReclamadoService.getContrato(periodo.getIdContratoReclamado());
+			contrato.setFechaFinal(periodo.getFechaFinal());
+			contrato.setFechaInicio(periodo.getFechaInicio());
+			contrato.setGc(periodo.getGc());
+			contratoReclamadoService.updateContrato(contrato);
+		}
+			
+		return procedimientoRepository.save(procedimiento);
 	}
 
 }

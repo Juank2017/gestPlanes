@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.melilla.gestPlanes.DTO.CreateProcedimientoDTO;
 import com.melilla.gestPlanes.DTO.ProcedimientoDTO;
+import com.melilla.gestPlanes.DTO.UpdatePeriodosDTO;
 import com.melilla.gestPlanes.model.Procedimiento;
 
 
@@ -16,4 +17,9 @@ public interface ProcedimientoService {
 	Procedimiento crearProcedimiento(CreateProcedimientoDTO prodedimiento);
 	
 	Procedimiento getProcedimiento(Long idProcedimiento);
+	
+	Procedimiento updateContratoReclamadoProcedimiento(UpdatePeriodosDTO periodo);
+		
+		
+	
 }

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.melilla.gestPlanes.DTO.CreateProcedimientoDTO;
+import com.melilla.gestPlanes.DTO.UpdatePeriodosDTO;
 import com.melilla.gestPlanes.model.ApiResponse;
 import com.melilla.gestPlanes.service.ProcedimientoService;
 
@@ -57,5 +58,16 @@ public class ProcedimientoController {
 		
 		return ResponseEntity.ok(response);
 		
+	}
+	
+	@PostMapping("/actualizarPeriodoProcedimiento")
+	public ResponseEntity<ApiResponse>insertarPeriodo(@RequestBody UpdatePeriodosDTO periodo){
+ApiResponse response = new ApiResponse();
+		
+		response.setEstado(HttpStatus.OK);
+		response.getPayload().add(procedimientoService.updateContratoReclamadoProcedimiento(periodo));
+		response.setMensaje("Periodo acutalizado");
+		
+		return ResponseEntity.ok(response);
 	}
 }

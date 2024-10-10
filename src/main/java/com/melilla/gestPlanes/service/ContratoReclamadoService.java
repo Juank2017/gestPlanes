@@ -21,4 +21,6 @@ public interface ContratoReclamadoService {
 	
 	ContratoReclamado getContrato(Long idContrato);
 	
+	ContratoReclamado updateContrato(ContratoReclamado contrato);
+	
 }

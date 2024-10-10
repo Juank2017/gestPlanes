@@ -158,4 +158,10 @@ public class ContratoReclamadoServiceImpl implements ContratoReclamadoService{
 		return contratoReclamadoRepository.findById(idContrato).orElseThrow( ()->new ContratoReclamadoNotFoundException( idContrato)  )  ;
 	}
 
+	@Override
+	public ContratoReclamado updateContrato(ContratoReclamado contrato) {
+		
+		return contratoReclamadoRepository.saveAndFlush(contrato);
+	}
+
 }

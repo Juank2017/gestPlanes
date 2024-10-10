@@ -29,5 +29,7 @@ public class CreateProcedimientoDTO {
 	private long representante;
 	
 	private List<CreatePeriodosReclamadosDTO>periodos;
+	
+	private boolean reclamaSalarios = true;
 
 }

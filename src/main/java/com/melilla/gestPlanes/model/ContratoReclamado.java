@@ -49,10 +49,10 @@ public class ContratoReclamado {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long idContratoReclamado;
 	
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", locale = "es_ES" )
+	//@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", locale = "es_ES" )
 	private LocalDate fechaInicio;
 	
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", locale = "es_ES" )
+	//@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", locale = "es_ES" )
 	private LocalDate fechaFinal;
 	
 
