@@ -9,9 +9,10 @@ import org.springframework.stereotype.Service;
 
 import com.melilla.gestPlanes.DTO.CreatePeriodosReclamadosDTO;
 import com.melilla.gestPlanes.DTO.CreateProcedimientoDTO;
-
+import com.melilla.gestPlanes.DTO.CreateTrabajadorDTO;
 import com.melilla.gestPlanes.DTO.ProcedimientoDTO;
 import com.melilla.gestPlanes.DTO.UpdatePeriodosDTO;
+import com.melilla.gestPlanes.exceptions.exceptions.CiudadanoNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.ProcedimientoNotFoundException;
 import com.melilla.gestPlanes.model.Abogado;
 import com.melilla.gestPlanes.model.Ciudadano;
@@ -153,6 +154,7 @@ public class ProcedimientoServiceImpl implements ProcedimientoService {
 		nuevoProcedimiento.setCiudadano(demandante);
 		nuevoProcedimiento.setNumeroProcedimiento(procedimientDTO.getNumeroProcedimiento());
 		nuevoProcedimiento.setSentencia(procedimientDTO.getSentencia());
+		nuevoProcedimiento.setFechaSentencia(procedimientDTO.getFechaSentencia());
 		
 		nuevoProcedimiento = procedimientoRepository.save(nuevoProcedimiento);
 		
@@ -218,6 +220,66 @@ public class ProcedimientoServiceImpl implements ProcedimientoService {
 		}
 			
 		return procedimientoRepository.save(procedimiento);
+	}
+
+	@Override
+	public Procedimiento updateProcedimiento(ProcedimientoDTO procedimiento) {
+	
+		Procedimiento procedimientoBBDD = procedimientoRepository
+				.findById(procedimiento.getIdProcedimiento()).orElseThrow(()->new ProcedimientoNotFoundException(procedimiento.getIdProcedimiento()));
+		
+		procedimientoBBDD.setAbogado(abogadoService.getAbogado(procedimiento.getIdAbogado()));
+		
+		procedimientoBBDD.setNumeroProcedimiento(procedimiento.getNumeroProcedimiento());
+		procedimientoBBDD.setSentencia(procedimiento.getSentencia());
+		procedimientoBBDD.setFechaSentencia(procedimiento.getFechaSentencia());
+		
+		if (ciudadanoService.existeTrabajador(procedimiento.getDNI())) {
+			Ciudadano ciudadanoBBDD = ciudadanoService.getTrabajadorPorDNI(procedimiento.getDNI()).orElseThrow(()-> new CiudadanoNotFoundException(0l));
+			ciudadanoBBDD.setNombre(procedimiento.getNombre());
+			ciudadanoBBDD.setApellido1(procedimiento.getApellido1());
+			ciudadanoBBDD.setApellido2(procedimiento.getApellido2());
+			ciudadanoBBDD.setDNI(procedimiento.getDNI());
+			ciudadanoBBDD.setSeguridadSocial(procedimiento.getSeguridadSocial());
+			ciudadanoService.saveCiudadano(ciudadanoBBDD);
+			procedimientoBBDD.setCiudadano(ciudadanoBBDD);
+			
+		} else {
+			procedimientoBBDD.setCiudadano(
+					ciudadanoService.crearTrabajador(
+							CreateTrabajadorDTO.builder()
+								.nombre(procedimiento.getNombre())
+								.apellido1(procedimiento.getApellido1())
+								.apellido2(procedimiento.getApellido2())
+								.DNI(procedimiento.getDNI())
+								.seguridadSocial(procedimiento.getSeguridadSocial())
+								.build()
+							)
+					);
+		}
+
+		
+		
+		
+		return procedimientoRepository.saveAndFlush(procedimientoBBDD) ;
+	}
+
+	@Override
+	public BigDecimal totalReconocidoProcedimiento(long idProcedimiento) {
+		BigDecimal total= BigDecimal.ZERO;
+		
+		
+		Procedimiento procedimiento = procedimientoRepository.findById(idProcedimiento).orElseThrow(()->new ProcedimientoNotFoundException(idProcedimiento));
+		
+		List<ContratoReclamado> contratos = procedimiento.getPeriodos();
+		
+		for (ContratoReclamado contratoReclamado : contratos) {
+			
+			total.add(contratoReclamadoService.totalReconocidoContrato(contratoReclamado));
+		}
+		
+		
+		return total;
 	}
 
 }

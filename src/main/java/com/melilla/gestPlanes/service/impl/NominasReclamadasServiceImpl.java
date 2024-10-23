@@ -1,8 +1,13 @@
 package com.melilla.gestPlanes.service.impl;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.melilla.gestPlanes.DTO.TotalesNominaReclamada;
 import com.melilla.gestPlanes.exceptions.exceptions.NominnasReclamadasNotFoundException;
 import com.melilla.gestPlanes.mappers.nominasReclamadasMapper;
 import com.melilla.gestPlanes.model.NominasReclamadas;
@@ -46,6 +51,20 @@ public class NominasReclamadasServiceImpl implements NominaReclamadaService {
 	public NominasReclamadas getNomina(long idNomina) {
 		
 		return nominasReclamadasRepository.findById(idNomina).orElseThrow(()-> new NominnasReclamadasNotFoundException(idNomina));
+	}
+
+	@Override
+	public TotalesNominaReclamada totalDevengadoNomina(NominasReclamadas nomina) {
+		
+		TotalesNominaReclamada totales = new TotalesNominaReclamada();
+		
+		List<BigDecimal> lista = new ArrayList<BigDecimal>();
+		
+		lista.add(nomina.getBaseDevengada());
+		
+		
+		
+		return null;
 	}
 
 }

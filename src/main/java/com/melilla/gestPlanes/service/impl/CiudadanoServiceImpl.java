@@ -619,4 +619,10 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 		return ciudadanoRepository.findAllByDNI(dni);
 	}
 
+	@Override
+	public Ciudadano saveCiudadano(Ciudadano ciudadano) {
+		
+		return ciudadanoRepository.saveAndFlush(ciudadano);
+	}
+
 }

@@ -1,5 +1,6 @@
 package com.melilla.gestPlanes.service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import com.melilla.gestPlanes.DTO.CreateProcedimientoDTO;
@@ -20,6 +21,9 @@ public interface ProcedimientoService {
 	
 	Procedimiento updateContratoReclamadoProcedimiento(UpdatePeriodosDTO periodo);
 		
+	Procedimiento updateProcedimiento(ProcedimientoDTO procedimiento);
+	
+	BigDecimal totalReconocidoProcedimiento(long idProcedimiento);
 		
 	
 }

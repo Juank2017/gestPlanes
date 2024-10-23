@@ -19,12 +19,14 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import com.melilla.gestPlanes.DTO.DocumentoAZip;
 import com.melilla.gestPlanes.DTO.DocumentoCriterioBusqueda;
+import com.melilla.gestPlanes.DTO.GeneraAcuerdoDTO;
 import com.melilla.gestPlanes.DTO.GeneraContratoDTO;
 import com.melilla.gestPlanes.DTO.GeneraPresentacionDTO;
 import com.melilla.gestPlanes.exceptions.exceptions.FileStorageException;
 import com.melilla.gestPlanes.model.ApiResponse;
 import com.melilla.gestPlanes.model.Documento;
 import com.melilla.gestPlanes.service.DocumentoService;
+import com.melilla.gestPlanes.service.DocumentosProcedimientoService;
 import com.melilla.gestPlanes.service.PlanService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -39,7 +41,8 @@ public class DocumentoController {
 	@Autowired
 	private DocumentoService documentoService;
 	
-	
+	@Autowired
+	private DocumentosProcedimientoService documentoProdecimientoService;
 	
 	@Autowired
 	private PlanService planService;
@@ -131,6 +134,17 @@ public class DocumentoController {
 		ApiResponse response = new ApiResponse();
 
 		response.getPayload().addAll(documentoService.generarContrato(trabajadores));
+
+		return ResponseEntity.ok(response);
+	}
+	
+	@PostMapping("/generaAcuerdo")
+	ResponseEntity<ApiResponse> generaAcuerdo(@RequestBody List<GeneraAcuerdoDTO> acuerdos) {
+
+		
+		ApiResponse response = new ApiResponse();
+
+		documentoProdecimientoService.generaAcuerdoWord(acuerdos);
 
 		return ResponseEntity.ok(response);
 	}

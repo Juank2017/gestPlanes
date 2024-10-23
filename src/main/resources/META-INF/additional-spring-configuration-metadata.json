@@ -24,7 +24,7 @@
     "type": "java.lang.String",
     "description": "A description for 'file.upload-dir'"
   },
-    {
+  {
     "name": "file.trashcan-dir",
     "type": "java.lang.String",
     "description": "A description for 'file.upload-dir'"
@@ -34,9 +34,29 @@
     "type": "java.lang.String",
     "description": "A description for 'file.contrato'"
   },
-    {
+  {
     "name": "file.presentacion",
     "type": "java.lang.String",
     "description": "A description for 'file.contrato'"
+  },
+  {
+    "name": "file.acuerdo",
+    "type": "java.lang.String",
+    "description": "A description for 'file.acuerdo'"
+  },
+  {
+    "name": "file.acuerdoWORD",
+    "type": "java.lang.String",
+    "description": "A description for 'file.acuerdoWORD'"
+  },
+  {
+    "name": "file.email",
+    "type": "java.lang.String",
+    "description": "A description for 'file.email'"
+  },
+  {
+    "name": "file.acuerdoWORD",
+    "type": "java.lang.String",
+    "description": "A description for 'file.acuerdoWORD'"
   }
 ]}

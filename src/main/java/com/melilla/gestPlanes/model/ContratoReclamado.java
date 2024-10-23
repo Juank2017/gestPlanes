@@ -1,5 +1,6 @@
 package com.melilla.gestPlanes.model;
 
+import java.math.BigInteger;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -68,6 +69,16 @@ public class ContratoReclamado {
 	@ManyToOne
 	@JoinColumn(name="idProcedimiento")
 	private Procedimiento procedimiento;
+	
+	private BigInteger totalDevengado;
+	
+	private BigInteger totalRecibido;
+	
+	private BigInteger totalReclamado;
+	
+	private BigInteger totalReconocido;
+	
+	private BigInteger totalAbonado;
 
 
 	@CreatedDate

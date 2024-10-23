@@ -1,6 +1,7 @@
 package com.melilla.gestPlanes.DTO;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 import lombok.Data;
@@ -16,7 +17,7 @@ public class ProcedimientoDTO {
 	
 	private String sentencia;
 	
-	
+	private LocalDate fechaSentencia;
 	
 	private Long idAbogado;
 	

@@ -1,5 +1,6 @@
 package com.melilla.gestPlanes.DTO;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import lombok.Data;
@@ -15,6 +16,8 @@ public class CreateProcedimientoDTO {
 	private String numeroProcedimiento;
 	
 	private String sentencia;
+	
+	private LocalDate fechaSentencia;
 	
 	private String nombreTrabajador;
 	

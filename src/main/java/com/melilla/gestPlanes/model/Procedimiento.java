@@ -1,5 +1,6 @@
 package com.melilla.gestPlanes.model;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +52,8 @@ public class Procedimiento {
 	private String numeroProcedimiento;
 	
 	private String sentencia;
+	
+	private LocalDate fechaSentencia;
 	
 	@JsonManagedReference
 	@OneToOne

@@ -1,5 +1,8 @@
 package com.melilla.gestPlanes.service;
 
+import java.math.BigDecimal;
+
+import com.melilla.gestPlanes.DTO.TotalesNominaReclamada;
 import com.melilla.gestPlanes.model.NominasReclamadas;
 
 public interface NominaReclamadaService {
@@ -11,5 +14,7 @@ public interface NominaReclamadaService {
 	NominasReclamadas editarNomina(NominasReclamadas nomina);
 	
 	NominasReclamadas getNomina(long idNomina);
+	
+	TotalesNominaReclamada totalDevengadoNomina(NominasReclamadas nomina);
 
 }

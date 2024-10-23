@@ -57,4 +57,6 @@ public interface CiudadanoService {
 	void restoreTrabajador(Long idTrabajador);
 	
 	List<Ciudadano> ciudadanosPorDNI(String dni);
+	
+	Ciudadano saveCiudadano(Ciudadano ciudadano);
 }
