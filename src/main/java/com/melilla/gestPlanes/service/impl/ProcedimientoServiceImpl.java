@@ -207,6 +207,11 @@ public class ProcedimientoServiceImpl implements ProcedimientoService {
 			contrato.setFechaFinal(periodo.getFechaFinal());
 			contrato.setGc(periodo.getGc());
 			contrato.setProcedimiento(procedimiento);
+//			contrato.setTotalDevengado(periodo.getTotalDevengado());
+//			contrato.setTotalRecibido(periodo.getTotalRecibido());
+//			contrato.setTotalReclamado(periodo.getTotalReclamado());
+//			contrato.setTotalReconocido(periodo.getTotalReconocido());
+//			contrato.setTotalAbonado(periodo.getTotalAbonado());
 			contrato = contratoReclamadoService.crearContratoReclamado(contrato);
 			
 			procedimiento.getPeriodos().add(contrato);
@@ -216,6 +221,11 @@ public class ProcedimientoServiceImpl implements ProcedimientoService {
 			contrato.setFechaFinal(periodo.getFechaFinal());
 			contrato.setFechaInicio(periodo.getFechaInicio());
 			contrato.setGc(periodo.getGc());
+//			contrato.setTotalDevengado(periodo.getTotalDevengado());
+//			contrato.setTotalRecibido(periodo.getTotalRecibido());
+//			contrato.setTotalReclamado(periodo.getTotalReclamado());
+//			contrato.setTotalReconocido(periodo.getTotalReconocido());
+//			contrato.setTotalAbonado(periodo.getTotalAbonado());
 			contratoReclamadoService.updateContrato(contrato);
 		}
 			
@@ -233,6 +243,8 @@ public class ProcedimientoServiceImpl implements ProcedimientoService {
 		procedimientoBBDD.setNumeroProcedimiento(procedimiento.getNumeroProcedimiento());
 		procedimientoBBDD.setSentencia(procedimiento.getSentencia());
 		procedimientoBBDD.setFechaSentencia(procedimiento.getFechaSentencia());
+		
+		
 		
 		if (ciudadanoService.existeTrabajador(procedimiento.getDNI())) {
 			Ciudadano ciudadanoBBDD = ciudadanoService.getTrabajadorPorDNI(procedimiento.getDNI()).orElseThrow(()-> new CiudadanoNotFoundException(0l));

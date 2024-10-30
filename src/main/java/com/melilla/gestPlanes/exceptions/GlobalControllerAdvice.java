@@ -30,6 +30,7 @@ import com.melilla.gestPlanes.exceptions.exceptions.NominnasReclamadasNotFoundEx
 import com.melilla.gestPlanes.exceptions.exceptions.NotaNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.OcupacionNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.OrganismoNotFoundException;
+import com.melilla.gestPlanes.exceptions.exceptions.PdfConvertionException;
 import com.melilla.gestPlanes.exceptions.exceptions.PlanNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.ProcedimientoNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.ProcedimientoSinPeriodosException;
@@ -64,7 +65,7 @@ public class GlobalControllerAdvice extends ResponseEntityExceptionHandler {
 		return new ResponseEntity<Object>("Access denied message here", new HttpHeaders(), HttpStatus.UNAUTHORIZED);
 	}
 
-	@ExceptionHandler({ ConvertStringToDateException.class })
+	@ExceptionHandler({ ConvertStringToDateException.class, PdfConvertionException.class })
 	public ResponseEntity<ApiError> handleEntityCreateError(Exception e) {
 		ApiError apiError = new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(apiError);

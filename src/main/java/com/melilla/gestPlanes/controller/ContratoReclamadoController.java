@@ -61,14 +61,14 @@ public class ContratoReclamadoController {
 		return ResponseEntity.ok(response);
 	}
 
-	@DeleteMapping("/eliminarNominaContratoReclamado/{idNomina}/{idProcedimiento}")
-	ResponseEntity<ApiResponse> eliminarNomina(@PathVariable long idNomina, @PathVariable long idProcedimiento) {
+	@DeleteMapping("/eliminarNominaContratoReclamado/{idProcedimiento}/{idPeriodo}/{idNomina}")
+	ResponseEntity<ApiResponse> eliminarNomina(@PathVariable long idNomina,@PathVariable long idPeriodo, @PathVariable long idProcedimiento) {
 
 		ApiResponse response = new ApiResponse();
 
 		response.setEstado(HttpStatus.OK);
 
-		nominasService.eliminaNomina(idNomina);
+		contratoReclamadoService.eliminaNominaContrato(contratoReclamadoService.getContrato(idPeriodo), idNomina);
 
 		response.getPayload().add(procedimientoService.getProcedimiento(idProcedimiento));
 

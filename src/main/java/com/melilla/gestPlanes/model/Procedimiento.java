@@ -70,6 +70,9 @@ public class Procedimiento {
 	@OneToMany(mappedBy = "procedimiento",  cascade=CascadeType.ALL)
 	private List<ContratoReclamado>periodos = new ArrayList<>();
 	
+	@OneToMany(mappedBy= "procedimiento", cascade=CascadeType.ALL )
+	private List<DocumentoProcedimientoReclamacion> documentos = new ArrayList<DocumentoProcedimientoReclamacion>();
+	
 
 	@CreatedDate
 	private LocalDateTime createdAt;

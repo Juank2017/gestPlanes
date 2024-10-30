@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.melilla.gestPlanes.DTO.CreateNominaDTO;
+import com.melilla.gestPlanes.DTO.TotalesNominaReclamada;
 import com.melilla.gestPlanes.exceptions.exceptions.ContratoReclamadoNotFoundException;
 import com.melilla.gestPlanes.model.ContratoReclamado;
 import com.melilla.gestPlanes.model.NominasReclamadas;
@@ -145,7 +146,12 @@ public class ContratoReclamadoServiceImpl implements ContratoReclamadoService{
 		
 		contrato.getNominasReclamadas().add(nominaInsertadaBBDD);
 		
+		TotalesNominaReclamada totales = nominasReclamadasService.totalesNomina(nominaInsertadaBBDD);
 		
+		contrato.setTotalDevengado(totalDevengadoContrato(contrato).add(totales.getTotalDevengado()));
+		contrato.setTotalRecibido(totalPercibidoContrato(contrato).add(totales.getTotalPercibido()));
+		contrato.setTotalReclamado(totalReclamadoContrato(contrato).add(totales.getTotalReclamado()));
+		contrato.setTotalReconocido(totalReconocidoContrato(contrato).add(totales.getTotalCalculada()));
 		
 		
 		
@@ -162,6 +168,32 @@ public class ContratoReclamadoServiceImpl implements ContratoReclamadoService{
 	public ContratoReclamado updateContrato(ContratoReclamado contrato) {
 		
 		return contratoReclamadoRepository.saveAndFlush(contrato);
+	}
+
+	@Override
+	public ContratoReclamado eliminaNominaContrato(ContratoReclamado contrato, long idNomina) {
+		
+		NominasReclamadas nominaABorrar = nominasReclamadasService.getNomina(idNomina);
+		
+		
+		
+TotalesNominaReclamada totales = nominasReclamadasService.totalesNomina(nominaABorrar);
+		
+		contrato.setTotalDevengado(contrato.getTotalDevengado().subtract(totales.getTotalDevengado()));
+		contrato.setTotalRecibido(contrato.getTotalRecibido().subtract(totales.getTotalPercibido()));
+		contrato.setTotalReclamado(contrato.getTotalReclamado().subtract(totales.getTotalReclamado()));
+		contrato.setTotalReconocido(contrato.getTotalReconocido().subtract(totales.getTotalCalculada()));
+		
+		try {
+			contratoReclamadoRepository.save(contrato);
+			nominasReclamadasService.eliminaNomina(idNomina);
+			return contrato;
+		} catch (Exception e) {
+			
+			return null;
+		}
+		
+		
 	}
 
 }

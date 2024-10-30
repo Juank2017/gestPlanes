@@ -15,6 +15,6 @@ public interface NominaReclamadaService {
 	
 	NominasReclamadas getNomina(long idNomina);
 	
-	TotalesNominaReclamada totalDevengadoNomina(NominasReclamadas nomina);
+	TotalesNominaReclamada totalesNomina(NominasReclamadas nomina);
 
 }

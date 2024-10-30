@@ -19,6 +19,8 @@ public interface ContratoReclamadoService {
 	
 	ContratoReclamado insertarNominaEnContrato(ContratoReclamado contrato,CreateNominaDTO nomina);
 	
+	ContratoReclamado eliminaNominaContrato(ContratoReclamado contrato, long idNomina);
+	
 	ContratoReclamado getContrato(Long idContrato);
 	
 	ContratoReclamado updateContrato(ContratoReclamado contrato);

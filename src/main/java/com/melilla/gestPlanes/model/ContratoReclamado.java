@@ -1,6 +1,8 @@
 package com.melilla.gestPlanes.model;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -70,15 +72,15 @@ public class ContratoReclamado {
 	@JoinColumn(name="idProcedimiento")
 	private Procedimiento procedimiento;
 	
-	private BigInteger totalDevengado;
+	private BigDecimal totalDevengado = new BigDecimal("0").setScale(2,RoundingMode.HALF_DOWN );
 	
-	private BigInteger totalRecibido;
+	private BigDecimal totalRecibido = new BigDecimal("0").setScale(2,RoundingMode.HALF_DOWN );
 	
-	private BigInteger totalReclamado;
+	private BigDecimal totalReclamado = new BigDecimal("0").setScale(2,RoundingMode.HALF_DOWN );
 	
-	private BigInteger totalReconocido;
+	private BigDecimal totalReconocido = new BigDecimal("0").setScale(2,RoundingMode.HALF_DOWN );
 	
-	private BigInteger totalAbonado;
+	private BigDecimal totalAbonado = new BigDecimal("0").setScale(2,RoundingMode.HALF_DOWN );
 
 
 	@CreatedDate

@@ -54,17 +54,45 @@ public class NominasReclamadasServiceImpl implements NominaReclamadaService {
 	}
 
 	@Override
-	public TotalesNominaReclamada totalDevengadoNomina(NominasReclamadas nomina) {
+	public TotalesNominaReclamada totalesNomina(NominasReclamadas nomina) {
 		
 		TotalesNominaReclamada totales = new TotalesNominaReclamada();
+		
+		
 		
 		List<BigDecimal> lista = new ArrayList<BigDecimal>();
 		
 		lista.add(nomina.getBaseDevengada());
+		lista.add(nomina.getProrrataDevengada());
+		lista.add(nomina.getResidenciaDevengada());
 		
+		totales.setTotalDevengado(totales.getTotalDevengado().add(lista.stream().reduce(BigDecimal.ZERO, BigDecimal::add)));
 		
+		lista.clear();
 		
-		return null;
+		lista.add(nomina.getBasePercibida());
+		lista.add(nomina.getProrrataPercibida());
+		lista.add(nomina.getResidenciaPercibida());
+		
+		totales.setTotalPercibido(totales.getTotalPercibido().add(lista.stream().reduce(BigDecimal.ZERO, BigDecimal::add)));
+		
+		lista.clear();
+		
+		lista.add(nomina.getBaseReclamada());
+		lista.add(nomina.getProrrataReclamada());
+		lista.add(nomina.getResidenciaReclamada());
+		
+		totales.setTotalReclamado(totales.getTotalReclamado().add(lista.stream().reduce(BigDecimal.ZERO, BigDecimal::add)));
+		
+		lista.clear();
+		
+		lista.add(nomina.getBaseCalculada());
+		lista.add(nomina.getProrrataCalculada());
+		lista.add(nomina.getResidenciaCalculada());
+		
+		totales.setTotalCalculada(totales.getTotalCalculada().add(lista.stream().reduce(BigDecimal.ZERO, BigDecimal::add)));
+		
+		return totales;
 	}
 
 }
