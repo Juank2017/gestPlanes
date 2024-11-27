@@ -10,9 +10,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.melilla.gestPlanes.DTO.CreateProcedimientoDTO;
+import com.melilla.gestPlanes.DTO.InsertPagoDTO;
 import com.melilla.gestPlanes.DTO.ProcedimientoDTO;
 import com.melilla.gestPlanes.DTO.UpdatePeriodosDTO;
 import com.melilla.gestPlanes.model.ApiResponse;
+import com.melilla.gestPlanes.model.PagoReclamacion;
 import com.melilla.gestPlanes.service.ProcedimientoService;
 
 import lombok.RequiredArgsConstructor;
@@ -80,6 +82,18 @@ public class ProcedimientoController {
 		response.getPayload().add(procedimientoService.updateProcedimiento(procedimiento));
 		response.setMensaje("Procedimiento acutalizado");
 
+		return ResponseEntity.ok(response);
+	}
+	
+	@PostMapping("/insertaPago")
+	public ResponseEntity<ApiResponse>insertarPago(@RequestBody InsertPagoDTO pago){
+		
+		ApiResponse response = new ApiResponse();
+		
+		response.setEstado(HttpStatus.OK);
+		response.getPayload().add(procedimientoService.agregarPago(pago));
+		response.setMensaje("Pago insertado");
+		
 		return ResponseEntity.ok(response);
 	}
 }

@@ -59,7 +59,7 @@ public class CiudadanoSpecification implements Specification<Ciudadano> {
 		Predicate likePredicate = null;
 		Predicate fechaPredicate = null;
 		Predicate equalPredicate = null;
-		Predicate planPredicate = builder.equal(root.get("idPlan"), plan);
+		Predicate planPredicate = builder.equal(root.get("idPlan"), plan.getIdPlan());
 
 		switch (criteria.getId()) {
 

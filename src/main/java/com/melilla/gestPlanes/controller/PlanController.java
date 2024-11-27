@@ -49,16 +49,18 @@ public class PlanController {
 		ApiResponse response = new ApiResponse();
 		response.setEstado(HttpStatus.OK);
 		response.getPayload().add(planService.crearPlan(plan));
+		response.setMensaje("Plan creado.");
 		return ResponseEntity.ok(response);
 	}
 	
-	@PostMapping("/plan/activar")
-	public ResponseEntity<ApiResponse>activarPlan(@RequestParam String idPlan){
-		Long id = Long.parseLong(idPlan);
-		log.info(idPlan);
+	@GetMapping("/plan/activar/{idPlan}")
+	public ResponseEntity<ApiResponse>activarPlan(@PathVariable long idPlan){
+//		Long id = Long.parseLong(idPlan);
+//		log.info(idPlan);
 		ApiResponse response = new ApiResponse();
 		response.setEstado(HttpStatus.OK);
-		response.getPayload().add(planService.seleccionarPlan(id));
+		response.getPayload().add(planService.seleccionarPlan(idPlan));
+		response.setMensaje("Plan activado");
 		return ResponseEntity.ok(response);
 	}
 	

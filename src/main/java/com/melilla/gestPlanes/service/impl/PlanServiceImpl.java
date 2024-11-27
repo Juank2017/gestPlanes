@@ -48,9 +48,9 @@ public class PlanServiceImpl implements PlanService {
 	public Plan crearPlan(Plan plan) {
 		
 		
-		List<Plan> planes = getPlanes();
+		//List<Plan> planes = getPlanes();
 		
-		planes.forEach((p)->p.setActivo(false));
+		//planes.forEach((p)->p.setActivo(false));
 		
 		
 		

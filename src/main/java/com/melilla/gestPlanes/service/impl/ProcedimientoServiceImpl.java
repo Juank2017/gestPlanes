@@ -12,12 +12,15 @@ import com.melilla.gestPlanes.DTO.CreateProcedimientoDTO;
 import com.melilla.gestPlanes.DTO.CreateTrabajadorDTO;
 import com.melilla.gestPlanes.DTO.ProcedimientoDTO;
 import com.melilla.gestPlanes.DTO.UpdatePeriodosDTO;
+import com.melilla.gestPlanes.DTO.InsertPagoDTO;
 import com.melilla.gestPlanes.exceptions.exceptions.CiudadanoNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.ProcedimientoNotFoundException;
 import com.melilla.gestPlanes.model.Abogado;
 import com.melilla.gestPlanes.model.Ciudadano;
 import com.melilla.gestPlanes.model.ContratoReclamado;
+import com.melilla.gestPlanes.model.PagoReclamacion;
 import com.melilla.gestPlanes.model.Procedimiento;
+import com.melilla.gestPlanes.repository.PagoReclamacionRepository;
 import com.melilla.gestPlanes.repository.ProcedimientoRepository;
 import com.melilla.gestPlanes.service.AbogadoService;
 import com.melilla.gestPlanes.service.CiudadanoService;
@@ -32,6 +35,9 @@ public class ProcedimientoServiceImpl implements ProcedimientoService {
 
 	@Autowired
 	ProcedimientoRepository procedimientoRepository;
+	
+	@Autowired
+	PagoReclamacionRepository pagoReclamacionRepository;
 
 	@Autowired
 	ContratoReclamadoService contratoReclamadoService;
@@ -49,6 +55,7 @@ public class ProcedimientoServiceImpl implements ProcedimientoService {
 		BigDecimal totalPercibido = new BigDecimal("0");
 		BigDecimal totalReclamado = new BigDecimal("0");
 		BigDecimal totalReconocido = new BigDecimal("0");
+		BigDecimal totalAbonado = new BigDecimal("0");
 
 		List<Procedimiento> procedimientos = procedimientoRepository.findAll();
 
@@ -106,12 +113,22 @@ public class ProcedimientoServiceImpl implements ProcedimientoService {
 					}
 
 				}
+				
+				List<PagoReclamacion> pagos= procedimiento.getPagos();
+				
+				if(!pagos.isEmpty()) {
+					for (PagoReclamacion pago : pagos) {
+						
+						totalAbonado= totalAbonado.add(pago.getImporte());
+						
+					}
+				}
 
 				procedimientoDTO.setTotalReconocido(totalReconocido);
 				procedimientoDTO.setTotalPercibido(totalPercibido);
 				procedimientoDTO.setTotalReclamado(totalReclamado);
 				procedimientoDTO.setTotalDevengado(totalDevengado);
-				procedimientoDTO.setTotalAbonado(new BigDecimal("0"));
+				procedimientoDTO.setTotalAbonado(totalAbonado);
 				resultado.add(procedimientoDTO);
 			}
 		}
@@ -292,6 +309,25 @@ public class ProcedimientoServiceImpl implements ProcedimientoService {
 		
 		
 		return total;
+	}
+
+	@Override
+	public Procedimiento agregarPago(InsertPagoDTO pago) {
+		
+		PagoReclamacion nuevoPago = new PagoReclamacion();
+		
+		Procedimiento proc = procedimientoRepository.findById(pago.getIdProcedimiento()).orElseThrow(()-> new ProcedimientoNotFoundException(pago.getIdProcedimiento()));
+		
+		
+		
+		nuevoPago.setFechaPago(pago.getFecha());
+		nuevoPago.setImporte(pago.getImporte());
+		nuevoPago.setProcedimiento(proc);
+		
+		pagoReclamacionRepository.save(nuevoPago);
+		proc.getPagos().add(nuevoPago);
+		
+		return procedimientoRepository.save(proc);
 	}
 
 }

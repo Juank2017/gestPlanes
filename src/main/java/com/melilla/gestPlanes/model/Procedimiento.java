@@ -73,6 +73,9 @@ public class Procedimiento {
 	@OneToMany(mappedBy= "procedimiento", cascade=CascadeType.ALL )
 	private List<DocumentoProcedimientoReclamacion> documentos = new ArrayList<DocumentoProcedimientoReclamacion>();
 	
+	@OneToMany(mappedBy="procedimiento", cascade=CascadeType.ALL)
+	private List<PagoReclamacion> pagos = new ArrayList<PagoReclamacion>();
+	
 
 	@CreatedDate
 	private LocalDateTime createdAt;
