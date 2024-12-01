@@ -7,6 +7,8 @@ import org.springframework.data.repository.history.RevisionRepository;
 
 import com.melilla.gestPlanes.model.Salario;
 
-public interface SalarioRepository extends JpaRepository<Salario, Integer>,RevisionRepository<Salario, Integer, Long>{
+public interface SalarioRepository extends JpaRepository<Salario, Long>,RevisionRepository<Salario, Long, Long>{
 	List<Salario>findAllByPlanIdPlan(Long idPlan);
+	
+	Salario findByPlanIdPlan(long idPlan);
 }

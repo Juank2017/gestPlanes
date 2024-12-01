@@ -6,7 +6,9 @@ import com.melilla.gestPlanes.model.Salario;
 
 public interface SalarioService {
 	
-	List<Salario>obtenerSalarios(Long idPlan);
+	List<Salario>obtenerSalarios();
+	
+	List<Salario>obtenerSalariosPlan(long idPlan);
 	
 	List<Salario>actualizaSalario(Salario salario);
 

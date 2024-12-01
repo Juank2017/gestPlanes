@@ -23,15 +23,25 @@ public class DocumentoPlanSpecificationBuilder {
 	}
 	
 	public Specification<DocumentoPlan> build(){
-		if (parametros.size() == 0) return null;
 		
-		Specification<DocumentoPlan> result =new DocumentoPlanSpecification(parametros.get(0),planService);
+		DocumentoCriterioBusqueda plan = new DocumentoCriterioBusqueda();
 		
-		for (int 	i = 1; i < parametros.size(); i++) {
+		plan.setId("idPlan");
+		plan.setValues(planService.getPlanActivo().getIdPlan().toString());
+		
+		Specification<DocumentoPlan> result =new DocumentoPlanSpecification(plan,planService);
+		
+		if (parametros.size() != 0) {
+			result.and(new DocumentoPlanSpecification(parametros.get(0),planService));
 			
-			result= Specification.where(result).and(new DocumentoPlanSpecification(parametros.get(i),planService));
-			
-		}
+			for (int 	i = 1; i < parametros.size(); i++) {
+				
+				result= Specification.where(result).and(new DocumentoPlanSpecification(parametros.get(i),planService));
+				
+			}
+		}else { return result;}
+		
+
 		
 		return result;
 		

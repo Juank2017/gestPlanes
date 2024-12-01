@@ -1,43 +1,51 @@
 package com.melilla.gestPlanes.model;
 
 import java.time.LocalDateTime;
+import java.util.List;
+
 import org.hibernate.annotations.SQLDelete;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import lombok.Data;
 
 @Entity
+@Audited
 @Data
-@SQLDelete(sql = "UPDATE salario SET deleted=true, deleted_at= NOW() WHERE grupo=?")
+@SQLDelete(sql = "UPDATE salario SET deleted=true, deleted_at= NOW() WHERE id_salarioo=?")
 @EntityListeners(AuditingEntityListener.class)
 public class Salario {
 
 	@Id
-	private int grupo;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long idSalario;
 	
-	private String base;
+	private String descripcion;
 	
-	private String prorrata;
+	@JsonManagedReference
+	@OneToMany(mappedBy = "salario", cascade = CascadeType.ALL)
+	@NotAudited
+	private List<SalarioDetalle> detalles;
 	
-	private String residencia;
-	
-	private String total;
-	
+	@JsonIgnore
 	@OneToOne
 	@JoinColumn(name="idPlan")
 	private Plan plan;
-	
-
-	
-
 	
 	@CreatedDate
 	@JsonFormat(shape = JsonFormat.Shape.STRING,  pattern = "dd/MM/yyy")
@@ -46,4 +54,6 @@ public class Salario {
 	private boolean deleted;
 	
 	private LocalDateTime deletedAt;
+	
+	
 }

@@ -3,6 +3,7 @@ package com.melilla.gestPlanes.config;
 
 
 
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -25,6 +26,7 @@ import com.melilla.gestPlanes.util.StringToLocalDateConverter;
 
 
 @Configuration
+@EntityScan("com.*")
 @ComponentScan(basePackages = {"com.melilla.gestPlanes","com.melilla.gestPlanes.repository"})
 @EnableJpaAuditing(auditorAwareRef = "auditorProvider")
 @EnableJpaRepositories(basePackages = {"com.melilla.gestPlanes"},repositoryFactoryBeanClass = EnversRevisionRepositoryFactoryBean.class)

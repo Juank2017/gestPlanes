@@ -23,15 +23,27 @@ public class CiudadanoSpecificationBuilder {
 	}
 	
 	public Specification<Ciudadano> build(){
-		if (parametros.size() == 0) return null;
 		
-		Specification<Ciudadano> result =new CiudadanoSpecification(parametros.get(0),planService);
+		CiudadanoCriterioBusqueda criterioPlan = new CiudadanoCriterioBusqueda();
 		
-		for (int 	i = 1; i < parametros.size(); i++) {
+		criterioPlan.setId("idPlan");
+		
+		criterioPlan.setValue(planService.getPlanActivo().getIdPlan().toString());
+		
+		
+		Specification<Ciudadano> result =new CiudadanoSpecification(criterioPlan,planService);
+	
+		if (parametros.size() != 0) {
 			
-			result= Specification.where(result).and(new CiudadanoSpecification(parametros.get(i),planService));
+			result.and(new CiudadanoSpecification(parametros.get(0),planService));
 			
-		}
+			for (int 	i = 1; i < parametros.size(); i++) {
+				
+				result= Specification.where(result).and(new CiudadanoSpecification(parametros.get(i),planService));
+				
+			}
+		}else return result;
+		
 		
 		return result;
 		

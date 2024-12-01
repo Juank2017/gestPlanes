@@ -94,6 +94,10 @@ public class Contrato {
 	private int diasVacaciones;
 	
 	
+	@OneToOne
+	@JoinColumn(name="idSalario")
+	private Salario salario;
+	
 	
 	@JsonBackReference
 	@OneToOne

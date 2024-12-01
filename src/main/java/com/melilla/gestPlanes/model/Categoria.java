@@ -32,10 +32,10 @@ public class Categoria {
 	
 	private String categoria;
 	
-	@JsonIgnore
-	@OneToOne
-	@JoinColumn(name="grupo")
-	private Salario grupo;
+//	@JsonIgnore
+//	@OneToOne
+//	@JoinColumn(name="grupo")
+	private int grupo;
 	
 	@JsonIgnore
 	@OneToOne

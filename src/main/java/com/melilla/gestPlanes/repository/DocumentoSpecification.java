@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.springframework.data.jpa.domain.Specification;
 
+import com.jayway.jsonpath.Criteria;
 import com.melilla.gestPlanes.DTO.DocumentoCriterioBusqueda;
 import com.melilla.gestPlanes.model.Ciudadano;
 import com.melilla.gestPlanes.model.Documento;
@@ -16,6 +17,7 @@ import com.melilla.gestPlanes.service.PlanService;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 
@@ -39,6 +41,7 @@ public class DocumentoSpecification implements Specification<Documento> {
 	public Predicate toPredicate(Root<Documento> root, CriteriaQuery<?> query, CriteriaBuilder builder) {
 
 		Join<Documento, Ciudadano> documentoCiudadano = root.join("ciudadano");
+		Join<Plan,Ciudadano>planCiudadano = root.join("idPlan",JoinType.LEFT);
 
 		Plan plan = planService.getPlanActivo();
 
@@ -85,6 +88,11 @@ public class DocumentoSpecification implements Specification<Documento> {
 		if (this.criterios.getId().equals("tipo")) {
 			likePredicate = builder.like(root.<String>get(criterios.getId()), "%" + criterios.getValues() + "%");
 
+			listaPredicados.add(likePredicate);
+		}
+		
+		if(this.criterios.getId().equals("idPlan")) {
+			likePredicate = builder.equal(planCiudadano.get("idPlan"), criterios.getValues());
 			listaPredicados.add(likePredicate);
 		}
 

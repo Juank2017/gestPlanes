@@ -51,7 +51,7 @@ public class CiudadanoSpecification implements Specification<Ciudadano> {
 		Join<Contrato, Categoria> categoriaContrato = contratoCiudadano.join("categoria",JoinType.LEFT);
 		Join<Contrato, Organismo> organismoContrato = contratoCiudadano.join("entidad",JoinType.LEFT);
 		Join<Contrato, Destino> destinoContrato = contratoCiudadano.join("destino",JoinType.LEFT);
-
+		Join<Plan,Ciudadano> planCiudadano = root.join("idPlan",JoinType.LEFT);
 	
 
 		Plan plan = planService.getPlanActivo();
@@ -143,6 +143,10 @@ public class CiudadanoSpecification implements Specification<Ciudadano> {
 		case "nacionalidad":{
 			likePredicate = builder.like(root.get("nacionalidad"), "%" + criteria.getValue() + "%");
 			break;	
+		}
+		case "idPlan": {
+			equalPredicate = builder.equal(planCiudadano.get("idPlan"),  criteria.getValue());
+			break;
 		}
 
 		}

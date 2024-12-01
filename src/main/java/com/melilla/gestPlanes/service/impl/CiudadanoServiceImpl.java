@@ -503,11 +503,13 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 		List<VacantesResponseDTO> listado = new ArrayList<VacantesResponseDTO>();
 
 		for (OrganismoOcupacion organismoOcupacion : previstosPorOrganismoOcupacion) {
+			if(organismoOcupacion.getOrganismo().getIdPlan().getIdPlan() == planService.getPlanActivo().getIdPlan()) {
+				VacantesResponseDTO vacante = vacantesOrganismoOcupacion(organismoOcupacion.getOrganismo().getIdOrganismo(),
+						organismoOcupacion.getOcupacion().getIdOcupacion());
+				vacante.setId(organismoOcupacion.getId());
+				listado.add(vacante);
+			}
 
-			VacantesResponseDTO vacante = vacantesOrganismoOcupacion(organismoOcupacion.getOrganismo().getIdOrganismo(),
-					organismoOcupacion.getOcupacion().getIdOcupacion());
-			vacante.setId(organismoOcupacion.getId());
-			listado.add(vacante);
 
 		}
 

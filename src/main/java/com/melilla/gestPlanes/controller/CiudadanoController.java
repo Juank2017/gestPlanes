@@ -52,7 +52,7 @@ public class CiudadanoController {
 
 		response.setEstado(HttpStatus.OK);
 		Page<Ciudadano> respuesta = ciudadanoService.getTrabajadores(ordenBusqueda);
-		
+		log.warning(respuesta.getSize()+"");
 		for (Ciudadano ciudadano : respuesta) {
 			listadoTrabajadoresDTO item = new listadoTrabajadoresDTO();
 			item.setIdCiudadano(ciudadano.getIdCiudadano());
@@ -92,7 +92,7 @@ public class CiudadanoController {
 			item.setTotalElements(respuesta.getTotalElements());
 			listado.add(item);
 		}
-		response.getPayload().add(respuesta);
+		response.getPayload().add(listado);
 
 		response.setMensaje("Lista de ciudadanos");
 
