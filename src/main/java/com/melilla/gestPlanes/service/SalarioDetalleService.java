@@ -2,13 +2,15 @@ package com.melilla.gestPlanes.service;
 
 import java.util.List;
 
+import com.melilla.gestPlanes.DTO.CrearSalarioDetalleDTO;
+import com.melilla.gestPlanes.DTO.ResponseSalarioDetalleDTO;
 import com.melilla.gestPlanes.model.SalarioDetalle;
 
 public interface SalarioDetalleService {
 	
-	List<SalarioDetalle>obtenerDetalleSalario(long idSalario);
+	List<ResponseSalarioDetalleDTO>obtenerDetalleSalario(long idSalario);
 	
-	List<SalarioDetalle>crearSalarioDetalle(SalarioDetalle salarioDetalle);
+	SalarioDetalle crearSalarioDetalle(CrearSalarioDetalleDTO salarioDetalle);
 	
 	List<SalarioDetalle>actualizarDetalleSalario(SalarioDetalle salarioDetalle);
 

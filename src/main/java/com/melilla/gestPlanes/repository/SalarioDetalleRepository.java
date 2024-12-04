@@ -13,6 +13,7 @@ import com.melilla.gestPlanes.model.SalarioDetalle;
 public interface SalarioDetalleRepository extends JpaRepository<SalarioDetalle, Long>, RevisionRepository<SalarioDetalle, Long, Long>{
 
 	List<SalarioDetalle> findByIdSalarioDetalle(long idSalario);
+	List<SalarioDetalle> findAllBySalarioIdSalario(long idSalario);
 	
 	
 }

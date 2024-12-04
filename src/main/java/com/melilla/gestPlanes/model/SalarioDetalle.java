@@ -10,6 +10,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -47,7 +48,7 @@ public class SalarioDetalle {
 	
 	private String total;
 	
-	
+	@JsonManagedReference
 	@ManyToOne
 	@JoinColumn(name="idSalario")
 	private Salario salario;

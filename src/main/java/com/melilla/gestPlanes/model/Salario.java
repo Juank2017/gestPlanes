@@ -9,6 +9,7 @@ import org.hibernate.envers.NotAudited;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -20,6 +21,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import lombok.Data;
@@ -27,7 +29,7 @@ import lombok.Data;
 @Entity
 @Audited
 @Data
-@SQLDelete(sql = "UPDATE salario SET deleted=true, deleted_at= NOW() WHERE id_salarioo=?")
+@SQLDelete(sql = "UPDATE salario SET deleted=true, deleted_at= NOW() WHERE id_salario=?")
 @EntityListeners(AuditingEntityListener.class)
 public class Salario {
 
@@ -37,13 +39,16 @@ public class Salario {
 	
 	private String descripcion;
 	
-	@JsonManagedReference
+	@JsonBackReference
 	@OneToMany(mappedBy = "salario", cascade = CascadeType.ALL)
 	@NotAudited
 	private List<SalarioDetalle> detalles;
 	
+	
+	private boolean activo;
+	
 	@JsonIgnore
-	@OneToOne
+	@ManyToOne
 	@JoinColumn(name="idPlan")
 	private Plan plan;
 	

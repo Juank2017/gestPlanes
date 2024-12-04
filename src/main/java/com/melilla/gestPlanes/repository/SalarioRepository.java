@@ -11,4 +11,6 @@ public interface SalarioRepository extends JpaRepository<Salario, Long>,Revision
 	List<Salario>findAllByPlanIdPlan(Long idPlan);
 	
 	Salario findByPlanIdPlan(long idPlan);
+	
+	Salario findByPlanIdPlanAndActivo(long idPlan,boolean activo);
 }

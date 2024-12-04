@@ -1,6 +1,7 @@
 package com.melilla.gestPlanes.model;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.envers.Audited;
@@ -15,6 +16,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import lombok.Data;
 
@@ -33,9 +35,8 @@ public class Plan {
 	
 	private boolean activo;
 	
-	@OneToOne(mappedBy = "plan")
-	@JoinColumn(name="idSalario")
-	private Salario salario;
+	@OneToMany(mappedBy = "plan")
+	private List<Salario> salario;
 	
 	@CreatedDate
 	@JsonFormat(shape = JsonFormat.Shape.STRING,  pattern = "dd/MM/yyy")
