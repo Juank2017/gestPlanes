@@ -81,6 +81,31 @@ public class SalarioDetalleServiceImpl  implements SalarioDetalleService{
 		
 		return salarioDetalleBBDD;
 	}
+
+	@Override
+	public List<ResponseSalarioDetalleDTO> obtenerDetalleSalarioActivo(long idSalario) {
+		
+List<SalarioDetalle>listado =salarioDetalleRepository.findAllBySalarioIdSalarioAndActivo(idSalario,true);
+		
+		List<ResponseSalarioDetalleDTO> salida = new ArrayList<ResponseSalarioDetalleDTO>();
+		
+		for (SalarioDetalle salarioDetalle : listado) {
+			
+			ResponseSalarioDetalleDTO response = new ResponseSalarioDetalleDTO();
+			
+			response.setIdSalarioDetalle(salarioDetalle.getIdSalarioDetalle()+"");
+			response.setGrupo(salarioDetalle.getGrupo()+"");
+			response.setBase(salarioDetalle.getBase());
+			response.setProrrata(salarioDetalle.getProrrata());
+			response.setResidencia(salarioDetalle.getResidencia());
+			response.setTotal(salarioDetalle.getTotal());
+			salida.add(response);
+			
+		}
+		
+		
+		return salida;
+	}
 	
 	
 

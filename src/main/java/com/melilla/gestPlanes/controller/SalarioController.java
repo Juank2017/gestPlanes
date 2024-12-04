@@ -87,5 +87,17 @@ public class SalarioController {
 		return ResponseEntity.ok(response);
 		
 	}
+	
+	@GetMapping("/salario/obtenerDetalleSalarioActivo/{idSalario}")
+	public ResponseEntity<ApiResponse> obtenerDetalleActivo(@PathVariable long idSalario){
+		ApiResponse response = new ApiResponse();
+		
+		response.setEstado(HttpStatus.OK);
+		response.getPayload().addAll(salarioDetalleService.obtenerDetalleSalario(idSalario));
+		response.setMensaje("Detalles del salario "+idSalario);
+		
+		return ResponseEntity.ok(response);
+		
+	}
 
 }

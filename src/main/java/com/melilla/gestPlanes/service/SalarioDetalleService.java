@@ -10,6 +10,8 @@ public interface SalarioDetalleService {
 	
 	List<ResponseSalarioDetalleDTO>obtenerDetalleSalario(long idSalario);
 	
+	List<ResponseSalarioDetalleDTO>obtenerDetalleSalarioActivo(long idSalario);
+	
 	SalarioDetalle crearSalarioDetalle(CrearSalarioDetalleDTO salarioDetalle);
 	
 	List<SalarioDetalle>actualizarDetalleSalario(SalarioDetalle salarioDetalle);
