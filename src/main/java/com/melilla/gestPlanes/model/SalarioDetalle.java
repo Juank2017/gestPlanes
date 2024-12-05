@@ -53,6 +53,8 @@ public class SalarioDetalle {
 	@JoinColumn(name="idSalario")
 	private Salario salario;
 	
+	boolean activo;
+	
 	@CreatedDate
 	@JsonFormat(shape = JsonFormat.Shape.STRING,  pattern = "dd/MM/yyy")
 	private LocalDateTime createdAt;
