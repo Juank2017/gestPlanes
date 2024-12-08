@@ -104,6 +104,26 @@ public class SalarioServiceImpl implements SalarioService {
 		
 		return salarioRepository.findByPlanIdPlanAndActivo(idPlan, activo);
 	}
+
+
+	@Override
+	public Salario activarSalario(long idSalario,long idPlan) {
+		
+		Salario salarioParaActivar = salarioRepository.findByIdSalarioAndPlanIdPlan(idSalario,idPlan).orElseThrow(()-> new SalarioNotFoundException(idSalario));
+		List<Salario> salarios = salarioRepository.findAllByPlanIdPlan(idPlan);
+		for (Salario salario : salarios) {
+			salario.setActivo(false);
+			salarioRepository.save(salario);
+		}
+		
+		salarioParaActivar.setActivo(true);
+		
+		return salarioRepository.save(salarioParaActivar);
+		
+		
+		
+		
+	}
 	
 	
 

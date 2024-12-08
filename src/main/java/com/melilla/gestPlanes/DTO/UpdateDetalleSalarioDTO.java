@@ -3,8 +3,7 @@ package com.melilla.gestPlanes.DTO;
 import lombok.Data;
 
 @Data
-public class CrearSalarioDetalleDTO {
-	
+public class UpdateDetalleSalarioDTO {
 private int grupo;
 	
 	private String base;
@@ -16,5 +15,6 @@ private int grupo;
 	private String total;
 	
 	private long idSalario;
-
+	
+	private long idSalarioDetalle;
 }

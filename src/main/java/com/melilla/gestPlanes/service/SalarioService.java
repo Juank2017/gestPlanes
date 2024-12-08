@@ -19,5 +19,7 @@ public interface SalarioService {
 	Salario seleccionarSalario(long idSalario);
 	
 	Salario obtenerSalarioActivo(long idPlan,boolean activo);
+	
+	Salario activarSalario(long idSalario,long idPlan);
 
 }

@@ -11,10 +11,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.melilla.gestPlanes.DTO.CrearSalarioDTO;
 import com.melilla.gestPlanes.DTO.CrearSalarioDetalleDTO;
+import com.melilla.gestPlanes.DTO.UpdateDetalleSalarioDTO;
 import com.melilla.gestPlanes.DTO.UpdateSalarioDTO;
 import com.melilla.gestPlanes.model.ApiResponse;
 import com.melilla.gestPlanes.model.Salario;
 import com.melilla.gestPlanes.repository.SalarioRepository;
+import com.melilla.gestPlanes.service.PlanService;
 import com.melilla.gestPlanes.service.SalarioDetalleService;
 import com.melilla.gestPlanes.service.SalarioService;
 
@@ -29,6 +31,9 @@ public class SalarioController {
 	
 	@Autowired
 	SalarioDetalleService salarioDetalleService;
+	
+	@Autowired
+	PlanService planService;
 	
 	@GetMapping("/salario/{idPlan}")
 	public ResponseEntity<ApiResponse> obtenerSalarios(@PathVariable Long idPlan){
@@ -50,6 +55,17 @@ public class SalarioController {
 		response.setEstado(HttpStatus.OK);
 		response.getPayload().addAll(salarioService.actualizaSalario(salario));
 		response.setMensaje("Salarios");
+		
+		return ResponseEntity.ok(response);
+	}
+	
+	@GetMapping("/salario/activar/{idSalario}")
+	public ResponseEntity<ApiResponse>activarSalario(@PathVariable long idSalario){
+		ApiResponse response = new ApiResponse();
+		
+		response.setEstado(HttpStatus.OK);
+		response.getPayload().add(salarioService.activarSalario(idSalario,planService.getPlanActivo().getIdPlan()));
+		response.setMensaje("Salario activado");
 		
 		return ResponseEntity.ok(response);
 	}
@@ -88,16 +104,49 @@ public class SalarioController {
 		
 	}
 	
-	@GetMapping("/salario/obtenerDetalleSalarioActivo/{idSalario}")
-	public ResponseEntity<ApiResponse> obtenerDetalleActivo(@PathVariable long idSalario){
+	@GetMapping("/salario/obtenerDetalleSalarioActivo/{idPlan}")
+	public ResponseEntity<ApiResponse> obtenerDetalleActivo(@PathVariable long idPlan){
 		ApiResponse response = new ApiResponse();
 		
 		response.setEstado(HttpStatus.OK);
-		response.getPayload().addAll(salarioDetalleService.obtenerDetalleSalario(idSalario));
-		response.setMensaje("Detalles del salario "+idSalario);
+		response.getPayload().addAll(salarioDetalleService.obtenerDetalleSalario(idPlan));
+		response.setMensaje("Detalles del salario "+idPlan);
 		
 		return ResponseEntity.ok(response);
 		
+	}
+	
+	@GetMapping("/salario/obtenerSalarioActivo/{idPlan}")
+	public ResponseEntity<ApiResponse>obtenerSalarioActivo(@PathVariable long idPlan){
+		ApiResponse response = new ApiResponse();
+		
+		response.setEstado(HttpStatus.OK);
+		response.getPayload().add(salarioService.obtenerSalarioActivo(idPlan, true));
+		response.setMensaje("Obtenido del salario activo del plan: "+idPlan);
+		
+		return ResponseEntity.ok(response);
+	}
+	
+	@PostMapping("/salario/actualizarDetalleSalario")
+	public ResponseEntity<ApiResponse>actualizarDetalleSalario(@RequestBody UpdateDetalleSalarioDTO salarioDetalle){
+		ApiResponse response = new ApiResponse();
+		
+		response.setEstado(HttpStatus.OK);
+		response.getPayload().add(salarioDetalleService.actualizarDetalleSalario(salarioDetalle));
+		response.setMensaje("Actualizado");
+		
+		return ResponseEntity.ok(response);
+	}
+	
+	@GetMapping("/salario/borrarDetalleSalario/{idSalarioDetalle}")
+	public ResponseEntity<ApiResponse>borraSalarioDetalle(@PathVariable long idSalarioDetalle){
+	ApiResponse response = new ApiResponse();
+		
+		response.setEstado(HttpStatus.OK);
+		response.getPayload().addAll(salarioDetalleService.borraDetalleSalario(idSalarioDetalle));
+		response.setMensaje("Borrado");
+		
+		return ResponseEntity.ok(response);
 	}
 
 }

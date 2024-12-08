@@ -14,7 +14,7 @@ public interface SalarioDetalleRepository extends JpaRepository<SalarioDetalle, 
 
 	List<SalarioDetalle> findByIdSalarioDetalle(long idSalario);
 	List<SalarioDetalle> findAllBySalarioIdSalario(long idSalario);
-	List<SalarioDetalle> findAllBySalarioIdSalarioAndActivo(long idSalario,boolean activo);
+	
 	
 	
 }
