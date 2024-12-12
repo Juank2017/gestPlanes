@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.melilla.gestPlanes.DTO.CreatePlanDTO;
 import com.melilla.gestPlanes.exceptions.exceptions.PlanNotFoundException;
 import com.melilla.gestPlanes.model.Plan;
 import com.melilla.gestPlanes.repository.PlanRepository;
@@ -45,16 +46,20 @@ public class PlanServiceImpl implements PlanService {
 		
 	}
 
-	public Plan crearPlan(Plan plan) {
+	public Plan crearPlan(CreatePlanDTO plan) {
 		
 		
 		//List<Plan> planes = getPlanes();
 		
 		//planes.forEach((p)->p.setActivo(false));
 		
+		Plan nuevoPlan = new Plan();
+		
+		nuevoPlan.setActivo(plan.isActivo());
+		nuevoPlan.setDenominacion(plan.getDenominacion());
 		
 		
-		return planRepository.save(plan);
+		return planRepository.save(nuevoPlan);
 	}
 
 	@Override

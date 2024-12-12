@@ -3,6 +3,7 @@ package com.melilla.gestPlanes.service;
 import java.util.List;
 import java.util.Optional;
 
+import com.melilla.gestPlanes.DTO.CreatePlanDTO;
 import com.melilla.gestPlanes.model.Plan;
 
 public interface PlanService {
@@ -13,7 +14,7 @@ public interface PlanService {
 	
 	Plan seleccionarPlan(Long idPlan);
 	
-	Plan crearPlan(Plan plan);
+	Plan crearPlan(CreatePlanDTO plan);
 	
 	Plan getPlanActivo();
 	

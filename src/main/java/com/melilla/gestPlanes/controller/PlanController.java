@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.melilla.gestPlanes.DTO.CreatePlanDTO;
 import com.melilla.gestPlanes.model.ApiResponse;
 import com.melilla.gestPlanes.model.Plan;
 import com.melilla.gestPlanes.service.PlanService;
@@ -44,7 +45,7 @@ public class PlanController {
 	}
 	
 	@PostMapping("/plan/crearPlan")
-	public ResponseEntity<ApiResponse>crearPlan(@RequestBody Plan plan){
+	public ResponseEntity<ApiResponse>crearPlan(@RequestBody CreatePlanDTO plan){
 		
 		ApiResponse response = new ApiResponse();
 		response.setEstado(HttpStatus.OK);
