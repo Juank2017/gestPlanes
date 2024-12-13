@@ -332,14 +332,14 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 				}
 
 				if (contrato.getOcupacion() != null) {
-					long nuevaOcu = trabajador.getOcu();
+					Ocupacion nuevaOcu = ocupacionRepository.findById(trabajador.getOcu()).orElseThrow(()->new OcupacionNotFoundException(trabajador.getOcu()));
 					long ocuBBDD = contrato.getOcupacion().getIdOcupacion();
-					if (nuevaOcu != ocuBBDD) {
+					if (nuevaOcu.getIdOcupacion() != ocuBBDD) {
 						log.warning((trabajador.getOcu() != contrato.getOcupacion().getIdOcupacion()) + " ");
 						log.warning(trabajador.getOcu() + " " + contrato.getOcupacion().getIdOcupacion());
-						if (contrato.getOcupacion().getIdOcupacion() == 983)
+						if (contrato.getOcupacion().getOcupacion().equals("JEFE DE EQUIPO DE OBRA /COORDINADORES DE CENTRO") )
 							ciudadano.setEsJefeEquipo(false);
-						if (trabajador.getOcu() == 983) {
+						if (nuevaOcu.getOcupacion().equals("JEFE DE EQUIPO DE OBRA /COORDINADORES DE CENTRO") ) {
 							ciudadano.setEsJefeEquipo(true);
 							ciudadano.setEquipo(null);
 						} else {
@@ -349,7 +349,7 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 								.orElseThrow(() -> new OcupacionNotFoundException(trabajador.getOcu()));
 						contrato.setOcupacion(ocupacion);
 					} else {
-						if (contrato.getOcupacion().getIdOcupacion() == 983) {
+						if (contrato.getOcupacion().getOcupacion().equals("JEFE DE EQUIPO DE OBRA /COORDINADORES DE CENTRO")) {
 							ciudadano.setEsJefeEquipo(true);
 						} else
 							ciudadano.setEsJefeEquipo(false);
