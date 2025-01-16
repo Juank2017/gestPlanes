@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import com.melilla.gestPlanes.DTO.CreatePlanDTO;
 import com.melilla.gestPlanes.model.Plan;
+import com.melilla.gestPlanes.model.config.PlanConfig;
 
 public interface PlanService {
 
@@ -17,5 +18,7 @@ public interface PlanService {
 	Plan crearPlan(CreatePlanDTO plan);
 	
 	Plan getPlanActivo();
+	
+	Plan asignarConfiguracion(PlanConfig config);
 	
 }

@@ -540,7 +540,7 @@ public class DocumentoServiceImpl implements DocumentoService {
 
 				formulario.getField("C401").setValue(contrato.getTotal());
 				formulario.getField("C402").setValue("MENSUALES");
-				formulario.getField("C403").setValue(" SALARIO BASE + P.P.P.E + INDEMNIZACIÓN DE RESIDENCIA");
+				formulario.getField("C403").setValue("Base  + P.P.P.E.: + Residencia (Ver claúsula adicional 2ª) ");
 
 				formulario.getField("C501").setValue("30 DÍAS NATURALES");
 
@@ -550,10 +550,12 @@ public class DocumentoServiceImpl implements DocumentoService {
 				formulario.getField("P11BO1").setValue("Elección2");
 				formulario.getField("P11BO2").setValue("Elección2");
 				formulario.getField("P1108").setValue(
-						"Programa común de inserción laboral a través de obras y servicios de interés general y social, recogido en la subsección 1ª de la sección 3ª del Capitulo V del Real Decreto 818/2021 de 28 de septiembre y la orden TES/1077/2023  de 28 de septiembre y la convocatoria para la concesión de subvenciones destinadas al anterior programa en colaboración con órganos de la AGE en el ámbito territorial de las ciudades de Ceuta y Melilla, aprobada por resolución de 7/11/2023 de la Dirección General del SEPE.");
+						"Programa común de inserción laboral a través de obras y servicios de interés general y social, recogido en la subsección 1ª de la sección 3ª del Capitulo V del Real Decreto 818/2021 de 28 de septiembre y la orden TES/1077/2023  de 28 de septiembre y la convocatoria para la concesión de subvenciones destinadas al anterior programa en colaboración con órganos de la AGE en el ámbito territorial de las ciudades de Ceuta y Melilla, aprobada por resolución de 13/11/2024 de la Dirección General del SEPE.");
 
+				String grupo_profesional = (contrato.getGc().equals("5")?"E2":"E1");
 				// Literal contrato
-				formulario.getField("P2301").setValue("El presente contrato se formaliza para participar en los programas, o en su caso programa, contenidos en el documento de colaboración formalizado entre la Delegación del Gobierno y la entidad donde va a desarrollar la actividad laboral el trabajador contratado, para el desarrollo del Plan de Empleo 2023-2024.");
+				formulario.getField("P2301").setValue("1ª El presente contrato se formaliza para participar en los programas, o en su caso programa, contenidos en el documento de colaboración formalizado entre la Delegación del Gobierno y la entidad donde va a desarrollar la actividad laboral el trabajador contratado, para el desarrollo del Plan de Empleo 2024-2025.\n \n "
+						+ "2ª Las retribuciones pactadas se corresponden a las retribuciones establecidas en el IV Convenio Único para el personal laboral de la Administracion General del Estado, para el grupo profesional "+grupo_profesional+", siendo el salario base: "+contrato.getBase()+ "€ + P.P.P.E.: "+contrato.getProrratas()+ "€ + Residencia: "+contrato.getResidencia()+"€.");
 
 				formulario.getField("P2302").setValue("MELILLA");
 

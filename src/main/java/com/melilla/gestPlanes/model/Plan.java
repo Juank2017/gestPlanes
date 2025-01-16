@@ -10,6 +10,10 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import com.melilla.gestPlanes.model.config.PlanConfig;
+import com.melilla.gestPlanes.model.config.PlantillaContratoConfig;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
@@ -37,6 +41,15 @@ public class Plan {
 	
 	@OneToMany(mappedBy = "plan")
 	private List<Salario> salario;
+	
+	@OneToMany(mappedBy="plan")
+	private List<PlantillaContratoConfig>plantillas;
+	
+	@OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "config_id", referencedColumnName = "idConfig")
+	private PlanConfig config;
+	
+
 	
 	@CreatedDate
 	@JsonFormat(shape = JsonFormat.Shape.STRING,  pattern = "dd/MM/yyy")

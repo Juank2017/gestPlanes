@@ -37,6 +37,8 @@ public class Categoria {
 //	@JoinColumn(name="grupo")
 	private int grupo;
 	
+	private String grupoProfesionalPersonalLaboral;
+	
 	@JsonIgnore
 	@OneToOne
 	@JoinColumn(name="idPlan")

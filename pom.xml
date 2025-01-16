@@ -129,18 +129,20 @@
 			<artifactId>documents4j-util-conversion</artifactId>
 			<version>1.1.12</version>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/com.documents4j/documents4j-util-all -->
-<dependency>
-    <groupId>com.documents4j</groupId>
-    <artifactId>documents4j-util-all</artifactId>
-    <version>1.1.12</version>
-</dependency>
-<!-- https://mvnrepository.com/artifact/com.documents4j/documents4j-util-standalone -->
-<dependency>
-    <groupId>com.documents4j</groupId>
-    <artifactId>documents4j-util-standalone</artifactId>
-    <version>1.1.12</version>
-</dependency>
+		<!--
+		https://mvnrepository.com/artifact/com.documents4j/documents4j-util-all -->
+		<dependency>
+			<groupId>com.documents4j</groupId>
+			<artifactId>documents4j-util-all</artifactId>
+			<version>1.1.12</version>
+		</dependency>
+		<!--
+		https://mvnrepository.com/artifact/com.documents4j/documents4j-util-standalone -->
+		<dependency>
+			<groupId>com.documents4j</groupId>
+			<artifactId>documents4j-util-standalone</artifactId>
+			<version>1.1.12</version>
+		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
 		<dependency>
@@ -254,6 +256,11 @@
 							<groupId>org.mapstruct</groupId>
 							<artifactId>mapstruct-processor</artifactId>
 							<version>1.6.2</version>
+						</path>
+						<path>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok-mapstruct-binding</artifactId>
+							<version>0.2.0</version>
 						</path>
 					</annotationProcessorPaths>
 					<compilerArgs>
