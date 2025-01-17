@@ -74,4 +74,10 @@ public class PlantillaContratoConfigServiceImpl implements PlantillaContratoConf
 		
 	}
 
+	@Override
+	public PlantillaContratoConfig obtenerPlantilla(long idPlantilla) {
+		
+		return plantillaContratoRepository.findById(idPlantilla).orElseThrow(()-> new PlantillaContratoConfigNotFoundException(idPlantilla));
+	}
+
 }

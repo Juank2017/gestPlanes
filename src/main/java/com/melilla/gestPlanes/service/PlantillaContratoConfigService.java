@@ -10,6 +10,8 @@ public interface PlantillaContratoConfigService {
 	
 	List<PlantillaContratoConfig> obtenerPlantillas();
 	
+	PlantillaContratoConfig obtenerPlantilla(long idPlantilla);
+	
 	PlantillaContratoConfig crearPlantilla(CrearPlantillaContratoDTO plantilla);
 	
 	PlantillaContratoConfig editarPlantilla(EditarPlantillaContratoDTO plantilla);
