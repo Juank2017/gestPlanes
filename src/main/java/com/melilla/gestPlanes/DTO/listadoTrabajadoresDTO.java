@@ -1,34 +1,15 @@
 package com.melilla.gestPlanes.DTO;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.hibernate.envers.NotAudited;
-import org.springframework.data.annotation.CreatedDate;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.melilla.gestPlanes.model.Contrato;
-import com.melilla.gestPlanes.model.Documento;
-import com.melilla.gestPlanes.model.EmbargoCiudadano;
-import com.melilla.gestPlanes.model.Equipo;
-import com.melilla.gestPlanes.model.NotaCiudadano;
-import com.melilla.gestPlanes.model.Plan;
-import com.melilla.gestPlanes.model.Vacaciones;
-
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.Email;
 import lombok.Data;
 
 @Data
 public class listadoTrabajadoresDTO {
+	
+	private long idPlan;
 
 	private Long idCiudadano;
 	

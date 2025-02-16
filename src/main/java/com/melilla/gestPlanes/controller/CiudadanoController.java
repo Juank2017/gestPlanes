@@ -55,6 +55,7 @@ public class CiudadanoController {
 		log.warning(respuesta.getSize()+"");
 		for (Ciudadano ciudadano : respuesta) {
 			listadoTrabajadoresDTO item = new listadoTrabajadoresDTO();
+			item.setIdPlan(ciudadano.getIdPlan().getIdPlan());
 			item.setIdCiudadano(ciudadano.getIdCiudadano());
 			item.setNumeroOrdenSepe(ciudadano.getNumeroOrdenSepe());
 			item.setSinClausula(ciudadano.isSinClausula());
