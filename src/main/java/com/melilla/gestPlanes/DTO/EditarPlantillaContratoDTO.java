@@ -47,5 +47,7 @@ public class EditarPlantillaContratoDTO {
 	
 	private String clausulaEspecifica;
 	
+	private String clausulaAdicional;
+	
 	
 }

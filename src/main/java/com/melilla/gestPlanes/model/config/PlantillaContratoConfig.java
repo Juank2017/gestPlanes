@@ -64,6 +64,7 @@ public class PlantillaContratoConfig {
 	
 	private String clausulaEspecifica;
 	
+	private String clausulaAdicional;
 
 
 }
