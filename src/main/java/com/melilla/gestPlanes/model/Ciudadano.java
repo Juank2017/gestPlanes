@@ -141,11 +141,7 @@ public class Ciudadano {
 	@OneToMany(mappedBy = "ciudadano", cascade = CascadeType.ALL)
 	private List<Documento> documentos= new ArrayList<Documento>();
 	
-	
-	@JsonBackReference
-	@OneToOne
-	@JoinColumn(name="idProcedimiento")
-	private Procedimiento procedimiento;
+
 	
 	
 	

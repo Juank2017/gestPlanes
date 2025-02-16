@@ -21,17 +21,17 @@ import org.springframework.web.multipart.MultipartFile;
 import com.melilla.gestPlanes.DTO.DocumentoAZip;
 import com.melilla.gestPlanes.DTO.DocumentoCriterioBusqueda;
 import com.melilla.gestPlanes.DTO.DocumentoProcedimientoAZip;
-import com.melilla.gestPlanes.DTO.GeneraAcuerdoDTO;
+
 import com.melilla.gestPlanes.DTO.GeneraContratoDTO;
 import com.melilla.gestPlanes.DTO.GeneraPresentacionDTO;
 import com.melilla.gestPlanes.exceptions.exceptions.FileStorageException;
 import com.melilla.gestPlanes.model.ApiResponse;
 import com.melilla.gestPlanes.model.Documento;
-import com.melilla.gestPlanes.model.DocumentoProcedimientoReclamacion;
+
 import com.melilla.gestPlanes.service.DocumentoService;
-import com.melilla.gestPlanes.service.DocumentosProcedimientoService;
+
 import com.melilla.gestPlanes.service.PlanService;
-import com.melilla.gestPlanes.service.ProcedimientoService;
+
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -46,14 +46,12 @@ public class DocumentoController {
 	@Autowired
 	private DocumentoService documentoService;
 	
-	@Autowired
-	private DocumentosProcedimientoService documentoProdecimientoService;
+
 	
 	@Autowired
 	private PlanService planService;
 	
-	@Autowired
-	private ProcedimientoService procedimientoService;
+
 
 	@PostMapping("/subirDocumento")
 	public ResponseEntity<ApiResponse> subirDocumento(@RequestPart MultipartFile file, @RequestPart String tipo,
@@ -146,19 +144,7 @@ public class DocumentoController {
 		return ResponseEntity.ok(response);
 	}
 	
-	@PostMapping("/generaAcuerdo")
-	ResponseEntity<ApiResponse> generaAcuerdo(@RequestBody List<GeneraAcuerdoDTO> acuerdos) {
 
-		
-		ApiResponse response = new ApiResponse();
-
-		List<DocumentoProcedimientoAZip> docs = documentoProdecimientoService.generaAcuerdoWord(acuerdos);
-		
-		response.getPayload().addAll(docs);
-		
-		
-		return ResponseEntity.ok(response);
-	}
 	
 	@PostMapping("/generaPresentacion")
 	ResponseEntity<ApiResponse> generaPresentacion(@RequestBody List<GeneraPresentacionDTO> trabajadores) {
@@ -177,11 +163,7 @@ public class DocumentoController {
 		documentoService.downloadDocumentsAsZipFile(response, docs);
 	}
 	
-	@PostMapping("/downloadDocumentoProcedimientoZip")
-	void descargaDocumentosProcedimientoZip(HttpServletResponse response, @RequestBody List<DocumentoProcedimientoAZip> docs) {
 
-		documentoProdecimientoService.downloadDocumentsAsZipFile(response, docs);
-	}
 	
 	@PostMapping("/downloadZipPlan")
 	void descargaDocumentosPlanZip(HttpServletResponse response, @RequestBody List<DocumentoAZip> docs) {
@@ -287,15 +269,6 @@ public class DocumentoController {
 		return ResponseEntity.ok(response);
 	}
 	
-	@DeleteMapping("/eliminarDocumentoProcedimiento/{idProcedimiento}/{idDocumento}")
-	ResponseEntity<ApiResponse>eliminarDocumentoProcedimiento(@PathVariable long idProcedimiento, @PathVariable Long idDocumento){
-		ApiResponse response = new ApiResponse();
-		response.setEstado(HttpStatus.OK);
-		documentoProdecimientoService.eliminaDocumentoProcedimiento(idDocumento);
-		response.getPayload().add(procedimientoService.getProcedimiento(idProcedimiento));
-		response.setMensaje("Documento eliminado");
-		
-		return ResponseEntity.ok(response);
-	}
+
 
 }
