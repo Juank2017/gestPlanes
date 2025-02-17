@@ -9,14 +9,12 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import com.melilla.gestPlanes.exceptions.exceptions.CategoriaNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.CiudadanoNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.ComponenteEquipoDuplicadoException;
-import com.melilla.gestPlanes.exceptions.exceptions.ContratoReclamadoNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.ConvertStringToDateException;
 import com.melilla.gestPlanes.exceptions.exceptions.DataStaleException;
 import com.melilla.gestPlanes.exceptions.exceptions.DestinoNotFoundException;
@@ -25,8 +23,8 @@ import com.melilla.gestPlanes.exceptions.exceptions.DocumentoNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.EquipoCreationException;
 import com.melilla.gestPlanes.exceptions.exceptions.EquipoNoEncontradoException;
 import com.melilla.gestPlanes.exceptions.exceptions.ExpedienteNotFoundException;
+import com.melilla.gestPlanes.exceptions.exceptions.FileStorageException;
 import com.melilla.gestPlanes.exceptions.exceptions.MyFileNotFoundException;
-import com.melilla.gestPlanes.exceptions.exceptions.NominnasReclamadasNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.NotaNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.OcupacionNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.OrganismoNotFoundException;
@@ -35,10 +33,7 @@ import com.melilla.gestPlanes.exceptions.exceptions.PlanConfigErrorException;
 import com.melilla.gestPlanes.exceptions.exceptions.PlanConfigNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.PlanNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.PlantillaContratoConfigNotFoundException;
-import com.melilla.gestPlanes.exceptions.exceptions.ProcedimientoNotFoundException;
-import com.melilla.gestPlanes.exceptions.exceptions.ProcedimientoSinPeriodosException;
 import com.melilla.gestPlanes.exceptions.exceptions.SalarioNotFoundException;
-import com.melilla.gestPlanes.exceptions.exceptions.FileStorageException;
 import com.melilla.gestPlanes.exceptions.exceptions.TokenRefreshException;
 import com.melilla.gestPlanes.exceptions.exceptions.TrabajadorNoEsJefeException;
 import com.melilla.gestPlanes.exceptions.exceptions.TrabajadorYaContratadoException;
@@ -80,7 +75,7 @@ public class GlobalControllerAdvice extends ResponseEntityExceptionHandler {
 		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(apiError);
 	}
 
-	@ExceptionHandler({ProcedimientoSinPeriodosException.class, BadCredentialsException.class,EquipoCreationException.class,TrabajadorNoEsJefeException.class, NumberFormatException.class, TrabajadorYaContratadoException.class,ComponenteEquipoDuplicadoException.class })
+	@ExceptionHandler({ BadCredentialsException.class,EquipoCreationException.class,TrabajadorNoEsJefeException.class, NumberFormatException.class, TrabajadorYaContratadoException.class,ComponenteEquipoDuplicadoException.class })
 	public ResponseEntity<ApiError> handleBadRequest(Exception ex) {
 		ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, ex.getMessage());
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiError);
@@ -100,7 +95,7 @@ public class GlobalControllerAdvice extends ResponseEntityExceptionHandler {
 		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(apiError);
 	}
 
-	@ExceptionHandler( {PlantillaContratoConfigNotFoundException.class, PlanConfigNotFoundException.class, NominnasReclamadasNotFoundException.class, ProcedimientoNotFoundException.class, ContratoReclamadoNotFoundException.class, NotaNotFoundException.class, DocumentoNotFoundException.class, OcupacionNotFoundException.class,
+	@ExceptionHandler( {PlantillaContratoConfigNotFoundException.class, PlanConfigNotFoundException.class, NotaNotFoundException.class, DocumentoNotFoundException.class, OcupacionNotFoundException.class,
 			CategoriaNotFoundException.class, DestinoNotFoundException.class, OrganismoNotFoundException.class,
 			ExpedienteNotFoundException.class, CiudadanoNotFoundException.class, MyFileNotFoundException.class,
 			PlanNotFoundException.class, UserNotFoundException.class, RoleNotFoundException.class, EquipoNoEncontradoException.class, SalarioNotFoundException.class })
