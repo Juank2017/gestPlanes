@@ -7,6 +7,7 @@ import org.hibernate.envers.RelationTargetAuditMode;
 import org.springframework.data.annotation.CreatedDate;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.melilla.gestPlanes.model.Plan;
 
 import jakarta.persistence.Entity;
@@ -31,27 +32,9 @@ public class PlanConfig {
 	
 	private String trashcanDir;
 	
-	//nombre del pdf del contrato
-	private String contrato;
+
 	
-	/**
-	 * Texto que va en la sección claúsulas específicas de
-	 * contratos vinculados a programs de políticas activas
-	 * de empleo. Otros programas.
-	 */
-	private String programa;
-	
-	/**
-	 * Clausulas adicionales del contrato;
-	 */
-	private String clausulasContrato;
-	
-	/**
-	 * Píe del contrato
-	 */
-	private String pieContrato;
-	
-	
+	@JsonIgnore
 	@OneToOne(mappedBy = "config")
 	private Plan plan;
 	

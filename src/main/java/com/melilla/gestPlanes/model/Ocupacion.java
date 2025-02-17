@@ -52,6 +52,7 @@ public class Ocupacion {
 	@JsonFormat(shape = JsonFormat.Shape.STRING,  pattern = "dd/MM/yyy")
 	private LocalDateTime createdAt;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "ocupacion",
             cascade = CascadeType.ALL)
 	private Set<OrganismoOcupacion> organismoOcupacion = new HashSet<OrganismoOcupacion>();

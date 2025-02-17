@@ -31,6 +31,7 @@ import com.melilla.gestPlanes.exceptions.exceptions.NotaNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.OcupacionNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.OrganismoNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.PdfConvertionException;
+import com.melilla.gestPlanes.exceptions.exceptions.PlanConfigErrorException;
 import com.melilla.gestPlanes.exceptions.exceptions.PlanConfigNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.PlanNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.PlantillaContratoConfigNotFoundException;
@@ -110,6 +111,12 @@ public class GlobalControllerAdvice extends ResponseEntityExceptionHandler {
 
 	@ExceptionHandler({ FileStorageException.class, DocumentCreationException.class })
 	public ResponseEntity<ApiError> handleStoragException(Exception ex) {
+		ApiError apiError = new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(apiError);
+	}
+	
+	@ExceptionHandler({ PlanConfigErrorException.class })
+	public ResponseEntity<ApiError> handleInternalErrorException(Exception ex) {
 		ApiError apiError = new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(apiError);
 	}

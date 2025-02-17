@@ -45,6 +45,7 @@ import com.melilla.gestPlanes.exceptions.exceptions.DocumentCreationException;
 import com.melilla.gestPlanes.exceptions.exceptions.DocumentoNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.FileStorageException;
 import com.melilla.gestPlanes.exceptions.exceptions.MyFileNotFoundException;
+import com.melilla.gestPlanes.exceptions.exceptions.PlanConfigErrorException;
 import com.melilla.gestPlanes.exceptions.exceptions.PresentacionNotFoundException;
 import com.melilla.gestPlanes.model.Ciudadano;
 import com.melilla.gestPlanes.model.Contrato;
@@ -54,6 +55,7 @@ import com.melilla.gestPlanes.model.Ocupacion;
 import com.melilla.gestPlanes.model.Presentacion;
 import com.melilla.gestPlanes.model.TipoDocumento;
 import com.melilla.gestPlanes.model.TipoDocumentoPlan;
+import com.melilla.gestPlanes.model.config.PlanConfig;
 import com.melilla.gestPlanes.repository.CiudadanoRepository;
 import com.melilla.gestPlanes.repository.DocumentoPlanRepository;
 import com.melilla.gestPlanes.repository.DocumentoPlanSpecificationBuilder;
@@ -95,6 +97,9 @@ public class DocumentoServiceImpl implements DocumentoService {
 
 	@Autowired
 	private PresentacionRepository presentacionRepository;
+	
+	@Autowired
+	private PlanConfigServiceImpl planConfigService;
 
 	@Autowired
 	PlanService planService;
@@ -126,7 +131,7 @@ public class DocumentoServiceImpl implements DocumentoService {
 		String nombreCarpeta;
 		String estado;
 		String apellido="_";
-
+		PlanConfig config = planConfigService.obtenerConfig(planservice.getPlanActivo().getIdPlan());
 		// Obtiene el ciudadano
 		Ciudadano ciudadano = ciudadanoService.getCiudadano(idCiudadano);
 		estado = ciudadano.getEstado().replace("/", "_") + "\\";
@@ -165,7 +170,7 @@ public class DocumentoServiceImpl implements DocumentoService {
 
 		// obtiene el path absoluto debe ser S:\PLANES DE
 		// EMPLEO\ocupacion\apellidos_nombre
-		Path fileStorageLocation = Paths.get(uploadDir + nombreCarpeta).toAbsolutePath().normalize();
+		Path fileStorageLocation = Paths.get(config.getUploadDir() + nombreCarpeta).toAbsolutePath().normalize();
 		log.info(fileStorageLocation.toString());
 		// Intenta crear el directorio si no existe.
 		try {
@@ -211,14 +216,14 @@ public class DocumentoServiceImpl implements DocumentoService {
 	@Override
 	public DocumentoPlan guardarDocumentoPlan(Long idPlan, MultipartFile file, String tipo) {
 
-		
+		PlanConfig config = planConfigService.obtenerConfig(planservice.getPlanActivo().getIdPlan());
 		String nombreCarpeta= "PLAN";
 
 
 		// obtiene el path absoluto debe ser S:\PLANES DE
 		// EMPLEO\ocupacion\apellidos_nombre
 		nombreCarpeta= nombreCarpeta+"\\" + tipo;
-		Path fileStorageLocation = Paths.get(uploadDir + nombreCarpeta).toAbsolutePath().normalize();
+		Path fileStorageLocation = Paths.get(config.getUploadDir() + nombreCarpeta).toAbsolutePath().normalize();
 		log.info(fileStorageLocation.toString());
 		// Intenta crear el directorio si no existe.
 		try {
@@ -262,6 +267,7 @@ public class DocumentoServiceImpl implements DocumentoService {
 	}
 	@Override
 	public Resource loadDocumentAsResource(Long idCiudadano, String filename, Long idDocumento) {
+		PlanConfig config = planConfigService.obtenerConfig(planservice.getPlanActivo().getIdPlan());
 		Ciudadano ciudadano = ciudadanoService.getCiudadano(idCiudadano);
 		String estado = null;
 		String apellido="_";
@@ -271,11 +277,11 @@ public class DocumentoServiceImpl implements DocumentoService {
 		apellido =(ciudadano.getApellido1()!= null)? ciudadano.getApellido1().replace(" ","_"):"null";
 		estado = ciudadano.getEstado().replace("/", "_") + "\\";
 		Ocupacion ocupacionCiudadano = ciudadano.getContrato().getOcupacion();
-		String ocupacion = ocupacionCiudadano.getOcupacion().replace(" ", "_") + "\\";
+		String ocupacion = ocupacionCiudadano.getOcupacion().replace(" ", "_").replace("/","_") + "\\";
 		String nombreCarpeta = estado + ocupacion + ciudadano.getApellido1() + "_" + ciudadano.getApellido2() + "_"
 				+ ciudadano.getNombre()+"\\";
 		try {
-			Path fileStorageLocation = Paths.get(uploadDir + nombreCarpeta + filename).toAbsolutePath().normalize();
+			Path fileStorageLocation = Paths.get(config.getUploadDir() + nombreCarpeta + filename).toAbsolutePath().normalize();
 			log.info(fileStorageLocation.toString());
 			log.info(fileStorageLocation.toUri().toString());
 			Resource resource = new UrlResource(fileStorageLocation.toUri());
@@ -293,13 +299,13 @@ public class DocumentoServiceImpl implements DocumentoService {
 	
 	@Override
 	public Resource loadDocumentPlanAsResource( String filename, Long idDocumento) {
-		
+		PlanConfig config = planConfigService.obtenerConfig(planservice.getPlanActivo().getIdPlan());
 		DocumentoPlan doc = documentoPlanRepository.findById(idDocumento)
 				.orElseThrow(() -> new DocumentoNotFoundException(idDocumento));
 		
 		String nombreCarpeta ="PLAN\\" + doc.getTipo() + "\\";
 		try {
-			Path fileStorageLocation = Paths.get(uploadDir + nombreCarpeta + filename).toAbsolutePath().normalize();
+			Path fileStorageLocation = Paths.get(config.getUploadDir() + nombreCarpeta + filename).toAbsolutePath().normalize();
 			log.info(fileStorageLocation.toString());
 			log.info(fileStorageLocation.toUri().toString());
 			Resource resource = new UrlResource(fileStorageLocation.toUri());
@@ -316,7 +322,7 @@ public class DocumentoServiceImpl implements DocumentoService {
 
 	@Override
 	public void eliminarDocumento(Long idDocumento) {
-		
+		PlanConfig config = planConfigService.obtenerConfig(planservice.getPlanActivo().getIdPlan());
 		String estado = null;
 		String apellido="_";
 		Documento doc = documentoRepository.findById(idDocumento).orElseThrow(()-> new DocumentoNotFoundException(idDocumento));
@@ -330,14 +336,14 @@ public class DocumentoServiceImpl implements DocumentoService {
 				String nombreCarpeta = estado + ocupacion + ciudadano.getApellido1() + "_" + ciudadano.getApellido2() + "_"
 						+ ciudadano.getNombre()+"\\";
 				try {
-					Path fileStorageLocation = Paths.get(uploadDir + nombreCarpeta + filename).toAbsolutePath().normalize();
+					Path fileStorageLocation = Paths.get(config.getUploadDir() + nombreCarpeta + filename).toAbsolutePath().normalize();
 					log.info(fileStorageLocation.toString());
 					log.info(fileStorageLocation.toUri().toString());
 					Resource resource = new UrlResource(fileStorageLocation.toUri());
 
 					if (resource.exists()) {
 						File fichero = resource.getFile();
-						Path fileTrashcanLocartion= Paths.get(trashcanDir + Instant.now().toEpochMilli()+"_" + fichero.getName()).toAbsolutePath().normalize();
+						Path fileTrashcanLocartion= Paths.get(config.getTrashcanDir() + Instant.now().toEpochMilli()+"_" + fichero.getName()).toAbsolutePath().normalize();
 						 Files.move(fileStorageLocation, fileTrashcanLocartion, StandardCopyOption.REPLACE_EXISTING);
 						 documentoRepository.deleteById(idDocumento);
 					} else {
@@ -356,7 +362,7 @@ public class DocumentoServiceImpl implements DocumentoService {
 	
 	@Override
 	public void eliminarDocumentoPlan(Long idDocumento) {
-		
+		PlanConfig config = planConfigService.obtenerConfig(planservice.getPlanActivo().getIdPlan());
 		String nombreCarpeta= "PLAN";
 		DocumentoPlan doc = documentoPlanRepository.findById(idDocumento).orElseThrow(()-> new DocumentoNotFoundException(idDocumento));
 		String filename = doc.getNombre();
@@ -364,14 +370,14 @@ public class DocumentoServiceImpl implements DocumentoService {
 		
 				 nombreCarpeta =nombreCarpeta+"\\"+  doc.getTipo() + "\\";
 				try {
-					Path fileStorageLocation = Paths.get(uploadDir + nombreCarpeta + filename).toAbsolutePath().normalize();
+					Path fileStorageLocation = Paths.get(config.getUploadDir() + nombreCarpeta + filename).toAbsolutePath().normalize();
 					log.info(fileStorageLocation.toString());
 					log.info(fileStorageLocation.toUri().toString());
 					Resource resource = new UrlResource(fileStorageLocation.toUri());
 
 					if (resource.exists()) {
 						File fichero = resource.getFile();
-						Path fileTrashcanLocartion= Paths.get(trashcanDir + Instant.now().toEpochMilli()+"_" + fichero.getName()).toAbsolutePath().normalize();
+						Path fileTrashcanLocartion= Paths.get(config.getTrashcanDir() + Instant.now().toEpochMilli()+"_" + fichero.getName()).toAbsolutePath().normalize();
 						 Files.move(fileStorageLocation, fileTrashcanLocartion, StandardCopyOption.REPLACE_EXISTING);
 						 documentoPlanRepository.deleteById(idDocumento);
 					} else {
@@ -397,6 +403,17 @@ public class DocumentoServiceImpl implements DocumentoService {
 	@Override
 	public List<GeneraContratoResponseDTO> generarContrato(List<GeneraContratoDTO> trabajadores) {
 
+		String directorioSubida=null;
+		
+		PlanConfig config = planConfigService.obtenerConfig(planservice.getPlanActivo().getIdPlan());
+		
+		if (config.getUploadDir() == null || config.getUploadDir().equals("")) {
+			throw new PlanConfigErrorException();
+		}else {
+			directorioSubida= config.getUploadDir();
+		}
+		
+		
 		List<GeneraContratoResponseDTO> listaContratosGenerados = new ArrayList<>();
 
 		try {
@@ -540,7 +557,7 @@ public class DocumentoServiceImpl implements DocumentoService {
 
 				formulario.getField("C401").setValue(contrato.getTotal());
 				formulario.getField("C402").setValue("MENSUALES");
-				formulario.getField("C403").setValue("Base  + P.P.P.E.: + Residencia (Ver claúsula adicional 2ª) ");
+				formulario.getField("C403").setValue("S.B.: "+contrato.getBase()+ "€ + P.P.P.E.: "+contrato.getProrratas()+ "€ + Residencia: "+contrato.getResidencia()+"€. (Ver claúsula adicional 2ª) ");
 
 				formulario.getField("C501").setValue("30 DÍAS NATURALES");
 
@@ -555,7 +572,7 @@ public class DocumentoServiceImpl implements DocumentoService {
 				String grupo_profesional = (contrato.getGc().equals("5")?"E2":"E1");
 				// Literal contrato
 				formulario.getField("P2301").setValue("1ª El presente contrato se formaliza para participar en los programas, o en su caso programa, contenidos en el documento de colaboración formalizado entre la Delegación del Gobierno y la entidad donde va a desarrollar la actividad laboral el trabajador contratado, para el desarrollo del Plan de Empleo 2024-2025.\n \n "
-						+ "2ª Las retribuciones pactadas se corresponden a las retribuciones establecidas en el IV Convenio Único para el personal laboral de la Administracion General del Estado, para el grupo profesional "+grupo_profesional+", siendo el salario base: "+contrato.getBase()+ "€ + P.P.P.E.: "+contrato.getProrratas()+ "€ + Residencia: "+contrato.getResidencia()+"€.");
+						+ "2ª Las retribuciones pactadas se corresponden a las retribuciones establecidas en el IV Convenio Único para el personal laboral de la Administracion General del Estado, calculadas para una jornada a tiempo parcial de 25,20 horas a la semana, para el grupo profesional "+grupo_profesional+".");
 
 				formulario.getField("P2302").setValue("MELILLA");
 
@@ -572,7 +589,7 @@ public class DocumentoServiceImpl implements DocumentoService {
 				// carpeta
 				// ocupacion del ciudadano
 				Ocupacion ocupacionCiudadano = trabajador.getContrato().getOcupacion();
-				String ocupacion = ocupacionCiudadano.getOcupacion().replace(" ", "_") + "\\";
+				String ocupacion = ocupacionCiudadano.getOcupacion().replace(" ", "_").replace("/","_") + "\\";
 				//estado
 				String estado = trabajador.getEstado().replace("/", "_") +"\\";
 				// forma el nombre de la capeta con apellidos_nombre
@@ -580,7 +597,7 @@ public class DocumentoServiceImpl implements DocumentoService {
 						+ trabajador.getNombre();
 				// obtiene el path absoluto debe ser S:\PLANES DE
 				// EMPLEO\ocupacion\apellidos_nombre
-				Path fileStorageLocation = Paths.get(uploadDir + nombreCarpeta).toAbsolutePath().normalize();
+				Path fileStorageLocation = Paths.get(directorioSubida + nombreCarpeta).normalize();
 				 log.info(fileStorageLocation.toString());
 				// Intenta crear el directorio si no existe.
 				try {
@@ -589,7 +606,7 @@ public class DocumentoServiceImpl implements DocumentoService {
 					throw new FileStorageException("No se ha podido crear el directorio: " + fileStorageLocation);
 				}
 				
-				Path fichero = Paths.get(uploadDir + nombreCarpeta+ "\\" + nombreFichero).toAbsolutePath().normalize();
+				Path fichero = Paths.get(directorioSubida + nombreCarpeta+ "\\" + nombreFichero).normalize();
 				String contratoParaGuardar;
 				if (Files.exists(fichero, LinkOption.NOFOLLOW_LINKS)) {
 					nombreFichero = nombreFichero.replace("_CONTRATO","_"+Instant.now().toEpochMilli() +"_" );
@@ -791,7 +808,7 @@ public class DocumentoServiceImpl implements DocumentoService {
 	@Override
 	public List<GeneraContratoResponseDTO> generarPresentacion(List<GeneraPresentacionDTO> trabajadores) {
 		List<GeneraContratoResponseDTO> listaPresentacionesGeneradas = new ArrayList<>();
-
+		PlanConfig config = planConfigService.obtenerConfig(planservice.getPlanActivo().getIdPlan());
 		try {
 			// carga el fichero de la plantilla de resources
 			Resource classPahtResource = resourceLoader.getResource("classpath:" + plantillaPresentacion);
@@ -839,7 +856,8 @@ public class DocumentoServiceImpl implements DocumentoService {
 				formulario.getField("vacaciones").setValue(presentacion.getVacaciones());
 				formulario.getField("observaciones").setValue(presentacion.getObservaciones());
 				formulario.getField("categoria").setValue(contrato.getOcupacion().getOcupacion());
-				formulario.getField("destino").setValue(contrato.getEntidad().getNombreCortoOrganismo()+ " / " + contrato.getDestino().getDestino());
+				String destino= (contrato.getDestino() != null)? contrato.getDestino().getDestino():"";
+				formulario.getField("destino").setValue(contrato.getEntidad().getNombreCortoOrganismo()+ " / " +destino);
 				
 				formulario.flatten();
 
@@ -858,7 +876,7 @@ public class DocumentoServiceImpl implements DocumentoService {
 						+ trabajador.getNombre();
 				// obtiene el path absoluto debe ser S:\PLANES DE
 				// EMPLEO\ocupacion\apellidos_nombre
-				Path fileStorageLocation = Paths.get(uploadDir + nombreCarpeta).toAbsolutePath().normalize();
+				Path fileStorageLocation = Paths.get(config.getUploadDir() + nombreCarpeta).toAbsolutePath().normalize();
 				// log.info(fileStorageLocation.toString());
 				// Intenta crear el directorio si no existe.
 				try {
@@ -866,7 +884,7 @@ public class DocumentoServiceImpl implements DocumentoService {
 				} catch (Exception e) {
 					throw new FileStorageException("No se ha podido crear el directorio: " + fileStorageLocation);
 				}
-				Path fichero = Paths.get(uploadDir + nombreCarpeta+ "\\" + nombreFichero).toAbsolutePath().normalize();
+				Path fichero = Paths.get(config.getUploadDir() + nombreCarpeta+ "\\" + nombreFichero).toAbsolutePath().normalize();
 				String contratoParaGuardar;
 				if (Files.exists(fichero, LinkOption.NOFOLLOW_LINKS)) {
 					nombreFichero = nombreFichero.replace("_PRESENTACION","_"+Instant.now().toEpochMilli() +"_" );

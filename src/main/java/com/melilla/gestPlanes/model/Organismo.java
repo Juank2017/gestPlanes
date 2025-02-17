@@ -37,8 +37,9 @@ public class Organismo {
 	
 	private String nombreCortoOrganismo;
 	
-	private String literalContrato;
 	
+	
+	@JsonIgnore
 	@OneToOne
 	@JoinColumn(name="idPlan")
 	private Plan idPlan;
@@ -49,7 +50,7 @@ public class Organismo {
 	
 	
 
-	
+	@JsonIgnore
 	@OneToMany(mappedBy = "organismo" , 
             cascade = CascadeType.ALL)
 	private Set<OrganismoOcupacion> organismoOcupacion = new HashSet<OrganismoOcupacion>();

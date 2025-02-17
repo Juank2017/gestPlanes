@@ -11,6 +11,7 @@ import com.melilla.gestPlanes.exceptions.exceptions.PlanNotFoundException;
 import com.melilla.gestPlanes.model.Plan;
 import com.melilla.gestPlanes.model.config.PlanConfig;
 import com.melilla.gestPlanes.repository.PlanRepository;
+import com.melilla.gestPlanes.service.PlanConfigService;
 import com.melilla.gestPlanes.service.PlanService;
 
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,9 @@ public class PlanServiceImpl implements PlanService {
 	
 	@Autowired
 	PlanRepository planRepository;
+	
+	@Autowired
+	PlanConfigService planConfigService;
 
 	@Override
 	public List<Plan> getPlanes() {
@@ -58,10 +62,13 @@ public class PlanServiceImpl implements PlanService {
 		
 		nuevoPlan.setActivo(plan.isActivo());
 		nuevoPlan.setDenominacion(plan.getDenominacion());
-		
+		nuevoPlan = planRepository.save(nuevoPlan);
+		nuevoPlan.setConfig(planConfigService.crearConfig(nuevoPlan));
 		
 		return planRepository.save(nuevoPlan);
 	}
+	
+	
 
 	@Override
 	public Plan getPlanActivo() {

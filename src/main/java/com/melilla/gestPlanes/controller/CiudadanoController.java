@@ -56,6 +56,7 @@ public class CiudadanoController {
 		for (Ciudadano ciudadano : respuesta) {
 			listadoTrabajadoresDTO item = new listadoTrabajadoresDTO();
 			item.setIdCiudadano(ciudadano.getIdCiudadano());
+			item.setIdPlan(ciudadano.getIdPlan());
 			item.setNumeroOrdenSepe(ciudadano.getNumeroOrdenSepe());
 			item.setSinClausula(ciudadano.isSinClausula());
 			item.setBajaLaboral(ciudadano.isBajaLaboral());
@@ -72,7 +73,7 @@ public class CiudadanoController {
 				item.setTotal((ciudadano.getContrato().getTotal()!=null)?ciudadano.getContrato().getTotal():null);
 				item.setCategoria((ciudadano.getContrato().getCategoria()!= null)?ciudadano.getContrato().getCategoria().getCategoria(): null);
 				item.setOcupacion((ciudadano.getContrato().getOcupacion()!= null)?ciudadano.getContrato().getOcupacion().getOcupacion():null);
-				item.setOrganismo((ciudadano.getContrato().getEntidad()!= null)?ciudadano.getContrato().getEntidad().getOrganismo():null);
+				item.setOrganismo((ciudadano.getContrato().getEntidad()!= null)?ciudadano.getContrato().getEntidad().getNombreCortoOrganismo():null);
 				item.setDestino((ciudadano.getContrato().getDestino()!=null)?ciudadano.getContrato().getDestino().getDestino():null);
 			}
 			item.setNombre(ciudadano.getNombre());
@@ -100,6 +101,51 @@ public class CiudadanoController {
 
 	}
 
+	private List<listadoTrabajadoresDTO>listadoCiudadanosToListadoTrabajadoresDTO(List<Ciudadano>listado) {
+		List<listadoTrabajadoresDTO> listadoSalida = new ArrayList<listadoTrabajadoresDTO>();
+		for (Ciudadano ciudadano : listado) {
+			listadoTrabajadoresDTO item = new listadoTrabajadoresDTO();
+			item.setIdCiudadano(ciudadano.getIdCiudadano());
+			item.setIdPlan(ciudadano.getIdPlan());
+			item.setNumeroOrdenSepe(ciudadano.getNumeroOrdenSepe());
+			item.setSinClausula(ciudadano.isSinClausula());
+			item.setBajaLaboral(ciudadano.isBajaLaboral());
+			item.setBajaMaternal(ciudadano.isBajaMaternal());
+			item.setEstado(ciudadano.getEstado());
+			item.setFechaRegistro(ciudadano.getFechaRegistro());
+			item.setFechaListadoSepe(ciudadano.getFechaListadoSepe());
+			item.setCcc(ciudadano.getCcc());
+			item.setNacionalidad(ciudadano.getNacionalidad());
+			if(ciudadano.getContrato() != null) {
+				item.setFechaInicio(ciudadano.getContrato().getFechaInicio());
+				item.setFechaFinal(ciudadano.getContrato().getFechaFinal());
+				item.setFechaExtincion(ciudadano.getContrato().getFechaExtincion());
+				item.setTotal((ciudadano.getContrato().getTotal()!=null)?ciudadano.getContrato().getTotal():null);
+				item.setCategoria((ciudadano.getContrato().getCategoria()!= null)?ciudadano.getContrato().getCategoria().getCategoria(): null);
+				item.setOcupacion((ciudadano.getContrato().getOcupacion()!= null)?ciudadano.getContrato().getOcupacion().getOcupacion():null);
+				item.setOrganismo((ciudadano.getContrato().getEntidad()!= null)?ciudadano.getContrato().getEntidad().getNombreCortoOrganismo():null);
+				item.setDestino((ciudadano.getContrato().getDestino()!=null)?ciudadano.getContrato().getDestino().getDestino():null);
+			}
+			item.setNombre(ciudadano.getNombre());
+			item.setApellido1(ciudadano.getApellido1());
+			item.setApellido2(ciudadano.getApellido2());
+			item.setDNI(ciudadano.getDNI());
+			item.setSeguridadSocial(ciudadano.getSeguridadSocial());
+			item.setFechaNacimiento(ciudadano.getFechaNacimiento());
+			item.setAntecedentes(ciudadano.isAntecedentes());
+			item.setAltaSS(ciudadano.isAltaSS());
+			item.setContrata(ciudadano.isContrata());
+			item.setEscaneado(ciudadano.isEscaneado());
+			item.setNedaes(ciudadano.isNedaes());
+			item.setTelefono(ciudadano.getTelefono());
+			item.setSexo(ciudadano.getSexo());
+			item.setDeleted(ciudadano.isDeleted());
+			item.setTotalElements(Long.parseLong(Integer.toString(listado.size())));
+			listadoSalida.add(item);
+		}
+		
+		return listadoSalida;
+	}
 
 	@GetMapping("/ciudadano/{idCiudadano}")
 	public ResponseEntity<ApiResponse> obtenerCiudadano(@PathVariable Long idCiudadano) {
@@ -157,7 +203,7 @@ public class CiudadanoController {
 	public ResponseEntity<ApiResponse> modificaEstadoTrabajador(@RequestBody List<ModificaEstadoDTO> trabajadores) {
 		ApiResponse response = new ApiResponse();
 
-		response.getPayload().add(ciudadanoService.modificarEstado(trabajadores));
+		response.getPayload().add(listadoCiudadanosToListadoTrabajadoresDTO(ciudadanoService.modificarEstado(trabajadores)));
 		response.setMensaje("Estado del trabajador actualizado");
 
 		return ResponseEntity.ok(response);
@@ -167,7 +213,7 @@ public class CiudadanoController {
 	public ResponseEntity<ApiResponse> modificaFechaContratoTrabajador(@RequestBody List<ModificaFechaContratoDTO> trabajadores) {
 		ApiResponse response = new ApiResponse();
 
-		response.getPayload().add(ciudadanoService.modificarFechaContrato(trabajadores));
+		response.getPayload().add(listadoCiudadanosToListadoTrabajadoresDTO(ciudadanoService.modificarFechaContrato(trabajadores)));
 		response.setMensaje("Estado del trabajador actualizado");
 
 		return ResponseEntity.ok(response);
@@ -177,7 +223,7 @@ public class CiudadanoController {
 	public ResponseEntity<ApiResponse> modificaOrganismoContratoTrabajador(@RequestBody List<ModificarOrganismoContrato> trabajadores) {
 		ApiResponse response = new ApiResponse();
 
-		response.getPayload().add(ciudadanoService.modificarOrganismoContrato(trabajadores));
+		response.getPayload().addAll(listadoCiudadanosToListadoTrabajadoresDTO(ciudadanoService.modificarOrganismoContrato(trabajadores)));
 		response.setMensaje("Estado del trabajador actualizado");
 
 		return ResponseEntity.ok(response);

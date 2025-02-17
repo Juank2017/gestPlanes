@@ -10,6 +10,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.CascadeType;
@@ -44,6 +45,7 @@ public class Equipo {
 	@JoinColumn(name="idCiudadano")
 	private Ciudadano jefeEquipo;
 	
+	@JsonIgnore
 	@OneToOne
 	@JoinColumn(name="idPlan")
 	@NotAudited

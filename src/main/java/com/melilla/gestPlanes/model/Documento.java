@@ -9,6 +9,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
@@ -43,6 +45,7 @@ public class Documento {
 	@JoinColumn(name="idCiudadano")
 	private Ciudadano ciudadano;
 	
+	@JsonIgnore
 	@OneToOne
 	@JoinColumn(name="idPlan")
 	@NotAudited

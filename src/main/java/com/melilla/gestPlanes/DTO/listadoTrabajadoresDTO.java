@@ -32,6 +32,8 @@ public class listadoTrabajadoresDTO {
 
 	private Long idCiudadano;
 	
+	private Plan idPlan;
+	
 	private String nombre;
 	
 	private String apellido1;
