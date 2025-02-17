@@ -56,7 +56,7 @@ public class CiudadanoController {
 		for (Ciudadano ciudadano : respuesta) {
 			listadoTrabajadoresDTO item = new listadoTrabajadoresDTO();
 			item.setIdCiudadano(ciudadano.getIdCiudadano());
-			item.setIdPlan(ciudadano.getIdPlan());
+			item.setIdPlan(ciudadano.getIdPlan().getIdPlan());
 			item.setNumeroOrdenSepe(ciudadano.getNumeroOrdenSepe());
 			item.setSinClausula(ciudadano.isSinClausula());
 			item.setBajaLaboral(ciudadano.isBajaLaboral());
@@ -106,7 +106,7 @@ public class CiudadanoController {
 		for (Ciudadano ciudadano : listado) {
 			listadoTrabajadoresDTO item = new listadoTrabajadoresDTO();
 			item.setIdCiudadano(ciudadano.getIdCiudadano());
-			item.setIdPlan(ciudadano.getIdPlan());
+			item.setIdPlan(ciudadano.getIdPlan().getIdPlan());
 			item.setNumeroOrdenSepe(ciudadano.getNumeroOrdenSepe());
 			item.setSinClausula(ciudadano.isSinClausula());
 			item.setBajaLaboral(ciudadano.isBajaLaboral());

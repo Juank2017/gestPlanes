@@ -24,8 +24,10 @@ import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import lombok.ToString;
+import lombok.extern.java.Log;
+import lombok.extern.log4j.Log4j;
 
-
+@Log
 @ToString
 public class CiudadanoSpecification implements Specification<Ciudadano> {
 
@@ -55,6 +57,8 @@ public class CiudadanoSpecification implements Specification<Ciudadano> {
 	
 
 		Plan plan = planService.getPlanActivo();
+		
+		log.info(plan.getIdPlan().toString());
 		
 		Predicate likePredicate = null;
 		Predicate fechaPredicate = null;

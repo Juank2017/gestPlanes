@@ -16,6 +16,7 @@ import org.springframework.data.domain.Sort.Order;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import com.melilla.gestPlanes.DTO.CiudadanoCriterioBusqueda;
 import com.melilla.gestPlanes.DTO.CiudadanoCriterioOrden;
 import com.melilla.gestPlanes.DTO.CiudadanoOrdenBusqueda;
 import com.melilla.gestPlanes.DTO.CreateTrabajadorDTO;
@@ -164,6 +165,11 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 		Specification<Ciudadano> busqueda = null;
 		Sort sort = null;
 		Order orden = null;
+		
+		CiudadanoCriterioBusqueda criterioPlan = new CiudadanoCriterioBusqueda();
+		
+		criterioPlan.setId("idPlan");
+		criterioPlan.setValue(planService.getPlanActivo().getIdPlan().toString());
 
 		if (ordenBusqueda.getSorting() != null) {
 
@@ -200,6 +206,9 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 		}
 
 		if (ordenBusqueda.getColumnFilters() != null) {
+			
+			ordenBusqueda.getColumnFilters().add(criterioPlan);
+			
 			CiudadanoSpecificationBuilder criterios = new CiudadanoSpecificationBuilder(
 					ordenBusqueda.getColumnFilters(), planService);
 

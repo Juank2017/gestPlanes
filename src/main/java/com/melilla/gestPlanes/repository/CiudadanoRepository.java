@@ -13,6 +13,7 @@ import org.springframework.data.repository.history.RevisionRepository;
 
 import com.melilla.gestPlanes.DTO.DashBoardEstadoGeneroDTO;
 import com.melilla.gestPlanes.model.Ciudadano;
+import com.melilla.gestPlanes.model.Plan;
 
 
 
@@ -24,6 +25,8 @@ public interface CiudadanoRepository extends JpaRepository<Ciudadano, Long> ,Rev
 	List<Ciudadano>findAllByDNIAndEstado(String DNI, String estado);
 	boolean existsByDNI(String DNI);
 	 Page<Ciudadano> findAll(Specification<Ciudadano> spec,Pageable page);
+	 
+	 Page<Ciudadano>findAllByIdPlan(Specification<Ciudadano> spec, Pageable page, Plan plan);
 	 
 	 List<Ciudadano> findByEstadoAndContratoEntidadIdOrganismoAndContratoOcupacionIdOcupacion(String estado,long idOrganismo,long idOcupacion);
 
