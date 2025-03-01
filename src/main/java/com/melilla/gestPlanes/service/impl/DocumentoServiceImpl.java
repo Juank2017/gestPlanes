@@ -278,8 +278,8 @@ public class DocumentoServiceImpl implements DocumentoService {
 		estado = ciudadano.getEstado().replace("/", "_") + "\\";
 		Ocupacion ocupacionCiudadano = ciudadano.getContrato().getOcupacion();
 		String ocupacion = ocupacionCiudadano.getOcupacion().replace(" ", "_").replace("/","_") + "\\";
-		String nombreCarpeta = estado + ocupacion + ciudadano.getApellido1() + "_" + ciudadano.getApellido2() + "_"
-				+ ciudadano.getNombre()+"\\";
+		String nombreCarpeta = estado + ocupacion + ciudadano.getApellido1().replace(" ", "_") + "_" + ciudadano.getApellido2().replace(" ", "_") + "_"
+				+ ciudadano.getNombre().replace(" ", "_")+"\\";
 		try {
 			Path fileStorageLocation = Paths.get(config.getUploadDir() + nombreCarpeta + filename).toAbsolutePath().normalize();
 			log.info(fileStorageLocation.toString());
@@ -583,8 +583,8 @@ public class DocumentoServiceImpl implements DocumentoService {
 				formulario.flatten();
 
 				// nombre del fichero
-				String nombreFichero = trabajador.getApellido1() + "_" + trabajador.getApellido2() + "_"
-						+ trabajador.getNombre() + "_" + trabajador.getDNI() + "_CONTRATO.pdf";
+				String nombreFichero = trabajador.getApellido1().replace(" ", "_") + "_" + trabajador.getApellido2().replace(" ", "_") + "_"
+						+ trabajador.getNombre().replace(" ", "_") + "_" + trabajador.getDNI() + "_CONTRATO.pdf";
 
 				// carpeta
 				// ocupacion del ciudadano
@@ -593,8 +593,8 @@ public class DocumentoServiceImpl implements DocumentoService {
 				//estado
 				String estado = trabajador.getEstado().replace("/", "_") +"\\";
 				// forma el nombre de la capeta con apellidos_nombre
-				String nombreCarpeta = estado + ocupacion + trabajador.getApellido1() + "_" + trabajador.getApellido2() + "_"
-						+ trabajador.getNombre();
+				String nombreCarpeta = estado + ocupacion + trabajador.getApellido1().replace(" ", "_") + "_" + trabajador.getApellido2().replace(" ", "_") + "_"
+						+ trabajador.getNombre().replace(" ", "_");
 				// obtiene el path absoluto debe ser S:\PLANES DE
 				// EMPLEO\ocupacion\apellidos_nombre
 				Path fileStorageLocation = Paths.get(directorioSubida + nombreCarpeta).normalize();
@@ -607,6 +607,7 @@ public class DocumentoServiceImpl implements DocumentoService {
 				}
 				
 				Path fichero = Paths.get(directorioSubida + nombreCarpeta+ "\\" + nombreFichero).normalize();
+				log.info(fichero.toString());
 				String contratoParaGuardar;
 				if (Files.exists(fichero, LinkOption.NOFOLLOW_LINKS)) {
 					nombreFichero = nombreFichero.replace("_CONTRATO","_"+Instant.now().toEpochMilli() +"_" );
