@@ -3,12 +3,17 @@ package com.melilla.gestPlanes.DTO;
 import java.time.LocalDate;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+<<<<<<< HEAD
 import com.melilla.gestPlanes.model.Plan;
+=======
+>>>>>>> plantillaContrato
 import jakarta.validation.constraints.Email;
 import lombok.Data;
 
 @Data
 public class listadoTrabajadoresDTO {
+	
+	private long idPlan;
 
 	private Long idCiudadano;
 	

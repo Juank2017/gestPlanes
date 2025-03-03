@@ -156,7 +156,7 @@ public class CiudadanoSpecification implements Specification<Ciudadano> {
 		}
 
 		List<Predicate> predicados = new ArrayList<>();
-		predicados.add(planPredicate);
+		//predicados.add(planPredicate);
 		if (likePredicate != null)
 			predicados.add(likePredicate);
 		if (fechaPredicate != null)

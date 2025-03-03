@@ -24,9 +24,22 @@ public class CiudadanoSpecificationBuilder {
 	
 	public Specification<Ciudadano> build(){
 		
+<<<<<<< HEAD
 		if (parametros.size() == 0) return null;
 		
 		Specification<Ciudadano> result =new CiudadanoSpecification(parametros.get(0),planService);
+=======
+
+	if (parametros.size() == 0) return null;
+		
+		Specification<Ciudadano> result =new CiudadanoSpecification(parametros.get(0),planService);
+		
+		for (int 	i = 1; i < parametros.size(); i++) {
+			
+			result= Specification.where(result).and(new CiudadanoSpecification(parametros.get(i),planService));
+			
+		}
+>>>>>>> plantillaContrato
 		
 		for (int 	i = 1; i < parametros.size(); i++) {
 			result= Specification.where(result).and(new CiudadanoSpecification(parametros.get(i),planService));
