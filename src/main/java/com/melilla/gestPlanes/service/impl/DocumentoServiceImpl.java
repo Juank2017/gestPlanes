@@ -6,6 +6,7 @@ import java.net.MalformedURLException;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
@@ -160,12 +161,12 @@ public class DocumentoServiceImpl implements DocumentoService {
 			//obtiene el apellido y sustituye los espacios por _
 			apellido = ciudadano.getApellido1().replace(" ","_");
 			// forma el nombre de la capeta con apellidos_nombre
-			nombreCarpeta = estado + ocupacion + apellido  + "_" + ciudadano.getApellido2() + "_"
-					+ ciudadano.getNombre();
+			nombreCarpeta = estado + ocupacion + apellido  + "_" + ciudadano.getApellido2().replace(" ","_") + "_"
+					+ ciudadano.getNombre().replace(" ","_");
 		} else {
 
-			nombreCarpeta = estado + apellido + "_" + ciudadano.getApellido2() + "_"
-					+ ciudadano.getNombre();
+			nombreCarpeta = estado + apellido + "_" + ciudadano.getApellido2().replace(" ","_") + "_"
+					+ ciudadano.getNombre().replace(" ","_");
 		}
 
 		// obtiene el path absoluto debe ser S:\PLANES DE
@@ -333,8 +334,8 @@ public class DocumentoServiceImpl implements DocumentoService {
 				estado = ciudadano.getEstado().replace("/", "_") + "\\";
 				Ocupacion ocupacionCiudadano = ciudadano.getContrato().getOcupacion();
 				String ocupacion = ocupacionCiudadano.getOcupacion().replace(" ", "_") + "\\";
-				String nombreCarpeta = estado + ocupacion + ciudadano.getApellido1() + "_" + ciudadano.getApellido2() + "_"
-						+ ciudadano.getNombre()+"\\";
+				String nombreCarpeta = estado + ocupacion + ciudadano.getApellido1() + "_" + ciudadano.getApellido2().replace(" ", "_") + "_"
+						+ ciudadano.getNombre().replace(" ", "_")+"\\";
 				try {
 					Path fileStorageLocation = Paths.get(config.getUploadDir() + nombreCarpeta + filename).toAbsolutePath().normalize();
 					log.info(fileStorageLocation.toString());
@@ -349,14 +350,19 @@ public class DocumentoServiceImpl implements DocumentoService {
 					} else {
 						throw new MyFileNotFoundException("File not found " + filename);
 					}
-				} catch (MalformedURLException ex) {
+				}catch (NoSuchFileException ex) {
+					ex.printStackTrace();
+					throw new MyFileNotFoundException("File not found " + filename);
+				}
+				
+				catch (MalformedURLException ex) {
 					throw new MyFileNotFoundException("File not found " + filename);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 		
-		
+				
 		
 	}
 	
@@ -444,143 +450,7 @@ public class DocumentoServiceImpl implements DocumentoService {
 
 				// formulario.getField("AA0101-DNI").setValue("S2916002E");
 
-				PDTextField field = (PDTextField) formulario.getField("AA0101-DNI");
-
-				Resource fuente = resourceLoader.getResource("classpath:Arial-BoldMT.ttf");
-				PDFont font = PDType0Font.load(nuevoContrato, fuente.getInputStream(), false);
-				log.warning(font.getName());
-				PDResources resources = new PDResources();
-				resources.add(font);
-
-				formulario.setDefaultResources(resources);
-				resources.getFontNames().forEach((f) -> log.warning(f.toString()));
-				String defaultAppearanceString = "/F1 0 Tf 0 g";
-				field.setDefaultAppearance(defaultAppearanceString);
-
-				formulario.getFields().forEach((f) -> {
-					if (f instanceof PDTextField) {
-						((PDTextField) f).setDefaultAppearance(defaultAppearanceString);
-					}
-				});
-
-				// FORMATEO DE FECHAS
-
-				@SuppressWarnings("deprecation")
-				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/uuuu", new Locale("es", "ES"));
-
-				String fechaNacimiento= null;
-				if(trabajador.getFechaNacimiento() != null) {
-					 fechaNacimiento = trabajador.getFechaNacimiento()
-							.format(DateTimeFormatter.ofPattern("dd/MM/uuu", new Locale("es", "ES")));
-				}else {
-					throw new DocumentCreationException("La fecha de nacimiento no puede ser nula");
-				}
-
-				String mesFechaFirma="00/00/0000";
-				String fechaInicio = "00/00/0000";
-				String fechaFinal = "00/00/0000";
-				if (contrato.getFechaInicio() != null && contrato.getFechaFinal() != null) {
-					fechaInicio = contrato.getFechaInicio()
-							.format(DateTimeFormatter.ofPattern("dd/MM/uuu", new Locale("es", "ES")));
-					fechaFinal = contrato.getFechaFinal()
-							.format(DateTimeFormatter.ofPattern("dd/MM/uuu", new Locale("es", "ES")));
-					 mesFechaFirma = contrato.getFechaInicio()
-							.format(DateTimeFormatter.ofPattern("MMMM", new Locale("es", "ES")));
-
-				}else {
-					throw new DocumentCreationException("Fecha alta o fecha baja incorrectas");
-				}
-
-				formulario.getField("AA0101-DNI").setValue("S2916002E");
-
-				// field.setValue("44");
-				formulario.getField("AA0102").setValue("SABRINA MOH ABDELKADER");
-				formulario.getField("AA0103-DNI").setValue("45.281.593-K");
-				formulario.getField("AA0104").setValue("DELEGADA DEL GOBIERNO");
-				formulario.getField("AA01005").setValue("DELEGACIÓN DEL GOBIERNO EN MELILLA");
-				formulario.getField("AA01006").setValue("AVDA.MARINA ESPAÑOLA 3");
-				formulario.getField("AA01007").setValue("ESPAÑA");
-				formulario.getField("AA0108-E3").setValue("724");// CODIGO PAIS
-				formulario.getField("AA01009").setValue("MELILLA");
-				formulario.getField("AA0110-E5").setValue("52001");
-				formulario.getField("AA0111-E5").setValue("52001");
-
-				// DATOS CUENTA COTIZACIÓN
-				formulario.getField("AA0201-E4").setValue("0111");
-				formulario.getField("AA0202-E11").setValue("52100759127");
-				formulario.getField("AA0203").setValue("ADMINISTRACIÓN");
-
-				// DATOS DEL CENTRO DE TRABAJO
-				formulario.getField("AA0301").setValue("ESPAÑA");
-				formulario.getField("AA0302-E3").setValue("724");
-				formulario.getField("AA0303").setValue("MELILLA");
-				formulario.getField("AA0304-E5").setValue("52001");
-
-				// DATOS TRABAJADOR
-
-				formulario.getField("AA0401").setValue(
-						trabajador.getNombre() + " " + trabajador.getApellido1() + " " + trabajador.getApellido2());
-				formulario.getField("AA0402-DNI").setValue(trabajador.getDNI());
-				formulario.getField("AA0403-FE").setValue(fechaNacimiento);
-				formulario.getField("AA0404-E12").setValue(trabajador.getSeguridadSocial().replaceAll("/", ""));
-				formulario.getField("AA0405").setValue(contrato.getCategoria().getCategoria());
-				formulario.getField("AA0407").setValue(trabajador.getNacionalidad());
-				formulario.getField("AA0409").setValue("MELILLA");
-				formulario.getField("AA0410-E5").setValue("52001");
-				formulario.getField("AA0411").setValue("ESPAÑA");
-				formulario.getField("AA0412-E3").setValue("724");
-
-				// CLAUSULAS
-
-				formulario.getField("C101").setValue(contrato.getOcupacion().getOcupacion());
-				formulario.getField("C102").setValue(contrato.getCategoria().getCategoria());
-				formulario.getField("C103").setValue(contrato.getOcupacion().getOcupacion());
-
-				formulario.getField("C1004").setValue("MELILLA");
-
-				formulario.getField("C2_BO1").setValue("Elección2");// A tiempo parcial
-				formulario.getField("C204").setValue("25,20");
-
-				formulario.getField("C2_BO2").setValue("Elección2");// a la semana
-
-				formulario.getField("C3_BO3").setValue("Elección2");
-
-				formulario.getField("C301_FE").setValue(fechaInicio);
-				formulario.getField("C302_FE").setValue(fechaFinal);
-				
-				if(!trabajador.isSinClausula()) {
-					formulario.getField("C303").setValue("UN MES");	
-				}else {
-					formulario.getField("C303").setValue("SIN PERIODO DE PRUEBA");
-				}
-				
-
-				formulario.getField("C401").setValue(contrato.getTotal());
-				formulario.getField("C402").setValue("MENSUALES");
-				formulario.getField("C403").setValue("S.B.: "+contrato.getBase()+ "€ + P.P.P.E.: "+contrato.getProrratas()+ "€ + Residencia: "+contrato.getResidencia()+"€. (Ver claúsula adicional 2ª) ");
-
-				formulario.getField("C501").setValue("30 DÍAS NATURALES");
-
-				formulario.getField("C801").setValue("MELILLA");
-
-				formulario.getField("P11CV1").setValue("Sí");
-				formulario.getField("P11BO1").setValue("Elección2");
-				formulario.getField("P11BO2").setValue("Elección2");
-				formulario.getField("P1108").setValue(
-						"Programa común de inserción laboral a través de obras y servicios de interés general y social, recogido en la subsección 1ª de la sección 3ª del Capitulo V del Real Decreto 818/2021 de 28 de septiembre y la orden TES/1077/2023  de 28 de septiembre y la convocatoria para la concesión de subvenciones destinadas al anterior programa en colaboración con órganos de la AGE en el ámbito territorial de las ciudades de Ceuta y Melilla, aprobada por resolución de 13/11/2024 de la Dirección General del SEPE.");
-
-				String grupo_profesional = (contrato.getGc().equals("5")?"E2":"E1");
-				// Literal contrato
-				formulario.getField("P2301").setValue("1ª El presente contrato se formaliza para participar en los programas, o en su caso programa, contenidos en el documento de colaboración formalizado entre la Delegación del Gobierno y la entidad donde va a desarrollar la actividad laboral el trabajador contratado, para el desarrollo del Plan de Empleo 2024-2025.\n \n "
-						+ "2ª Las retribuciones pactadas se corresponden a las retribuciones establecidas en el IV Convenio Único para el personal laboral de la Administracion General del Estado, calculadas para una jornada a tiempo parcial de 25,20 horas a la semana, para el grupo profesional "+grupo_profesional+".");
-
-				formulario.getField("P2302").setValue("MELILLA");
-
-				formulario.getField("P2303").setValue("" + contrato.getFechaInicio().getDayOfMonth());
-				formulario.getField("P2304").setValue(mesFechaFirma.toUpperCase());
-				formulario.getField("P2305").setValue("" + contrato.getFechaInicio().getYear());
-				
-				formulario.flatten();
+				 formulario = rellenaFormulario(trabajador, contrato, nuevoContrato, formulario);
 
 				// nombre del fichero
 				String nombreFichero = trabajador.getApellido1().replace(" ", "_") + "_" + trabajador.getApellido2().replace(" ", "_") + "_"
@@ -651,6 +521,148 @@ public class DocumentoServiceImpl implements DocumentoService {
 		}
 		return listaContratosGenerados;
 
+	}
+
+	private PDAcroForm rellenaFormulario(Ciudadano trabajador, Contrato contrato, PDDocument nuevoContrato, PDAcroForm formulario)
+			throws IOException {
+		PDTextField field = (PDTextField) formulario.getField("AA0101-DNI");
+
+		Resource fuente = resourceLoader.getResource("classpath:Arial-BoldMT.ttf");
+		PDFont font = PDType0Font.load(nuevoContrato, fuente.getInputStream(), false);
+		log.warning(font.getName());
+		PDResources resources = new PDResources();
+		resources.add(font);
+
+		formulario.setDefaultResources(resources);
+		resources.getFontNames().forEach((f) -> log.warning(f.toString()));
+		String defaultAppearanceString = "/F1 0 Tf 0 g";
+		field.setDefaultAppearance(defaultAppearanceString);
+
+		formulario.getFields().forEach((f) -> {
+			if (f instanceof PDTextField) {
+				((PDTextField) f).setDefaultAppearance(defaultAppearanceString);
+			}
+		});
+
+		// FORMATEO DE FECHAS
+
+//				@SuppressWarnings("deprecation")
+//				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/uuuu", new Locale("es", "ES"));
+
+		String fechaNacimiento= null;
+		if(trabajador.getFechaNacimiento() != null) {
+			 fechaNacimiento = trabajador.getFechaNacimiento()
+					.format(DateTimeFormatter.ofPattern("dd/MM/uuu", new Locale("es", "ES")));
+		}else {
+			throw new DocumentCreationException("La fecha de nacimiento no puede ser nula");
+		}
+
+		String mesFechaFirma="00/00/0000";
+		String fechaInicio = "00/00/0000";
+		String fechaFinal = "00/00/0000";
+		if (contrato.getFechaInicio() != null && contrato.getFechaFinal() != null) {
+			fechaInicio = contrato.getFechaInicio()
+					.format(DateTimeFormatter.ofPattern("dd/MM/uuu", new Locale("es", "ES")));
+			fechaFinal = contrato.getFechaFinal()
+					.format(DateTimeFormatter.ofPattern("dd/MM/uuu", new Locale("es", "ES")));
+			 mesFechaFirma = contrato.getFechaInicio()
+					.format(DateTimeFormatter.ofPattern("MMMM", new Locale("es", "ES")));
+
+		}else {
+			throw new DocumentCreationException("Fecha alta o fecha baja incorrectas");
+		}
+
+		formulario.getField("AA0101-DNI").setValue("S2916002E");
+
+		// field.setValue("44");
+		formulario.getField("AA0102").setValue("SABRINA MOH ABDELKADER");
+		formulario.getField("AA0103-DNI").setValue("45.281.593-K");
+		formulario.getField("AA0104").setValue("DELEGADA DEL GOBIERNO");
+		formulario.getField("AA01005").setValue("DELEGACIÓN DEL GOBIERNO EN MELILLA");
+		formulario.getField("AA01006").setValue("AVDA.MARINA ESPAÑOLA 3");
+		formulario.getField("AA01007").setValue("ESPAÑA");
+		formulario.getField("AA0108-E3").setValue("724");// CODIGO PAIS
+		formulario.getField("AA01009").setValue("MELILLA");
+		formulario.getField("AA0110-E5").setValue("52001");
+		formulario.getField("AA0111-E5").setValue("52001");
+
+		// DATOS CUENTA COTIZACIÓN
+		formulario.getField("AA0201-E4").setValue("0111");
+		formulario.getField("AA0202-E11").setValue("52100759127");
+		formulario.getField("AA0203").setValue("ADMINISTRACIÓN");
+
+		// DATOS DEL CENTRO DE TRABAJO
+		formulario.getField("AA0301").setValue("ESPAÑA");
+		formulario.getField("AA0302-E3").setValue("724");
+		formulario.getField("AA0303").setValue("MELILLA");
+		formulario.getField("AA0304-E5").setValue("52001");
+
+		// DATOS TRABAJADOR
+
+		formulario.getField("AA0401").setValue(
+				trabajador.getNombre() + " " + trabajador.getApellido1() + " " + trabajador.getApellido2());
+		formulario.getField("AA0402-DNI").setValue(trabajador.getDNI());
+		formulario.getField("AA0403-FE").setValue(fechaNacimiento);
+		formulario.getField("AA0404-E12").setValue(trabajador.getSeguridadSocial().replaceAll("/", ""));
+		formulario.getField("AA0405").setValue(contrato.getCategoria().getCategoria());
+		formulario.getField("AA0407").setValue(trabajador.getNacionalidad());
+		formulario.getField("AA0409").setValue("MELILLA");
+		formulario.getField("AA0410-E5").setValue("52001");
+		formulario.getField("AA0411").setValue("ESPAÑA");
+		formulario.getField("AA0412-E3").setValue("724");
+
+		// CLAUSULAS
+
+		formulario.getField("C101").setValue(contrato.getOcupacion().getOcupacion());
+		formulario.getField("C102").setValue(contrato.getCategoria().getCategoria());
+		formulario.getField("C103").setValue(contrato.getOcupacion().getOcupacion());
+
+		formulario.getField("C1004").setValue("MELILLA");
+
+		formulario.getField("C2_BO1").setValue("Elección2");// A tiempo parcial
+		formulario.getField("C204").setValue("25,20");
+
+		formulario.getField("C2_BO2").setValue("Elección2");// a la semana
+
+		formulario.getField("C3_BO3").setValue("Elección2");
+
+		formulario.getField("C301_FE").setValue(fechaInicio);
+		formulario.getField("C302_FE").setValue(fechaFinal);
+		
+		if(!trabajador.isSinClausula()) {
+			formulario.getField("C303").setValue("UN MES");	
+		}else {
+			formulario.getField("C303").setValue("SIN PERIODO DE PRUEBA");
+		}
+		
+
+		formulario.getField("C401").setValue(contrato.getTotal());
+		formulario.getField("C402").setValue("MENSUALES");
+		formulario.getField("C403").setValue("S.B.: "+contrato.getBase()+ "€ + P.P.P.E.: "+contrato.getProrratas()+ "€ + Residencia: "+contrato.getResidencia()+"€. (Ver claúsula adicional 2ª) ");
+
+		formulario.getField("C501").setValue("30 DÍAS NATURALES");
+
+		formulario.getField("C801").setValue("MELILLA");
+
+		formulario.getField("P11CV1").setValue("Sí");
+		formulario.getField("P11BO1").setValue("Elección2");
+		formulario.getField("P11BO2").setValue("Elección2");
+		formulario.getField("P1108").setValue(
+				"Programa común de inserción laboral a través de obras y servicios de interés general y social, recogido en la subsección 1ª de la sección 3ª del Capitulo V del Real Decreto 818/2021 de 28 de septiembre y la orden TES/1077/2023  de 28 de septiembre y la convocatoria para la concesión de subvenciones destinadas al anterior programa en colaboración con órganos de la AGE en el ámbito territorial de las ciudades de Ceuta y Melilla, aprobada por resolución de 13/11/2024 de la Dirección General del SEPE.");
+
+		String grupo_profesional = (contrato.getGc().equals("5")?"E2":"E1");
+		// Literal contrato
+		formulario.getField("P2301").setValue("1ª El presente contrato se formaliza para participar en los programas, o en su caso programa, contenidos en el documento de colaboración formalizado entre la Delegación del Gobierno y la entidad donde va a desarrollar la actividad laboral el trabajador contratado, para el desarrollo del Plan de Empleo 2024-2025.\n \n "
+				+ "2ª Las retribuciones pactadas se corresponden a las retribuciones establecidas en el IV Convenio Único para el personal laboral de la Administracion General del Estado, calculadas para una jornada a tiempo parcial de 25,20 horas a la semana, para el grupo profesional "+grupo_profesional+".");
+
+		formulario.getField("P2302").setValue("MELILLA");
+
+		formulario.getField("P2303").setValue("" + contrato.getFechaInicio().getDayOfMonth());
+		formulario.getField("P2304").setValue(mesFechaFirma.toUpperCase());
+		formulario.getField("P2305").setValue("" + contrato.getFechaInicio().getYear());
+		
+		  formulario.flatten();
+		  return formulario;
 	}
 
 	@Override
