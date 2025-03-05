@@ -24,50 +24,18 @@ public class CiudadanoSpecificationBuilder {
 	
 	public Specification<Ciudadano> build(){
 		
-<<<<<<< HEAD
+
 		if (parametros.size() == 0) return null;
 		
 		Specification<Ciudadano> result =new CiudadanoSpecification(parametros.get(0),planService);
-=======
 
-	if (parametros.size() == 0) return null;
-		
-		Specification<Ciudadano> result =new CiudadanoSpecification(parametros.get(0),planService);
-		
-		for (int 	i = 1; i < parametros.size(); i++) {
-			
-			result= Specification.where(result).and(new CiudadanoSpecification(parametros.get(i),planService));
-			
-		}
->>>>>>> plantillaContrato
 		
 		for (int 	i = 1; i < parametros.size(); i++) {
 			result= Specification.where(result).and(new CiudadanoSpecification(parametros.get(i),planService));
 		}
 
 		return result;
-//		CiudadanoCriterioBusqueda criterioPlan = new CiudadanoCriterioBusqueda();
-//		
-//		criterioPlan.setId("idPlan");
-//		
-//		criterioPlan.setValue(planService.getPlanActivo().getIdPlan().toString());
-//		
-//		
-//		Specification<Ciudadano> result =new CiudadanoSpecification(criterioPlan,planService);
-//	
-//		if (parametros.size() != 0) {
-//			
-//			result.and(new CiudadanoSpecification(parametros.get(0),planService));
-//			
-//			for (int 	i = 1; i < parametros.size(); i++) {
-//				
-//				result= Specification.where(result).and(new CiudadanoSpecification(parametros.get(i),planService));
-//				
-//			}
-//		}else return result;
-//		
-//		
-//		return result;
+
 		
 	}
 

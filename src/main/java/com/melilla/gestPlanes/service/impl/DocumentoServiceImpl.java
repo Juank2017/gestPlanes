@@ -333,21 +333,27 @@ public class DocumentoServiceImpl implements DocumentoService {
 				apellido = ciudadano.getApellido1().replace(" ","_");
 				estado = ciudadano.getEstado().replace("/", "_") + "\\";
 				Ocupacion ocupacionCiudadano = ciudadano.getContrato().getOcupacion();
-				String ocupacion = ocupacionCiudadano.getOcupacion().replace(" ", "_") + "\\";
+				String ocupacion = ocupacionCiudadano.getOcupacion().replace(" ", "_").replace("/","_") + "\\";
 				String nombreCarpeta = estado + ocupacion + ciudadano.getApellido1() + "_" + ciudadano.getApellido2().replace(" ", "_") + "_"
 						+ ciudadano.getNombre().replace(" ", "_")+"\\";
 				try {
 					Path fileStorageLocation = Paths.get(config.getUploadDir() + nombreCarpeta + filename).toAbsolutePath().normalize();
 					log.info(fileStorageLocation.toString());
 					log.info(fileStorageLocation.toUri().toString());
-					Resource resource = new UrlResource(fileStorageLocation.toUri());
-
+					//Resource resource = new UrlResource(fileStorageLocation.toUri());
+					Resource resource = loadDocumentAsResource(ciudadano.getIdCiudadano(), filename, idDocumento);
+				
 					if (resource.exists()) {
 						File fichero = resource.getFile();
+						
+						//log.info(config.getTrashcanDir() + Instant.now().toEpochMilli()+"_" + fichero.getName());
 						Path fileTrashcanLocartion= Paths.get(config.getTrashcanDir() + Instant.now().toEpochMilli()+"_" + fichero.getName()).toAbsolutePath().normalize();
-						 Files.move(fileStorageLocation, fileTrashcanLocartion, StandardCopyOption.REPLACE_EXISTING);
+						log.info("trash");
+						log.info(fileTrashcanLocartion.toString());
+						 Files.move(Paths.get(fichero.getAbsolutePath()), fileTrashcanLocartion, StandardCopyOption.REPLACE_EXISTING);
 						 documentoRepository.deleteById(idDocumento);
 					} else {
+						
 						throw new MyFileNotFoundException("File not found " + filename);
 					}
 				}catch (NoSuchFileException ex) {
@@ -356,10 +362,13 @@ public class DocumentoServiceImpl implements DocumentoService {
 				}
 				
 				catch (MalformedURLException ex) {
+					ex.printStackTrace();
 					throw new MyFileNotFoundException("File not found " + filename);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+				}catch (Exception ex) {
+					throw new FileStorageException(ex.getMessage());
 				}
 		
 				
@@ -480,9 +489,12 @@ public class DocumentoServiceImpl implements DocumentoService {
 				log.info(fichero.toString());
 				String contratoParaGuardar;
 				if (Files.exists(fichero, LinkOption.NOFOLLOW_LINKS)) {
-					nombreFichero = nombreFichero.replace("_CONTRATO","_"+Instant.now().toEpochMilli() +"_" );
+					log.info("Existe el fichero");
+					nombreFichero = nombreFichero.replace("_CONTRATO","_"+Instant.now().toEpochMilli()  );
+					log.info(nombreFichero);
 					contratoParaGuardar= fileStorageLocation + "\\" + nombreFichero;
 				}else {
+					log.info("no existe");
 					contratoParaGuardar= fileStorageLocation + "\\" +nombreFichero;
 				};
 				log.warning("Genera contrato guardando el pdf a disco: "+generaContratoDTO.getId());
@@ -881,12 +893,12 @@ public class DocumentoServiceImpl implements DocumentoService {
 				// carpeta
 				// ocupacion del ciudadano
 				Ocupacion ocupacionCiudadano = trabajador.getContrato().getOcupacion();
-				String ocupacion = ocupacionCiudadano.getOcupacion().replace(" ", "_") + "\\";
+				String ocupacion = ocupacionCiudadano.getOcupacion().replace(" ", "_").replace("/","_") + "\\";
 				//estado
 				String estado = trabajador.getEstado().replace("/", "_") +"\\";
 				// forma el nombre de la capeta con apellidos_nombre
-				String nombreCarpeta = estado + ocupacion + trabajador.getApellido1() + "_" + trabajador.getApellido2() + "_"
-						+ trabajador.getNombre();
+				String nombreCarpeta = estado + ocupacion + trabajador.getApellido1().replace(" ", "_") + "_" + trabajador.getApellido2().replace(" ", "_") + "_"
+						+ trabajador.getNombre().replace(" ", "_");
 				// obtiene el path absoluto debe ser S:\PLANES DE
 				// EMPLEO\ocupacion\apellidos_nombre
 				Path fileStorageLocation = Paths.get(config.getUploadDir() + nombreCarpeta).toAbsolutePath().normalize();
