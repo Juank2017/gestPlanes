@@ -7,9 +7,11 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.melilla.gestPlanes.DTO.EditPresentacionDTO;
 import com.melilla.gestPlanes.DTO.crearPresentacionDTO;
 import com.melilla.gestPlanes.model.ApiResponse;
 import com.melilla.gestPlanes.model.Presentacion;
@@ -76,6 +78,15 @@ public class PresentacionController {
 		return ResponseEntity.ok(response);
 	}
 	
+	@PutMapping("/editarPresentacion")
+	public ResponseEntity<ApiResponse>modificarPresentacion(@RequestBody EditPresentacionDTO presentacion){
+		ApiResponse response = new ApiResponse();
+		response.setEstado(HttpStatus.OK);
+		response.getPayload().add(presentacionService.actualizarPresentacion(presentacion));
+		response.setMensaje("Presentacion actualizada");
+
+		return ResponseEntity.ok(response);
+	}
 	
 
 }

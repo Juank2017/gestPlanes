@@ -893,7 +893,7 @@ public class DocumentoServiceImpl implements DocumentoService {
 				// carpeta
 				// ocupacion del ciudadano
 				Ocupacion ocupacionCiudadano = trabajador.getContrato().getOcupacion();
-				String ocupacion = ocupacionCiudadano.getOcupacion().replace(" ", "_").replace("/","_") + "\\";
+				String ocupacion = ocupacionCiudadano.getOcupacion().replace(" ", "_").replace("/","_") + "\\" ;
 				//estado
 				String estado = trabajador.getEstado().replace("/", "_") +"\\";
 				// forma el nombre de la capeta con apellidos_nombre

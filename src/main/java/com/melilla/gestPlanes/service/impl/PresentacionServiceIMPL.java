@@ -6,11 +6,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import com.melilla.gestPlanes.DTO.EditPresentacionDTO;
 import com.melilla.gestPlanes.exceptions.exceptions.PresentacionNotFoundException;
 import com.melilla.gestPlanes.model.Presentacion;
 import com.melilla.gestPlanes.repository.PresentacionRepository;
 import com.melilla.gestPlanes.service.PresentacionService;
 
+import lombok.extern.log4j.Log4j;
+import lombok.extern.log4j.Log4j2;
+
+@Log4j2
 @Service
 public class PresentacionServiceIMPL implements PresentacionService {
 
@@ -30,8 +35,9 @@ public class PresentacionServiceIMPL implements PresentacionService {
 	}
 
 	@Override
-	public Presentacion actualizarPresentacion(Presentacion presentacion) {
+	public Presentacion actualizarPresentacion(EditPresentacionDTO presentacion) {
 
+		
 		Presentacion presentacionBBDD = presentacionRepository.findById(presentacion.getIdPresentacion())
 				.orElseThrow(() -> new PresentacionNotFoundException());
 

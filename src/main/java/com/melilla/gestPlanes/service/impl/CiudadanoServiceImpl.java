@@ -271,6 +271,34 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 		if (trabajador.getGc() != null) {
 			Contrato contrato = ciudadano.getContrato();
 			if (contrato == null) {
+				
+				Destino destino = null;
+				if (trabajador.getDestino() != null) {
+					log.info(trabajador.getDestino().toString());
+					if (trabajador.getDestino() > 0) {
+						destino = destinoRepository
+										  .findById(trabajador.getDestino())
+										  .orElseThrow(() -> new DestinoNotFoundException(trabajador.getDestino()));
+					}
+				}
+				Organismo organismo = null;
+				if (trabajador.getEntidad() != null) {
+					log.info(trabajador.getEntidad().toString());
+					if (trabajador.getEntidad() != 0) {
+						organismo = organismoRepository.findById(trabajador.getEntidad()).orElseThrow(
+								() -> new OrganismoNotFoundException(trabajador.getEntidad()));
+					}
+				}
+				
+				Ocupacion ocupacion = null;
+				if (trabajador.getOcu() != null) {
+					log.info(trabajador.getOcu().toString());
+					if (trabajador.getOcu() != 0) {
+						ocupacion = ocupacionRepository.findById(trabajador.getOcu())
+								.orElseThrow(() -> new OcupacionNotFoundException(trabajador.getOcu()));
+					}
+				}
+				
 				contrato = Contrato.builder().gc(trabajador.getGc().toString())
 						.fechaInicio((trabajador.getFechaInicio() != null) ? trabajador.getFechaInicio() : null)
 						.fechaFinal((trabajador.getFechaFinal() != null) ? trabajador.getFechaFinal() : null)
@@ -280,16 +308,9 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 								? categoriaRepository.findById(trabajador.getCategoria()).orElseThrow(
 										() -> new CategoriaNotFoundException(trabajador.getCategoria()))
 								: null)
-						.ocupacion((trabajador.getOcu() != null) ? ocupacionRepository.findById(trabajador.getOcu())
-								.orElseThrow(() -> new OcupacionNotFoundException(trabajador.getOcu())) : null)
-						.destino((trabajador.getDestino() != null)
-								? destinoRepository.findById(trabajador.getDestino())
-										.orElseThrow(() -> new DestinoNotFoundException(trabajador.getDestino()))
-								: null)
-						.entidad((trabajador.getEntidad() != null)
-								? organismoRepository.findById(trabajador.getEntidad()).orElseThrow(
-										() -> new OrganismoNotFoundException(trabajador.getEntidad()))
-								: null)
+						.ocupacion(ocupacion)
+						.destino(destino)
+						.entidad(organismo)
 						.porcentajeHoras("63").diasVacaciones(0).duracion(trabajador.getDuracion())
 						.base(trabajador.getBase()).prorratas(trabajador.getProrratas())
 						.residencia(trabajador.getResidencia()).total(trabajador.getTotal()).ciudadano(ciudadano)
@@ -341,33 +362,50 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 				}
 
 				if (contrato.getOcupacion() != null) {
-					Ocupacion nuevaOcu = ocupacionRepository.findById(trabajador.getOcu()).orElseThrow(()->new OcupacionNotFoundException(trabajador.getOcu()));
-					long ocuBBDD = contrato.getOcupacion().getIdOcupacion();
-					if (nuevaOcu.getIdOcupacion() != ocuBBDD) {
-						log.warning((trabajador.getOcu() != contrato.getOcupacion().getIdOcupacion()) + " ");
-						log.warning(trabajador.getOcu() + " " + contrato.getOcupacion().getIdOcupacion());
-						if (contrato.getOcupacion().getOcupacion().equals("JEFE DE EQUIPO DE OBRA /COORDINADORES DE CENTRO") )
-							ciudadano.setEsJefeEquipo(false);
-						if (nuevaOcu.getOcupacion().equals("JEFE DE EQUIPO DE OBRA /COORDINADORES DE CENTRO") ) {
-							ciudadano.setEsJefeEquipo(true);
-							ciudadano.setEquipo(null);
-						} else {
-							ciudadano.setEsJefeEquipo(false);
-						}
-						Ocupacion ocupacion = ocupacionRepository.findById(trabajador.getOcu())
-								.orElseThrow(() -> new OcupacionNotFoundException(trabajador.getOcu()));
-						contrato.setOcupacion(ocupacion);
-					} else {
-						if (contrato.getOcupacion().getOcupacion().equals("JEFE DE EQUIPO DE OBRA /COORDINADORES DE CENTRO")) {
-							ciudadano.setEsJefeEquipo(true);
-						} else
-							ciudadano.setEsJefeEquipo(false);
+					Ocupacion nuevaOcu = null;
+					if(trabajador.getOcu() != 0) {
+						 nuevaOcu = ocupacionRepository.findById(trabajador.getOcu()).orElseThrow(()->new OcupacionNotFoundException(trabajador.getOcu()));	
 
+							long ocuBBDD = contrato.getOcupacion().getIdOcupacion();
+							if (nuevaOcu.getIdOcupacion() != ocuBBDD) {
+								log.warning((trabajador.getOcu() != contrato.getOcupacion().getIdOcupacion()) + " ");
+								log.warning(trabajador.getOcu() + " " + contrato.getOcupacion().getIdOcupacion());
+								if (contrato.getOcupacion().getOcupacion().equals("JEFE DE EQUIPO DE OBRA /COORDINADORES DE CENTRO") )
+									ciudadano.setEsJefeEquipo(false);
+								if (nuevaOcu.getOcupacion().equals("JEFE DE EQUIPO DE OBRA /COORDINADORES DE CENTRO") ) {
+									ciudadano.setEsJefeEquipo(true);
+									ciudadano.setEquipo(null);
+								} else {
+									ciudadano.setEsJefeEquipo(false);
+								}
+								Ocupacion ocupacion =null;
+								if(trabajador.getOcu() !=0) {
+								  ocupacion = ocupacionRepository.findById(trabajador.getOcu())		
+										.orElseThrow(() -> new OcupacionNotFoundException(trabajador.getOcu()));
+								}	
+								contrato.setOcupacion(ocupacion);
+							} else {
+								if (contrato.getOcupacion().getOcupacion().equals("JEFE DE EQUIPO DE OBRA /COORDINADORES DE CENTRO")) {
+									ciudadano.setEsJefeEquipo(true);
+								} else
+									ciudadano.setEsJefeEquipo(false);
+
+							}
+					}else {
+						contrato.setOcupacion(nuevaOcu);
 					}
+					
+						
+				
 				} else {
 					if (trabajador.getOcu() != null) {
-						Ocupacion ocupacion = ocupacionRepository.findById(trabajador.getOcu())
-								.orElseThrow(() -> new OcupacionNotFoundException(trabajador.getOcu()));
+						Ocupacion ocupacion = null;
+						log.info(trabajador.getOcu().toString());
+						if(trabajador.getOcu()!= 0) {
+							ocupacion=ocupacionRepository.findById(trabajador.getOcu())
+							.orElseThrow(() -> new OcupacionNotFoundException(trabajador.getOcu()));	
+						}
+						log.info(ocupacion.getOcupacion());
 						contrato.setOcupacion(ocupacion);
 					}
 
@@ -375,14 +413,22 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 
 				if (contrato.getEntidad() != null) {
 					if (trabajador.getEntidad() != contrato.getEntidad().getIdOrganismo()) {
-						Organismo organismo = organismoRepository.findById(trabajador.getEntidad())
-								.orElseThrow(() -> new OrganismoNotFoundException(trabajador.getEntidad()));
+						Organismo organismo = null;
+						if (trabajador.getEntidad() != 0 ) {
+							 organismo = organismoRepository.findById(trabajador.getEntidad())
+										.orElseThrow(() -> new OrganismoNotFoundException(trabajador.getEntidad()));
+						}
+						
 						contrato.setEntidad(organismo);
 					}
 				} else {
 					if (trabajador.getEntidad() != null) {
-						Organismo organismo = organismoRepository.findById(trabajador.getEntidad())
-								.orElseThrow(() -> new OrganismoNotFoundException(trabajador.getEntidad()));
+						Organismo organismo = null;
+						if (trabajador.getEntidad() != 0) {
+							organismo = organismoRepository.findById(trabajador.getEntidad())
+									.orElseThrow(() -> new OrganismoNotFoundException(trabajador.getEntidad()));
+						}
+						
 						contrato.setEntidad(organismo);
 					}
 
@@ -602,7 +648,7 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 
 			Ciudadano trabajador = ciudadanoRepository.findById(tr.getIdCiudadano())
 					.orElseThrow(() -> new CiudadanoNotFoundException(tr.getIdCiudadano()));
-			if(trabajador.getEstado().equals("CONTRATADO/A")) {
+		//	if(trabajador.getEstado().equals("CONTRATADO/A")) {
 				Contrato contrato = trabajador.getContrato();
 				if (contrato != null) {
 					contrato.setEntidad(organismoRepository.findById(tr.getOrganismo()).orElseThrow(()->new OrganismoNotFoundException(tr.getOrganismo())));
@@ -617,7 +663,7 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 					ciudadanoRepository.save(trabajador);
 					trabajadoresModificados.add(trabajador);
 				}
-			}
+		//	}
 
 		}
 

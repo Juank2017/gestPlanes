@@ -189,6 +189,21 @@ public class CiudadanoController {
 		return ResponseEntity.ok(response);
 
 	}
+	
+	@PostMapping("/crearTrabajadorBatch")
+	public ResponseEntity<ApiResponse> crearTrabajadorBatch(@RequestBody List<CreateTrabajadorDTO> trabajadores){
+		
+		ApiResponse response = new ApiResponse();
+		
+		for (CreateTrabajadorDTO createTrabajadorDTO : trabajadores) {
+			response.getPayload().add(ciudadanoService.crearTrabajador(createTrabajadorDTO));
+		}
+		
+		response.setMensaje("Registrado correctamente");
+		response.setEstado(HttpStatus.OK);
+
+		return ResponseEntity.ok(response);
+	}
 
 	@PutMapping("/actualizaTrabajador")
 	public ResponseEntity<ApiResponse> actualizaTrabajador(@RequestBody UpdateTrabajadorDTO2 trabajador) {
