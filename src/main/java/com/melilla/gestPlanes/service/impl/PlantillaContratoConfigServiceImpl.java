@@ -50,7 +50,7 @@ public class PlantillaContratoConfigServiceImpl implements PlantillaContratoConf
 		
 		nuevaPlantilla.setPlan(planActivo);
 		
-		
+		nuevaPlantilla.setActiva(false);
 		
 		
 		return plantillaContratoRepository.save(nuevaPlantilla);

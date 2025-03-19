@@ -30,6 +30,8 @@ public class PlantillaContratoConfig {
 	@JoinColumn(name="idPlan")
 	private Plan plan;
 	
+	boolean activa;
+	
 	private String cif;
 	//nombre y apellidos del representante
 	private String nombreRepresentante;
