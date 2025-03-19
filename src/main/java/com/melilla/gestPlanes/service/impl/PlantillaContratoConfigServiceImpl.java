@@ -34,7 +34,9 @@ public class PlantillaContratoConfigServiceImpl implements PlantillaContratoConf
 	@Override
 	public List<PlantillaContratoConfig> obtenerPlantillas() {
 		
-		return plantillaContratoRepository.findAll();
+		Plan planActivo = planService.getPlanActivo();
+		
+		return plantillaContratoRepository.findAllByPlan(planActivo);
 	}
 
 	@Override

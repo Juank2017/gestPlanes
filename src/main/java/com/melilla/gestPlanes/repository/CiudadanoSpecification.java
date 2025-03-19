@@ -21,6 +21,7 @@ import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.JoinType;
+import jakarta.persistence.criteria.Path;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import lombok.ToString;
@@ -152,6 +153,8 @@ public class CiudadanoSpecification implements Specification<Ciudadano> {
 			equalPredicate = builder.equal(planCiudadano.get("idPlan"),  criteria.getValue());
 			break;
 		}
+		
+
 
 		}
 
