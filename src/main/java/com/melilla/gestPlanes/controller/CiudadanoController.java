@@ -25,6 +25,7 @@ import com.melilla.gestPlanes.DTO.UpdateTrabajadorDTO2;
 import com.melilla.gestPlanes.DTO.listadoTrabajadoresDTO;
 import com.melilla.gestPlanes.model.ApiResponse;
 import com.melilla.gestPlanes.model.Ciudadano;
+import com.melilla.gestPlanes.model.Vacaciones;
 import com.melilla.gestPlanes.service.CiudadanoService;
 
 import lombok.extern.java.Log;
@@ -53,8 +54,22 @@ public class CiudadanoController {
 		response.setEstado(HttpStatus.OK);
 		Page<Ciudadano> respuesta = ciudadanoService.getTrabajadores(ordenBusqueda);
 		log.warning(respuesta.getSize()+"");
+		int aux = 0;
 		for (Ciudadano ciudadano : respuesta) {
+			List<Vacaciones>vacaciones = ciudadano.getPeriodosVacaciones();
+			
+			if(vacaciones.size() > 0) {
+				
+				for (Vacaciones periodo : vacaciones) {
+					
+					aux+=periodo.getDias();
+					
+				}
+			}
+			
+			
 			listadoTrabajadoresDTO item = new listadoTrabajadoresDTO();
+			item.setVacacionesDisfrutadas(aux);
 			item.setIdPlan(ciudadano.getIdPlan().getIdPlan());
 			item.setIdCiudadano(ciudadano.getIdCiudadano());
 			item.setIdPlan(ciudadano.getIdPlan().getIdPlan());
@@ -93,6 +108,7 @@ public class CiudadanoController {
 			item.setDeleted(ciudadano.isDeleted());
 			item.setTotalElements(respuesta.getTotalElements());
 			listado.add(item);
+			aux=0;
 		}
 		response.getPayload().add(listado);
 

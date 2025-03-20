@@ -94,4 +94,6 @@ public class listadoTrabajadoresDTO {
 	
 	private Long totalElements;
 	
+	private int vacacionesDisfrutadas;
+	
 }
