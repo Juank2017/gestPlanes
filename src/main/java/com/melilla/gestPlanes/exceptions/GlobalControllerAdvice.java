@@ -38,6 +38,7 @@ import com.melilla.gestPlanes.exceptions.exceptions.TokenRefreshException;
 import com.melilla.gestPlanes.exceptions.exceptions.TrabajadorNoEsJefeException;
 import com.melilla.gestPlanes.exceptions.exceptions.TrabajadorYaContratadoException;
 import com.melilla.gestPlanes.exceptions.exceptions.UserNotFoundException;
+import com.melilla.gestPlanes.exceptions.exceptions.VacacionesNotFoundException;
 
 import io.jsonwebtoken.ExpiredJwtException;
 
@@ -95,7 +96,7 @@ public class GlobalControllerAdvice extends ResponseEntityExceptionHandler {
 		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(apiError);
 	}
 
-	@ExceptionHandler( {PlantillaContratoConfigNotFoundException.class, PlanConfigNotFoundException.class, NotaNotFoundException.class, DocumentoNotFoundException.class, OcupacionNotFoundException.class,
+	@ExceptionHandler( {VacacionesNotFoundException.class, PlantillaContratoConfigNotFoundException.class, PlanConfigNotFoundException.class, NotaNotFoundException.class, DocumentoNotFoundException.class, OcupacionNotFoundException.class,
 			CategoriaNotFoundException.class, DestinoNotFoundException.class, OrganismoNotFoundException.class,
 			ExpedienteNotFoundException.class, CiudadanoNotFoundException.class, MyFileNotFoundException.class,
 			PlanNotFoundException.class, UserNotFoundException.class, RoleNotFoundException.class, EquipoNoEncontradoException.class, SalarioNotFoundException.class })

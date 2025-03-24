@@ -152,6 +152,10 @@ public class CiudadanoSpecification implements Specification<Ciudadano> {
 			equalPredicate = builder.equal(planCiudadano.get("idPlan"),  criteria.getValue());
 			break;
 		}
+		case "vacacionesDisfrutadas":{
+			equalPredicate = builder.equal(root.get("vacacionesDisfrutadas"),  criteria.getValue());
+			break;
+		}
 
 		}
 

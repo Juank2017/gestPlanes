@@ -137,6 +137,8 @@ public class Ciudadano {
 	@OneToMany(mappedBy = "ciudadano" , cascade= CascadeType.ALL)
 	private List<Vacaciones> periodosVacaciones= new ArrayList<Vacaciones>();
 	
+	private int vacacionesDisfrutadas;
+	
 	@JsonManagedReference
 	@OneToMany(mappedBy = "ciudadano", cascade = CascadeType.ALL)
 	private List<Documento> documentos= new ArrayList<Documento>();

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.melilla.gestPlanes.DTO.AltaVacacionesDTO;
 import com.melilla.gestPlanes.exceptions.exceptions.CiudadanoNotFoundException;
+import com.melilla.gestPlanes.exceptions.exceptions.VacacionesNotFoundException;
 import com.melilla.gestPlanes.model.Ciudadano;
 import com.melilla.gestPlanes.model.Vacaciones;
 import com.melilla.gestPlanes.repository.CiudadanoRepository;
@@ -52,14 +53,22 @@ public class VacacionesServiceImpl implements VacacionesService {
 		nuevoPeriodo.setIdPlan(planService.getPlanActivo());
 		nuevoPeriodo.setDias((int)(ChronoUnit.DAYS.between( periodo.getFechaInicio(),periodo.getFechaFinal())+1));
 		
-		
-		
+		trabajador.setVacacionesDisfrutadas(trabajador.getVacacionesDisfrutadas() +(int)(ChronoUnit.DAYS.between( periodo.getFechaInicio(),periodo.getFechaFinal())+1));
+		ciudadanoRepository.save(trabajador);
 		
 		return vacacionesRepository.saveAndFlush(nuevoPeriodo);
 	}
 
 	@Override
 	public void bajaPeriodo(Long idPeriodo) {
+		
+		Vacaciones periodo = vacacionesRepository.findById(idPeriodo).orElseThrow(()-> new VacacionesNotFoundException(idPeriodo));
+		
+		Ciudadano trabajador = periodo.getCiudadano();
+		
+		trabajador.setVacacionesDisfrutadas(trabajador.getVacacionesDisfrutadas() - periodo.getDias());
+		
+		ciudadanoRepository.save(trabajador);
 		
 		vacacionesRepository.deleteById(idPeriodo);
 
