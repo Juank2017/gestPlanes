@@ -61,8 +61,9 @@ public class CiudadanoController {
 			if(vacaciones.size() > 0) {
 				
 				for (Vacaciones periodo : vacaciones) {
-					
-					aux+=periodo.getDias();
+					if(!periodo.isDeleted()) {
+						aux+=periodo.getDias();
+						}
 					
 				}
 			}
