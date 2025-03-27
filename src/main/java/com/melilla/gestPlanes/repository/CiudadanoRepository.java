@@ -26,7 +26,9 @@ public interface CiudadanoRepository extends JpaRepository<Ciudadano, Long> ,Rev
 	boolean existsByDNI(String DNI);
 	 Page<Ciudadano> findAll(Specification<Ciudadano> spec,Pageable page);
 	 
-	 Page<Ciudadano>findAllByIdPlan(Specification<Ciudadano> spec, Pageable page, Plan plan);
+	 long countByIdPlanAndDeleted(Plan plan, boolean deleted);
+	 
+	 Page<Ciudadano>findAllByIdPlanAndDeleted(Specification<Ciudadano> spec, Pageable page, Plan plan, boolean deleted);
 	 
 	 List<Ciudadano> findByEstadoAndContratoEntidadIdOrganismoAndContratoOcupacionIdOcupacion(String estado,long idOrganismo,long idOcupacion);
 
