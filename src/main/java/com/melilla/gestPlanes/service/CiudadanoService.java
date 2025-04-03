@@ -12,6 +12,7 @@ import com.melilla.gestPlanes.DTO.ModificarOrganismoContrato;
 import com.melilla.gestPlanes.DTO.UpdateTrabajadorDTO2;
 import com.melilla.gestPlanes.DTO.VacantesResponseDTO;
 import com.melilla.gestPlanes.model.Ciudadano;
+import com.melilla.gestPlanes.model.Plan;
 
 public interface CiudadanoService {
 	
@@ -32,6 +33,9 @@ public interface CiudadanoService {
 	boolean existeTrabajadorEnEstadoContratado(String DNI);
 	
 	Page<Ciudadano>getTrabajadores(CiudadanoOrdenBusqueda ordenBusqueda);
+	
+	long numeroTrabajadores(Plan plan, boolean deleted);
+	
 	Optional<Ciudadano>getTrabajadorPorDNI(String DNI);
 	
 	Ciudadano editaTrabajador(UpdateTrabajadorDTO2 trabajador);

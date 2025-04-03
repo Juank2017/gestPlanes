@@ -24,7 +24,7 @@ public class DashBoardServiceIMPL implements DashBoardService {
 	
 	@Override
 	public List<DashBoardEstadoGeneroDTO> ciudadanosPorEstado(Long idPlan) {
-		List<DashBoardEstadoGeneroDTO> resultado = ciudadanoRepository.findAllByIdPlanIdPlanGroupByEstado(idPlan);
+		List<DashBoardEstadoGeneroDTO> resultado = ciudadanoRepository.findAllByIdPlanAndNotDeletedGroupByEstado(idPlan);
 		
 		
 		

@@ -38,6 +38,7 @@ import com.melilla.gestPlanes.model.Destino;
 import com.melilla.gestPlanes.model.Ocupacion;
 import com.melilla.gestPlanes.model.Organismo;
 import com.melilla.gestPlanes.model.OrganismoOcupacion;
+import com.melilla.gestPlanes.model.Plan;
 import com.melilla.gestPlanes.repository.CategoriaRepository;
 import com.melilla.gestPlanes.repository.CiudadanoRepository;
 import com.melilla.gestPlanes.repository.CiudadanoSpecificationBuilder;
@@ -680,6 +681,12 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 	public Ciudadano saveCiudadano(Ciudadano ciudadano) {
 		
 		return ciudadanoRepository.saveAndFlush(ciudadano);
+	}
+
+	@Override
+	public long numeroTrabajadores(Plan plan, boolean deleted) {
+		
+		return ciudadanoRepository.countByIdPlanAndDeleted(plan, deleted);
 	}
 
 }
