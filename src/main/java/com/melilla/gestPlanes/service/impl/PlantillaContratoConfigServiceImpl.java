@@ -82,4 +82,26 @@ public class PlantillaContratoConfigServiceImpl implements PlantillaContratoConf
 		return plantillaContratoRepository.findById(idPlantilla).orElseThrow(()-> new PlantillaContratoConfigNotFoundException(idPlantilla));
 	}
 
+	@Override
+	public PlantillaContratoConfig activarPlantilla(long idPlantilla) {
+		
+		List<PlantillaContratoConfig>plantillas = obtenerPlantillas();
+		
+		plantillas.forEach((p)->p.setActiva(false));
+		
+		PlantillaContratoConfig plantilla = plantillaContratoRepository.findById(idPlantilla).orElseThrow(()-> new PlantillaContratoConfigNotFoundException(idPlantilla));
+		
+		plantilla.setActiva(true);
+		
+		plantillaContratoRepository.save(plantilla);
+		
+		return plantilla;
+	}
+
+	@Override
+	public PlantillaContratoConfig obtenerPlantillaActiva(Plan plan) {
+		
+		return plantillaContratoRepository.findByPlanAndActiva(plan, true);
+	}
+
 }

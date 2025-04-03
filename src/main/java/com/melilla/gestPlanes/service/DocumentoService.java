@@ -33,6 +33,8 @@ public interface DocumentoService {
 	
 	List<GeneraContratoResponseDTO> generarContrato(List<GeneraContratoDTO> trabajadores);
 	
+	List<GeneraContratoResponseDTO> generarContratoConPlantilla(List<GeneraContratoDTO> trabajadores);
+	
 	List<GeneraContratoResponseDTO> generarPresentacion(List<GeneraPresentacionDTO> trabajadores);
 	
 	Documento obtenerDocumentoPorNombreIdCiudadano(String fileName,Long idCiduadano);

@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.melilla.gestPlanes.DTO.CrearPlantillaContratoDTO;
 import com.melilla.gestPlanes.DTO.EditarPlantillaContratoDTO;
+import com.melilla.gestPlanes.model.Plan;
 import com.melilla.gestPlanes.model.config.PlantillaContratoConfig;
 
 public interface PlantillaContratoConfigService {
@@ -18,6 +19,9 @@ public interface PlantillaContratoConfigService {
 	
 	void borrarPlantilla(long idPlantilla);
 	
+	PlantillaContratoConfig activarPlantilla(long idPlantilla);
+	
+	PlantillaContratoConfig obtenerPlantillaActiva(Plan plan);
 	
 
 }

@@ -64,6 +64,8 @@ public class PlantillaContratoConfig {
 	
 	private String sepe;
 	
+	private String textoConceptosSalariales;
+	
 	private String clausulaEspecifica;
 	
 	private String clausulaAdicional;

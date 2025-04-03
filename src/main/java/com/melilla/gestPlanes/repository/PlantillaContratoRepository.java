@@ -12,4 +12,6 @@ public interface PlantillaContratoRepository extends JpaRepository<PlantillaCont
 
 	
 	List<PlantillaContratoConfig> findAllByPlan(Plan plan);
+	
+	PlantillaContratoConfig findByPlanAndActiva(Plan plan, boolean activa);
 }

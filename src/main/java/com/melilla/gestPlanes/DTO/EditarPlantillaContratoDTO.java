@@ -49,5 +49,7 @@ public class EditarPlantillaContratoDTO {
 	
 	private String clausulaAdicional;
 	
+	private String textoConceptosSalariales;
+	
 	
 }

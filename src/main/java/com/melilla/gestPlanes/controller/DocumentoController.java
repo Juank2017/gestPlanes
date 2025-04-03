@@ -139,7 +139,7 @@ public class DocumentoController {
 		log.warning(trabajadores.toString());
 		ApiResponse response = new ApiResponse();
 
-		response.getPayload().addAll(documentoService.generarContrato(trabajadores));
+		response.getPayload().addAll(documentoService.generarContratoConPlantilla(trabajadores));
 
 		return ResponseEntity.ok(response);
 	}
