@@ -59,13 +59,83 @@ public class CiudadanoController {
 
 		Page<Ciudadano> respuesta = ciudadanoService.getTrabajadores(ordenBusqueda);
 
+		
 
 
-		return listadoCiudadanosToListadoTrabajadoresDTO(respuesta.getContent());
+		return listadoCiudadanosToListadoTrabajadoresDTO(respuesta, ordenBusqueda.getColumnFilters().isEmpty());
 
 	}
 
-	private listadoTrabajadoresDTO listadoCiudadanosToListadoTrabajadoresDTO(List<Ciudadano> listado) {
+	private listadoTrabajadoresDTO listadoCiudadanosToListadoTrabajadoresDTO(Page<Ciudadano> respuesta, boolean filtrado ) {
+
+		List<Ciudadano> listado = respuesta.getContent();
+
+		listadoTrabajadoresDTO lista = new listadoTrabajadoresDTO();
+
+		for (Ciudadano ciudadano : listado) {
+
+			
+				TrabajadoresDTO item = new TrabajadoresDTO();
+				item.setVacacionesDisfrutadas(ciudadano.getVacacionesDisfrutadas());
+				item.setIdPlan(ciudadano.getIdPlan().getIdPlan());
+				item.setIdCiudadano(ciudadano.getIdCiudadano());
+				item.setIdPlan(ciudadano.getIdPlan().getIdPlan());
+				item.setNumeroOrdenSepe(ciudadano.getNumeroOrdenSepe());
+				item.setSinClausula(ciudadano.isSinClausula());
+				item.setBajaLaboral(ciudadano.isBajaLaboral());
+				item.setBajaMaternal(ciudadano.isBajaMaternal());
+				item.setEstado(ciudadano.getEstado());
+				item.setFechaRegistro(ciudadano.getFechaRegistro());
+				item.setFechaListadoSepe(ciudadano.getFechaListadoSepe());
+				item.setCcc(ciudadano.getCcc());
+				item.setNacionalidad(ciudadano.getNacionalidad());
+				if (ciudadano.getContrato() != null) {
+					item.setFechaInicio(ciudadano.getContrato().getFechaInicio());
+					item.setFechaFinal(ciudadano.getContrato().getFechaFinal());
+					item.setFechaExtincion(ciudadano.getContrato().getFechaExtincion());
+					item.setTotal(
+							(ciudadano.getContrato().getTotal() != null) ? ciudadano.getContrato().getTotal() : null);
+					item.setCategoria((ciudadano.getContrato().getCategoria() != null)
+							? ciudadano.getContrato().getCategoria().getCategoria()
+							: null);
+					item.setOcupacion((ciudadano.getContrato().getOcupacion() != null)
+							? ciudadano.getContrato().getOcupacion().getOcupacion()
+							: null);
+					item.setOrganismo((ciudadano.getContrato().getEntidad() != null)
+							? ciudadano.getContrato().getEntidad().getNombreCortoOrganismo()
+							: null);
+					item.setDestino((ciudadano.getContrato().getDestino() != null)
+							? ciudadano.getContrato().getDestino().getDestino()
+							: null);
+					item.setTurno((ciudadano.getContrato().getTurno() != null)
+							?ciudadano.getContrato().getTurno()
+							: null);
+				}
+				item.setNombre(ciudadano.getNombre());
+				item.setApellido1(ciudadano.getApellido1());
+				item.setApellido2(ciudadano.getApellido2());
+				item.setDNI(ciudadano.getDNI());
+				item.setSeguridadSocial(ciudadano.getSeguridadSocial());
+				item.setFechaNacimiento(ciudadano.getFechaNacimiento());
+				item.setAntecedentes(ciudadano.isAntecedentes());
+				item.setAltaSS(ciudadano.isAltaSS());
+				item.setContrata(ciudadano.isContrata());
+				item.setEscaneado(ciudadano.isEscaneado());
+				item.setNedaes(ciudadano.isNedaes());
+				item.setTelefono(ciudadano.getTelefono());
+				item.setSexo(ciudadano.getSexo());
+				item.setDeleted(ciudadano.isDeleted());
+				item.setNotas((ciudadano.getNotas().size() >0)?true:false);
+				lista.getTrabajadores().add(item);
+			
+
+			lista.setTotalElements(filtrado?ciudadanoService.numeroTrabajadores(planService.getPlanActivo(), false):respuesta.getTotalElements());
+		}
+
+		return lista;
+	}
+	
+	private listadoTrabajadoresDTO listadoCiudadanosToListadoTrabajadoresDTO(List<Ciudadano> listado  ) {
 
 	
 
@@ -130,6 +200,7 @@ public class CiudadanoController {
 
 		return lista;
 	}
+
 
 	@GetMapping("/ciudadano/{idCiudadano}")
 	public ResponseEntity<ApiResponse> obtenerCiudadano(@PathVariable Long idCiudadano) {

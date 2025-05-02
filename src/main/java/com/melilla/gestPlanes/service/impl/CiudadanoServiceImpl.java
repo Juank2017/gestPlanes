@@ -490,8 +490,11 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 				}
 			} else {
 				if (modificaEstadoDTO.getEstado().equals("CONTRATADO/A")) {
-					if (existeTrabajadorEnEstadoContratado(modificaEstadoDTO.getDni()))
+					if (existeTrabajadorEnEstadoContratado(modificaEstadoDTO.getDni())) {
+						
 						continue;
+					}
+						
 				}
 				trabajador.setEstado(modificaEstadoDTO.getEstado());
 			}
@@ -582,13 +585,13 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 	@Override
 	public List<Ciudadano> getAllTrabajadorByDNIAndEstado(String DNI, String estado) {
 
-		return ciudadanoRepository.findAllByDNIAndEstado(DNI, estado);
+		return ciudadanoRepository.findAllByDNIAndEstadoAndIdPlan(DNI, estado, planService.getPlanActivo());
 	}
 
 	@Override
 	public boolean existeTrabajadorEnEstadoContratado(String DNI) {
 
-		return (ciudadanoRepository.findAllByDNIAndEstado(DNI, "CONTRATADO/A").size() > 0) ? true : false;
+		return (ciudadanoRepository.findAllByDNIAndEstadoAndIdPlan(DNI, "CONTRATADO/A",planService.getPlanActivo()).size() > 0) ? true : false;
 	}
 
 	@Override

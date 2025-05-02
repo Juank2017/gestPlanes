@@ -64,6 +64,7 @@ public class CiudadanoSpecification implements Specification<Ciudadano> {
 		Predicate fechaPredicate = null;
 		Predicate equalPredicate = null;
 		Predicate planPredicate = builder.equal(root.get("idPlan"), plan.getIdPlan());
+		Predicate deletePredicate = builder.equal(root.get("deleted"), false);
 
 		switch (criteria.getId()) {
 
@@ -156,11 +157,16 @@ public class CiudadanoSpecification implements Specification<Ciudadano> {
 			equalPredicate = builder.equal(root.get("vacacionesDisfrutadas"),  criteria.getValue());
 			break;
 		}
+		case "numeroOrdenSepe":{
+			equalPredicate = builder.equal(root.get("numeroOrdenSepe"),  criteria.getValue());
+			break;
+		}
 
 		}
 
 		List<Predicate> predicados = new ArrayList<>();
 		//predicados.add(planPredicate);
+		predicados.add(deletePredicate);
 		if (likePredicate != null)
 			predicados.add(likePredicate);
 		if (fechaPredicate != null)
