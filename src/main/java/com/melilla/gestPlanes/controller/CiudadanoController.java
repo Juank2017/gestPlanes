@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.melilla.gestPlanes.DTO.CiudadanoOrdenBusqueda;
 import com.melilla.gestPlanes.DTO.CreateTrabajadorDTO;
+import com.melilla.gestPlanes.DTO.ModificaEquipoDTO;
 import com.melilla.gestPlanes.DTO.ModificaEstadoDTO;
 import com.melilla.gestPlanes.DTO.ModificaFechaContratoDTO;
 import com.melilla.gestPlanes.DTO.ModificarOrganismoContrato;
@@ -300,6 +301,17 @@ public class CiudadanoController {
 		response.getPayload().add(
 				listadoCiudadanosToListadoTrabajadoresDTO(ciudadanoService.modificarOrganismoContrato(trabajadores)));
 		response.setMensaje("Estado del trabajador actualizado");
+
+		return ResponseEntity.ok(response);
+	}
+	
+	@PostMapping("/modificaEquipo")
+	public ResponseEntity<ApiResponse>modificarEquipoTrabajador(@RequestBody List<ModificaEquipoDTO> trabajadores){
+		ApiResponse response = new ApiResponse();
+
+		response.getPayload().add(
+				listadoCiudadanosToListadoTrabajadoresDTO(ciudadanoService.modificaEquipo(trabajadores)));
+		response.setMensaje("Equipo del trabajador actualizado");
 
 		return ResponseEntity.ok(response);
 	}
