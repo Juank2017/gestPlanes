@@ -127,8 +127,9 @@ public class CiudadanoController {
 				item.setSexo(ciudadano.getSexo());
 				item.setDeleted(ciudadano.isDeleted());
 				item.setNotas((ciudadano.getNotas().size() >0)?true:false);
+				item.setEquipo(ciudadano.getEquipo().getNombreEquipo());
 				lista.getTrabajadores().add(item);
-			
+				
 
 			lista.setTotalElements(filtrado?ciudadanoService.numeroTrabajadores(planService.getPlanActivo(), false):respuesta.getTotalElements());
 		}
