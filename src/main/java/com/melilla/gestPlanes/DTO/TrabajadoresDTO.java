@@ -92,5 +92,7 @@ private Long idCiudadano;
 	
 	private boolean notas;
 	
+	private String equipo;
+	
 	private int vacacionesDisfrutadas;
 }
