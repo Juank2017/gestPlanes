@@ -77,7 +77,7 @@ public class EquipoServiceImpl implements EquipoService {
 		try {
 			e.setNombreEquipo(equipo.getNombreEquipo());
 			if (equipo.getDNI() != null) {
-				Ciudadano jefe = ciudadanoRepository.findByEstadoAndDNI("CONTRATADO/A", equipo.getDNI());
+				Ciudadano jefe = ciudadanoRepository.findByDNIAndEstadoAndIdPlan( equipo.getDNI(),"CONTRATADO/A",planService.getPlanActivo()).orElseThrow(()-> new CiudadanoNotFoundException(null));
 				if (jefe == null) {
 					throw new CiudadanoNotFoundException(1l);
 

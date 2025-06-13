@@ -17,7 +17,7 @@ public class UpdateTrabajadorDTO2 {
 	LocalDate fechaNacimiento;
 	String ccc;
 	String estado;
-	String numeroOrdenSepe;
+	int numeroOrdenSepe;
 	String email;
 	String telefono;
 	LocalDate fechaRegistro;

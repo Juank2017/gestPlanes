@@ -36,7 +36,7 @@ private Long idCiudadano;
 	
 	private String estado;
 	
-	private String numeroOrdenSepe;
+	private int numeroOrdenSepe;
 	
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", locale = "es_ES" )
 	private LocalDate fechaListadoSepe;
@@ -79,6 +79,8 @@ private Long idCiudadano;
 	
 	private boolean esJefeEquipo;
 	
+	private String equipo;
+	
 	private boolean cupo;
 	private boolean vg;
 	
@@ -87,6 +89,7 @@ private Long idCiudadano;
 	private String organismo;
 	private String destino;
 	private String telefono;
+	private String turno;
 	
 	private boolean deleted;
 	

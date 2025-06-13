@@ -1212,7 +1212,7 @@ public class DocumentoServiceImpl implements DocumentoService {
 					fechaFinal = contrato.getFechaFinal()
 							.format(DateTimeFormatter.ofPattern("dd/MM/uuu", new Locale("es", "ES")));
 				}
-
+				formulario.getField("turno").setValue((contrato.getTurno() != null)?contrato.getTurno():"");
 				formulario.getField("responsable").setValue(presentacion.getResponsable());
 				formulario.getField("nombre").setValue(trabajador.getNombre());
 				formulario.getField("apellidos").setValue(trabajador.getApellido1() + " " + trabajador.getApellido2());
