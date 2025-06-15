@@ -83,4 +83,15 @@ public class PlantillaContratoController {
 		
 		return ResponseEntity.ok(response);
 	}
+	
+	@GetMapping("/plan/activarPlantilla/{idPlantilla}")
+	ResponseEntity<ApiResponse>activaPlantilla(@PathVariable long idPlantilla){
+		ApiResponse response= new ApiResponse();
+		
+		response.setEstado(HttpStatus.OK);
+		response.getPayload().add(plantillaService.activarPlantilla(idPlantilla));
+		response.setMensaje("Plantilla activada");
+		
+		return ResponseEntity.ok(response);
+	}
 }
