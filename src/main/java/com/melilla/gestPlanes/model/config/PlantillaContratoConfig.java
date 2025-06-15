@@ -6,6 +6,7 @@ import org.hibernate.envers.RelationTargetAuditMode;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.melilla.gestPlanes.model.Plan;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -65,9 +66,9 @@ public class PlantillaContratoConfig {
 	private String sepe;
 	
 	private String textoConceptosSalariales;
-	
+	@Column(columnDefinition="TEXT")
 	private String clausulaEspecifica;
-	
+	@Column(columnDefinition="TEXT")
 	private String clausulaAdicional;
 
 

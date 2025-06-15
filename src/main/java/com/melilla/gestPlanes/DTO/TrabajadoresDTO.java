@@ -79,8 +79,7 @@ private Long idCiudadano;
 	
 	private boolean esJefeEquipo;
 	
-	private String equipo;
-	
+
 	private boolean cupo;
 	private boolean vg;
 	
