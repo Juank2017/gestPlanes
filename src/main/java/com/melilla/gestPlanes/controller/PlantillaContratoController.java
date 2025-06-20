@@ -103,8 +103,8 @@ public class PlantillaContratoController {
 	}
 	
 	@PostMapping("/plan/subirPlantilla")
-	public ResponseEntity<ApiResponse> subirPlantilla(@RequestPart MultipartFile file, 
-			@RequestPart String idPlan) {
+	public ResponseEntity<ApiResponse> subirPlantilla(@RequestPart MultipartFile file 
+			) {
 
 		ApiResponse response = new ApiResponse();
 
@@ -112,7 +112,7 @@ public class PlantillaContratoController {
 
 		response.setEstado(HttpStatus.OK);
 		response.getPayload().add(plantillaService.subirPlantilla(file));
-		response.setMensaje("Lista de ciudadanos");
+		response.setMensaje("Platilla subida.");
 
 		return ResponseEntity.ok(response);
 
