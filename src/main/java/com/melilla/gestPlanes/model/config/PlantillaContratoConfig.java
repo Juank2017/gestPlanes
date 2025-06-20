@@ -71,5 +71,7 @@ public class PlantillaContratoConfig {
 	@Column(columnDefinition="TEXT")
 	private String clausulaAdicional;
 
-
+	private String url;
+	
+	private String nombreFicheroPlantilla;
 }

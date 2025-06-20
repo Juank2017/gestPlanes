@@ -2,6 +2,8 @@ package com.melilla.gestPlanes.service;
 
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.melilla.gestPlanes.DTO.CrearPlantillaContratoDTO;
 import com.melilla.gestPlanes.DTO.EditarPlantillaContratoDTO;
 import com.melilla.gestPlanes.model.Plan;
@@ -23,5 +25,5 @@ public interface PlantillaContratoConfigService {
 	
 	PlantillaContratoConfig obtenerPlantillaActiva(Plan plan);
 	
-
+	PlantillaContratoConfig subirPlantilla(MultipartFile file);
 }

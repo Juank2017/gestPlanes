@@ -560,8 +560,9 @@ public class DocumentoServiceImpl implements DocumentoService {
 		try {
 			log.warning("Inicia genera contrato");
 			// carga el fichero de la plantilla de resources
-
-			Resource classPahtResource = resourceLoader.getResource("classpath:" + plantillaContrato);
+			String directorioPlantillas = config.getTemplateDir();
+			PlantillaContratoConfig plantillaContrato = plantillaContratoConfigService.obtenerPlantillaActiva(planservice.getPlanActivo());
+			Resource classPahtResource = resourceLoader.getResource("file:" +directorioPlantillas+"\\"+ plantillaContrato.getNombreFicheroPlantilla());
 			File plantilla = classPahtResource.getFile();
 			for (GeneraContratoDTO generaContratoDTO : trabajadores) {
 				log.warning("Inicio Genera contrato: " + generaContratoDTO.getId());

@@ -32,6 +32,7 @@ public class PlanConfig {
 	
 	private String trashcanDir;
 	
+	private String templateDir;
 
 	
 	@JsonIgnore

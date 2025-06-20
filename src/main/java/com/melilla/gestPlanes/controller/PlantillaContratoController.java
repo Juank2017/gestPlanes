@@ -9,11 +9,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.melilla.gestPlanes.DTO.CrearPlantillaContratoDTO;
 import com.melilla.gestPlanes.DTO.EditarPlantillaContratoDTO;
 import com.melilla.gestPlanes.model.ApiResponse;
+import com.melilla.gestPlanes.model.Documento;
+import com.melilla.gestPlanes.service.PlanService;
 import com.melilla.gestPlanes.service.PlantillaContratoConfigService;
 
 import lombok.RequiredArgsConstructor;
@@ -26,6 +30,9 @@ public class PlantillaContratoController {
 
 	@Autowired
 	private PlantillaContratoConfigService plantillaService;
+	
+	@Autowired
+	private PlanService planService;
 	
 	@GetMapping("/plan/plantillasContrato")
 	ResponseEntity<ApiResponse>getPlantillas(){
@@ -93,5 +100,21 @@ public class PlantillaContratoController {
 		response.setMensaje("Plantilla activada");
 		
 		return ResponseEntity.ok(response);
+	}
+	
+	@PostMapping("/plan/subirPlantilla")
+	public ResponseEntity<ApiResponse> subirPlantilla(@RequestPart MultipartFile file, 
+			@RequestPart String idPlan) {
+
+		ApiResponse response = new ApiResponse();
+
+		//Documento doc = documentoService.guardarDocumento(Long.parseLong(idCiudadano), file, tipo);
+
+		response.setEstado(HttpStatus.OK);
+		response.getPayload().add(plantillaService.subirPlantilla(file));
+		response.setMensaje("Lista de ciudadanos");
+
+		return ResponseEntity.ok(response);
+
 	}
 }
