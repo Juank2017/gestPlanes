@@ -165,7 +165,7 @@ public class CiudadanoSpecification implements Specification<Ciudadano> {
 			break;
 		}
 		case "equipo":{
-			equalPredicate = builder.equal(equipoCiudadano.get("nombreEquipo"),  criteria.getValue());
+			equalPredicate = builder.like(equipoCiudadano.get("nombreEquipo"),  criteria.getValue());
 			break;
 		}
 
