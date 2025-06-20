@@ -12,6 +12,7 @@ import com.melilla.gestPlanes.model.Categoria;
 import com.melilla.gestPlanes.model.Ciudadano;
 import com.melilla.gestPlanes.model.Contrato;
 import com.melilla.gestPlanes.model.Destino;
+import com.melilla.gestPlanes.model.Equipo;
 import com.melilla.gestPlanes.model.Ocupacion;
 import com.melilla.gestPlanes.model.Organismo;
 import com.melilla.gestPlanes.model.Plan;
@@ -50,6 +51,7 @@ public class CiudadanoSpecification implements Specification<Ciudadano> {
 	public Predicate toPredicate(Root<Ciudadano> root, CriteriaQuery<?> query, CriteriaBuilder builder) {
 
 		Join<Ciudadano, Contrato> contratoCiudadano = root.join("contrato",JoinType.LEFT);
+		Join<Ciudadano, Equipo> equipoCiudadano = root.join("equipo",JoinType.LEFT);
 		Join<Contrato, Ocupacion> ocupacionContrato = contratoCiudadano.join("ocupacion",JoinType.LEFT);
 		Join<Contrato, Categoria> categoriaContrato = contratoCiudadano.join("categoria",JoinType.LEFT);
 		Join<Contrato, Organismo> organismoContrato = contratoCiudadano.join("entidad",JoinType.LEFT);
@@ -160,6 +162,10 @@ public class CiudadanoSpecification implements Specification<Ciudadano> {
 		}
 		case "numeroOrdenSepe":{
 			equalPredicate = builder.equal(root.get("numeroOrdenSepe"),  criteria.getValue());
+			break;
+		}
+		case "equipo":{
+			equalPredicate = builder.equal(equipoCiudadano.get("nombreEquipo"),  criteria.getValue());
 			break;
 		}
 
