@@ -286,7 +286,7 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 				Destino destino = null;
 				if (trabajador.getDestino() != null) {
 					log.info(trabajador.getDestino().toString());
-					if (trabajador.getDestino() > 0) {
+					if (trabajador.getDestino() != 0) {
 						destino = destinoRepository.findById(trabajador.getDestino())
 								.orElseThrow(() -> new DestinoNotFoundException(trabajador.getDestino()));
 					}
@@ -444,9 +444,14 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 
 				if (contrato.getDestino() != null) {
 					if (trabajador.getDestino() != contrato.getDestino().getIdDestino()) {
-						Destino destino = destinoRepository.findById(trabajador.getDestino())
-								.orElseThrow(() -> new DestinoNotFoundException(trabajador.getDestino()));
-						contrato.setDestino(destino);
+						if (trabajador.getDestino() ==  0) {
+							contrato.setDestino(null);
+						}else {
+							Destino destino = destinoRepository.findById(trabajador.getDestino())
+									.orElseThrow(() -> new DestinoNotFoundException(trabajador.getDestino()));
+							contrato.setDestino(destino);
+						}
+						
 					}
 				} else {
 
@@ -637,7 +642,7 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 
 			Ciudadano trabajador = ciudadanoRepository.findById(modificaFechaContrato.getIdCiudadano())
 					.orElseThrow(() -> new CiudadanoNotFoundException(modificaFechaContrato.getIdCiudadano()));
-			if (trabajador.getEstado().equals("CONTRATADO/A")) {
+			if (trabajador.getEstado().equals("CONTRATADO/A") || trabajador.getEstado().equals("CANDIDATO/A")){
 				Contrato contrato = trabajador.getContrato();
 				if (contrato != null) {
 					contrato.setFechaInicio(modificaFechaContrato.getFechaInicio());
