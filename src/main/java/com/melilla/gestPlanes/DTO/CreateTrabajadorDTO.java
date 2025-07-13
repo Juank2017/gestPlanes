@@ -4,10 +4,14 @@ import java.time.LocalDate;
 import lombok.Builder;
 import lombok.Data;
 
+/**
+ * DTO para crear un trabajador.
+ */
 @Data
 @Builder
 public class CreateTrabajadorDTO {
-
+//TODO: revisar la eliminación de los campos booleanos que ya no se usan.
+	
 	String nombre;
 	String apellido1;
 	String apellido2;
@@ -16,7 +20,9 @@ public class CreateTrabajadorDTO {
 	String seguridadSocial;
 	LocalDate fechaNacimiento;
 	String ccc;
+	
 	String estado;
+	//Orden en el listado del SEPE
 	int numeroOrdenSepe;
 	String email;
 	String telefono;
@@ -24,10 +30,12 @@ public class CreateTrabajadorDTO {
 	Long gc;
 	Long categoria;
 	Long ocu;
+	//duración del contrato
 	int duracion;
 	LocalDate fechaInicio;
 	LocalDate fechaFinal;
 	String turno;
+	//El organismo
 	Long entidad;
 	Long destino;
 	String base;
@@ -36,6 +44,7 @@ public class CreateTrabajadorDTO {
 	String total;
 	Long equipo;
 	String nacionalidad;
+	//sin periodo de prueba
 	boolean sinClausula;
 	boolean antecedentes;
 	boolean altaSS;

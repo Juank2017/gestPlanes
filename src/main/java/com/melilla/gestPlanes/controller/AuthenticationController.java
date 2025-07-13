@@ -36,20 +36,32 @@ public class AuthenticationController {
 
 	@Autowired
 	JWTService jwtService;
-
+	/**
+	 * Hace el login de un usuario.
+	 * @param loginDTO
+	 * @return
+	 */
 	@PostMapping("/login")
 	public ResponseEntity<JwtResponseDTO> login(@RequestBody LoginDTO loginDTO) {
 
 		return ResponseEntity.ok(authenticationService.login(loginDTO.getUserName(), loginDTO.getPassword()));
 	}
 
+	/**
+	 * Actualiza el token del usuario.
+	 * @param request
+	 * @return
+	 */
 	@PostMapping("/refreshtoken")
 	public ResponseEntity<?> refreshtoken(@Valid @RequestBody Map<String,String> request) {
-			log.info(request.toString());
+			
 			String ref = request.get("refreshToken");
-			log.info("ref: "+ref);
+			
+			//Localiza el token en la BBDD
 			RefreshToken refresh = refreshTokenService.findByToken(ref).orElseThrow(()-> new TokenRefreshException(request.get("refreshToken"), "no se encuentra"));
+			//Comprueba que el token de refresco no esté caducado.
 			refreshTokenService.verifyExpiration(refresh);
+			
 			User user = refresh.getUser();
 			String token = jwtService.generateToken(user);
 		
