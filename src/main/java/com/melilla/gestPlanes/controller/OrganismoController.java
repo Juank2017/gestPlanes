@@ -3,6 +3,7 @@ package com.melilla.gestPlanes.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -71,6 +72,19 @@ public class OrganismoController {
 		response.setEstado(HttpStatus.OK);
 		response.getPayload().addAll(organismoService.copiarDeOtroPlan(idPlan));
 		response.setMensaje("Organismos copiados");
+		
+		
+		return ResponseEntity.ok(response);
+		
+	}
+	
+	@DeleteMapping("/borrarOrganismo/{idPlan}")
+	ResponseEntity<ApiResponse>BorrarOrganismosPlan(@PathVariable long idPlan){
+		
+		ApiResponse response = new ApiResponse();
+		response.setEstado(HttpStatus.OK);
+		organismoService.borrarOrganismo(idPlan);
+		response.setMensaje("Organismo borrado");
 		
 		
 		return ResponseEntity.ok(response);

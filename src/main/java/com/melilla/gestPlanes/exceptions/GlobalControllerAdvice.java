@@ -27,6 +27,7 @@ import com.melilla.gestPlanes.exceptions.exceptions.FileStorageException;
 import com.melilla.gestPlanes.exceptions.exceptions.MyFileNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.NotaNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.OcupacionNotFoundException;
+import com.melilla.gestPlanes.exceptions.exceptions.OrganismoConContratosException;
 import com.melilla.gestPlanes.exceptions.exceptions.OrganismoNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.PdfConvertionException;
 import com.melilla.gestPlanes.exceptions.exceptions.PlanConfigErrorException;
@@ -76,7 +77,7 @@ public class GlobalControllerAdvice extends ResponseEntityExceptionHandler {
 		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(apiError);
 	}
 
-	@ExceptionHandler({ BadCredentialsException.class,EquipoCreationException.class,TrabajadorNoEsJefeException.class, NumberFormatException.class, TrabajadorYaContratadoException.class,ComponenteEquipoDuplicadoException.class })
+	@ExceptionHandler({ OrganismoConContratosException.class, BadCredentialsException.class,EquipoCreationException.class,TrabajadorNoEsJefeException.class, NumberFormatException.class, TrabajadorYaContratadoException.class,ComponenteEquipoDuplicadoException.class })
 	public ResponseEntity<ApiError> handleBadRequest(Exception ex) {
 		ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, ex.getMessage());
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiError);

@@ -67,6 +67,7 @@ public class Contrato {
 
 	private String gc;
 	
+	@JsonBackReference
 	@NotAudited
 	@ManyToOne
 	@JoinColumn(name="idOrganismo")
@@ -99,7 +100,7 @@ public class Contrato {
 	private Salario salario;
 	
 	
-	@JsonBackReference
+	//@JsonBackReference
 	@OneToOne
 	@JoinColumn(name="idCiudadano")
 	private Ciudadano ciudadano;

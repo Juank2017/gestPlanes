@@ -9,8 +9,10 @@ import org.hibernate.annotations.SQLDelete;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -25,7 +27,7 @@ import lombok.Data;
 
 @Entity
 @Data
-@SQLDelete(sql = "UPDATE organismo SET deleted=true, deleted_at= NOW() WHERE id=?")
+@SQLDelete(sql = "UPDATE organismo SET deleted=true, deleted_at= NOW() WHERE id_organismo=?")
 @EntityListeners(AuditingEntityListener.class)
 public class Organismo {
 
@@ -44,7 +46,8 @@ public class Organismo {
 	@JoinColumn(name="idPlan")
 	private Plan idPlan;
 	
-	@JsonIgnore
+	
+	@JsonManagedReference
 	@OneToMany(mappedBy = "entidad", cascade= CascadeType.ALL)
 	private List<Contrato>contratos;
 	

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.melilla.gestPlanes.DTO.CrearOrganismoDTO;
 import com.melilla.gestPlanes.DTO.EditarOrganismoDTO;
+import com.melilla.gestPlanes.exceptions.exceptions.OrganismoConContratosException;
 import com.melilla.gestPlanes.exceptions.exceptions.OrganismoNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.PlanNotFoundException;
 import com.melilla.gestPlanes.model.Organismo;
@@ -90,6 +91,26 @@ public class OrganismoServiceImpl implements OrganismoService {
 		}
 		
 		return organismosCopiados;
+	}
+
+
+	@Override
+	public void borrarOrganismo(long idOrganismo) {
+
+		Organismo org = organismoRepository.findById(idOrganismo).orElseThrow(()-> new OrganismoNotFoundException(idOrganismo));
+		
+		if (org.getContratos().isEmpty()) {
+			organismoRepository.delete(org);
+		}else {
+			throw new OrganismoConContratosException(idOrganismo);
+		}
+	}
+
+
+	@Override
+	public Organismo save(Organismo organismo) {
+		
+		return organismoRepository.save(organismo);
 	}
 
 }
