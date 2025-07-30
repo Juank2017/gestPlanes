@@ -17,5 +17,6 @@ public class EquipoResponseDTO {
 	private String DNIJefe;
 	private String telefonoJefe;
 	private List<Ciudadano>componentes;
+	boolean deleted;
 	
 }

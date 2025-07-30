@@ -12,6 +12,7 @@ import com.melilla.gestPlanes.DTO.EditaEquipoDTO;
 import com.melilla.gestPlanes.DTO.EquipoResponseDTO;
 import com.melilla.gestPlanes.exceptions.exceptions.CiudadanoNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.ComponenteEquipoDuplicadoException;
+import com.melilla.gestPlanes.exceptions.exceptions.EquipoConComponentesException;
 import com.melilla.gestPlanes.exceptions.exceptions.EquipoCreationException;
 import com.melilla.gestPlanes.exceptions.exceptions.EquipoNoEncontradoException;
 import com.melilla.gestPlanes.exceptions.exceptions.TrabajadorNoEsJefeException;
@@ -57,7 +58,7 @@ public class EquipoServiceImpl implements EquipoService {
 			eq.setDNIJefe(equipo.getJefeEquipo().getDNI());
 			eq.setTelefonoJefe(equipo.getJefeEquipo().getTelefono());
 			eq.setComponentes(equipo.getComponentes());
-			
+			eq.setDeleted(equipo.isDeleted());
 			listEquipos.add(eq);
 			
 			
@@ -158,7 +159,14 @@ public class EquipoServiceImpl implements EquipoService {
 
 	@Override
 	public void eliminaEquipo(Long idEquipo) {
-		// TODO Auto-generated method stub
+		
+		Equipo equipo = equipoRepository.findById(idEquipo).orElseThrow(()-> new EquipoNoEncontradoException(idEquipo));
+		
+		if (!equipo.getComponentes().isEmpty()) {
+			throw new EquipoConComponentesException(idEquipo);
+		}else {
+			equipoRepository.delete(equipo);
+		}
 
 	}
 
