@@ -50,19 +50,18 @@ public class CiudadanoSpecification implements Specification<Ciudadano> {
 	@Override
 	public Predicate toPredicate(Root<Ciudadano> root, CriteriaQuery<?> query, CriteriaBuilder builder) {
 
-		Join<Ciudadano, Contrato> contratoCiudadano = root.join("contrato",JoinType.LEFT);
-		Join<Ciudadano, Equipo> equipoCiudadano = root.join("equipo",JoinType.LEFT);
-		Join<Contrato, Ocupacion> ocupacionContrato = contratoCiudadano.join("ocupacion",JoinType.LEFT);
-		Join<Contrato, Categoria> categoriaContrato = contratoCiudadano.join("categoria",JoinType.LEFT);
-		Join<Contrato, Organismo> organismoContrato = contratoCiudadano.join("entidad",JoinType.LEFT);
-		Join<Contrato, Destino> destinoContrato = contratoCiudadano.join("destino",JoinType.LEFT);
-		Join<Plan,Ciudadano> planCiudadano = root.join("idPlan",JoinType.LEFT);
-	
+		Join<Ciudadano, Contrato> contratoCiudadano = root.join("contrato", JoinType.LEFT);
+		Join<Ciudadano, Equipo> equipoCiudadano = root.join("equipo", JoinType.LEFT);
+		Join<Contrato, Ocupacion> ocupacionContrato = contratoCiudadano.join("ocupacion", JoinType.LEFT);
+		Join<Contrato, Categoria> categoriaContrato = contratoCiudadano.join("categoria", JoinType.LEFT);
+		Join<Contrato, Organismo> organismoContrato = contratoCiudadano.join("entidad", JoinType.LEFT);
+		Join<Contrato, Destino> destinoContrato = contratoCiudadano.join("destino", JoinType.LEFT);
+		Join<Plan, Ciudadano> planCiudadano = root.join("idPlan", JoinType.LEFT);
 
 		Plan plan = planService.getPlanActivo();
-		
+
 		log.info(plan.getIdPlan().toString());
-		
+
 		Predicate likePredicate = null;
 		Predicate fechaPredicate = null;
 		Predicate equalPredicate = null;
@@ -71,10 +70,10 @@ public class CiudadanoSpecification implements Specification<Ciudadano> {
 
 		switch (criteria.getId()) {
 
-		
-		
-		case "fechaRegistro": case "fechaNacimiento": case "fechaListadoSepe":{
-			 //convertir el valor a fecha
+		case "fechaRegistro":
+		case "fechaNacimiento":
+		case "fechaListadoSepe": {
+			// convertir el valor a fecha
 			String valor = this.criteria.getValue();
 			try {
 				LocalDate fecha = LocalDate.parse(valor, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
@@ -85,10 +84,12 @@ public class CiudadanoSpecification implements Specification<Ciudadano> {
 				return null;
 			}
 		}
-		break;
-		
-		case "fechaInicio": case "fechaFinal": case "fechaExtincion":{
-			
+			break;
+
+		case "fechaInicio":
+		case "fechaFinal":
+		case "fechaExtincion": {
+
 			// convertir el valor a fecha
 			String valor = this.criteria.getValue();
 			try {
@@ -101,7 +102,7 @@ public class CiudadanoSpecification implements Specification<Ciudadano> {
 			}
 			break;
 		}
-		
+
 		case "ocupacion": {
 
 			likePredicate = builder.like(ocupacionContrato.get("ocupacion"), "%" + criteria.getValue() + "%");
@@ -120,67 +121,67 @@ public class CiudadanoSpecification implements Specification<Ciudadano> {
 			likePredicate = builder.like(destinoContrato.get("destino"), "%" + criteria.getValue() + "%");
 			break;
 		}
-		case "idCiudadano":{
+		case "idCiudadano": {
 			equalPredicate = builder.equal(root.get("idCiudadano"), criteria.getValue());
 			break;
 		}
-		case "DNI":{
+		case "DNI": {
 			likePredicate = builder.like(root.get("DNI"), "%" + criteria.getValue() + "%");
-			break;	
+			break;
 		}
-		case "nombre":{
+		case "nombre": {
 			likePredicate = builder.like(root.get("nombre"), "%" + criteria.getValue() + "%");
-			break;	
+			break;
 		}
-		case "apellido1":{
+		case "apellido1": {
 			likePredicate = builder.like(root.get("apellido1"), "%" + criteria.getValue() + "%");
-			break;	
+			break;
 		}
-		case "apellido2":{
+		case "apellido2": {
 			likePredicate = builder.like(root.get("apellido2"), "%" + criteria.getValue() + "%");
-			break;	
+			break;
 		}
-		case "seguridadSocial":{
+		case "seguridadSocial": {
 			likePredicate = builder.like(root.get("seguridadSocial"), "%" + criteria.getValue() + "%");
-			break;	
+			break;
 		}
-		case "estado":{
+		case "estado": {
 			likePredicate = builder.like(root.get("estado"), "%" + criteria.getValue() + "%");
-			break;	
+			break;
 		}
-		case "nacionalidad":{
+		case "nacionalidad": {
 			likePredicate = builder.like(root.get("nacionalidad"), "%" + criteria.getValue() + "%");
-			break;	
+			break;
 		}
 		case "idPlan": {
-			equalPredicate = builder.equal(planCiudadano.get("idPlan"),  criteria.getValue());
+			equalPredicate = builder.equal(planCiudadano.get("idPlan"), criteria.getValue());
 			break;
 		}
-		case "vacacionesDisfrutadas":{
-			equalPredicate = builder.equal(root.get("vacacionesDisfrutadas"),  criteria.getValue());
+		case "vacacionesDisfrutadas": {
+			equalPredicate = builder.equal(root.get("vacacionesDisfrutadas"), criteria.getValue());
 			break;
 		}
-		case "numeroOrdenSepe":{
-			equalPredicate = builder.equal(root.get("numeroOrdenSepe"),  criteria.getValue());
+		case "numeroOrdenSepe": {
+			equalPredicate = builder.equal(root.get("numeroOrdenSepe"), criteria.getValue());
 			break;
 		}
-		case "equipo":{
-			equalPredicate = builder.like(equipoCiudadano.get("nombreEquipo"),  criteria.getValue());
+		case "equipo": {
+			equalPredicate = builder.like(equipoCiudadano.get("nombreEquipo"), "%" + criteria.getValue() + "%");
 			break;
 		}
 
 		}
 
 		List<Predicate> predicados = new ArrayList<>();
-		//predicados.add(planPredicate);
+		// predicados.add(planPredicate);
 		predicados.add(deletePredicate);
 		if (likePredicate != null)
 			predicados.add(likePredicate);
 		if (fechaPredicate != null)
 			predicados.add(fechaPredicate);
-		if(equalPredicate != null) predicados.add(equalPredicate);
+		if (equalPredicate != null)
+			predicados.add(equalPredicate);
 		return builder.and(predicados.toArray(new Predicate[predicados.size()]));
-
 
 	}
 
