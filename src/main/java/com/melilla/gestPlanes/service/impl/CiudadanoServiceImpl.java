@@ -127,7 +127,7 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 				.idPlan((trabajador.isReclamaSalarios()) ? null : planService.getPlanActivo())
 				.fechaRegistro(trabajador.getFechaRegistro()).fechaNacimiento(trabajador.getFechaNacimiento())
 				.estado(trabajador.getEstado()).numeroOrdenSepe(trabajador.getNumeroOrdenSepe())
-				.fechaListadoSepe(trabajador.getFechaListadoSepe())
+				.fechaListadoSepe(trabajador.getFechaListadoSepe()).suplente(trabajador.isSuplente())
 				.nacionalidad(trabajador.getNacionalidad().toUpperCase()).bajaLaboral(false).bajaMaternal(false)
 				.ccc(trabajador.getCcc()).sinClausula(trabajador.isSinClausula())
 				.equipo((trabajador.getEquipo() != null)
@@ -274,6 +274,7 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 		ciudadano.setContrata(trabajador.isContrata());
 		ciudadano.setEscaneado(trabajador.isEscaneado());
 		ciudadano.setNedaes(trabajador.isNedaes());
+		ciudadano.setSuplente(trabajador.isSuplente());
 		ciudadano.setEsJefeEquipo(trabajador.isEsJefeEquipo());
 		ciudadano.setEquipo((trabajador.getEquipo() != null)
 				? equipoService.equipo(planService.getPlanActivo().getIdPlan(), trabajador.getEquipo())

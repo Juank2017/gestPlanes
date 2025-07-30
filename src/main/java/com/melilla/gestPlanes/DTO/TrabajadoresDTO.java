@@ -59,6 +59,7 @@ private Long idCiudadano;
 	boolean contrata;
 	boolean escaneado;
 	boolean nedaes;
+	boolean suplente;
 	
 	
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", locale = "es_ES" )

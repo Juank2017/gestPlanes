@@ -46,6 +46,7 @@ public class UpdateTrabajadorDTO2 {
 	boolean contrata;
 	boolean escaneado;
 	boolean nedaes;
+	boolean suplente;
 	LocalDate fechaListadoSepe;
 
 }

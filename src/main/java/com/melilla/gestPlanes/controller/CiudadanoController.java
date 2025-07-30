@@ -123,6 +123,7 @@ public class CiudadanoController {
 				item.setContrata(ciudadano.isContrata());
 				item.setEscaneado(ciudadano.isEscaneado());
 				item.setNedaes(ciudadano.isNedaes());
+				item.setSuplente(ciudadano.isSuplente());
 				item.setTelefono(ciudadano.getTelefono());
 				item.setSexo(ciudadano.getSexo());
 				item.setDeleted(ciudadano.isDeleted());
@@ -190,6 +191,7 @@ public class CiudadanoController {
 				item.setContrata(ciudadano.isContrata());
 				item.setEscaneado(ciudadano.isEscaneado());
 				item.setNedaes(ciudadano.isNedaes());
+				item.setSuplente(ciudadano.isSuplente());
 				item.setTelefono(ciudadano.getTelefono());
 				item.setSexo(ciudadano.getSexo());
 				item.setDeleted(ciudadano.isDeleted());
