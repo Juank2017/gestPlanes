@@ -21,4 +21,8 @@ public interface PlanService {
 	
 	Plan asignarConfiguracion(PlanConfig config);
 	
+	String copiarPlan(Long idPlan, String nombreNuevoPlan);
+	
+	Plan actualizarPlan(Long idPlan,String denominacion);
+	
 }

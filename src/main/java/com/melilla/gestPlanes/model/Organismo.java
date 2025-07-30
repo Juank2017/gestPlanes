@@ -47,7 +47,7 @@ public class Organismo {
 	private Plan idPlan;
 	
 	
-	@JsonManagedReference
+	@JsonIgnore
 	@OneToMany(mappedBy = "entidad", cascade= CascadeType.ALL)
 	private List<Contrato>contratos;
 	

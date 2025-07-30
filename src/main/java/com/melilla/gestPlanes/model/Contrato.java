@@ -12,6 +12,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
@@ -67,7 +68,7 @@ public class Contrato {
 
 	private String gc;
 	
-	@JsonBackReference
+	
 	@NotAudited
 	@ManyToOne
 	@JoinColumn(name="idOrganismo")
@@ -100,7 +101,7 @@ public class Contrato {
 	private Salario salario;
 	
 	
-	//@JsonBackReference
+	@JsonBackReference
 	@OneToOne
 	@JoinColumn(name="idCiudadano")
 	private Ciudadano ciudadano;

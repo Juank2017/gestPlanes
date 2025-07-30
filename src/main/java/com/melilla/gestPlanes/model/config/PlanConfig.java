@@ -16,9 +16,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
+@NoArgsConstructor
 @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 public class PlanConfig {
 
@@ -47,5 +49,17 @@ public class PlanConfig {
 	
 	private LocalDateTime deletedAt;
 	
-	
+	public PlanConfig(PlanConfig planConfig) {
+		//this.idConfig=planConfig.getIdConfig();
+		this.uploadDir=planConfig.getUploadDir();
+		this.tempDir=planConfig.getTempDir();
+		this.trashcanDir=planConfig.getTrashcanDir();
+		this.templateDir=planConfig.getTemplateDir();
+		this.plan=planConfig.getPlan();
+		this.createdAt=planConfig.getCreatedAt();
+		this.deleted=planConfig.isDeleted();
+		this.deletedAt=planConfig.getDeletedAt();
+	}
+
+
 }

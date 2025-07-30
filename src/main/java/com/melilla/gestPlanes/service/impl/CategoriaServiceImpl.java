@@ -24,4 +24,16 @@ public class CategoriaServiceImpl implements CategoriaService {
 		return categorias;
 	}
 
+	@Override
+	public List<Categoria> obtenerCategoriasPlan(Long idPlan) {
+		
+		return categoriaRpository.findAllByIdPlanIdPlan(idPlan);
+	}
+
+	@Override
+	public Categoria save(Categoria categoria) {
+		
+		return categoriaRpository.save(categoria);
+	}
+
 }

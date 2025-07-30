@@ -8,4 +8,8 @@ public interface CategoriaService {
 
 	
 	List<Categoria>obtenerCategoriasGrupo(Long idGrupo,Long idPlan);
+	
+	List<Categoria>obtenerCategoriasPlan(Long idPlan);
+	
+	Categoria save(Categoria categoria);
 }

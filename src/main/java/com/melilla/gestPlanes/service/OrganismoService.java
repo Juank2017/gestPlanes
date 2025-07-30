@@ -15,5 +15,9 @@ public interface OrganismoService {
 	Organismo editarOrganismo(EditarOrganismoDTO organismo);
 	
 	List<Organismo>copiarDeOtroPlan(long idPlan);
+	
+	void borrarOrganismo(long idOrganismo);
+	
+	Organismo save(Organismo organismo);
 
 }
