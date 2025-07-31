@@ -1,6 +1,7 @@
 package com.melilla.gestPlanes.model;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.annotations.SQLDelete;
@@ -43,6 +44,9 @@ public class Categoria {
 	@OneToOne
 	@JoinColumn(name="idPlan")
 	private Plan idPlan;
+	
+	@OneToMany(mappedBy = "categoria", cascade= CascadeType.ALL)
+	private List<Ocupacion>ocupaciones= new ArrayList<Ocupacion>(); 
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "categoria", cascade= CascadeType.ALL)

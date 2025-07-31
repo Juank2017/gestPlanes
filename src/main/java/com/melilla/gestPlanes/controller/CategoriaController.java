@@ -33,4 +33,20 @@ public class CategoriaController {
 		
 		
 	}
+	
+	
+	@GetMapping("/categorias/{idPlan}")
+	public ResponseEntity<ApiResponse>obtenerCategoriasPlan( @PathVariable Long idPlan){
+		
+		ApiResponse response = new ApiResponse();
+		response.setEstado(HttpStatus.OK);
+		response.getPayload().addAll(categoriaService.obtenerCategoriasPlan(idPlan));
+		response.setMensaje("Lista de categorias del plan");
+		
+		
+		return ResponseEntity.ok(response);
+		
+		
+		
+	}
 }
