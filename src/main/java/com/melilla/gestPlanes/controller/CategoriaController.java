@@ -5,9 +5,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.melilla.gestPlanes.model.ApiResponse;
+import com.melilla.gestPlanes.model.Categoria;
 import com.melilla.gestPlanes.service.CategoriaService;
 
 import lombok.RequiredArgsConstructor;
@@ -49,4 +52,36 @@ public class CategoriaController {
 		
 		
 	}
+	
+	@PostMapping("/borrarCategoria")
+	public ResponseEntity<ApiResponse>borrarCategoria( @PathVariable Long idCategoria){
+		
+		ApiResponse response = new ApiResponse();
+		response.setEstado(HttpStatus.OK);
+		categoriaService.borrarCategoria(idCategoria);
+		response.setMensaje("Categoría borrada.");
+		
+		
+		return ResponseEntity.ok(response);
+		
+		
+		
+	}
+	
+	@PostMapping("/editarCategoria")
+	public ResponseEntity<ApiResponse>editarCategoria( @RequestBody Categoria categoria){
+		
+		ApiResponse response = new ApiResponse();
+		response.setEstado(HttpStatus.OK);
+		categoriaService.editarCategoria(categoria);
+		response.setMensaje("Categoría borrada.");
+		
+		
+		return ResponseEntity.ok(response);
+		
+		
+		
+	}
+	
+	
 }

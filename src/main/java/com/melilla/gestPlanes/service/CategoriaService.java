@@ -11,5 +11,9 @@ public interface CategoriaService {
 	
 	List<Categoria>obtenerCategoriasPlan(Long idPlan);
 	
+	Categoria editarCategoria(Categoria categoria);
+	
+	void borrarCategoria(Long idCategoria);
+	
 	Categoria save(Categoria categoria);
 }
