@@ -11,6 +11,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -26,7 +27,7 @@ import lombok.Data;
 
 @Entity
 @Data
-@SQLDelete(sql = "UPDATE ocupacion SET deleted=true, deleted_at= NOW() WHERE id=?")
+@SQLDelete(sql = "UPDATE ocupacion SET deleted=true, deleted_at= NOW() WHERE id_ocupacion=?")
 @EntityListeners(AuditingEntityListener.class)
 public class Ocupacion {
 	
@@ -38,12 +39,16 @@ public class Ocupacion {
 	
 	private String ocupacionSEPE;
 	
-	@JsonIgnore
+	
+	@JsonManagedReference
 	@ManyToOne
 	@JoinColumn(name="idCategoria")
 	private Categoria categoria;
 	
-
+	@JsonIgnore
+	@OneToOne
+	@JoinColumn(name="idPlan")
+	private Plan idPlan;
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "ocupacion", cascade= CascadeType.ALL)

@@ -5,25 +5,27 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.melilla.gestPlanes.DTO.CrearCategoriaDTO;
 import com.melilla.gestPlanes.exceptions.exceptions.CategoriaConOcupacionesException;
 import com.melilla.gestPlanes.exceptions.exceptions.CategoriaNotFoundException;
 import com.melilla.gestPlanes.model.Categoria;
 import com.melilla.gestPlanes.repository.CategoriaRepository;
+import com.melilla.gestPlanes.repository.PlanRepository;
 import com.melilla.gestPlanes.service.CategoriaService;
+import com.melilla.gestPlanes.service.PlanService;
 
 
 @Service
 public class CategoriaServiceImpl implements CategoriaService {
 
-    private final EquipoServiceImpl equipoServiceImpl;
-
+ 
 	@Autowired
 	CategoriaRepository categoriaRpository;
-
-    CategoriaServiceImpl(EquipoServiceImpl equipoServiceImpl) {
-        this.equipoServiceImpl = equipoServiceImpl;
-    }
 	
+	@Autowired
+	PlanService planService;
+
+
 	@Override
 	public List<Categoria> obtenerCategoriasGrupo(Long idGrupo, Long idPlan) {
 		
@@ -70,6 +72,20 @@ public class CategoriaServiceImpl implements CategoriaService {
 		
 		
 		return categoriaRpository.save(categoriaBBDD);
+	}
+
+	@Override
+	public Categoria crearCategoria(CrearCategoriaDTO categoria) {
+		
+		Categoria nuevaCategoria = new Categoria();
+		
+		nuevaCategoria.setCategoria(categoria.getCategoria());
+		nuevaCategoria.setGrupoProfesionalPersonalLaboral(categoria.getGrupoProfesionalPersonalLaboral());
+		nuevaCategoria.setGrupo(categoria.getGrupo());
+		nuevaCategoria.setIdPlan(planService.getPlanActivo());
+		
+		
+		return categoriaRpository.save(nuevaCategoria);
 	}
 
 }

@@ -14,6 +14,6 @@ public interface CategoriaRepository extends JpaRepository<Categoria, Long>, Rev
 	
 	//List<Categoria>findAllByIdPlanIdPlan(Long idPlan);
 	
-	@Query("SELECT c FROM Categoria c WHERE c.idPlan.idPlan = ?1 GROUP BY c.grupo")
+	@Query("SELECT c FROM Categoria c WHERE c.idPlan.idPlan = ?1 ")
 	List<Categoria>findAllByIdPlanIdPlan(Long idPlan);
 }

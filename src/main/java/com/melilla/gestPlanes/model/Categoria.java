@@ -8,6 +8,7 @@ import org.hibernate.annotations.SQLDelete;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
@@ -23,7 +24,7 @@ import lombok.Data;
 
 @Entity
 @Data
-@SQLDelete(sql = "UPDATE categoria SET deleted=true, deleted_at= NOW() WHERE idCategoria=?")
+@SQLDelete(sql = "UPDATE categoria SET deleted=true, deleted_at= NOW() WHERE id_Categoria=?")
 @EntityListeners(AuditingEntityListener.class)
 public class Categoria {
 	
@@ -45,6 +46,7 @@ public class Categoria {
 	@JoinColumn(name="idPlan")
 	private Plan idPlan;
 	
+	@JsonBackReference
 	@OneToMany(mappedBy = "categoria", cascade= CascadeType.ALL)
 	private List<Ocupacion>ocupaciones= new ArrayList<Ocupacion>(); 
 

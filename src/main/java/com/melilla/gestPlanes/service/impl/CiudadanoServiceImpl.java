@@ -191,10 +191,14 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 				case "fechaInicio":
 				case "fechaFinal":
 				case "fechaExtincion":
+				
+					columna = "contrato." + columna;
+					break;
 				case "ocupacion":
 				case "categoria":
 				case "destino":
-					columna = "contrato." + columna;
+					columna = "contrato."+columna+"."+columna;
+					log.info(columna);
 					break;
 				case "organismo":
 					columna = "contrato.entidad";

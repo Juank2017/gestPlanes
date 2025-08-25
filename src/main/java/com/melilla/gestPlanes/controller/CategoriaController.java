@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.melilla.gestPlanes.DTO.CrearCategoriaDTO;
 import com.melilla.gestPlanes.model.ApiResponse;
 import com.melilla.gestPlanes.model.Categoria;
 import com.melilla.gestPlanes.service.CategoriaService;
@@ -53,7 +54,7 @@ public class CategoriaController {
 		
 	}
 	
-	@PostMapping("/borrarCategoria")
+	@PostMapping("/borrarCategoria/{idCategoria}")
 	public ResponseEntity<ApiResponse>borrarCategoria( @PathVariable Long idCategoria){
 		
 		ApiResponse response = new ApiResponse();
@@ -74,7 +75,7 @@ public class CategoriaController {
 		ApiResponse response = new ApiResponse();
 		response.setEstado(HttpStatus.OK);
 		categoriaService.editarCategoria(categoria);
-		response.setMensaje("Categoría borrada.");
+		response.setMensaje("Categoría editada.");
 		
 		
 		return ResponseEntity.ok(response);
@@ -83,5 +84,19 @@ public class CategoriaController {
 		
 	}
 	
+	@PostMapping("/crearCategoria")
+	public ResponseEntity<ApiResponse>CrearCategoria( @RequestBody CrearCategoriaDTO categoria){
+		
+		ApiResponse response = new ApiResponse();
+		response.setEstado(HttpStatus.OK);
+		response.getPayload().add(categoriaService.crearCategoria(categoria));
+		response.setMensaje("Categoría creada.");
+		
+		
+		return ResponseEntity.ok(response);
+		
+		
+		
+	}
 	
 }
