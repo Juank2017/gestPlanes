@@ -40,17 +40,17 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class PlanServiceImpl implements PlanService {
 
-    private final PlantillaContratoConfigMapperImpl plantillaContratoConfigMapperImpl;
+	private final PlantillaContratoConfigMapperImpl plantillaContratoConfigMapperImpl;
 
 	@Autowired
 	PlanRepository planRepository;
 
 	@Autowired
 	PlanConfigService planConfigService;
-	
+
 	@Autowired
 	PlantillaContratoRepository plantillaContratoRepository;
-	
+
 	@Autowired
 	PlanConfigRepository planConfigRepository;
 
@@ -62,11 +62,10 @@ public class PlanServiceImpl implements PlanService {
 
 	@Autowired
 	OcupacionRepository ocupacionRepository;
-	
+
 	@Autowired
 	DestinoRepository destinoRepository;
 
- 
 	@Override
 	public List<Plan> getPlanes() {
 
@@ -123,25 +122,24 @@ public class PlanServiceImpl implements PlanService {
 
 	@Override
 	public String copiarPlan(Long idPlan, String nombreNuevoPlan) {
-		
-		String result="";
+
+		String result = "";
 
 		Plan nuevoPlan = new Plan();
 		nuevoPlan.setDenominacion(nombreNuevoPlan);
 		nuevoPlan.setActivo(false);
 		nuevoPlan = planRepository.save(nuevoPlan);
-		
-		
+
 		// Obtener el plan antiguo
 		Plan antiguoPlan = planRepository.findById(idPlan)
 				.orElseThrow(() -> new PlanNotFoundException(idPlan.toString()));
 
 		List<PlantillaContratoConfig> plantillas = antiguoPlan.getPlantillas();
-		
+
 		List<PlantillaContratoConfig> plantillasPlanNuevo = new ArrayList<PlantillaContratoConfig>();
 
 		Iterator<PlantillaContratoConfig> itPlantillas = plantillas.iterator();
-		
+
 		while (itPlantillas.hasNext()) {
 			PlantillaContratoConfig p = itPlantillas.next();
 			PlantillaContratoConfig nueva = new PlantillaContratoConfig();
@@ -170,35 +168,25 @@ public class PlanServiceImpl implements PlanService {
 			nueva.setTextoConceptosSalariales(p.getTextoConceptosSalariales());
 			nueva.setUrl(p.getUrl());
 			plantillasPlanNuevo.add(plantillaContratoRepository.save(nueva));
-			
+
 		}
-		
-		PlanConfig configPlanNuevo = planConfigService.crearConfig(nuevoPlan);
-			
-		nuevoPlan.setConfig(configPlanNuevo);
-	
+
 		nuevoPlan.setPlantillas(plantillasPlanNuevo);
 
 		nuevoPlan = planRepository.save(nuevoPlan);
 
-		result+= copiarOrganismos(idPlan, nuevoPlan);
+		result += copiarOrganismos(idPlan, nuevoPlan);
 
-		result+=copiaCategoriaOcupaciones(idPlan,nuevoPlan);
-
-
-		
-		
+		result += copiaCategoriaOcupaciones(idPlan, nuevoPlan);
 
 		return result;
 	}
 
 	private String copiaCategoriaOcupaciones(Long idPlan, Plan nuevoPlan) {
-		
-		String result = "";
-		
-		List<Categoria> categoriasPlanAntiguo = categoriaRepository.findAllByIdPlanIdPlan(idPlan);
 
-		
+		String result = "";
+
+		List<Categoria> categoriasPlanAntiguo = categoriaRepository.findAllByIdPlanIdPlan(idPlan);
 
 		Iterator<Categoria> itCategorias = categoriasPlanAntiguo.iterator();
 
@@ -222,33 +210,33 @@ public class PlanServiceImpl implements PlanService {
 
 			nuevaCategoria = categoriaRepository.save(nuevaCategoria);
 
-			result+="Copiada categoria "+nuevaCategoria.getCategoria()+" \n";
-			//mapaCategorias.put(cat.getIdCategoria(), nuevaCategoria.getIdCategoria());
+			result += "Copiada categoria " + nuevaCategoria.getCategoria() + " \n";
+			// mapaCategorias.put(cat.getIdCategoria(), nuevaCategoria.getIdCategoria());
 			Iterator<Ocupacion> itOcupacion = ocupacionesCategoria.iterator();
 
 			while (itOcupacion.hasNext()) {
 				Ocupacion ocupacionPlanAntiguo = itOcupacion.next();
 
 				Categoria categoria = nuevaCategoria;
-				
+
 				Ocupacion nuevaOcupacion = new Ocupacion();
-				
+
 				nuevaOcupacion.setCategoria(categoria);
 				nuevaOcupacion.setOcupacion(ocupacionPlanAntiguo.getOcupacion());
 				nuevaOcupacion.setOcupacionSEPE(ocupacionPlanAntiguo.getOcupacionSEPE());
-		
+
 				ocupacionRepository.save(nuevaOcupacion);
-				result+="\tCopiada ocupacion "+nuevaOcupacion.getOcupacion()+" \n";
+				result += "\tCopiada ocupacion " + nuevaOcupacion.getOcupacion() + " \n";
 			}
-			
+
 		}
 		return result;
 	}
 
 	private String copiarOrganismos(Long idPlan, Plan nuevoPlan) {
-		
-		String result= "";
-		
+
+		String result = "";
+
 		List<Organismo> organismosPlanAntiguo = organismoRepository
 				.findAllByIdPlanIdPlanOrderByNombreCortoOrganismoAsc(idPlan);
 
@@ -263,48 +251,48 @@ public class PlanServiceImpl implements PlanService {
 			nuevoOrg.setNombreCortoOrganismo(org.getNombreCortoOrganismo());
 			nuevoOrg.setIdPlan(nuevoPlan);
 			nuevoOrg = organismoRepository.save(nuevoOrg);
-			result+= "Copiado el organismo: "+ nuevoOrg.getNombreCortoOrganismo()+" \n";
+			result += "Copiado el organismo: " + nuevoOrg.getNombreCortoOrganismo() + " \n";
 			copiarDestinosDeOrganismo(org, nuevoOrg);
 		}
-		
+
 		return result;
 	}
 
-	
-		private String copiarDestinosDeOrganismo (Organismo organismoAntiguo, Organismo OrganismoNuevo) {
-			
-			String result="";
-			
-			List<Destino> destinos = destinoRepository.findAllByIdOrganismoIdOrganismoOrderByDestinoAsc(organismoAntiguo.getIdOrganismo());
-			
-			Iterator<Destino> iterator = destinos.iterator();
-			
-			while (iterator.hasNext()) {
-				
-				Destino destinoOld = iterator.next();
-				
-				Destino destinoNew = new Destino();
-				
-				destinoNew.setDestino(destinoOld.getDestino());
-				destinoNew.setIdOrganismo(OrganismoNuevo);
-				
-				destinoNew = destinoRepository.save(destinoNew);
-				
-				result+="Creado el destino "+destinoNew.getDestino()+" del organismo "+OrganismoNuevo.getOrganismo()+" \n";
-				
-			}
-			return result;
-		}
+	private String copiarDestinosDeOrganismo(Organismo organismoAntiguo, Organismo OrganismoNuevo) {
 
-		@Override
-		public Plan actualizarPlan(Long idPlan,String denominacion) {
-			
-			Plan plan = planRepository.findById(idPlan).orElseThrow(()-> new PlanNotFoundException("Plan no encontrado"));
-			
-			plan.setDenominacion(denominacion);
-			
-			return planRepository.save(plan);
+		String result = "";
+
+		List<Destino> destinos = destinoRepository
+				.findAllByIdOrganismoIdOrganismoOrderByDestinoAsc(organismoAntiguo.getIdOrganismo());
+
+		Iterator<Destino> iterator = destinos.iterator();
+
+		while (iterator.hasNext()) {
+
+			Destino destinoOld = iterator.next();
+
+			Destino destinoNew = new Destino();
+
+			destinoNew.setDestino(destinoOld.getDestino());
+			destinoNew.setIdOrganismo(OrganismoNuevo);
+
+			destinoNew = destinoRepository.save(destinoNew);
+
+			result += "Creado el destino " + destinoNew.getDestino() + " del organismo " + OrganismoNuevo.getOrganismo()
+					+ " \n";
+
 		}
-		
-		
+		return result;
+	}
+
+	@Override
+	public Plan actualizarPlan(Long idPlan, String denominacion) {
+
+		Plan plan = planRepository.findById(idPlan).orElseThrow(() -> new PlanNotFoundException("Plan no encontrado"));
+
+		plan.setDenominacion(denominacion);
+
+		return planRepository.save(plan);
+	}
+
 }
