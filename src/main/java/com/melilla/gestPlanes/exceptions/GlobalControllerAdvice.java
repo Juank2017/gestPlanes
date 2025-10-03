@@ -24,6 +24,7 @@ import com.melilla.gestPlanes.exceptions.exceptions.EquipoConComponentesExceptio
 import com.melilla.gestPlanes.exceptions.exceptions.EquipoCreationException;
 import com.melilla.gestPlanes.exceptions.exceptions.EquipoNoEncontradoException;
 import com.melilla.gestPlanes.exceptions.exceptions.ExpedienteNotFoundException;
+import com.melilla.gestPlanes.exceptions.exceptions.FileParseException;
 import com.melilla.gestPlanes.exceptions.exceptions.FileStorageException;
 import com.melilla.gestPlanes.exceptions.exceptions.MyFileNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.NotaNotFoundException;
@@ -34,6 +35,7 @@ import com.melilla.gestPlanes.exceptions.exceptions.OrganismoNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.PdfConvertionException;
 import com.melilla.gestPlanes.exceptions.exceptions.PlanConfigErrorException;
 import com.melilla.gestPlanes.exceptions.exceptions.PlanConfigNotFoundException;
+import com.melilla.gestPlanes.exceptions.exceptions.PlanNotEmptyException;
 import com.melilla.gestPlanes.exceptions.exceptions.PlanNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.PlantillaContratoConfigNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.SalarioNotFoundException;
@@ -67,7 +69,7 @@ public class GlobalControllerAdvice extends ResponseEntityExceptionHandler {
 		return new ResponseEntity<Object>("Access denied message here", new HttpHeaders(), HttpStatus.UNAUTHORIZED);
 	}
 
-	@ExceptionHandler({ ConvertStringToDateException.class, PdfConvertionException.class })
+	@ExceptionHandler({FileParseException.class, ConvertStringToDateException.class, PdfConvertionException.class })
 	public ResponseEntity<ApiError> handleEntityCreateError(Exception e) {
 		ApiError apiError = new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(apiError);
@@ -79,7 +81,7 @@ public class GlobalControllerAdvice extends ResponseEntityExceptionHandler {
 		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(apiError);
 	}
 
-	@ExceptionHandler({OcupacionConContratosException.class, OrganismoConContratosException.class, BadCredentialsException.class,EquipoCreationException.class,TrabajadorNoEsJefeException.class, NumberFormatException.class, TrabajadorYaContratadoException.class,ComponenteEquipoDuplicadoException.class })
+	@ExceptionHandler({PlanNotEmptyException.class, OcupacionConContratosException.class, OrganismoConContratosException.class, BadCredentialsException.class,EquipoCreationException.class,TrabajadorNoEsJefeException.class, NumberFormatException.class, TrabajadorYaContratadoException.class,ComponenteEquipoDuplicadoException.class })
 	public ResponseEntity<ApiError> handleBadRequest(Exception ex) {
 		ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, ex.getMessage());
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiError);

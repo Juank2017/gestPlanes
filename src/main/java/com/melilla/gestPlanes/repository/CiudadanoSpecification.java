@@ -169,6 +169,10 @@ public class CiudadanoSpecification implements Specification<Ciudadano> {
 			equalPredicate = builder.like(equipoCiudadano.get("nombreEquipo"), "%" + criteria.getValue() + "%");
 			break;
 		}
+		case "telefono": {
+			likePredicate = builder.like(root.get("telefono"), "%" + criteria.getValue() + "%");
+			break;
+		}
 
 		}
 

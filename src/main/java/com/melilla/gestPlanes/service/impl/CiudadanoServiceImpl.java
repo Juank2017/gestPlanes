@@ -32,6 +32,7 @@ import com.melilla.gestPlanes.exceptions.exceptions.CiudadanoNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.DestinoNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.OcupacionNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.OrganismoNotFoundException;
+import com.melilla.gestPlanes.exceptions.exceptions.PlanNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.TrabajadorYaContratadoException;
 import com.melilla.gestPlanes.model.Categoria;
 import com.melilla.gestPlanes.model.Ciudadano;
@@ -94,8 +95,10 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 
 	@Override
 	public List<Ciudadano> getCiudadanos(Long idPlan) {
+		
+		Plan plan = planService.getPlan(idPlan).orElseThrow(()-> new PlanNotFoundException("Plan no encontrado."));
 
-		return null;
+		return ciudadanoRepository.findAllByIdPlan(plan);
 	}
 
 	@Override
