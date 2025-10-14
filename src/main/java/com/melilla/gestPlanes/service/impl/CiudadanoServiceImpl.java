@@ -565,9 +565,11 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 				.orElseThrow(() -> new OrganismoNotFoundException(idOrganismo));
 
 		VacantesResponseDTO vacantes = new VacantesResponseDTO();
-
+		vacantes.setIdOrganismo(idOrganismo);
 		vacantes.setOrganismo(org.getNombreCortoOrganismo());
+		vacantes.setIdOcupacion(idOcupacion);
 		vacantes.setOcupacion(ocu.getOcupacion());
+		
 		vacantes.setContratados(contratados);
 		vacantes.setParciales(parciales);
 		vacantes.setPrevistos(previstos);
