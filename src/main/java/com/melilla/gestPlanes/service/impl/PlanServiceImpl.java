@@ -355,6 +355,7 @@ public class PlanServiceImpl implements PlanService {
 		nuevoPlan = planRepository.save(nuevoPlan);
 		
 		result = result+ "Creado el plan "+nombreNuevoPlan+"\n";
+		log.info(result);
 
 		// Obtener el plan antiguo
 		Plan antiguoPlan = planRepository.findById(idPlan)
@@ -365,6 +366,7 @@ public class PlanServiceImpl implements PlanService {
 		nuevoPlan = copiarPlantillas(nuevoPlan, antiguoPlan);
 		
 		result = result +"\t copiadas plantillas.\n";
+		log.info(result);
 
 		PlanConfig config = planConfigService.obtenerConfig(idPlan);
 
@@ -407,8 +409,8 @@ public class PlanServiceImpl implements PlanService {
 
 					nuevoOrganismo = organismoRepository.save(nuevoOrganismo);
 
-					result = "\t importando organismo con id "+org.getIdOrganismo()+" "+org.getOrganismo()+" con nuevo id "+nuevoOrganismo.getIdOrganismo()+"\n";
-					
+					result  = result+ "\t importando organismo con id "+org.getIdOrganismo()+" "+org.getOrganismo()+" con nuevo id "+nuevoOrganismo.getIdOrganismo()+"\n";
+					log.info(result);
 					mapaOrganismos.put(org.getIdOrganismo(), nuevoOrganismo.getIdOrganismo());
 				}
 
@@ -432,8 +434,8 @@ public class PlanServiceImpl implements PlanService {
 					
 					nuevaCategoria = categoriaRepository.save(nuevaCategoria);
 					
-					result = "\t importando categoria con id "+ct.getIdCategoria()+" "+ct.getCategoria()+" con nuevo id "+nuevaCategoria.getIdCategoria()+"\n";
-					
+					result = result+"\t importando categoria con id "+ct.getIdCategoria()+" "+ct.getCategoria()+" con nuevo id "+nuevaCategoria.getIdCategoria()+"\n";
+					log.info(result);
 					mapaCategorias.put(ct.getIdCategoria(),nuevaCategoria.getIdCategoria());
 					
 				}
@@ -450,21 +452,30 @@ public class PlanServiceImpl implements PlanService {
 					
 					Ocupacion nuevaOcupacion = new Ocupacion();
 					long id = oc.getCategoria_idcategoria();
-					long idCategoria = mapaCategorias.get(id);
+					
+					if (mapaCategorias.containsKey(id)) {
+						long idCategoria = mapaCategorias.get(id);
 					
 					
-					Categoria cat = categoriaRepository.findById(idCategoria).orElseThrow(()->new CategoriaNotFoundException(mapaCategorias.get(oc.getCategoria_idcategoria())));
 					
-					nuevaOcupacion.setCategoria(cat);
-					nuevaOcupacion.setIdPlan(nuevoPlan);
-					nuevaOcupacion.setOcupacionSEPE(oc.getCodigoSepe());
-					nuevaOcupacion.setOcupacion(oc.getOcupacion());
 					
-					nuevaOcupacion = ocupacionRepository.save(nuevaOcupacion);
-					
-					result = "\t importando ocupación con id "+oc.getIdOcupacion()+" "+oc.getOcupacion()+" con nuevo id "+nuevaOcupacion.getIdOcupacion()+"\n";
-					
-					mapaOcupaciones.put(oc.getIdOcupacion(), nuevaOcupacion.getIdOcupacion());
+						Categoria cat = categoriaRepository.findById(idCategoria).orElseThrow(()->new CategoriaNotFoundException(mapaCategorias.get(oc.getCategoria_idcategoria())));
+						
+						nuevaOcupacion.setCategoria(cat);
+						nuevaOcupacion.setIdPlan(nuevoPlan);
+						nuevaOcupacion.setOcupacionSEPE(oc.getCodigoSepe());
+						nuevaOcupacion.setOcupacion(oc.getOcupacion());
+						
+						nuevaOcupacion = ocupacionRepository.save(nuevaOcupacion);
+						
+						result = result + "\t importando ocupación con id "+oc.getIdOcupacion()+" "+oc.getOcupacion()+" con nuevo id "+nuevaOcupacion.getIdOcupacion()+"\n";
+						log.info(result);
+						mapaOcupaciones.put(oc.getIdOcupacion(), nuevaOcupacion.getIdOcupacion());
+					}else {
+						result = result +"\t no se ha importado la ocupacion con id "+oc.getIdOcupacion()+" "+oc.getOcupacion()+"\n ";
+						log.info(result);
+					}
+			
 				}
 				
 			}else throw new FileParseException("Ha ocurrido un error al importar las ocupaciones. Probablemente hay algún error en el archivo .json.");
@@ -482,17 +493,18 @@ public class PlanServiceImpl implements PlanService {
 					
 					nuevoDatoPlan.setNTrabajadores(dato.getN_trabajadores());
 					long idOcupacion = mapaOcupaciones.get(dato.getOcupacion_idocupacion());
-					log.info(dato.getOcupacion_idocupacion()+" \t");
+				//	log.info(dato.getOcupacion_idocupacion()+" \t");
 					nuevoDatoPlan.setOcupacion(ocupacionRepository.findById(idOcupacion).orElseThrow(()-> new OcupacionNotFoundException(idOcupacion)));
 					long idOrganismo = mapaOrganismos.get(dato.getProyecto_organismo_idorganismo());
-					log.info(dato.getProyecto_organismo_idorganismo()+"\n");
+					//log.info(dato.getProyecto_organismo_idorganismo()+"\n");
 					nuevoDatoPlan.setOrganismo(organismoRepository.findById(idOrganismo).orElseThrow(()-> new OrganismoNotFoundException(idOrganismo)));
 					
 					nuevoDatoPlan = organismoOcupacionRepository.save(nuevoDatoPlan);
 					
 					
-					result = "\t  "+dato.getProyecto_organismo_idorganismo()+" \t "+dato.getOcupacion_idocupacion()+"\t "+dato.getN_trabajadores()
-					+"a  "+nuevoDatoPlan.getOrganismo().getIdOrganismo()+" \t"+nuevoDatoPlan.getOcupacion().getIdOcupacion()+" \t "+nuevoDatoPlan.getNTrabajadores()+"\n";
+					result =result+ "\t  "+dato.getProyecto_organismo_idorganismo()+" \t "+dato.getOcupacion_idocupacion()+"\t "+dato.getN_trabajadores()
+					+" a  "+nuevoDatoPlan.getOrganismo().getIdOrganismo()+" \t"+nuevoDatoPlan.getOcupacion().getIdOcupacion()+" \t "+nuevoDatoPlan.getNTrabajadores()+"\n";
+					log.info(result);
 				}
 				
 				
