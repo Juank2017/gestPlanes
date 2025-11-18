@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 public class EditUserDTO {
 
 	private String userName;
+	private String password;
 	private boolean enabled;
 	private String roles;
 	private Long id;
