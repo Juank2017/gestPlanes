@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.hibernate.annotations.SQLDelete;
+import org.hibernate.envers.NotAudited;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.security.core.GrantedAuthority;
@@ -29,7 +30,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
-
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Version;
 import lombok.AllArgsConstructor;
@@ -80,6 +81,10 @@ public class User implements UserDetails {
 	@Version
 	private Long version;
 	
+	
+	@Column(name="idPlan")
+	@NotAudited
+	private long planDeTrabajo;
 
 	@Override
 	@JsonIgnore

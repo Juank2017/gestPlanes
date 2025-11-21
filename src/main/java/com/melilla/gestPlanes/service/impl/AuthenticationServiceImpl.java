@@ -8,6 +8,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.melilla.gestPlanes.DTO.JwtResponseDTO;
@@ -65,6 +66,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 				.orElseThrow(() -> new IllegalArgumentException("Usuario no válido"));
 
 		return jwtService.isTokenValid(token, user);
+	}
+	
+	public User obtenerUsuarioLogado() {
+		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		
+		return (User) auth.getPrincipal();
 	}
 
 }

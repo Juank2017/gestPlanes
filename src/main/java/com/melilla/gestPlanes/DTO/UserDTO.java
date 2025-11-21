@@ -2,6 +2,7 @@ package com.melilla.gestPlanes.DTO;
 
 import java.util.Collection;
 
+import com.melilla.gestPlanes.model.Plan;
 import com.melilla.gestPlanes.model.Role;
 
 public interface UserDTO {
@@ -10,6 +11,7 @@ public interface UserDTO {
 
 	String getUserName();
 
+	Plan getPlan();
 	
 	boolean getEnabled();
 	

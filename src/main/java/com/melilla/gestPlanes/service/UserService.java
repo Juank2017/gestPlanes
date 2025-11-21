@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import com.melilla.gestPlanes.DTO.CreateUserDTO;
 import com.melilla.gestPlanes.DTO.EditUserDTO;
 import com.melilla.gestPlanes.DTO.UserDTO;
+import com.melilla.gestPlanes.model.Plan;
 import com.melilla.gestPlanes.model.User;
 
 public interface UserService {
@@ -15,6 +16,8 @@ public interface UserService {
 	User createUser(CreateUserDTO usuario);
 	
 	User updateUser(EditUserDTO user);
+	
+	UserDTO changeWorkingPlan(long idUser, long idNewPlan);
 	
 	List<UserDTO> getUsers();
 	

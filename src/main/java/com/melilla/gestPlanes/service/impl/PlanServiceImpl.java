@@ -15,7 +15,10 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -45,6 +48,7 @@ import com.melilla.gestPlanes.model.Organismo;
 import com.melilla.gestPlanes.model.OrganismoOcupacion;
 import com.melilla.gestPlanes.model.Plan;
 import com.melilla.gestPlanes.model.Salario;
+import com.melilla.gestPlanes.model.User;
 import com.melilla.gestPlanes.model.config.PlanConfig;
 import com.melilla.gestPlanes.model.config.PlantillaContratoConfig;
 import com.melilla.gestPlanes.repository.CategoriaRepository;
@@ -57,6 +61,7 @@ import com.melilla.gestPlanes.repository.PlanConfigRepository;
 import com.melilla.gestPlanes.repository.PlanRepository;
 import com.melilla.gestPlanes.repository.PlantillaContratoRepository;
 import com.melilla.gestPlanes.repository.SalarioRepository;
+import com.melilla.gestPlanes.service.AuthenticationService;
 import com.melilla.gestPlanes.service.CategoriaService;
 import com.melilla.gestPlanes.service.OcupacionService;
 import com.melilla.gestPlanes.service.OrganismoService;
@@ -74,6 +79,8 @@ import lombok.extern.log4j.Log4j;
 @RequiredArgsConstructor
 @Log
 public class PlanServiceImpl implements PlanService {
+	
+
 
 	@Autowired
 	PlanRepository planRepository;
@@ -151,9 +158,25 @@ public class PlanServiceImpl implements PlanService {
 	}
 
 	@Override
+	@Transactional
 	public Plan getPlanActivo() {
-
-		return planRepository.findByActivo(true).orElseThrow(() -> new PlanNotFoundException("no hay plan activo"));
+		
+		  log.info("Dentro de getPlanActivo"); 
+		  Plan planActivo = planRepository.findByActivo(true).orElseThrow(() -> new
+		  PlanNotFoundException("no hay plan activo"));
+		  log.info("obtenido el plan: "+planActivo.getDenominacion()); 
+		  Authentication
+		  auth = SecurityContextHolder.getContext().getAuthentication(); User
+		  usuarioLogado = (User)auth.getPrincipal();
+		  
+		  
+		  
+		  return (planActivo.getIdPlan() ==
+		  usuarioLogado.getPlanDeTrabajo())?
+		  planActivo: planRepository.findById(usuarioLogado.getPlanDeTrabajo()).orElseThrow(()-> new PlanNotFoundException("Plan no encontrado"));
+		 
+		
+		
 	}
 
 	@Override

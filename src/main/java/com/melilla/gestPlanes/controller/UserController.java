@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.melilla.gestPlanes.DTO.CambiarPlanTrabajoDTO;
 import com.melilla.gestPlanes.DTO.CreateUserDTO;
 import com.melilla.gestPlanes.DTO.EditUserDTO;
 import com.melilla.gestPlanes.DTO.UserDTO;
@@ -110,6 +111,17 @@ public class UserController {
 		response.getPayload().add(resultado);
 		String mensaje = (resultado)?"El usuario "+userName+" ya existe.":"El usuario no existe"; 
 		response.setMensaje(mensaje);
+		return ResponseEntity.ok(response);
+	}
+	
+	@PostMapping
+	ResponseEntity<ApiResponse>cambiarPlanTrabajo(@RequestBody CambiarPlanTrabajoDTO nuevoPlanTrabajo){
+		
+		ApiResponse response = new ApiResponse();
+		response.setEstado(HttpStatus.OK);
+		response.getPayload().add(userService.changeWorkingPlan(nuevoPlanTrabajo.getIdUsuario(), nuevoPlanTrabajo.getIdPlan()));
+		response.setMensaje("Auctualizado plan de trabajo");
+		
 		return ResponseEntity.ok(response);
 	}
 

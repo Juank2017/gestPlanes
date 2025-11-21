@@ -21,11 +21,14 @@ import com.melilla.gestPlanes.DTO.CreateUserDTO;
 import com.melilla.gestPlanes.DTO.EditUserDTO;
 import com.melilla.gestPlanes.DTO.UserDTO;
 import com.melilla.gestPlanes.exceptions.exceptions.DataStaleException;
+import com.melilla.gestPlanes.exceptions.exceptions.PlanNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.UserNotFoundException;
+import com.melilla.gestPlanes.model.Plan;
 import com.melilla.gestPlanes.model.Role;
 import com.melilla.gestPlanes.model.User;
 import com.melilla.gestPlanes.repository.RoleRepository;
 import com.melilla.gestPlanes.repository.UserRepository;
+import com.melilla.gestPlanes.service.PlanService;
 import com.melilla.gestPlanes.service.UserService;
 
 import jakarta.transaction.Transactional;
@@ -40,7 +43,8 @@ public class UserServiceImpl implements UserService {
 	@Autowired 
 	private RoleRepository roleRepository;
 	
-	
+	@Autowired
+	private PlanService planService;
 	
 	
     @Override
@@ -147,5 +151,20 @@ public class UserServiceImpl implements UserService {
 		
 
 		return userRepository.findByUserName(userName).isPresent();
+	}
+
+
+	@Override
+	public UserDTO changeWorkingPlan(long idUsuario, long idNewPlan) {
+		
+	//	Plan nuevoPlanTrabajo = planService.getPlan(idNewPlan).orElseThrow(()->new PlanNotFoundException("Plan no encontrado."));
+		
+		User usuario = userRepository.findById(idUsuario).orElseThrow(()-> new UserNotFoundException("Usuario no encontrado"));
+		
+		usuario.setPlanDeTrabajo(idNewPlan);
+		
+		usuario = userRepository.save(usuario);
+		
+		return getUser(usuario.getId());
 	}
 }
