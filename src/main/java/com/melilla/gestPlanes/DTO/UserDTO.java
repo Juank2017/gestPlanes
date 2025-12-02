@@ -11,7 +11,7 @@ public interface UserDTO {
 
 	String getUserName();
 
-	Plan getPlan();
+	long getPlanDeTrabajo();
 	
 	boolean getEnabled();
 	

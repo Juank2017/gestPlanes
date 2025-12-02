@@ -114,7 +114,7 @@ public class UserController {
 		return ResponseEntity.ok(response);
 	}
 	
-	@PostMapping
+	@PostMapping("cambiarPlanTrabajo")
 	ResponseEntity<ApiResponse>cambiarPlanTrabajo(@RequestBody CambiarPlanTrabajoDTO nuevoPlanTrabajo){
 		
 		ApiResponse response = new ApiResponse();

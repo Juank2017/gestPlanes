@@ -141,8 +141,8 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public UserDTO getUser(Long idUsuario) {
 
-		
-		return userRepository.myFindById(idUsuario).orElseThrow(()->new UserNotFoundException("no se ha encontrado el usuario con id "+idUsuario));
+		UserDTO user = userRepository.myFindById(idUsuario).orElseThrow(()->new UserNotFoundException("no se ha encontrado el usuario con id "+idUsuario));
+		return user;
 	}
 
 
