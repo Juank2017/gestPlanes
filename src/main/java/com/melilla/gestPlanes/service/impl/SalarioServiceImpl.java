@@ -71,8 +71,9 @@ public class SalarioServiceImpl implements SalarioService {
 		nuevo.setDescripcion(salario.getDescripcion());
 		nuevo.setPlan(planRepository.findById(salario.getIdPlan()).orElseThrow(()->new PlanNotFoundException(salario.getIdPlan()+"")));
 		nuevo.setActivo(false);
-		
-		return salarioRepository.save(nuevo);
+		nuevo = salarioRepository.save(nuevo);
+		seleccionarSalario(nuevo.getIdSalario());
+		return nuevo;
 	}
 
 

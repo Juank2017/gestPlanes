@@ -45,6 +45,10 @@ public class Plan {
 	@OneToMany(mappedBy="plan")
 	private List<PlantillaContratoConfig>plantillas;
 	
+	//@OneToOne(cascade = CascadeType.ALL, mappedBy = "plan" )
+    //@JoinColumn(name = "config_id", referencedColumnName = "idConfig")
+	//@OneToOne(cascade = CascadeType.ALL )
+   // @JoinColumn(name = "config_id", referencedColumnName = "plan")
 	@OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "config_id", referencedColumnName = "idConfig")
 	private PlanConfig config;

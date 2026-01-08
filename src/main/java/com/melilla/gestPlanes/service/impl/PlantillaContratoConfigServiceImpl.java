@@ -48,7 +48,7 @@ public class PlantillaContratoConfigServiceImpl implements PlantillaContratoConf
 	@Override
 	public List<PlantillaContratoConfig> obtenerPlantillas() {
 		
-		Plan planActivo = planService.getPlanActivo();
+		Plan planActivo = planService.getWorikingPlan();
 		
 		return plantillaContratoRepository.findAllByPlan(planActivo);
 	}
@@ -56,7 +56,7 @@ public class PlantillaContratoConfigServiceImpl implements PlantillaContratoConf
 	@Override
 	public PlantillaContratoConfig crearPlantilla(CrearPlantillaContratoDTO plantilla) {
 		
-		Plan planActivo = planService.getPlanActivo();
+		Plan planActivo = planService.getWorikingPlan();
 		
 		PlantillaContratoConfig nuevaPlantilla = new PlantillaContratoConfig();
 		
@@ -66,8 +66,11 @@ public class PlantillaContratoConfigServiceImpl implements PlantillaContratoConf
 		
 		nuevaPlantilla.setActiva(false);
 		
+		nuevaPlantilla =plantillaContratoRepository.save(nuevaPlantilla);
 		
-		return plantillaContratoRepository.save(nuevaPlantilla);
+		activarPlantilla(nuevaPlantilla.getIdContratoConfig());
+		
+		return nuevaPlantilla;
 	}
 
 	@Override

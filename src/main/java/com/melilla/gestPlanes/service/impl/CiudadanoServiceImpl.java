@@ -2,6 +2,7 @@ package com.melilla.gestPlanes.service.impl;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
@@ -15,6 +16,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Order;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.melilla.gestPlanes.DTO.CiudadanoCriterioBusqueda;
@@ -43,6 +46,7 @@ import com.melilla.gestPlanes.model.Ocupacion;
 import com.melilla.gestPlanes.model.Organismo;
 import com.melilla.gestPlanes.model.OrganismoOcupacion;
 import com.melilla.gestPlanes.model.Plan;
+import com.melilla.gestPlanes.model.User;
 import com.melilla.gestPlanes.repository.CategoriaRepository;
 import com.melilla.gestPlanes.repository.CiudadanoRepository;
 import com.melilla.gestPlanes.repository.CiudadanoSpecificationBuilder;
@@ -95,8 +99,8 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 
 	@Override
 	public List<Ciudadano> getCiudadanos(Long idPlan) {
-		
-		Plan plan = planService.getPlan(idPlan).orElseThrow(()-> new PlanNotFoundException("Plan no encontrado."));
+
+		Plan plan = planService.getPlan(idPlan).orElseThrow(() -> new PlanNotFoundException("Plan no encontrado."));
 
 		return ciudadanoRepository.findAllByIdPlan(plan);
 	}
@@ -127,16 +131,16 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 				.email(trabajador.getEmail()).esJefeEquipo(false).telefono(trabajador.getTelefono())
 				.sexo(trabajador.getSexo()).seguridadSocial(trabajador.getSeguridadSocial())
 				.reclamaSalarios(trabajador.isReclamaSalarios())
-				.idPlan((trabajador.isReclamaSalarios()) ? null : planService.getPlanActivo())
+				.idPlan((trabajador.isReclamaSalarios()) ? null :planService.getPlan(trabajador.getIdPlan()).get())
 				.fechaRegistro(trabajador.getFechaRegistro()).fechaNacimiento(trabajador.getFechaNacimiento())
 				.estado(trabajador.getEstado()).numeroOrdenSepe(trabajador.getNumeroOrdenSepe())
 				.fechaListadoSepe(trabajador.getFechaListadoSepe()).suplente(trabajador.isSuplente())
 				.nacionalidad(trabajador.getNacionalidad().toUpperCase()).bajaLaboral(false).bajaMaternal(false)
 				.ccc(trabajador.getCcc()).sinClausula(trabajador.isSinClausula())
 				.equipo((trabajador.getEquipo() != null)
-						? equipoService.equipo(planService.getPlanActivo().getIdPlan(), trabajador.getEquipo())
+						? equipoService.equipo(trabajador.getIdPlan(), trabajador.getEquipo())
 						: null)
-				.esJefeEquipo((trabajador.getOcu() != null) ? ((trabajador.getOcu() == 983) ? true : false) : false)
+				.esJefeEquipo(false)
 				.build());
 
 		Contrato nuevoContrato = contratoRepository.save(Contrato.builder().base(trabajador.getBase())
@@ -178,7 +182,7 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 		CiudadanoCriterioBusqueda criterioPlan = new CiudadanoCriterioBusqueda();
 
 		criterioPlan.setId("idPlan");
-		criterioPlan.setValue(planService.getPlanActivo().getIdPlan().toString());
+		criterioPlan.setValue(ordenBusqueda.getIdPlan().toString());
 
 		if (ordenBusqueda.getSorting() != null) {
 
@@ -194,13 +198,13 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 				case "fechaInicio":
 				case "fechaFinal":
 				case "fechaExtincion":
-				
+
 					columna = "contrato." + columna;
 					break;
 				case "ocupacion":
 				case "categoria":
 				case "destino":
-					columna = "contrato."+columna+"."+columna;
+					columna = "contrato." + columna + "." + columna;
 					log.info(columna);
 					break;
 				case "organismo":
@@ -284,7 +288,7 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 		ciudadano.setSuplente(trabajador.isSuplente());
 		ciudadano.setEsJefeEquipo(trabajador.isEsJefeEquipo());
 		ciudadano.setEquipo((trabajador.getEquipo() != null)
-				? equipoService.equipo(planService.getPlanActivo().getIdPlan(), trabajador.getEquipo())
+				? equipoService.equipo(trabajador.getIdPlan(), trabajador.getEquipo())
 				: null);
 
 		if (trabajador.getGc() != null) {
@@ -387,9 +391,9 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 							log.warning((trabajador.getOcu() != contrato.getOcupacion().getIdOcupacion()) + " ");
 							log.warning(trabajador.getOcu() + " " + contrato.getOcupacion().getIdOcupacion());
 							if (contrato.getOcupacion().getOcupacion()
-									.equals("JEFE DE EQUIPO DE OBRA /COORDINADORES DE CENTRO"))
+									.contains("JEFE DE EQUIPO"))
 								ciudadano.setEsJefeEquipo(false);
-							if (nuevaOcu.getOcupacion().equals("JEFE DE EQUIPO DE OBRA /COORDINADORES DE CENTRO")) {
+							if (nuevaOcu.getOcupacion().contains("JEFE DE EQUIPO" )) {
 								ciudadano.setEsJefeEquipo(true);
 								ciudadano.setEquipo(null);
 							} else {
@@ -403,7 +407,7 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 							contrato.setOcupacion(ocupacion);
 						} else {
 							if (contrato.getOcupacion().getOcupacion()
-									.equals("JEFE DE EQUIPO DE OBRA /COORDINADORES DE CENTRO")) {
+									.contains("JEFE DE EQUIPO")) {
 								ciudadano.setEsJefeEquipo(true);
 							} else
 								ciudadano.setEsJefeEquipo(false);
@@ -452,14 +456,14 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 
 				if (contrato.getDestino() != null) {
 					if (trabajador.getDestino() != contrato.getDestino().getIdDestino()) {
-						if (trabajador.getDestino() ==  0) {
+						if (trabajador.getDestino() == 0) {
 							contrato.setDestino(null);
-						}else {
+						} else {
 							Destino destino = destinoRepository.findById(trabajador.getDestino())
 									.orElseThrow(() -> new DestinoNotFoundException(trabajador.getDestino()));
 							contrato.setDestino(destino);
 						}
-						
+
 					}
 				} else {
 
@@ -569,7 +573,7 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 		vacantes.setOrganismo(org.getNombreCortoOrganismo());
 		vacantes.setIdOcupacion(idOcupacion);
 		vacantes.setOcupacion(ocu.getOcupacion());
-		
+
 		vacantes.setContratados(contratados);
 		vacantes.setParciales(parciales);
 		vacantes.setPrevistos(previstos);
@@ -579,12 +583,30 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 
 	@Override
 	public List<VacantesResponseDTO> listadoVacantes() {
-		List<OrganismoOcupacion> previstosPorOrganismoOcupacion = organismoOcupacionRepository.findAllAgrupados();
+
+		Plan planActivo = planService.getPlanActivo();
+		log.info("obtenido el plan: " + planActivo.getDenominacion());
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		User usuarioLogado = (User) auth.getPrincipal();
+
+		long planUsuarioLogado = usuarioLogado.getPlanDeTrabajo();
+		long idPlanActivo = planActivo.getIdPlan();
+		log.info("IdPlanTrabajo usuario logado: " + planUsuarioLogado);
+		log.info("IdPlanActivo: " + idPlanActivo);
+		Plan result = (idPlanActivo == planUsuarioLogado) ? planActivo
+				: planService.getPlan(usuarioLogado.getPlanDeTrabajo())
+						.orElseThrow(() -> new PlanNotFoundException("Plan no encontrado"));
+		log.info("id result: " + result.getIdPlan());
+
+		Collection<Organismo> organismosPlan = organismoRepository
+				.findAllByIdPlanIdPlanOrderByNombreCortoOrganismoAsc(result.getIdPlan());
+		List<OrganismoOcupacion> previstosPorOrganismoOcupacion = organismoOcupacionRepository
+				.findAllAgrupados(organismosPlan);
 
 		List<VacantesResponseDTO> listado = new ArrayList<VacantesResponseDTO>();
 
 		for (OrganismoOcupacion organismoOcupacion : previstosPorOrganismoOcupacion) {
-			if (organismoOcupacion.getOrganismo().getIdPlan().getIdPlan() == planService.getPlanActivo().getIdPlan()) {
+			if (organismoOcupacion.getOrganismo().getIdPlan().getIdPlan() == result.getIdPlan()) {
 				VacantesResponseDTO vacante = vacantesOrganismoOcupacion(
 						organismoOcupacion.getOrganismo().getIdOrganismo(),
 						organismoOcupacion.getOcupacion().getIdOcupacion());
@@ -607,13 +629,13 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 	@Override
 	public List<Ciudadano> getAllTrabajadorByDNIAndEstado(String DNI, String estado) {
 
-		return ciudadanoRepository.findAllByDNIAndEstadoAndIdPlan(DNI, estado, planService.getPlanActivo());
+		return ciudadanoRepository.findAllByDNIAndEstadoAndIdPlan(DNI, estado, planService.getWorikingPlan());
 	}
 
 	@Override
 	public boolean existeTrabajadorEnEstadoContratado(String DNI) {
 
-		return (ciudadanoRepository.findAllByDNIAndEstadoAndIdPlan(DNI, "CONTRATADO/A", planService.getPlanActivo())
+		return (ciudadanoRepository.findAllByDNIAndEstadoAndIdPlanAndDeleted(DNI, "CONTRATADO/A", planService.getWorikingPlan(),false)
 				.size() > 0) ? true : false;
 	}
 
@@ -652,7 +674,7 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 
 			Ciudadano trabajador = ciudadanoRepository.findById(modificaFechaContrato.getIdCiudadano())
 					.orElseThrow(() -> new CiudadanoNotFoundException(modificaFechaContrato.getIdCiudadano()));
-			if (trabajador.getEstado().equals("CONTRATADO/A") || trabajador.getEstado().equals("CANDIDATO/A")){
+			if (trabajador.getEstado().equals("CONTRATADO/A") || trabajador.getEstado().equals("CANDIDATO/A")) {
 				Contrato contrato = trabajador.getContrato();
 				if (contrato != null) {
 					contrato.setFechaInicio(modificaFechaContrato.getFechaInicio());
@@ -722,7 +744,7 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 	public List<Ciudadano> modificaEquipo(List<ModificaEquipoDTO> trabajadores) {
 
 		Iterator<ModificaEquipoDTO> it = trabajadores.iterator();
-		
+
 		List<Ciudadano> resultado = new ArrayList<Ciudadano>();
 
 		while (it.hasNext()) {

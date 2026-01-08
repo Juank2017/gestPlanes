@@ -37,6 +37,7 @@ import com.melilla.gestPlanes.exceptions.exceptions.FileParseException;
 import com.melilla.gestPlanes.exceptions.exceptions.FileStorageException;
 import com.melilla.gestPlanes.exceptions.exceptions.OcupacionNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.OrganismoNotFoundException;
+import com.melilla.gestPlanes.exceptions.exceptions.PlanConfigNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.PlanNotEmptyException;
 import com.melilla.gestPlanes.exceptions.exceptions.PlanNotFoundException;
 import com.melilla.gestPlanes.mappers.PlantillaContratoConfigMapperImpl;
@@ -79,8 +80,6 @@ import lombok.extern.log4j.Log4j;
 @RequiredArgsConstructor
 @Log
 public class PlanServiceImpl implements PlanService {
-	
-
 
 	@Autowired
 	PlanRepository planRepository;
@@ -111,7 +110,7 @@ public class PlanServiceImpl implements PlanService {
 
 	@Autowired
 	SalarioRepository salarioRepository;
-	
+
 	@Autowired
 	OrganismoOcupacionRepository organismoOcupacionRepository;
 
@@ -152,7 +151,7 @@ public class PlanServiceImpl implements PlanService {
 		nuevoPlan.setActivo(plan.isActivo());
 		nuevoPlan.setDenominacion(plan.getDenominacion());
 		nuevoPlan = planRepository.save(nuevoPlan);
-		nuevoPlan.setConfig(planConfigService.crearConfig(nuevoPlan));
+		// nuevoPlan.setConfig(planConfigService.crearConfig());
 
 		return planRepository.save(nuevoPlan);
 	}
@@ -160,23 +159,28 @@ public class PlanServiceImpl implements PlanService {
 	@Override
 	@Transactional
 	public Plan getPlanActivo() {
-		
-		  log.info("Dentro de getPlanActivo"); 
-		  Plan planActivo = planRepository.findByActivo(true).orElseThrow(() -> new
-		  PlanNotFoundException("no hay plan activo"));
-		  log.info("obtenido el plan: "+planActivo.getDenominacion()); 
-		  Authentication
-		  auth = SecurityContextHolder.getContext().getAuthentication(); User
-		  usuarioLogado = (User)auth.getPrincipal();
-		  
-		  
-		  
-		  return (planActivo.getIdPlan() ==
-		  usuarioLogado.getPlanDeTrabajo())?
-		  planActivo: planRepository.findById(usuarioLogado.getPlanDeTrabajo()).orElseThrow(()-> new PlanNotFoundException("Plan no encontrado"));
-		 
-		
-		
+
+		/*
+		 * log.info("Dentro de getPlanActivo"); Plan planActivo =
+		 * planRepository.findByActivo(true) .orElseThrow(() -> new
+		 * PlanNotFoundException("no hay plan activo")); log.info("obtenido el plan: " +
+		 * planActivo.getDenominacion()); Authentication auth =
+		 * SecurityContextHolder.getContext().getAuthentication(); User usuarioLogado =
+		 * (User) auth.getPrincipal();
+		 * 
+		 * long planUsuarioLogado = usuarioLogado.getPlanDeTrabajo(); long idPlanActivo
+		 * = planActivo.getIdPlan(); log.info("IdPlanTrabajo usuario logado: " +
+		 * planUsuarioLogado); log.info("IdPlanActivo: " + idPlanActivo);
+		 * 
+		 * Plan result = (idPlanActivo == planUsuarioLogado)? planActivo:
+		 * planRepository.findById(usuarioLogado.getPlanDeTrabajo()) .orElseThrow(() ->
+		 * new PlanNotFoundException("Plan no encontrado")) ;
+		 * 
+		 * log.info("Plan activo: "+result.getIdPlan()+" " +result.getDenominacion());
+		 */
+		return planRepository.findByActivo(true)
+				.orElseThrow(() -> new PlanNotFoundException("no hay plan activo"));
+
 	}
 
 	@Override
@@ -375,9 +379,10 @@ public class PlanServiceImpl implements PlanService {
 		Plan nuevoPlan = new Plan();
 		nuevoPlan.setDenominacion(nombreNuevoPlan);
 		nuevoPlan.setActivo(false);
+
 		nuevoPlan = planRepository.save(nuevoPlan);
-		
-		result = result+ "Creado el plan "+nombreNuevoPlan+"\n";
+
+		result = result + "Creado el plan " + nombreNuevoPlan + "\n";
 		log.info(result);
 
 		// Obtener el plan antiguo
@@ -387,15 +392,30 @@ public class PlanServiceImpl implements PlanService {
 		// Se copian las plantillas
 
 		nuevoPlan = copiarPlantillas(nuevoPlan, antiguoPlan);
-		
-		result = result +"\t copiadas plantillas.\n";
+
+		result = result + "\t copiadas plantillas.\n";
 		log.info(result);
 
-		PlanConfig config = planConfigService.obtenerConfig(idPlan);
-
-		Path fileStorageLocation = Paths.get(config.getUploadDir()).toAbsolutePath().normalize();
+		Path fileStorageLocation = null;
+		;
 
 		try {
+
+//			PlanConfig config = planConfigService.obtenerConfig(idPlan);
+//			
+//			String uploadDirPlanAntiguo = config.getUploadDir();
+//			
+//			String denominacionAntiguo=antiguoPlan.getDenominacion().replace("-","_");
+//			String denominacionNuevo= nuevoPlan.getDenominacion().replace("-","_");
+//			
+//			String uploadDirNuevo = uploadDirPlanAntiguo.replace(denominacionAntiguo, denominacionNuevo);
+//			
+//			PlanConfig configNuevoPlan = nuevoPlan.getConfig();
+//			
+//			configNuevoPlan.setUploadDir(uploadDirNuevo);
+
+			fileStorageLocation = Paths.get("datosImportacion").toAbsolutePath().normalize();
+
 			Files.createDirectories(fileStorageLocation);
 			// nombre del fichero
 			String fileName = StringUtils.cleanPath(file.getOriginalFilename());
@@ -404,27 +424,30 @@ public class PlanServiceImpl implements PlanService {
 
 			Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
 
-		} catch (Exception e) {
+		}
+
+		catch (Exception e) {
+			borrarPlan(nuevoPlan.getIdPlan());
+			e.printStackTrace();
 			throw new FileStorageException("No se ha podido crear el directorio: " + fileStorageLocation);
 		}
 
 		DataImport datos = procesaFile(file);
-		
-		HashMap<Long,Long> mapaCategorias = new HashMap<Long,Long>();
+
+		HashMap<Long, Long> mapaCategorias = new HashMap<Long, Long>();
 		HashMap<Long, Long> mapaOrganismos = new HashMap<Long, Long>();
-		HashMap<Long,Long> mapaOcupaciones = new HashMap<Long,Long>();
-		
+		HashMap<Long, Long> mapaOcupaciones = new HashMap<Long, Long>();
+
 		try {
 			// crear los organismos
 			if (datos.getOrganismos() != null) {
-				
 
-				List<OrganismosImportDTO> organismos =datos.getOrganismos();
+				List<OrganismosImportDTO> organismos = datos.getOrganismos();
 
 				Iterator<OrganismosImportDTO> it = organismos.iterator();
 
 				while (it.hasNext()) {
-					
+
 					OrganismosImportDTO org = it.next();
 					Organismo nuevoOrganismo = new Organismo();
 					nuevoOrganismo.setOrganismo(org.getOrganismo());
@@ -432,116 +455,133 @@ public class PlanServiceImpl implements PlanService {
 
 					nuevoOrganismo = organismoRepository.save(nuevoOrganismo);
 
-					result  = result+ "\t importando organismo con id "+org.getIdOrganismo()+" "+org.getOrganismo()+" con nuevo id "+nuevoOrganismo.getIdOrganismo()+"\n";
-					log.info(result);
+					result = result + "\t importando organismo con id " + org.getIdOrganismo() + " "
+							+ org.getOrganismo() + " con nuevo id " + nuevoOrganismo.getIdOrganismo() + "\n";
+
 					mapaOrganismos.put(org.getIdOrganismo(), nuevoOrganismo.getIdOrganismo());
 				}
+				log.info(result);
+			} else
+				throw new FileParseException(
+						"Ha ocurrido un error al importar los organismos. Probablemente hay algún error en el archivo .json.");
 
-			}else throw new FileParseException("Ha ocurrido un error al importar los organismos. Probablemente hay algún error en el archivo .json.");
-			
-			if(datos.getCategorias() != null) {
-				
-				
+			if (datos.getCategorias() != null) {
+
 				List<CategoriasImportDTO> categorias = datos.getCategorias();
-				
+
 				Iterator<CategoriasImportDTO> it = categorias.iterator();
-				
+
 				while (it.hasNext()) {
 					CategoriasImportDTO ct = it.next();
-					
+
 					Categoria nuevaCategoria = new Categoria();
-					
+
 					nuevaCategoria.setGrupoProfesionalPersonalLaboral(ct.getCategoria());
 					nuevaCategoria.setGrupo(Integer.parseInt(ct.getSalario_grupo()));
 					nuevaCategoria.setIdPlan(nuevoPlan);
-					
+
 					nuevaCategoria = categoriaRepository.save(nuevaCategoria);
-					
-					result = result+"\t importando categoria con id "+ct.getIdCategoria()+" "+ct.getCategoria()+" con nuevo id "+nuevaCategoria.getIdCategoria()+"\n";
-					log.info(result);
-					mapaCategorias.put(ct.getIdCategoria(),nuevaCategoria.getIdCategoria());
-					
+
+					result = result + "\t importando categoria con id " + ct.getIdCategoria() + " " + ct.getCategoria()
+							+ " con nuevo id " + nuevaCategoria.getIdCategoria() + "\n";
+
+					mapaCategorias.put(ct.getIdCategoria(), nuevaCategoria.getIdCategoria());
+
 				}
-				
-			}else throw new FileParseException("Ha ocurrido un error al importar las categorias. Probablemente hay algún error en el archivo .json.");
-			
+				log.info(result);
+
+			} else
+				throw new FileParseException(
+						"Ha ocurrido un error al importar las categorias. Probablemente hay algún error en el archivo .json.");
+
 			if (datos.getOcupaciones() != null) {
-				
+
 				List<OcupacionesImportDTO> ocupaciones = datos.getOcupaciones();
-				Iterator<OcupacionesImportDTO>  it = ocupaciones.iterator();
-				
+				Iterator<OcupacionesImportDTO> it = ocupaciones.iterator();
+
 				while (it.hasNext()) {
 					OcupacionesImportDTO oc = it.next();
-					
+
 					Ocupacion nuevaOcupacion = new Ocupacion();
 					long id = oc.getCategoria_idcategoria();
-					
+
 					if (mapaCategorias.containsKey(id)) {
 						long idCategoria = mapaCategorias.get(id);
-					
-					
-					
-					
-						Categoria cat = categoriaRepository.findById(idCategoria).orElseThrow(()->new CategoriaNotFoundException(mapaCategorias.get(oc.getCategoria_idcategoria())));
-						
+
+						Categoria cat = categoriaRepository.findById(idCategoria)
+								.orElseThrow(() -> new CategoriaNotFoundException(
+										mapaCategorias.get(oc.getCategoria_idcategoria())));
+
 						nuevaOcupacion.setCategoria(cat);
 						nuevaOcupacion.setIdPlan(nuevoPlan);
 						nuevaOcupacion.setOcupacionSEPE(oc.getCodigoSepe());
 						nuevaOcupacion.setOcupacion(oc.getOcupacion());
-						
+
 						nuevaOcupacion = ocupacionRepository.save(nuevaOcupacion);
-						
-						result = result + "\t importando ocupación con id "+oc.getIdOcupacion()+" "+oc.getOcupacion()+" con nuevo id "+nuevaOcupacion.getIdOcupacion()+"\n";
-						log.info(result);
+
+						result = result + "\t importando ocupación con id " + oc.getIdOcupacion() + " "
+								+ oc.getOcupacion() + " con nuevo id " + nuevaOcupacion.getIdOcupacion() + "\n";
+						// log.info(result);
 						mapaOcupaciones.put(oc.getIdOcupacion(), nuevaOcupacion.getIdOcupacion());
-					}else {
-						result = result +"\t no se ha importado la ocupacion con id "+oc.getIdOcupacion()+" "+oc.getOcupacion()+"\n ";
-						log.info(result);
+					} else {
+						result = result + "\t no se ha importado la ocupacion con id " + oc.getIdOcupacion() + " "
+								+ oc.getOcupacion() + "\n ";
+
 					}
-			
-				}
-				
-			}else throw new FileParseException("Ha ocurrido un error al importar las ocupaciones. Probablemente hay algún error en el archivo .json.");
-			
-			if (datos.getDatosPlan()  != null) {
-				List<DatosPlanImportDTO> datosPlan = datos.getDatosPlan();
-				
-				Iterator<DatosPlanImportDTO> it = datosPlan.iterator();
-				
-				while (it.hasNext()) {
-					
-					DatosPlanImportDTO dato = it.next();
-					
-					OrganismoOcupacion nuevoDatoPlan = new OrganismoOcupacion();
-					
-					nuevoDatoPlan.setNTrabajadores(dato.getN_trabajadores());
-					long idOcupacion = mapaOcupaciones.get(dato.getOcupacion_idocupacion());
-				//	log.info(dato.getOcupacion_idocupacion()+" \t");
-					nuevoDatoPlan.setOcupacion(ocupacionRepository.findById(idOcupacion).orElseThrow(()-> new OcupacionNotFoundException(idOcupacion)));
-					long idOrganismo = mapaOrganismos.get(dato.getProyecto_organismo_idorganismo());
-					//log.info(dato.getProyecto_organismo_idorganismo()+"\n");
-					nuevoDatoPlan.setOrganismo(organismoRepository.findById(idOrganismo).orElseThrow(()-> new OrganismoNotFoundException(idOrganismo)));
-					
-					nuevoDatoPlan = organismoOcupacionRepository.save(nuevoDatoPlan);
-					
-					
-					result =result+ "\t  "+dato.getProyecto_organismo_idorganismo()+" \t "+dato.getOcupacion_idocupacion()+"\t "+dato.getN_trabajadores()
-					+" a  "+nuevoDatoPlan.getOrganismo().getIdOrganismo()+" \t"+nuevoDatoPlan.getOcupacion().getIdOcupacion()+" \t "+nuevoDatoPlan.getNTrabajadores()+"\n";
 					log.info(result);
 				}
-				
-				
-				
-				
-				
-				
+
+			} else
+				throw new FileParseException(
+						"Ha ocurrido un error al importar las ocupaciones. Probablemente hay algún error en el archivo .json.");
+
+			if (datos.getDatosPlan() != null) {
+				List<DatosPlanImportDTO> datosPlan = datos.getDatosPlan();
+
+				Iterator<DatosPlanImportDTO> it = datosPlan.iterator();
+
+				while (it.hasNext()) {
+
+					DatosPlanImportDTO dato = it.next();
+
+					OrganismoOcupacion nuevoDatoPlan = new OrganismoOcupacion();
+
+					nuevoDatoPlan.setNTrabajadores(dato.getN_trabajadores());
+					long idOcupacion = mapaOcupaciones.get(dato.getOcupacion_idocupacion());
+					// log.info(dato.getOcupacion_idocupacion()+" \t");
+					nuevoDatoPlan.setOcupacion(ocupacionRepository.findById(idOcupacion)
+							.orElseThrow(() -> new OcupacionNotFoundException(idOcupacion)));
+					long idOrganismo = mapaOrganismos.get(dato.getProyecto_organismo_idorganismo());
+					// log.info(dato.getProyecto_organismo_idorganismo()+"\n");
+					nuevoDatoPlan.setOrganismo(organismoRepository.findById(idOrganismo)
+							.orElseThrow(() -> new OrganismoNotFoundException(idOrganismo)));
+
+					nuevoDatoPlan = organismoOcupacionRepository.save(nuevoDatoPlan);
+
+					result = result + "\t  " + dato.getProyecto_organismo_idorganismo() + " \t "
+							+ dato.getOcupacion_idocupacion() + "\t " + dato.getN_trabajadores() + " a  "
+							+ nuevoDatoPlan.getOrganismo().getIdOrganismo() + " \t"
+							+ nuevoDatoPlan.getOcupacion().getIdOcupacion() + " \t " + nuevoDatoPlan.getNTrabajadores()
+							+ "\n";
+
+				}
+
+				log.info(result);
+
+				PlanConfig config = planConfigService.crearConfig();
+
+				nuevoPlan.setConfig(config);
+				config.setPlan(nuevoPlan);
+				planRepository.save(nuevoPlan);
+
 			}
 		} catch (Exception e) {
-			
+
 			borrarPlan(nuevoPlan.getIdPlan());
-			throw new FileParseException("No se ha podido importar el plan." +e.getMessage() );
+			e.printStackTrace();
+			throw new FileParseException("No se ha podido importar el plan." + e.getMessage() + "\n"
+					+ e.getStackTrace().toString() + "\n" + e.getCause());
 		}
-		
 
 		return result;
 	}
@@ -606,10 +646,17 @@ public class PlanServiceImpl implements PlanService {
 		// Borramos organismos y destinos di los tienen.
 
 		List<Organismo> organismos = organismoRepository.findAllByIdPlanIdPlanOrderByNombreCortoOrganismoAsc(idPlan);
+		
+		List<OrganismoOcupacion> organismoOcupacion= organismoOcupacionRepository.findAllAgrupados(organismos);
+		
+		if (!organismoOcupacion.isEmpty()) {
+			organismoOcupacionRepository.deleteAll(organismoOcupacion);
+		}
+		
 		if (!organismos.isEmpty()) {
 
 			organismos.forEach((o) -> {
-
+				//Borra los destinos
 				List<Destino> destinos = destinoRepository
 						.findAllByIdOrganismoIdOrganismoOrderByDestinoAsc(o.getIdOrganismo());
 
@@ -618,6 +665,9 @@ public class PlanServiceImpl implements PlanService {
 						destinoRepository.delete(d);
 					});
 				}
+				
+				
+				
 				organismoRepository.delete(o);
 
 			});
@@ -647,7 +697,7 @@ public class PlanServiceImpl implements PlanService {
 
 		List<Salario> salarios = plan.getSalario();
 
-		if ( salarios != null && !salarios.isEmpty() )
+		if (salarios != null && !salarios.isEmpty())
 			salarios.forEach((s) -> {
 				salarioRepository.delete(s);
 			});
@@ -661,11 +711,36 @@ public class PlanServiceImpl implements PlanService {
 
 		PlanConfig config = plan.getConfig();
 
-		if (config != null)
+		if (config != null) {
+			config.setPlan(null);
 			planConfigRepository.delete(config);
+		}
+		
+		
 
 		planRepository.delete(plan);
 
+	}
+
+	@Override
+	public Plan getWorikingPlan() {
+		 Plan planActivo = planRepository.findByActivo(true) .orElseThrow(() -> new
+				  PlanNotFoundException("no hay plan activo")); 
+		 log.info("obtenido el plan: " + planActivo.getDenominacion());
+		 Authentication auth = SecurityContextHolder.getContext().getAuthentication(); 
+		 User usuarioLogado = (User) auth.getPrincipal();
+				  
+		 long planUsuarioLogado = usuarioLogado.getPlanDeTrabajo(); 
+		 long idPlanActivo = planActivo.getIdPlan(); 
+		 log.info("IdPlanTrabajo usuario logado: " + planUsuarioLogado); 
+		 log.info("IdPlanActivo: " + idPlanActivo);
+				  
+		 Plan result = (idPlanActivo == planUsuarioLogado)? planActivo:
+				  planRepository.findById(usuarioLogado.getPlanDeTrabajo()) .orElseThrow(() ->
+				  new PlanNotFoundException("Plan no encontrado")) ;
+				  
+				  log.info("Plan activo: "+result.getIdPlan()+" " +result.getDenominacion());
+		return result;
 	}
 
 }

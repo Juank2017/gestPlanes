@@ -63,7 +63,7 @@ public class PlanConfigController {
 		ApiResponse response = new ApiResponse();
 		
 		response.setEstado(HttpStatus.OK);
-		response.getPayload().add(planConfigService.crearConfig(planService.getPlan(config.getIdPlan()).get()));
+		response.getPayload().add(planConfigService.crearConfig());
 		response.setMensaje("Creada la config del plan.");
 		
 		return ResponseEntity.ok(response);

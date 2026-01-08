@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.melilla.gestPlanes.DTO.CrearCategoriaDTO;
+import com.melilla.gestPlanes.DTO.EditarCategoriaDTO;
 import com.melilla.gestPlanes.model.ApiResponse;
 import com.melilla.gestPlanes.model.Categoria;
 import com.melilla.gestPlanes.service.CategoriaService;
@@ -70,11 +71,11 @@ public class CategoriaController {
 	}
 	
 	@PostMapping("/editarCategoria")
-	public ResponseEntity<ApiResponse>editarCategoria( @RequestBody Categoria categoria){
+	public ResponseEntity<ApiResponse>editarCategoria( @RequestBody EditarCategoriaDTO categoria){
 		
 		ApiResponse response = new ApiResponse();
 		response.setEstado(HttpStatus.OK);
-		categoriaService.editarCategoria(categoria);
+		response.getPayload().add(categoriaService.editarCategoria(categoria));
 		response.setMensaje("Categoría editada.");
 		
 		

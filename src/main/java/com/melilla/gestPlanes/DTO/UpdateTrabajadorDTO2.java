@@ -7,6 +7,7 @@ import lombok.Data;
 @Data
 @Builder
 public class UpdateTrabajadorDTO2 {
+	long idPlan;
 	Long idCiudadano;
 	String nombre;
 	String apellido1;

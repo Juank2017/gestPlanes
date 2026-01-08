@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.melilla.gestPlanes.DTO.CrearCategoriaDTO;
+import com.melilla.gestPlanes.DTO.EditarCategoriaDTO;
 import com.melilla.gestPlanes.exceptions.exceptions.CategoriaConOcupacionesException;
 import com.melilla.gestPlanes.exceptions.exceptions.CategoriaNotFoundException;
 import com.melilla.gestPlanes.model.Categoria;
@@ -60,7 +61,7 @@ public class CategoriaServiceImpl implements CategoriaService {
 	}
 
 	@Override
-	public Categoria editarCategoria(Categoria categoria) {
+	public Categoria editarCategoria(EditarCategoriaDTO categoria) {
 		
 		Categoria categoriaBBDD = categoriaRpository.findById(categoria.getIdCategoria()).orElseThrow(()->new CategoriaNotFoundException(categoria.getIdCategoria()));
 		

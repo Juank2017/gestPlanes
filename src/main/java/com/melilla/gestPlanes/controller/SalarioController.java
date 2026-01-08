@@ -64,7 +64,7 @@ public class SalarioController {
 		ApiResponse response = new ApiResponse();
 		
 		response.setEstado(HttpStatus.OK);
-		response.getPayload().add(salarioService.activarSalario(idSalario,planService.getPlanActivo().getIdPlan()));
+		response.getPayload().add(salarioService.activarSalario(idSalario,planService.getWorikingPlan().getIdPlan()));
 		response.setMensaje("Salario activado");
 		
 		return ResponseEntity.ok(response);

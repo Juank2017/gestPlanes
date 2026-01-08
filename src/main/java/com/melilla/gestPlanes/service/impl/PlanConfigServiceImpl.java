@@ -23,9 +23,11 @@ public class PlanConfigServiceImpl implements PlanConfigService {
 	PlanConfigRepository planConfigRepository;
 
 	@Override
-	public PlanConfig crearConfig(Plan plan) {
+	public PlanConfig crearConfig() {
 		PlanConfig config = new PlanConfig();
-		config.setPlan(plan);
+		
+		config.setTemplateDir("plantillas");
+		
 		return planConfigRepository.save(config);
 	}
 
@@ -40,7 +42,7 @@ public class PlanConfigServiceImpl implements PlanConfigService {
 		
 		log.warning(configBBDD.getUploadDir());
 		
-		return planConfigRepository.saveAndFlush(configBBDD);
+		return planConfigRepository.save(configBBDD);
 	}
 
 	@Override

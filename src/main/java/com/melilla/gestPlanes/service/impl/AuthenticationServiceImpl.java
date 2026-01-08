@@ -51,7 +51,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
 			RefreshToken refreshToken = refreshTokenService.createRefreshToken(user.getId());
 
-			return JwtResponseDTO.builder().estado(HttpStatus.OK).userName(user.getUsername()).userId(user.getId())					.roles(user.getAuthorities().stream().collect(Collectors.toList())).token(jwt)
+			return JwtResponseDTO.builder().estado(HttpStatus.OK).userName(user.getUsername()).idPlan(user.getPlanDeTrabajo()).userId(user.getId()).roles(user.getAuthorities().stream().collect(Collectors.toList())).token(jwt)
 					.refreshToken(refreshToken.getToken()).build();
 		} catch (AuthenticationException e) {
 

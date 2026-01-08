@@ -19,6 +19,7 @@ import java.util.Locale;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import org.apache.commons.text.StringEscapeUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDResources;
 import org.apache.pdfbox.pdmodel.font.PDFont;
@@ -161,16 +162,16 @@ public class DocumentoServiceImpl implements DocumentoService {
 		if (ciudadano.getContrato() != null) {
 			// ocupacion del ciudadano
 			Ocupacion ocupacionCiudadano = ciudadano.getContrato().getOcupacion();
-			ocupacion = ocupacionCiudadano.getOcupacion().replace(" ", "_") + "\\";
+			ocupacion = ocupacionCiudadano.getOcupacion().replaceAll("[^a-zA-Z0-9_ÁÉÍÓÚ\\\\]", "_")+ "\\";
 			// obtiene el apellido y sustituye los espacios por _
-			apellido = ciudadano.getApellido1().replace(" ", "_");
+			apellido = ciudadano.getApellido1();
 			// forma el nombre de la capeta con apellidos_nombre
 			nombreCarpeta = estado + ocupacion + apellido + "_" + ciudadano.getApellido2().replace(" ", "_") + "_"
 					+ ciudadano.getNombre().replace(" ", "_");
 		} else {
 
-			nombreCarpeta = estado + apellido + "_" + ciudadano.getApellido2().replace(" ", "_") + "_"
-					+ ciudadano.getNombre().replace(" ", "_");
+			nombreCarpeta = (estado + apellido + "_" + ciudadano.getApellido2() + "_"
+					+ ciudadano.getNombre()).replaceAll("[^a-zA-Z0-9_ÁÉÍÓÚ\\\\]", "_");
 		}
 
 		// obtiene el path absoluto debe ser S:\PLANES DE
@@ -269,19 +270,19 @@ public class DocumentoServiceImpl implements DocumentoService {
 
 	@Override
 	public Resource loadDocumentAsResource(Long idCiudadano, String filename, Long idDocumento) {
-		PlanConfig config = planConfigService.obtenerConfig(planservice.getPlanActivo().getIdPlan());
+		PlanConfig config = planConfigService.obtenerConfig(planservice.getWorikingPlan().getIdPlan());
 		Ciudadano ciudadano = ciudadanoService.getCiudadano(idCiudadano);
 		String estado = null;
-		String apellido = "_";
+		
 		Documento doc = documentoRepository.findById(idDocumento)
 				.orElseThrow(() -> new DocumentoNotFoundException(idDocumento));
 		// obtiene el apellido y sustituye los espacios por _
-		apellido = (ciudadano.getApellido1() != null) ? ciudadano.getApellido1().replace(" ", "_") : "null";
-		estado = ciudadano.getEstado().replace("/", "_") + "\\";
+		
+		estado = ciudadano.getEstado() + "\\";
 		Ocupacion ocupacionCiudadano = ciudadano.getContrato().getOcupacion();
-		String ocupacion = ocupacionCiudadano.getOcupacion().replace(" ", "_").replace("/", "_") + "\\";
-		String nombreCarpeta = estado + ocupacion + ciudadano.getApellido1().replace(" ", "_") + "_"
-				+ ciudadano.getApellido2().replace(" ", "_") + "_" + ciudadano.getNombre().replace(" ", "_") + "\\";
+		String ocupacion = ocupacionCiudadano.getOcupacion().replaceAll("[^a-zA-Z0-9_ÁÉÍÓÚ\\\\]", "_")+ "\\";
+		String nombreCarpeta = (estado + ocupacion + ciudadano.getApellido1() + "_"
+				+ ciudadano.getApellido2() + "_" + ciudadano.getNombre() + "\\").replaceAll("[^a-zA-Z0-9_ÁÉÍÓÚ\\\\]", "_");
 		try {
 			Path fileStorageLocation = Paths.get(config.getUploadDir() + nombreCarpeta + filename).toAbsolutePath()
 					.normalize();
@@ -327,18 +328,18 @@ public class DocumentoServiceImpl implements DocumentoService {
 	public void eliminarDocumento(Long idDocumento) {
 		PlanConfig config = planConfigService.obtenerConfig(planservice.getPlanActivo().getIdPlan());
 		String estado = null;
-		String apellido = "_";
+		
 		Documento doc = documentoRepository.findById(idDocumento)
 				.orElseThrow(() -> new DocumentoNotFoundException(idDocumento));
 		String filename = doc.getNombre();
 		Ciudadano ciudadano = doc.getCiudadano();
 		// obtiene el apellido y sustituye los espacios por _
-		apellido = ciudadano.getApellido1().replace(" ", "_");
-		estado = ciudadano.getEstado().replace("/", "_") + "\\";
+		
+		estado = ciudadano.getEstado() + "\\";
 		Ocupacion ocupacionCiudadano = ciudadano.getContrato().getOcupacion();
-		String ocupacion = ocupacionCiudadano.getOcupacion().replace(" ", "_").replace("/", "_") + "\\";
-		String nombreCarpeta = estado + ocupacion + ciudadano.getApellido1() + "_"
-				+ ciudadano.getApellido2().replace(" ", "_") + "_" + ciudadano.getNombre().replace(" ", "_") + "\\";
+		String ocupacion = ocupacionCiudadano.getOcupacion().replaceAll("[^a-zA-Z0-9_ÁÉÍÓÚ\\\\]", "_")+ "\\";
+		String nombreCarpeta = (estado + ocupacion + ciudadano.getApellido1() + "_"
+				+ ciudadano.getApellido2() + "_" + ciudadano.getNombre() + "\\").replaceAll("[^a-zA-Z0-9_ÁÉÍÓÚ\\\\]", "_");
 		try {
 			Path fileStorageLocation = Paths.get(config.getUploadDir() + nombreCarpeta + filename).toAbsolutePath()
 					.normalize();
@@ -468,19 +469,19 @@ public class DocumentoServiceImpl implements DocumentoService {
 				formulario = rellenaFormulario(trabajador, contrato, nuevoContrato, formulario);
 
 				// nombre del fichero
-				String nombreFichero = trabajador.getApellido1().replace(" ", "_") + "_"
-						+ trabajador.getApellido2().replace(" ", "_") + "_" + trabajador.getNombre().replace(" ", "_")
-						+ "_" + trabajador.getDNI() + "_CONTRATO.pdf";
+				String nombreFichero = (trabajador.getApellido1() + "_"
+						+ trabajador.getApellido2() + "_" + trabajador.getNombre()
+						+ "_" + trabajador.getDNI() ).replaceAll("[^a-zA-Z0-9_ÁÉÍÓÚ\\\\]", "_")+ "_CONTRATO.pdf";
 
 				// carpeta
 				// ocupacion del ciudadano
 				Ocupacion ocupacionCiudadano = trabajador.getContrato().getOcupacion();
-				String ocupacion = ocupacionCiudadano.getOcupacion().replace(" ", "_").replace("/", "_") + "\\";
+				String ocupacion = ocupacionCiudadano.getOcupacion().replaceAll("[^a-zA-Z0-9_ÁÉÍÓÚ\\\\]", "_")+ "\\";
 				// estado
-				String estado = trabajador.getEstado().replace("/", "_") + "\\";
+				String estado = trabajador.getEstado() + "\\";
 				// forma el nombre de la capeta con apellidos_nombre
-				String nombreCarpeta = estado + ocupacion + trabajador.getApellido1().replace(" ", "_") + "_"
-						+ trabajador.getApellido2().replace(" ", "_") + "_" + trabajador.getNombre().replace(" ", "_");
+				String nombreCarpeta = (estado + ocupacion + trabajador.getApellido1() + "_"
+						+ trabajador.getApellido2() + "_" + trabajador.getNombre()).replaceAll("[^a-zA-Z0-9_ÁÉÍÓÚ\\\\]", "_");
 				// obtiene el path absoluto debe ser S:\PLANES DE
 				// EMPLEO\ocupacion\apellidos_nombre
 				Path fileStorageLocation = Paths.get(directorioSubida + nombreCarpeta).normalize();
@@ -547,7 +548,7 @@ public class DocumentoServiceImpl implements DocumentoService {
 	public List<GeneraContratoResponseDTO> generarContratoConPlantilla(List<GeneraContratoDTO> trabajadores) {
 		String directorioSubida = null;
 
-		PlanConfig config = planConfigService.obtenerConfig(planservice.getPlanActivo().getIdPlan());
+		PlanConfig config = planConfigService.obtenerConfig(planservice.getWorikingPlan().getIdPlan());
 
 		if (config.getUploadDir() == null || config.getUploadDir().equals("")) {
 			throw new PlanConfigErrorException();
@@ -561,7 +562,7 @@ public class DocumentoServiceImpl implements DocumentoService {
 			log.warning("Inicia genera contrato");
 			// carga el fichero de la plantilla de resources
 			String directorioPlantillas = config.getTemplateDir();
-			PlantillaContratoConfig plantillaContrato = plantillaContratoConfigService.obtenerPlantillaActiva(planservice.getPlanActivo());
+			PlantillaContratoConfig plantillaContrato = plantillaContratoConfigService.obtenerPlantillaActiva(planservice.getWorikingPlan());
 			Resource classPahtResource = resourceLoader.getResource("file:" +directorioPlantillas+"\\"+ plantillaContrato.getNombreFicheroPlantilla());
 			File plantilla = classPahtResource.getFile();
 			for (GeneraContratoDTO generaContratoDTO : trabajadores) {
@@ -586,23 +587,26 @@ public class DocumentoServiceImpl implements DocumentoService {
 				formulario = rellenaFormularioConPlantilla(nuevoContrato, formulario, datosFormulario);
 
 				// nombre del fichero
-				String nombreFichero = trabajador.getApellido1().replace(" ", "_") + "_"
-						+ trabajador.getApellido2().replace(" ", "_") + "_" + trabajador.getNombre().replace(" ", "_")
-						+ "_" + trabajador.getDNI() + "_CONTRATO.pdf";
+				String nombreFichero = (trabajador.getApellido1() + "_"
+						+ trabajador.getApellido2() + "_" + trabajador.getNombre()
+						+ "_" + trabajador.getDNI() ).replaceAll("[^a-zA-Z0-9_ÁÉÍÓÚ\\\\]", "_")+ "_CONTRATO.pdf";
 
 				// carpeta
 				// ocupacion del ciudadano
 				Ocupacion ocupacionCiudadano = trabajador.getContrato().getOcupacion();
-				String ocupacion = ocupacionCiudadano.getOcupacion().replace(" ", "_").replace("/", "_") + "\\";
+			
+				String ocupacion = ocupacionCiudadano.getOcupacion().replaceAll("[^a-zA-Z0-9_ÁÉÍÓÚ\\\\]", "_")+ "\\";
+			
+				log.warning(ocupacion);
 				// estado
-				String estado = trabajador.getEstado().replace("/", "_") + "\\";
+				String estado = trabajador.getEstado() + "\\";
 				// forma el nombre de la capeta con apellidos_nombre
-				String nombreCarpeta = estado + ocupacion + trabajador.getApellido1().replace(" ", "_") + "_"
-						+ trabajador.getApellido2().replace(" ", "_") + "_" + trabajador.getNombre().replace(" ", "_");
+				String nombreCarpeta = (estado + ocupacion + trabajador.getApellido1() + "_"
+						+ trabajador.getApellido2() + "_" + trabajador.getNombre()).replaceAll("[^a-zA-Z0-9_ÁÉÍÓÚ\\\\]", "_");
 				// obtiene el path absoluto debe ser S:\PLANES DE
 				// EMPLEO\ocupacion\apellidos_nombre
 				Path fileStorageLocation = Paths.get(directorioSubida + nombreCarpeta).normalize();
-				log.info(fileStorageLocation.toString());
+				log.info( fileStorageLocation.toString());
 				// Intenta crear el directorio si no existe.
 				try {
 					Files.createDirectories(fileStorageLocation);
@@ -611,16 +615,18 @@ public class DocumentoServiceImpl implements DocumentoService {
 				}
 
 				Path fichero = Paths.get(directorioSubida + nombreCarpeta + "\\" + nombreFichero).normalize();
-				log.info(fichero.toString());
+				log.info( fichero.toString());
 				String contratoParaGuardar;
 				if (Files.exists(fichero, LinkOption.NOFOLLOW_LINKS)) {
 					log.info("Existe el fichero");
 					nombreFichero = nombreFichero.replace("_CONTRATO", "_" + Instant.now().toEpochMilli());
 					log.info(nombreFichero);
 					contratoParaGuardar = fileStorageLocation + "\\" + nombreFichero;
+					log.info(contratoParaGuardar.length()+" "+contratoParaGuardar);
 				} else {
 					log.info("no existe");
 					contratoParaGuardar = fileStorageLocation + "\\" + nombreFichero;
+					log.info(contratoParaGuardar.length()+" "+contratoParaGuardar);
 				}
 				;
 				log.warning("Genera contrato guardando el pdf a disco: " + generaContratoDTO.getId());
@@ -631,7 +637,7 @@ public class DocumentoServiceImpl implements DocumentoService {
 						.path(nombreFichero).toUriString();
 
 				Documento documento = new Documento();
-				documento.setIdPlan(planService.getPlanActivo());
+				documento.setIdPlan(planService.getWorikingPlan());
 				documento.setCiudadano(trabajador);
 				documento.setNombre(nombreFichero);
 				documento.setRuta(fileDownladUri);
@@ -663,7 +669,7 @@ public class DocumentoServiceImpl implements DocumentoService {
 	private HashMap<String, String> generarInfoContrato(Ciudadano trabajador, Contrato contrato) {
 
 		PlantillaContratoConfig plantilla = plantillaContratoConfigService
-				.obtenerPlantillaActiva(planservice.getPlanActivo());
+				.obtenerPlantillaActiva(planservice.getWorikingPlan());
 
 		HashMap<String, String> info = new HashMap<String, String>();
 
@@ -701,7 +707,7 @@ public class DocumentoServiceImpl implements DocumentoService {
 		}
 		info.put("diaFirma", diaFirma);
 		info.put("anoFirma", anoFirma);
-		info.put("mesFechaFirma", mesFechaFirma);
+		info.put("mesFechaFirma", mesFechaFirma.toUpperCase());
 		info.put("fechaInicio", fechaInicio);
 		info.put("fechaFinal", fechaFinal);
 
@@ -733,7 +739,7 @@ public class DocumentoServiceImpl implements DocumentoService {
 		// PDTextField field = (PDTextField) formulario.getField("AA0101-DNI");
 
 		PlantillaContratoConfig plantilla = plantillaContratoConfigService
-				.obtenerPlantillaActiva(planservice.getPlanActivo());
+				.obtenerPlantillaActiva(planservice.getWorikingPlan());
 
 		Resource fuente = resourceLoader.getResource("classpath:Arial-BoldMT.ttf");
 		PDFont font = PDType0Font.load(nuevoContrato, fuente.getInputStream(), false);
@@ -841,7 +847,7 @@ public class DocumentoServiceImpl implements DocumentoService {
 		formulario.getField("P2302").setValue("MELILLA");
 
 		formulario.getField("P2303").setValue("" + datosFormulario.get("diaFirma"));
-		formulario.getField("P2304").setValue(datosFormulario.get("mesFirma"));
+		formulario.getField("P2304").setValue(datosFormulario.get("mesFechaFirma"));
 		formulario.getField("P2305").setValue("" + datosFormulario.get("anoFirma"));
 
 		formulario.flatten();
@@ -1175,7 +1181,7 @@ public class DocumentoServiceImpl implements DocumentoService {
 	@Override
 	public List<GeneraContratoResponseDTO> generarPresentacion(List<GeneraPresentacionDTO> trabajadores) {
 		List<GeneraContratoResponseDTO> listaPresentacionesGeneradas = new ArrayList<>();
-		PlanConfig config = planConfigService.obtenerConfig(planservice.getPlanActivo().getIdPlan());
+		PlanConfig config = planConfigService.obtenerConfig(planservice.getWorikingPlan().getIdPlan());
 		try {
 			// carga el fichero de la plantilla de resources
 			Resource classPahtResource = resourceLoader.getResource("classpath:" + plantillaPresentacion);
@@ -1230,18 +1236,18 @@ public class DocumentoServiceImpl implements DocumentoService {
 				formulario.flatten();
 
 				// nombre del fichero
-				String nombreFichero = trabajador.getApellido1() + "_" + trabajador.getApellido2() + "_"
-						+ trabajador.getNombre() + "_" + trabajador.getDNI() + "_PRESENTACION.pdf";
+				String nombreFichero =( trabajador.getApellido1() + "_" + trabajador.getApellido2() + "_"
+						+ trabajador.getNombre() + "_" + trabajador.getDNI() ).replaceAll("[^a-zA-Z0-9_ÁÉÍÓÚ\\\\]", "_")+ "_PRESENTACION.pdf";
 
 				// carpeta
 				// ocupacion del ciudadano
 				Ocupacion ocupacionCiudadano = trabajador.getContrato().getOcupacion();
-				String ocupacion = ocupacionCiudadano.getOcupacion().replace(" ", "_").replace("/", "_") + "\\";
+				String ocupacion = ocupacionCiudadano.getOcupacion().replaceAll("[^a-zA-Z0-9_ÁÉÍÓÚ\\\\]", "_")+ "\\";
 				// estado
-				String estado = trabajador.getEstado().replace("/", "_") + "\\";
+				String estado = trabajador.getEstado() + "\\";
 				// forma el nombre de la capeta con apellidos_nombre
-				String nombreCarpeta = estado + ocupacion + trabajador.getApellido1().replace(" ", "_") + "_"
-						+ trabajador.getApellido2().replace(" ", "_") + "_" + trabajador.getNombre().replace(" ", "_");
+				String nombreCarpeta = (estado + ocupacion + trabajador.getApellido1() + "_"
+						+ trabajador.getApellido2()+ "_" + trabajador.getNombre()).replaceAll("[^a-zA-Z0-9_ÁÉÍÓÚ\\\\]", "_");
 				// obtiene el path absoluto debe ser S:\PLANES DE
 				// EMPLEO\ocupacion\apellidos_nombre
 				Path fileStorageLocation = Paths.get(config.getUploadDir() + nombreCarpeta).toAbsolutePath()
@@ -1270,7 +1276,7 @@ public class DocumentoServiceImpl implements DocumentoService {
 						.path(nombreFichero).toUriString();
 
 				Documento documento = new Documento();
-				documento.setIdPlan(planService.getPlanActivo());
+				documento.setIdPlan(planService.getWorikingPlan());
 				documento.setCiudadano(trabajador);
 				documento.setNombre(nombreFichero);
 				documento.setRuta(fileDownladUri);

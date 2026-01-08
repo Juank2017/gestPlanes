@@ -1,0 +1,944 @@
+{
+    "organismos": [
+        {
+            "idOrganismo": "230",
+            "organismo": "AUTORIDAD PORTUARIA DE MELILLA."
+        },
+        {
+            "idOrganismo": "231",
+            "organismo": "MINISTERIO DE INTERIOR. CENTRO PENITENCIARIO DE MELILLA."
+        },
+        {
+            "idOrganismo": "233",
+            "organismo": "MINISTERIO DE HACIENDA. DELEGACI\u00d3N DE ECONOM\u00cdA Y HACIENDA EN MELILLA."
+        },
+        {
+            "idOrganismo": "234",
+            "organismo": "MINISTERIO DE INTERIOR. COMANDANCIA DE LA GUARDIA CIVIL DE MELILLA."
+        },
+        {
+            "idOrganismo": "240",
+            "organismo": "DELEGACI\u00d3N DEL GOBIERNO"
+        },
+        {
+            "idOrganismo": "241",
+            "organismo": "APOYO ADMINISTRATIVO  E INTERPRETES"
+        },
+        {
+            "idOrganismo": "244",
+            "organismo": "MINISTERIO DE EDUCACI\u00d3N, FORMACI\u00d3N PROFESIONAL Y DEPORTES. DIRECCI\u00d3N PROVINCIAL EN MELILLA."
+        },
+        {
+            "idOrganismo": "245",
+            "organismo": "INSTITUTO DE MAYORES Y SERVICIOS SOCIALES. DIRECCI\u00d3N TERRITORIAL DE MELILLA."
+        }
+    ],
+    "categorias": [
+        {
+            "idCategoria": "1098",
+            "categoria": "E2",
+            "salario_grupo": "5",
+            "salario_id_Plan": "29"
+        },
+        {
+            "idCategoria": "1099",
+            "categoria": "M1",
+            "salario_grupo": "3",
+            "salario_id_Plan": "29"
+        },
+        {
+            "idCategoria": "1101",
+            "categoria": "E1",
+            "salario_grupo": "6",
+            "salario_id_Plan": "29"
+        },
+        {
+            "idCategoria": "1104",
+            "categoria": "M2",
+            "salario_grupo": "2",
+            "salario_id_Plan": "29"
+        },
+        {
+            "idCategoria": "1108",
+            "categoria": "E0",
+            "salario_grupo": "10",
+            "salario_id_Plan": "29"
+        },
+        {
+            "idCategoria": "1122",
+            "categoria": "M2",
+            "salario_grupo": "1",
+            "salario_id_Plan": "29"
+        }
+    ],
+    "ocupaciones": [
+        {
+            "idOcupacion": "1218",
+            "codigoSepe": "32021044",
+            "ocupacion": "JEFE DE EQUIPO DE OBRA \/COORDINADORES DE CENTRO",
+            "categoria_idcategoria": "1098",
+            "idPlan": "29"
+        },
+        {
+            "idOcupacion": "1219",
+            "codigoSepe": "26241050",
+            "ocupacion": "T\u00c9CNICOS SUPERIORES EN RECURSOS HUMANOS, EN GENERAL",
+            "categoria_idcategoria": "1099",
+            "idPlan": "29"
+        },
+        {
+            "idOcupacion": "1220",
+            "codigoSepe": "36131039",
+            "ocupacion": "TECNICO SUPERIOR ADMINISTRATIVO, EN GENERAL",
+            "categoria_idcategoria": "1099",
+            "idPlan": "29"
+        },
+        {
+            "idOcupacion": "1221",
+            "codigoSepe": "94311020",
+            "ocupacion": "ORDENANZA",
+            "categoria_idcategoria": "1101",
+            "idPlan": "29"
+        },
+        {
+            "idOcupacion": "1222",
+            "codigoSepe": "44121057",
+            "ocupacion": "RECEPCIONISTA\/TELEFONISTA OFICINA, EN GENERAL",
+            "categoria_idcategoria": "1101",
+            "idPlan": "29"
+        },
+        {
+            "idOcupacion": "1223",
+            "codigoSepe": "42101022",
+            "ocupacion": "DIGITALIZADOR DE DOCUMENTOS",
+            "categoria_idcategoria": "1098",
+            "idPlan": "29"
+        },
+        {
+            "idOcupacion": "1224",
+            "codigoSepe": "33261047",
+            "ocupacion": "T\u00c9CNICOS EN PREVENCI\u00d3N DE RIESGOS LABORALES",
+            "categoria_idcategoria": "1104",
+            "idPlan": "29"
+        },
+        {
+            "idOcupacion": "1225",
+            "codigoSepe": "33261047",
+            "ocupacion": "T\u00c9CNICO EN PREVENCI\u00d3N PRP",
+            "categoria_idcategoria": "1099",
+            "idPlan": "29"
+        },
+        {
+            "idOcupacion": "1226",
+            "codigoSepe": "75211071",
+            "ocupacion": "ELECTRICISTA DE MANTENIMIENTO Y REPARACI\u00d3N, EN GENERAL",
+            "categoria_idcategoria": "1098",
+            "idPlan": "29"
+        },
+        {
+            "idOcupacion": "1227",
+            "codigoSepe": "71211015",
+            "ocupacion": "ALBA\u00d1IL",
+            "categoria_idcategoria": "1101",
+            "idPlan": "29"
+        },
+        {
+            "idOcupacion": "1228",
+            "codigoSepe": "92101050",
+            "ocupacion": "LIMPIADORES",
+            "categoria_idcategoria": "1108",
+            "idPlan": "29"
+        },
+        {
+            "idOcupacion": "1229",
+            "codigoSepe": "72311035",
+            "ocupacion": "PINTOR Y\/O EMPAPELADOR",
+            "categoria_idcategoria": "1101",
+            "idPlan": "29"
+        },
+        {
+            "idOcupacion": "1230",
+            "codigoSepe": "96021013",
+            "ocupacion": "PE\u00d3N DE LA CONSTRUCCI\u00d3N",
+            "categoria_idcategoria": "1108",
+            "idPlan": "29"
+        },
+        {
+            "idOcupacion": "1231",
+            "codigoSepe": "72211012",
+            "ocupacion": "FONTANERO",
+            "categoria_idcategoria": "1101",
+            "idPlan": "29"
+        },
+        {
+            "idOcupacion": "1232",
+            "codigoSepe": "33141024",
+            "ocupacion": "T\u00c9CNICOS DE LABORATORIO SANITARIO, EN GENERAL",
+            "categoria_idcategoria": "1099",
+            "idPlan": "29"
+        },
+        {
+            "idOcupacion": "1233",
+            "codigoSepe": "9310",
+            "ocupacion": "AYUDANTE DE COCINA",
+            "categoria_idcategoria": "1114",
+            "idPlan": "29"
+        },
+        {
+            "idOcupacion": "1234",
+            "codigoSepe": "38121032",
+            "ocupacion": "T\u00c9CNICO MEDIO INSTALACI\u00d3N MANTENIMIENTO Y REPARACI\u00d3N EQUIPOS INFORM\u00c1TICOS",
+            "categoria_idcategoria": "1098",
+            "idPlan": "29"
+        },
+        {
+            "idOcupacion": "1235",
+            "codigoSepe": "28231035",
+            "ocupacion": "PSICOLOGOS, EN GENERAL",
+            "categoria_idcategoria": "1122",
+            "idPlan": "29"
+        },
+        {
+            "idOcupacion": "1236",
+            "codigoSepe": "21211010",
+            "ocupacion": "ENFERMEROS DE CUIDADOS GENERALES",
+            "categoria_idcategoria": "1104",
+            "idPlan": "29"
+        },
+        {
+            "idOcupacion": "1237",
+            "codigoSepe": "28241065",
+            "ocupacion": "TRABAJADORES SOCIALES",
+            "categoria_idcategoria": "1104",
+            "idPlan": "29"
+        },
+        {
+            "idOcupacion": "1238",
+            "codigoSepe": "22401012",
+            "ocupacion": "MAESTROS DE EDUCACI\u00d3N PRIMARIA, EN GENERAL",
+            "categoria_idcategoria": "1104",
+            "idPlan": "29"
+        },
+        {
+            "idOcupacion": "1239",
+            "codigoSepe": "37231077",
+            "ocupacion": "MONITORES Y\/O ANIMADORES DEPORTIVOS (TSEAS)",
+            "categoria_idcategoria": "1099",
+            "idPlan": "29"
+        },
+        {
+            "idOcupacion": "1240",
+            "codigoSepe": "58111037",
+            "ocupacion": "PELUQUEROS UNISEX",
+            "categoria_idcategoria": "1098",
+            "idPlan": "29"
+        },
+        {
+            "idOcupacion": "1241",
+            "codigoSepe": "61201028",
+            "ocupacion": "JARDINERO, EN GENERAL",
+            "categoria_idcategoria": "1101",
+            "idPlan": "29"
+        },
+        {
+            "idOcupacion": "1242",
+            "codigoSepe": "21541016",
+            "ocupacion": "LOGOPEDAS",
+            "categoria_idcategoria": "1104",
+            "idPlan": "29"
+        },
+        {
+            "idOcupacion": "1243",
+            "codigoSepe": "21521010",
+            "ocupacion": "FISIOTERAPEUTA, EN GENERAL",
+            "categoria_idcategoria": "1104",
+            "idPlan": "29"
+        },
+        {
+            "idOcupacion": "1244",
+            "codigoSepe": "21561012",
+            "ocupacion": "TERAPEUTAS OCUPACIONALES",
+            "categoria_idcategoria": "1104",
+            "idPlan": "29"
+        },
+        {
+            "idOcupacion": "1245",
+            "codigoSepe": "56211012",
+            "ocupacion": "AUXILIAR DE FARMACIA",
+            "categoria_idcategoria": "1098",
+            "idPlan": "29"
+        },
+        {
+            "idOcupacion": "1246",
+            "codigoSepe": "56111013",
+            "ocupacion": "AUXILIAR DE ENFERMER\u00cdA",
+            "categoria_idcategoria": "1098",
+            "idPlan": "29"
+        },
+        {
+            "idOcupacion": "1247",
+            "codigoSepe": "56291025",
+            "ocupacion": "CUIDADOR DE PERSONAS CON DISCAPACIDAD",
+            "categoria_idcategoria": "1098",
+            "idPlan": "29"
+        },
+        {
+            "idOcupacion": "1248",
+            "codigoSepe": "37241034",
+            "ocupacion": "MONITOR DE EDUCACI\u00d3N Y TIEMPO LIBRE (TECO)",
+            "categoria_idcategoria": "1098",
+            "idPlan": "29"
+        },
+        {
+            "idOcupacion": "1249",
+            "codigoSepe": "58121030",
+            "ocupacion": "ESTETICISTA",
+            "categoria_idcategoria": "1098",
+            "idPlan": "29"
+        },
+        {
+            "idOcupacion": "1250",
+            "codigoSepe": "56291016",
+            "ocupacion": "CELADOR",
+            "categoria_idcategoria": "1101",
+            "idPlan": "29"
+        },
+        {
+            "idOcupacion": "1251",
+            "codigoSepe": "98111024",
+            "ocupacion": "MOZO DE CARGA Y DESCARGA",
+            "categoria_idcategoria": "1108",
+            "idPlan": "29"
+        },
+        {
+            "idOcupacion": "1252",
+            "codigoSepe": "92101027",
+            "ocupacion": "CAMARERO DE PISOS (HOSTELER\u00cdA)",
+            "categoria_idcategoria": "1108",
+            "idPlan": "29"
+        },
+        {
+            "idOcupacion": "1253",
+            "codigoSepe": "74011034",
+            "ocupacion": "MEC\u00c1NICOS DE MANTENIMIENTO Y REPARACI\u00d3N DE AUTOMOCI\u00d3N, EN GENERAL",
+            "categoria_idcategoria": "1101",
+            "idPlan": "29"
+        },
+        {
+            "idOcupacion": "1254",
+            "codigoSepe": "75211091",
+            "ocupacion": "ELECTRICISTAS Y\/O ELECTR\u00d3NICOS DE AUTOMOCI\u00d3N, EN GENERAL",
+            "categoria_idcategoria": "1098",
+            "idPlan": "29"
+        },
+        {
+            "idOcupacion": "1255",
+            "codigoSepe": "73131063",
+            "ocupacion": "CHAPISTAS-PINTORES DE VEH\u00cdCULOS",
+            "categoria_idcategoria": "1101",
+            "idPlan": "29"
+        },
+        {
+            "idOcupacion": "1256",
+            "codigoSepe": "28241056",
+            "ocupacion": "EDUCADOR SOCIAL",
+            "categoria_idcategoria": "1104",
+            "idPlan": "29"
+        },
+        {
+            "idOcupacion": "1257",
+            "codigoSepe": "22511010",
+            "ocupacion": "MAESTROS DE EDUCACI\u00d3N INFANTIL",
+            "categoria_idcategoria": "1104",
+            "idPlan": "29"
+        },
+        {
+            "idOcupacion": "1258",
+            "codigoSepe": "22401012",
+            "ocupacion": "MAESTROS DE EDUCACI\u00d3N PRIMARIA, CON MENCION EN IDIOMAS(INGL\u00c9S)",
+            "categoria_idcategoria": "1104",
+            "idPlan": "29"
+        },
+        {
+            "idOcupacion": "1259",
+            "codigoSepe": "38121014",
+            "ocupacion": "TECNICO SUPERIOR EN INFORMATICA DE GESTION",
+            "categoria_idcategoria": "1099",
+            "idPlan": "29"
+        },
+        {
+            "idOcupacion": "1260",
+            "codigoSepe": "37311016",
+            "ocupacion": "FOTOGRAFOS EN GENERAL",
+            "categoria_idcategoria": "1099",
+            "idPlan": "29"
+        },
+        {
+            "idOcupacion": "1261",
+            "codigoSepe": "29231038",
+            "ocupacion": "INT\u00c9RPRETES DE LA LENGUA DE SIGNOS",
+            "categoria_idcategoria": "1099",
+            "idPlan": "29"
+        },
+        {
+            "idOcupacion": "1262",
+            "codigoSepe": "37131050",
+            "ocupacion": "MEDIADORES SOCIALES Y COMUNICATIVOS DE PERSONAS SORDAS O SORDOCIEGAS O CON \nDIFICULTADES DE COMUNICACI\u00d3N, LENGUAJE Y HABLA",
+            "categoria_idcategoria": "1099",
+            "idPlan": "29"
+        },
+        {
+            "idOcupacion": "1263",
+            "codigoSepe": "22521013",
+            "ocupacion": "TECNICO SUPERIOR EN EDUCACI\u00d3N INFANTIL",
+            "categoria_idcategoria": "1099",
+            "idPlan": "29"
+        },
+        {
+            "idOcupacion": "1264",
+            "codigoSepe": "29231074",
+            "ocupacion": "TRADUCTOR-INTERPRETE (AUXILIAR DE CONVERSACI\u00d3N EN LENGUA INGLESA)",
+            "categoria_idcategoria": "1098",
+            "idPlan": "29"
+        },
+        {
+            "idOcupacion": "1267",
+            "codigoSepe": "59421076",
+            "ocupacion": "VIGILANTE, EN GENERAL",
+            "categoria_idcategoria": "1101",
+            "idPlan": "29"
+        },
+        {
+            "idOcupacion": "1268",
+            "codigoSepe": "23111017",
+            "ocupacion": "MAESTROS EN EDUCACI\u00d3N ESPECIAL, EN GENERAL",
+            "categoria_idcategoria": "1104",
+            "idPlan": "29"
+        },
+        {
+            "idOcupacion": "1269",
+            "codigoSepe": "37131069",
+            "ocupacion": "T\u00c9CNICOS EN INTEGRACI\u00d3N SOCIAL",
+            "categoria_idcategoria": "1099",
+            "idPlan": "29"
+        },
+        {
+            "idOcupacion": "1270",
+            "codigoSepe": "29231074",
+            "ocupacion": "TRADUCTOR INT\u00c9RPRETE TAMAZIGT",
+            "categoria_idcategoria": "1098",
+            "idPlan": "29"
+        },
+        {
+            "idOcupacion": "1271",
+            "codigoSepe": "44121039",
+            "ocupacion": "EMPLEADOS DE INFORMACI\u00d3N EN AEROPUERTOS, ESTACIONES O SIMILARES",
+            "categoria_idcategoria": "1098",
+            "idPlan": "29"
+        },
+        {
+            "idOcupacion": "1272",
+            "codigoSepe": "44121039",
+            "ocupacion": "EMPLEADOS DE INFORMACI\u00d3N EN AEROPUERTOS, ESTACIONES O SIMILARES CON TAMAZIGH",
+            "categoria_idcategoria": "1098",
+            "idPlan": "29"
+        }
+    ],
+    "datosPlan": [
+        {
+            "proyecto_organismo_idorganismo": "230",
+            "ocupacion_idocupacion": "1227",
+            "n_trabajadores": "4"
+        },
+        {
+            "proyecto_organismo_idorganismo": "230",
+            "ocupacion_idocupacion": "1218",
+            "n_trabajadores": "1"
+        },
+        {
+            "proyecto_organismo_idorganismo": "230",
+            "ocupacion_idocupacion": "1229",
+            "n_trabajadores": "5"
+        },
+        {
+            "proyecto_organismo_idorganismo": "230",
+            "ocupacion_idocupacion": "1223",
+            "n_trabajadores": "5"
+        },
+        {
+            "proyecto_organismo_idorganismo": "230",
+            "ocupacion_idocupacion": "1220",
+            "n_trabajadores": "3"
+        },
+        {
+            "proyecto_organismo_idorganismo": "230",
+            "ocupacion_idocupacion": "1222",
+            "n_trabajadores": "2"
+        },
+        {
+            "proyecto_organismo_idorganismo": "230",
+            "ocupacion_idocupacion": "1234",
+            "n_trabajadores": "2"
+        },
+        {
+            "proyecto_organismo_idorganismo": "231",
+            "ocupacion_idocupacion": "1235",
+            "n_trabajadores": "1"
+        },
+        {
+            "proyecto_organismo_idorganismo": "231",
+            "ocupacion_idocupacion": "1236",
+            "n_trabajadores": "2"
+        },
+        {
+            "proyecto_organismo_idorganismo": "231",
+            "ocupacion_idocupacion": "1237",
+            "n_trabajadores": "1"
+        },
+        {
+            "proyecto_organismo_idorganismo": "231",
+            "ocupacion_idocupacion": "1238",
+            "n_trabajadores": "2"
+        },
+        {
+            "proyecto_organismo_idorganismo": "231",
+            "ocupacion_idocupacion": "1239",
+            "n_trabajadores": "2"
+        },
+        {
+            "proyecto_organismo_idorganismo": "231",
+            "ocupacion_idocupacion": "1240",
+            "n_trabajadores": "1"
+        },
+        {
+            "proyecto_organismo_idorganismo": "231",
+            "ocupacion_idocupacion": "1241",
+            "n_trabajadores": "2"
+        },
+        {
+            "proyecto_organismo_idorganismo": "231",
+            "ocupacion_idocupacion": "1228",
+            "n_trabajadores": "4"
+        },
+        {
+            "proyecto_organismo_idorganismo": "233",
+            "ocupacion_idocupacion": "1223",
+            "n_trabajadores": "4"
+        },
+        {
+            "proyecto_organismo_idorganismo": "234",
+            "ocupacion_idocupacion": "1226",
+            "n_trabajadores": "2"
+        },
+        {
+            "proyecto_organismo_idorganismo": "234",
+            "ocupacion_idocupacion": "1227",
+            "n_trabajadores": "2"
+        },
+        {
+            "proyecto_organismo_idorganismo": "234",
+            "ocupacion_idocupacion": "1228",
+            "n_trabajadores": "2"
+        },
+        {
+            "proyecto_organismo_idorganismo": "234",
+            "ocupacion_idocupacion": "1229",
+            "n_trabajadores": "2"
+        },
+        {
+            "proyecto_organismo_idorganismo": "234",
+            "ocupacion_idocupacion": "1253",
+            "n_trabajadores": "1"
+        },
+        {
+            "proyecto_organismo_idorganismo": "234",
+            "ocupacion_idocupacion": "1254",
+            "n_trabajadores": "1"
+        },
+        {
+            "proyecto_organismo_idorganismo": "234",
+            "ocupacion_idocupacion": "1255",
+            "n_trabajadores": "1"
+        },
+        {
+            "proyecto_organismo_idorganismo": "234",
+            "ocupacion_idocupacion": "1231",
+            "n_trabajadores": "1"
+        },
+        {
+            "proyecto_organismo_idorganismo": "240",
+            "ocupacion_idocupacion": "1218",
+            "n_trabajadores": "27"
+        },
+        {
+            "proyecto_organismo_idorganismo": "240",
+            "ocupacion_idocupacion": "1219",
+            "n_trabajadores": "3"
+        },
+        {
+            "proyecto_organismo_idorganismo": "240",
+            "ocupacion_idocupacion": "1220",
+            "n_trabajadores": "10"
+        },
+        {
+            "proyecto_organismo_idorganismo": "240",
+            "ocupacion_idocupacion": "1221",
+            "n_trabajadores": "3"
+        },
+        {
+            "proyecto_organismo_idorganismo": "240",
+            "ocupacion_idocupacion": "1222",
+            "n_trabajadores": "2"
+        },
+        {
+            "proyecto_organismo_idorganismo": "240",
+            "ocupacion_idocupacion": "1223",
+            "n_trabajadores": "3"
+        },
+        {
+            "proyecto_organismo_idorganismo": "240",
+            "ocupacion_idocupacion": "1224",
+            "n_trabajadores": "8"
+        },
+        {
+            "proyecto_organismo_idorganismo": "240",
+            "ocupacion_idocupacion": "1225",
+            "n_trabajadores": "10"
+        },
+        {
+            "proyecto_organismo_idorganismo": "240",
+            "ocupacion_idocupacion": "1226",
+            "n_trabajadores": "1"
+        },
+        {
+            "proyecto_organismo_idorganismo": "240",
+            "ocupacion_idocupacion": "1227",
+            "n_trabajadores": "1"
+        },
+        {
+            "proyecto_organismo_idorganismo": "240",
+            "ocupacion_idocupacion": "1228",
+            "n_trabajadores": "2"
+        },
+        {
+            "proyecto_organismo_idorganismo": "240",
+            "ocupacion_idocupacion": "1229",
+            "n_trabajadores": "2"
+        },
+        {
+            "proyecto_organismo_idorganismo": "240",
+            "ocupacion_idocupacion": "1230",
+            "n_trabajadores": "3"
+        },
+        {
+            "proyecto_organismo_idorganismo": "240",
+            "ocupacion_idocupacion": "1231",
+            "n_trabajadores": "1"
+        },
+        {
+            "proyecto_organismo_idorganismo": "240",
+            "ocupacion_idocupacion": "1223",
+            "n_trabajadores": "2"
+        },
+        {
+            "proyecto_organismo_idorganismo": "240",
+            "ocupacion_idocupacion": "1232",
+            "n_trabajadores": "2"
+        },
+        {
+            "proyecto_organismo_idorganismo": "241",
+            "ocupacion_idocupacion": "1270",
+            "n_trabajadores": "6"
+        },
+        {
+            "proyecto_organismo_idorganismo": "241",
+            "ocupacion_idocupacion": "1220",
+            "n_trabajadores": "1"
+        },
+        {
+            "proyecto_organismo_idorganismo": "241",
+            "ocupacion_idocupacion": "1241",
+            "n_trabajadores": "1"
+        },
+        {
+            "proyecto_organismo_idorganismo": "241",
+            "ocupacion_idocupacion": "1229",
+            "n_trabajadores": "3"
+        },
+        {
+            "proyecto_organismo_idorganismo": "241",
+            "ocupacion_idocupacion": "1271",
+            "n_trabajadores": "4"
+        },
+        {
+            "proyecto_organismo_idorganismo": "241",
+            "ocupacion_idocupacion": "1272",
+            "n_trabajadores": "4"
+        },
+        {
+            "proyecto_organismo_idorganismo": "244",
+            "ocupacion_idocupacion": "1227",
+            "n_trabajadores": "6"
+        },
+        {
+            "proyecto_organismo_idorganismo": "244",
+            "ocupacion_idocupacion": "1229",
+            "n_trabajadores": "4"
+        },
+        {
+            "proyecto_organismo_idorganismo": "244",
+            "ocupacion_idocupacion": "1226",
+            "n_trabajadores": "2"
+        },
+        {
+            "proyecto_organismo_idorganismo": "244",
+            "ocupacion_idocupacion": "1231",
+            "n_trabajadores": "2"
+        },
+        {
+            "proyecto_organismo_idorganismo": "244",
+            "ocupacion_idocupacion": "1218",
+            "n_trabajadores": "2"
+        },
+        {
+            "proyecto_organismo_idorganismo": "244",
+            "ocupacion_idocupacion": "1241",
+            "n_trabajadores": "6"
+        },
+        {
+            "proyecto_organismo_idorganismo": "244",
+            "ocupacion_idocupacion": "1228",
+            "n_trabajadores": "68"
+        },
+        {
+            "proyecto_organismo_idorganismo": "244",
+            "ocupacion_idocupacion": "1230",
+            "n_trabajadores": "4"
+        },
+        {
+            "proyecto_organismo_idorganismo": "244",
+            "ocupacion_idocupacion": "1256",
+            "n_trabajadores": "10"
+        },
+        {
+            "proyecto_organismo_idorganismo": "244",
+            "ocupacion_idocupacion": "1236",
+            "n_trabajadores": "10"
+        },
+        {
+            "proyecto_organismo_idorganismo": "244",
+            "ocupacion_idocupacion": "1243",
+            "n_trabajadores": "5"
+        },
+        {
+            "proyecto_organismo_idorganismo": "244",
+            "ocupacion_idocupacion": "1257",
+            "n_trabajadores": "70"
+        },
+        {
+            "proyecto_organismo_idorganismo": "244",
+            "ocupacion_idocupacion": "1238",
+            "n_trabajadores": "80"
+        },
+        {
+            "proyecto_organismo_idorganismo": "244",
+            "ocupacion_idocupacion": "1258",
+            "n_trabajadores": "10"
+        },
+        {
+            "proyecto_organismo_idorganismo": "244",
+            "ocupacion_idocupacion": "1239",
+            "n_trabajadores": "25"
+        },
+        {
+            "proyecto_organismo_idorganismo": "244",
+            "ocupacion_idocupacion": "1220",
+            "n_trabajadores": "30"
+        },
+        {
+            "proyecto_organismo_idorganismo": "244",
+            "ocupacion_idocupacion": "1259",
+            "n_trabajadores": "28"
+        },
+        {
+            "proyecto_organismo_idorganismo": "244",
+            "ocupacion_idocupacion": "1260",
+            "n_trabajadores": "1"
+        },
+        {
+            "proyecto_organismo_idorganismo": "244",
+            "ocupacion_idocupacion": "1261",
+            "n_trabajadores": "5"
+        },
+        {
+            "proyecto_organismo_idorganismo": "244",
+            "ocupacion_idocupacion": "1262",
+            "n_trabajadores": "10"
+        },
+        {
+            "proyecto_organismo_idorganismo": "244",
+            "ocupacion_idocupacion": "1263",
+            "n_trabajadores": "75"
+        },
+        {
+            "proyecto_organismo_idorganismo": "244",
+            "ocupacion_idocupacion": "1264",
+            "n_trabajadores": "15"
+        },
+        {
+            "proyecto_organismo_idorganismo": "244",
+            "ocupacion_idocupacion": "1246",
+            "n_trabajadores": "25"
+        },
+        {
+            "proyecto_organismo_idorganismo": "244",
+            "ocupacion_idocupacion": "1247",
+            "n_trabajadores": "25"
+        },
+        {
+            "proyecto_organismo_idorganismo": "244",
+            "ocupacion_idocupacion": "1248",
+            "n_trabajadores": "20"
+        },
+        {
+            "proyecto_organismo_idorganismo": "244",
+            "ocupacion_idocupacion": "1234",
+            "n_trabajadores": "3"
+        },
+        {
+            "proyecto_organismo_idorganismo": "244",
+            "ocupacion_idocupacion": "1221",
+            "n_trabajadores": "50"
+        },
+        {
+            "proyecto_organismo_idorganismo": "244",
+            "ocupacion_idocupacion": "1267",
+            "n_trabajadores": "20"
+        },
+        {
+            "proyecto_organismo_idorganismo": "244",
+            "ocupacion_idocupacion": "1268",
+            "n_trabajadores": "10"
+        },
+        {
+            "proyecto_organismo_idorganismo": "244",
+            "ocupacion_idocupacion": "1269",
+            "n_trabajadores": "25"
+        },
+        {
+            "proyecto_organismo_idorganismo": "245",
+            "ocupacion_idocupacion": "1235",
+            "n_trabajadores": "6"
+        },
+        {
+            "proyecto_organismo_idorganismo": "245",
+            "ocupacion_idocupacion": "1242",
+            "n_trabajadores": "2"
+        },
+        {
+            "proyecto_organismo_idorganismo": "245",
+            "ocupacion_idocupacion": "1236",
+            "n_trabajadores": "20"
+        },
+        {
+            "proyecto_organismo_idorganismo": "245",
+            "ocupacion_idocupacion": "1237",
+            "n_trabajadores": "16"
+        },
+        {
+            "proyecto_organismo_idorganismo": "245",
+            "ocupacion_idocupacion": "1243",
+            "n_trabajadores": "4"
+        },
+        {
+            "proyecto_organismo_idorganismo": "245",
+            "ocupacion_idocupacion": "1244",
+            "n_trabajadores": "12"
+        },
+        {
+            "proyecto_organismo_idorganismo": "245",
+            "ocupacion_idocupacion": "1220",
+            "n_trabajadores": "20"
+        },
+        {
+            "proyecto_organismo_idorganismo": "245",
+            "ocupacion_idocupacion": "1239",
+            "n_trabajadores": "6"
+        },
+        {
+            "proyecto_organismo_idorganismo": "245",
+            "ocupacion_idocupacion": "1245",
+            "n_trabajadores": "3"
+        },
+        {
+            "proyecto_organismo_idorganismo": "245",
+            "ocupacion_idocupacion": "1246",
+            "n_trabajadores": "75"
+        },
+        {
+            "proyecto_organismo_idorganismo": "245",
+            "ocupacion_idocupacion": "1247",
+            "n_trabajadores": "25"
+        },
+        {
+            "proyecto_organismo_idorganismo": "245",
+            "ocupacion_idocupacion": "1248",
+            "n_trabajadores": "10"
+        },
+        {
+            "proyecto_organismo_idorganismo": "245",
+            "ocupacion_idocupacion": "1249",
+            "n_trabajadores": "4"
+        },
+        {
+            "proyecto_organismo_idorganismo": "245",
+            "ocupacion_idocupacion": "1240",
+            "n_trabajadores": "4"
+        },
+        {
+            "proyecto_organismo_idorganismo": "245",
+            "ocupacion_idocupacion": "1250",
+            "n_trabajadores": "28"
+        },
+        {
+            "proyecto_organismo_idorganismo": "245",
+            "ocupacion_idocupacion": "1221",
+            "n_trabajadores": "9"
+        },
+        {
+            "proyecto_organismo_idorganismo": "245",
+            "ocupacion_idocupacion": "1251",
+            "n_trabajadores": "6"
+        },
+        {
+            "proyecto_organismo_idorganismo": "245",
+            "ocupacion_idocupacion": "1252",
+            "n_trabajadores": "40"
+        },
+        {
+            "proyecto_organismo_idorganismo": "245",
+            "ocupacion_idocupacion": "1241",
+            "n_trabajadores": "3"
+        },
+        {
+            "proyecto_organismo_idorganismo": "245",
+            "ocupacion_idocupacion": "1229",
+            "n_trabajadores": "6"
+        },
+        {
+            "proyecto_organismo_idorganismo": "245",
+            "ocupacion_idocupacion": "1227",
+            "n_trabajadores": "2"
+        },
+        {
+            "proyecto_organismo_idorganismo": "245",
+            "ocupacion_idocupacion": "1230",
+            "n_trabajadores": "10"
+        },
+        {
+            "proyecto_organismo_idorganismo": "245",
+            "ocupacion_idocupacion": "1228",
+            "n_trabajadores": "11"
+        }
+    ]
+}

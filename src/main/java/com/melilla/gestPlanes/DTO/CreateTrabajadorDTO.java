@@ -20,7 +20,7 @@ public class CreateTrabajadorDTO {
 	String seguridadSocial;
 	LocalDate fechaNacimiento;
 	String ccc;
-	
+	long idPlan;
 	String estado;
 	//Orden en el listado del SEPE
 	int numeroOrdenSepe;

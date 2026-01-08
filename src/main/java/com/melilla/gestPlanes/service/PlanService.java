@@ -21,6 +21,8 @@ public interface PlanService {
 	
 	Plan getPlanActivo();
 	
+	Plan getWorikingPlan();
+	
 	Plan asignarConfiguracion(PlanConfig config);
 	
 	String copiarPlan(Long idPlan, String nombreNuevoPlan);

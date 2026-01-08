@@ -78,7 +78,7 @@ public class EquipoServiceImpl implements EquipoService {
 		try {
 			e.setNombreEquipo(equipo.getNombreEquipo());
 			if (equipo.getDNI() != null) {
-				Ciudadano jefe = ciudadanoRepository.findByDNIAndEstadoAndIdPlan( equipo.getDNI(),"CONTRATADO/A",planService.getPlanActivo()).orElseThrow(()-> new CiudadanoNotFoundException(null));
+				Ciudadano jefe = ciudadanoRepository.findByDNIAndEstadoAndIdPlan( equipo.getDNI(),"CONTRATADO/A",planService.getWorikingPlan()).orElseThrow(()-> new CiudadanoNotFoundException(null));
 				if (jefe == null) {
 					throw new CiudadanoNotFoundException(1l);
 
@@ -94,7 +94,7 @@ public class EquipoServiceImpl implements EquipoService {
 				e.setJefeEquipo(null);
 			}
 
-			e.setIdPlan(planService.getPlanActivo());
+			e.setIdPlan(planService.getWorikingPlan());
 			return equipoRepository.save(e);
 		} catch (IncorrectResultSizeDataAccessException e2) {
 			log.warning(e2.getMessage());

@@ -7,7 +7,7 @@ import com.melilla.gestPlanes.model.config.PlanConfig;
 
 public interface PlanConfigService {
 	
-	PlanConfig crearConfig(Plan plan);
+	PlanConfig crearConfig();
 	
 	PlanConfig actualizarConfig(updateConfigDTO config);
 	

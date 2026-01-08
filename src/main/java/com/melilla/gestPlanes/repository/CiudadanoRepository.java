@@ -27,6 +27,7 @@ public interface CiudadanoRepository extends JpaRepository<Ciudadano, Long>, Rev
 	List<Ciudadano> findAllByDNIAndEstado(String DNI, String estado);
 
 	List<Ciudadano> findAllByDNIAndEstadoAndIdPlan(String DNI, String estado, Plan plan);
+	List<Ciudadano> findAllByDNIAndEstadoAndIdPlanAndDeleted(String DNI, String estado, Plan plan,boolean deleted);
 	List<Ciudadano> findAllByIdPlan( Plan plan);
 
 	boolean existsByDNI(String DNI);

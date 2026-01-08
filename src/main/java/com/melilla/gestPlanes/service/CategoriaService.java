@@ -3,6 +3,7 @@ package com.melilla.gestPlanes.service;
 import java.util.List;
 
 import com.melilla.gestPlanes.DTO.CrearCategoriaDTO;
+import com.melilla.gestPlanes.DTO.EditarCategoriaDTO;
 import com.melilla.gestPlanes.model.Categoria;
 
 public interface CategoriaService {
@@ -12,7 +13,7 @@ public interface CategoriaService {
 	
 	List<Categoria>obtenerCategoriasPlan(Long idPlan);
 	
-	Categoria editarCategoria(Categoria categoria);
+	Categoria editarCategoria(EditarCategoriaDTO categoria);
 	
 	void borrarCategoria(Long idCategoria);
 	
