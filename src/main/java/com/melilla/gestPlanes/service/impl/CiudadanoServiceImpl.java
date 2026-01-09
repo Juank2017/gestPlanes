@@ -149,7 +149,7 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 				.entidad((trabajador.getEntidad() != null) ? organismoRepository.findById(trabajador.getEntidad())
 						.orElseThrow(() -> new OrganismoNotFoundException(trabajador.getEntidad())) : null)
 
-				.destino((trabajador.getDestino() != null) ? destinoRepository.findById(trabajador.getDestino())
+				.destino((trabajador.getDestino() != null && trabajador.getDestino() > 0  ) ? destinoRepository.findById(trabajador.getDestino())
 						.orElseThrow(() -> new DestinoNotFoundException(trabajador.getDestino())) : null)
 				.categoria((trabajador.getCategoria() != null) ? categoriaRepository.findById(trabajador.getCategoria())
 						.orElseThrow(() -> new CategoriaNotFoundException(trabajador.getCategoria())) : null)
