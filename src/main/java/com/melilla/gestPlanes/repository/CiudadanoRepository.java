@@ -23,6 +23,8 @@ public interface CiudadanoRepository extends JpaRepository<Ciudadano, Long>, Rev
 	Optional<Ciudadano> findByDNIAndEstado(String DNI, String estado);
 	
 	Optional<Ciudadano>findByDNIAndEstadoAndIdPlan(String DNI, String estado,Plan plan);
+	
+	List<Ciudadano>findByDNIAndIdPlan(String DNI, Plan plan);
 
 	List<Ciudadano> findAllByDNIAndEstado(String DNI, String estado);
 

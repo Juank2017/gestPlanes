@@ -215,6 +215,17 @@ public class CiudadanoController {
 		return ResponseEntity.ok(response);
 	}
 
+	@GetMapping("/trabajador/{dni}")
+	public ResponseEntity<ApiResponse> obtenerTrabajadorPorDNI(@PathVariable String dni){
+		
+		ApiResponse response = new ApiResponse();
+
+		response.getPayload().addAll(ciudadanoService.getAllTrabajadorByDNI(dni));
+
+		return ResponseEntity.ok(response);
+		
+	}
+	
 	@PostMapping("/crearCiudadano")
 	public ResponseEntity<ApiResponse> crearCiudadano(@RequestBody Ciudadano ciudadano) {
 

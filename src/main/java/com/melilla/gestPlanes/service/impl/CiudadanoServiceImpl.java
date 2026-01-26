@@ -631,6 +631,12 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 
 		return ciudadanoRepository.findAllByDNIAndEstadoAndIdPlan(DNI, estado, planService.getWorikingPlan());
 	}
+	
+	@Override
+	public List<Ciudadano> getAllTrabajadorByDNI(String DNI) {
+		
+		return ciudadanoRepository.findByDNIAndIdPlan(DNI, planService.getWorikingPlan());
+	}
 
 	@Override
 	public boolean existeTrabajadorEnEstadoContratado(String DNI) {
@@ -761,5 +767,7 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 
 		return resultado;
 	}
+
+
 
 }

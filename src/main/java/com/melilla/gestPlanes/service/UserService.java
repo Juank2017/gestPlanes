@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import com.melilla.gestPlanes.DTO.CreateUserDTO;
 import com.melilla.gestPlanes.DTO.EditUserDTO;
 import com.melilla.gestPlanes.DTO.UserDTO;
+import com.melilla.gestPlanes.DTO.UserWithRolDTO;
 import com.melilla.gestPlanes.model.Plan;
 import com.melilla.gestPlanes.model.User;
 
@@ -22,6 +23,8 @@ public interface UserService {
 	List<UserDTO> getUsers();
 	
 	UserDTO getUser(Long idUsuario);
+	
+	List<UserWithRolDTO> getUsersWithRoles();
 	
 	void deleteUser(Long idUsuario);
 	

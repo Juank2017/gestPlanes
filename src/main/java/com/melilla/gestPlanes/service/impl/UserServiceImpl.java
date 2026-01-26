@@ -7,6 +7,8 @@ import java.util.ArrayList;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import javax.management.relation.RoleNotFoundException;
 
@@ -20,6 +22,7 @@ import org.springframework.stereotype.Service;
 import com.melilla.gestPlanes.DTO.CreateUserDTO;
 import com.melilla.gestPlanes.DTO.EditUserDTO;
 import com.melilla.gestPlanes.DTO.UserDTO;
+import com.melilla.gestPlanes.DTO.UserWithRolDTO;
 import com.melilla.gestPlanes.exceptions.exceptions.DataStaleException;
 import com.melilla.gestPlanes.exceptions.exceptions.PlanNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.UserNotFoundException;
@@ -166,5 +169,31 @@ public class UserServiceImpl implements UserService {
 		usuario = userRepository.save(usuario);
 		
 		return getUser(usuario.getId());
+	}
+
+
+	@Override
+	public List<UserWithRolDTO> getUsersWithRoles() {
+		List<User> lista = userRepository.findAll();
+		List<UserWithRolDTO> usuarios = new ArrayList<UserWithRolDTO>();
+		
+		for (User user : lista) {
+			
+			UserWithRolDTO usuario = new UserWithRolDTO();
+			
+			usuario.setUserName(user.getUsername());
+			usuario.setDeleted(user.isDeleted());
+			usuario.setEnabled(user.isEnabled());
+			
+			usuario.setRoles(user.getRoles().stream().map((r)->r.getRoleName()).collect(Collectors.joining(",")));
+			
+			usuario.setId(user.getId());
+			
+			usuarios.add(usuario);
+			
+		}
+		
+		
+		return usuarios;
 	}
 }

@@ -24,6 +24,7 @@ public interface CiudadanoService {
 	Ciudadano getTrabajadorByDNIAndEstado(String DNI,String estado);
 	
 	List<Ciudadano>getAllTrabajadorByDNIAndEstado(String DNI, String estado);
+	List<Ciudadano>getAllTrabajadorByDNI(String DNI);
 
 	Ciudadano crearCiudadano(Ciudadano ciudadano);
 	

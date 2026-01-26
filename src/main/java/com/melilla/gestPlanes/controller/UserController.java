@@ -43,7 +43,7 @@ public class UserController {
 	ResponseEntity<ApiResponse>getUsuarios(){
 		ApiResponse response = new ApiResponse();
 		response.setEstado(HttpStatus.OK);
-		response.getPayload().add(userService.getUsers());
+		response.getPayload().add(userService.getUsersWithRoles());
 		response.getPayload().add(roleService.getAllRoles());
 		response.setMensaje("Listado de usuarios");
 		return ResponseEntity.ok(response);
