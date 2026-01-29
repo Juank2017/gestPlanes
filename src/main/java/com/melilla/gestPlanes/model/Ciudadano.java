@@ -102,9 +102,9 @@ public class Ciudadano {
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", locale = "es_ES" )
 	private LocalDate fechaRegistro;
 	
-	@NotAudited
-	@OneToMany(mappedBy = "ciudadano", cascade= CascadeType.ALL)
-	private List<EmbargoCiudadano> embargos;
+	//@NotAudited
+	//@OneToMany(mappedBy = "ciudadano", cascade= CascadeType.ALL)
+	//private List<EmbargoCiudadano> embargos;
 	
 //	@JsonBackReference
 //	@ManyToMany(mappedBy = "interesados")
@@ -128,6 +128,11 @@ public class Ciudadano {
 	@OneToMany(mappedBy = "ciudadano", cascade = CascadeType.ALL)
 	@NotAudited
 	private List<NotaCiudadano> notas;
+	
+	@JsonManagedReference
+	@OneToMany(mappedBy = "ciudadano", cascade = CascadeType.ALL)
+	@NotAudited
+	private List<ParteBaja> partes;
 	
 	@OneToOne
 	@JoinColumn(name="idPlan")
