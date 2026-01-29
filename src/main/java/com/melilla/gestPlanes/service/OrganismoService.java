@@ -4,11 +4,12 @@ import java.util.List;
 
 import com.melilla.gestPlanes.DTO.CrearOrganismoDTO;
 import com.melilla.gestPlanes.DTO.EditarOrganismoDTO;
+import com.melilla.gestPlanes.DTO.OrganismoDTO;
 import com.melilla.gestPlanes.model.Organismo;
 
 public interface OrganismoService {
 	
-	List<Organismo>obtenerOrganismosPorPlan(Long idPlan);
+	List<OrganismoDTO>obtenerOrganismosPorPlan(Long idPlan);
 	
 	Organismo crearOrganismo(CrearOrganismoDTO orgamismo);
 	

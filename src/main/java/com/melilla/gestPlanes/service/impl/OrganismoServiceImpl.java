@@ -9,10 +9,12 @@ import org.springframework.stereotype.Service;
 
 import com.melilla.gestPlanes.DTO.CrearOrganismoDTO;
 import com.melilla.gestPlanes.DTO.EditarOrganismoDTO;
+import com.melilla.gestPlanes.DTO.OrganismoDTO;
 import com.melilla.gestPlanes.exceptions.exceptions.OrganismoConContratosException;
 import com.melilla.gestPlanes.exceptions.exceptions.OrganismoNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.PlanNotFoundException;
 import com.melilla.gestPlanes.model.Organismo;
+import com.melilla.gestPlanes.repository.CategoriaRepository;
 import com.melilla.gestPlanes.repository.OrganismoRepository;
 import com.melilla.gestPlanes.service.OrganismoService;
 import com.melilla.gestPlanes.service.PlanService;
@@ -23,16 +25,38 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class OrganismoServiceImpl implements OrganismoService {
 
+   
+
 	@Autowired
 	private OrganismoRepository organismoRepository;
 	
 	@Autowired
 	private PlanService planService;
+
+ 
 	
 	@Override
-	public List<Organismo> obtenerOrganismosPorPlan(Long idPlan) {
+	public List<OrganismoDTO> obtenerOrganismosPorPlan(Long idPlan) {
 		
-		return organismoRepository.findAllByIdPlanIdPlanOrderByNombreCortoOrganismoAsc(idPlan);
+		List<OrganismoDTO> salida = new ArrayList<OrganismoDTO>();
+		
+		List<Organismo> organismos = organismoRepository.findAllByIdPlanIdPlanOrderByNombreCortoOrganismoAsc(idPlan);
+		
+		Iterator<Organismo> it = organismos.iterator();
+		
+		while (it.hasNext()) {
+			Organismo o = it.next();
+			OrganismoDTO organismoDTO = new OrganismoDTO();
+			organismoDTO.setNombreCortoOrganismo(o.getNombreCortoOrganismo());
+			organismoDTO.setOrganismo(o.getOrganismo());
+			organismoDTO.setDeleted(o.isDeleted());
+			organismoDTO.setIdOrganismo(o.getIdOrganismo());
+			
+			salida.add(organismoDTO);
+		
+		}
+		
+		return salida;
 	}
 
 
@@ -69,16 +93,16 @@ public class OrganismoServiceImpl implements OrganismoService {
 	@Override
 	public List<Organismo> copiarDeOtroPlan(long idPlan) {
 		
-		List<Organismo> organismos = obtenerOrganismosPorPlan(idPlan);
+		List<OrganismoDTO> organismos = obtenerOrganismosPorPlan(idPlan);
 		
 		List<Organismo> organismosCopiados = new ArrayList<Organismo>();
 		
-		Iterator<Organismo> it = organismos.iterator();
+		Iterator<OrganismoDTO> it = organismos.iterator();
 		
 		while (it.hasNext()) {
 			Organismo nuevoPlan =new Organismo();
 			
-			Organismo organismoAntiguoPlan = it.next();
+			OrganismoDTO organismoAntiguoPlan = it.next();
 			
 			nuevoPlan.setOrganismo(organismoAntiguoPlan.getOrganismo());
 			nuevoPlan.setNombreCortoOrganismo(organismoAntiguoPlan.getNombreCortoOrganismo());
