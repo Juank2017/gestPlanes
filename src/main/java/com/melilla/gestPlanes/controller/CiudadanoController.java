@@ -20,6 +20,7 @@ import com.melilla.gestPlanes.DTO.CiudadanoOrdenBusqueda;
 import com.melilla.gestPlanes.DTO.CreateTrabajadorDTO;
 import com.melilla.gestPlanes.DTO.ModificaEquipoDTO;
 import com.melilla.gestPlanes.DTO.ModificaEstadoDTO;
+import com.melilla.gestPlanes.DTO.ModificaEstadoPrevencionDTO;
 import com.melilla.gestPlanes.DTO.ModificaFechaContratoDTO;
 import com.melilla.gestPlanes.DTO.ModificarOrganismoContrato;
 import com.melilla.gestPlanes.DTO.TrabajadoresDTO;
@@ -27,7 +28,7 @@ import com.melilla.gestPlanes.DTO.UpdateTrabajadorDTO2;
 import com.melilla.gestPlanes.DTO.listadoTrabajadoresDTO;
 import com.melilla.gestPlanes.model.ApiResponse;
 import com.melilla.gestPlanes.model.Ciudadano;
-
+import com.melilla.gestPlanes.model.enums.TipoModificacionPrevencion;
 import com.melilla.gestPlanes.service.CiudadanoService;
 import com.melilla.gestPlanes.service.PlanService;
 
@@ -118,9 +119,9 @@ public class CiudadanoController {
 				item.setDNI(ciudadano.getDNI());
 				item.setSeguridadSocial(ciudadano.getSeguridadSocial());
 				item.setFechaNacimiento(ciudadano.getFechaNacimiento());
-				item.setAntecedentes(ciudadano.isAntecedentes());
-				item.setAltaSS(ciudadano.isAltaSS());
-				item.setContrata(ciudadano.isContrata());
+				item.setFormacion(ciudadano.isFormacion());
+				item.setEvaluacion(ciudadano.isEvaluacion());
+				item.setReconocimiento(ciudadano.isReconocimiento());
 				item.setEscaneado(ciudadano.isEscaneado());
 				item.setNedaes(ciudadano.isNedaes());
 				item.setSuplente(ciudadano.isSuplente());
@@ -186,9 +187,9 @@ public class CiudadanoController {
 				item.setDNI(ciudadano.getDNI());
 				item.setSeguridadSocial(ciudadano.getSeguridadSocial());
 				item.setFechaNacimiento(ciudadano.getFechaNacimiento());
-				item.setAntecedentes(ciudadano.isAntecedentes());
-				item.setAltaSS(ciudadano.isAltaSS());
-				item.setContrata(ciudadano.isContrata());
+				item.setFormacion(ciudadano.isFormacion());
+				item.setEvaluacion(ciudadano.isEvaluacion());
+				item.setReconocimiento(ciudadano.isReconocimiento());
 				item.setEscaneado(ciudadano.isEscaneado());
 				item.setNedaes(ciudadano.isNedaes());
 				item.setSuplente(ciudadano.isSuplente());
@@ -326,6 +327,39 @@ public class CiudadanoController {
 		response.getPayload().add(
 				listadoCiudadanosToListadoTrabajadoresDTO(ciudadanoService.modificaEquipo(trabajadores)));
 		response.setMensaje("Equipo del trabajador actualizado");
+
+		return ResponseEntity.ok(response);
+	}
+	
+	@PostMapping("/modificaFormacion")
+	public ResponseEntity<ApiResponse>modificarEstadoFormacion(@RequestBody List<ModificaEstadoPrevencionDTO> trabajadores){
+		ApiResponse response = new ApiResponse();
+
+		response.getPayload().add(
+				listadoCiudadanosToListadoTrabajadoresDTO(ciudadanoService.modificaPrevencion(trabajadores, TipoModificacionPrevencion.FORMACION.getName())));
+		response.setMensaje("Realizado");
+
+		return ResponseEntity.ok(response);
+	}
+	
+	@PostMapping("/modificaEvaluacion")
+	public ResponseEntity<ApiResponse>modificarEstadoEvaluacion(@RequestBody List<ModificaEstadoPrevencionDTO> trabajadores){
+		ApiResponse response = new ApiResponse();
+
+		response.getPayload().add(
+				listadoCiudadanosToListadoTrabajadoresDTO(ciudadanoService.modificaPrevencion(trabajadores, TipoModificacionPrevencion.EVALUACION.getName())));
+		response.setMensaje("Realizado");
+
+		return ResponseEntity.ok(response);
+	}
+	
+	@PostMapping("/modificaReconocimiento")
+	public ResponseEntity<ApiResponse>modificarEstadoReconocimiento(@RequestBody List<ModificaEstadoPrevencionDTO> trabajadores){
+		ApiResponse response = new ApiResponse();
+
+		response.getPayload().add(
+				listadoCiudadanosToListadoTrabajadoresDTO(ciudadanoService.modificaPrevencion(trabajadores, TipoModificacionPrevencion.RECONOCIMIENTO.getName())));
+		response.setMensaje("Realizado");
 
 		return ResponseEntity.ok(response);
 	}

@@ -8,12 +8,14 @@ import com.melilla.gestPlanes.DTO.CiudadanoOrdenBusqueda;
 import com.melilla.gestPlanes.DTO.CreateTrabajadorDTO;
 import com.melilla.gestPlanes.DTO.ModificaEquipoDTO;
 import com.melilla.gestPlanes.DTO.ModificaEstadoDTO;
+import com.melilla.gestPlanes.DTO.ModificaEstadoPrevencionDTO;
 import com.melilla.gestPlanes.DTO.ModificaFechaContratoDTO;
 import com.melilla.gestPlanes.DTO.ModificarOrganismoContrato;
 import com.melilla.gestPlanes.DTO.UpdateTrabajadorDTO2;
 import com.melilla.gestPlanes.DTO.VacantesResponseDTO;
 import com.melilla.gestPlanes.model.Ciudadano;
 import com.melilla.gestPlanes.model.Plan;
+import com.melilla.gestPlanes.model.enums.TipoModificacionPrevencion;
 
 public interface CiudadanoService {
 	
@@ -50,6 +52,10 @@ public interface CiudadanoService {
 	
 	List<Ciudadano>modificaEquipo(List<ModificaEquipoDTO>trabajadores);
 	
+	List<Ciudadano>modificaPrevencion(List<ModificaEstadoPrevencionDTO>trabajadores, String tipo);
+	
+	
+	
 	int trabajadoresContratadosOrganismoOcupacion(Long idOrganismo,Long idOcupacion,List<String>estados);
 	
 	int trabajadoresPrevistosOrganismoOcupacion(Long idOrganismo,Long idOcupacion);
@@ -67,4 +73,6 @@ public interface CiudadanoService {
 	List<Ciudadano> ciudadanosPorDNI(String dni);
 	
 	Ciudadano saveCiudadano(Ciudadano ciudadano);
+	
+	
 }

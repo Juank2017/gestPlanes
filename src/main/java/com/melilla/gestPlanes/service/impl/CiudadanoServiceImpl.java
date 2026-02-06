@@ -26,6 +26,7 @@ import com.melilla.gestPlanes.DTO.CiudadanoOrdenBusqueda;
 import com.melilla.gestPlanes.DTO.CreateTrabajadorDTO;
 import com.melilla.gestPlanes.DTO.ModificaEquipoDTO;
 import com.melilla.gestPlanes.DTO.ModificaEstadoDTO;
+import com.melilla.gestPlanes.DTO.ModificaEstadoPrevencionDTO;
 import com.melilla.gestPlanes.DTO.ModificaFechaContratoDTO;
 import com.melilla.gestPlanes.DTO.ModificarOrganismoContrato;
 import com.melilla.gestPlanes.DTO.UpdateTrabajadorDTO2;
@@ -47,6 +48,8 @@ import com.melilla.gestPlanes.model.Organismo;
 import com.melilla.gestPlanes.model.OrganismoOcupacion;
 import com.melilla.gestPlanes.model.Plan;
 import com.melilla.gestPlanes.model.User;
+import com.melilla.gestPlanes.model.enums.EstadoCiudadano;
+import com.melilla.gestPlanes.model.enums.TipoModificacionPrevencion;
 import com.melilla.gestPlanes.repository.CategoriaRepository;
 import com.melilla.gestPlanes.repository.CiudadanoRepository;
 import com.melilla.gestPlanes.repository.CiudadanoSpecificationBuilder;
@@ -280,9 +283,9 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 		ciudadano.setBajaLaboral(trabajador.isBajaLaboral());
 		ciudadano.setBajaMaternal(trabajador.isBajaMaternal());
 		ciudadano.setSinClausula(trabajador.isSinClausula());
-		ciudadano.setAntecedentes(trabajador.isAntecedentes());
-		ciudadano.setAltaSS(trabajador.isAltaSS());
-		ciudadano.setContrata(trabajador.isContrata());
+		ciudadano.setFormacion(trabajador.isAntecedentes());
+		ciudadano.setEvaluacion(trabajador.isAltaSS());
+		ciudadano.setReconocimiento(trabajador.isContrata());
 		ciudadano.setEscaneado(trabajador.isEscaneado());
 		ciudadano.setNedaes(trabajador.isNedaes());
 		ciudadano.setSuplente(trabajador.isSuplente());
@@ -766,6 +769,52 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 		}
 
 		return resultado;
+	}
+
+	@Override
+	public List<Ciudadano> modificaPrevencion(List<ModificaEstadoPrevencionDTO> trabajadores,
+			String tipo) {
+		
+		List<Ciudadano> modificados = new ArrayList<Ciudadano>();
+		
+		Iterator<ModificaEstadoPrevencionDTO> it = trabajadores.iterator();
+		
+		while (it.hasNext()) {
+			ModificaEstadoPrevencionDTO trabajador = it.next();
+			
+			Ciudadano ciudadano = ciudadanoRepository.findByDNIAndEstadoAndIdPlan(trabajador.getDNI(), EstadoCiudadano.CONTRATADO.getName(), planService.getWorikingPlan()).orElseThrow(()->new CiudadanoNotFoundException(null));
+			
+			
+			
+			switch (tipo) {
+			case "FORMACION"   : {
+				
+				ciudadano.setFormacion(!ciudadano.isFormacion());
+			}
+			break;
+			case "EVALUACION"   : {
+				
+				ciudadano.setEvaluacion(!ciudadano.isEvaluacion());
+			}
+			break;
+			case "RECONOCIMIENTO"   : {
+				
+				ciudadano.setReconocimiento(!ciudadano.isReconocimiento());
+			}
+			break;
+			default:
+				throw new IllegalArgumentException("Unexpected value: " + tipo);
+			}
+			
+			
+			
+			ciudadanoRepository.save(ciudadano);
+			
+			modificados.add(ciudadano);
+			
+		}
+		
+		return modificados;
 	}
 
 

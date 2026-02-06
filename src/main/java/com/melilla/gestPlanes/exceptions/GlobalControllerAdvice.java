@@ -26,6 +26,7 @@ import com.melilla.gestPlanes.exceptions.exceptions.EquipoNoEncontradoException;
 import com.melilla.gestPlanes.exceptions.exceptions.ExpedienteNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.FileParseException;
 import com.melilla.gestPlanes.exceptions.exceptions.FileStorageException;
+import com.melilla.gestPlanes.exceptions.exceptions.GenericNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.MyFileNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.NotaNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.OcupacionConContratosException;
@@ -102,7 +103,7 @@ public class GlobalControllerAdvice extends ResponseEntityExceptionHandler {
 		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(apiError);
 	}
 
-	@ExceptionHandler( {OrganismoOcupacionNotFoundException.class, VacacionesNotFoundException.class, PlantillaContratoConfigNotFoundException.class, PlanConfigNotFoundException.class, NotaNotFoundException.class, DocumentoNotFoundException.class, OcupacionNotFoundException.class,
+	@ExceptionHandler( {GenericNotFoundException.class, OrganismoOcupacionNotFoundException.class, VacacionesNotFoundException.class, PlantillaContratoConfigNotFoundException.class, PlanConfigNotFoundException.class, NotaNotFoundException.class, DocumentoNotFoundException.class, OcupacionNotFoundException.class,
 			CategoriaNotFoundException.class, DestinoNotFoundException.class, OrganismoNotFoundException.class,
 			ExpedienteNotFoundException.class, CiudadanoNotFoundException.class, MyFileNotFoundException.class,
 			PlanNotFoundException.class, UserNotFoundException.class, RoleNotFoundException.class, EquipoNoEncontradoException.class, SalarioNotFoundException.class })

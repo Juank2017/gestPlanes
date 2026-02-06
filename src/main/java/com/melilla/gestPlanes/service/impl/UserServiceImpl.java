@@ -73,7 +73,7 @@ public class UserServiceImpl implements UserService {
 		nuevoUsuario.setActive(usuario.isEnabled());
 		nuevoUsuario.setUserName(usuario.getUserName());
 		nuevoUsuario.setPassword(passwordEncoder.encode(password));
-		
+		nuevoUsuario.setPlanDeTrabajo(planService.getWorikingPlan().getIdPlan());
 	
 		List<Role> roles = new ArrayList<Role>();
 		try {

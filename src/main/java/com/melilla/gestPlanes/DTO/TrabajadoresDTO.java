@@ -54,9 +54,9 @@ private Long idCiudadano;
 	
 	boolean sinClausula;
 
-	boolean antecedentes;
-	boolean altaSS;
-	boolean contrata;
+	boolean formacion;
+	boolean evaluacion;
+	boolean reconocimiento;
 	boolean escaneado;
 	boolean nedaes;
 	boolean suplente;
