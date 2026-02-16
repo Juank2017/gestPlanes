@@ -58,14 +58,16 @@ public class CiudadanoSpecification implements Specification<Ciudadano> {
 		Join<Contrato, Destino> destinoContrato = contratoCiudadano.join("destino", JoinType.LEFT);
 		Join<Plan, Ciudadano> planCiudadano = root.join("idPlan", JoinType.LEFT);
 
-	//	Plan plan = planService.getPlanActivo();
+		// Plan plan = planService.getPlanActivo();
 
-	//	log.info(plan.getIdPlan().toString());
+		// log.info(plan.getIdPlan().toString());
 
 		Predicate likePredicate = null;
 		Predicate fechaPredicate = null;
 		Predicate equalPredicate = null;
-		//Predicate planPredicate = builder.equal(root.get("idPlan"), plan.getIdPlan());
+		Predicate booleanPredicate = null;
+		// Predicate planPredicate = builder.equal(root.get("idPlan"),
+		// plan.getIdPlan());
 		Predicate deletePredicate = builder.equal(root.get("deleted"), false);
 
 		switch (criteria.getId()) {
@@ -103,6 +105,27 @@ public class CiudadanoSpecification implements Specification<Ciudadano> {
 			break;
 		}
 
+		case "formacion": {
+
+			boolean valor = (criteria.getValue().equalsIgnoreCase("si"));
+
+			likePredicate = builder.equal(root.get("formacion"), valor);
+			break;
+		}
+		case "evaluacion": {
+
+			boolean valor = (criteria.getValue().equalsIgnoreCase("si"));
+
+			likePredicate = builder.equal(root.get("evaluacion"), valor);
+			break;
+		}
+		case "reconocimiento": {
+
+			boolean valor = (criteria.getValue().equalsIgnoreCase("si"));
+
+			likePredicate = builder.equal(root.get("reconocimiento"), valor);
+			break;
+		}
 		case "ocupacion": {
 
 			likePredicate = builder.like(ocupacionContrato.get("ocupacion"), "%" + criteria.getValue() + "%");

@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.melilla.gestPlanes.DTO.CrearParteBajaDTO;
 import com.melilla.gestPlanes.DTO.CrearParteConfirmacionDTO;
+import com.melilla.gestPlanes.DTO.EditaContingenciaDTO;
 import com.melilla.gestPlanes.DTO.EditaParteBajaDTO;
 import com.melilla.gestPlanes.model.ApiResponse;
 import com.melilla.gestPlanes.service.ParteBajaService;
@@ -13,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -94,7 +96,48 @@ public class ParteBajaController {
 		
 	}
 	
+	@GetMapping("/parteBaja/tiposContingencia")
+	public ResponseEntity<ApiResponse> listadoTiposContingencia(){
+		ApiResponse response = new ApiResponse();
+		
+		response.setEstado(HttpStatus.OK);
+		response.getPayload().addAll(parteBajaService.listaContingencias());
+		response.setMensaje("Lista de tipos de contingencia.");
+		
+		return ResponseEntity.ok(response);
+	}
 	
+	@PostMapping("/parteBaja/CrearContingencia")
+	public ResponseEntity<ApiResponse> creaContingencia(@RequestBody String contingencia){
+		ApiResponse response = new ApiResponse();
+		
+		response.setEstado(HttpStatus.OK);
+		response.getPayload().add(parteBajaService.crearContingencia(contingencia));
+		response.setMensaje("Tipo de contingencia creado.");
+		
+		return ResponseEntity.ok(response);
+	}
 	
+	@PostMapping("/parteBaja/EditarContingencia")
+	public ResponseEntity<ApiResponse> editaContingencia(@RequestBody EditaContingenciaDTO contingencia){
+	ApiResponse response = new ApiResponse();
+		
+		response.setEstado(HttpStatus.OK);
+		response.getPayload().add(parteBajaService.editarContingencia(contingencia));
+		response.setMensaje("Editado.");
+		
+		return ResponseEntity.ok(response);
+	}
+	
+	@DeleteMapping("/parteBaja/borraContingencia/{idTipoContingencia}")
+	public ResponseEntity<ApiResponse>borraContingencia(@PathVariable long idTipoContingencia){
+ApiResponse response = new ApiResponse();
+		
+		response.setEstado(HttpStatus.OK);
+		parteBajaService.borraContingencia(idTipoContingencia);
+		response.setMensaje("Editado.");
+		
+		return ResponseEntity.ok(response);
+	}
 
 }

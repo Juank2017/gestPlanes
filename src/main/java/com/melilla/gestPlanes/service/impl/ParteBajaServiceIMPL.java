@@ -7,11 +7,13 @@ import org.springframework.stereotype.Service;
 
 import com.melilla.gestPlanes.DTO.CrearParteBajaDTO;
 import com.melilla.gestPlanes.DTO.CrearParteConfirmacionDTO;
+import com.melilla.gestPlanes.DTO.EditaContingenciaDTO;
 import com.melilla.gestPlanes.DTO.EditaParteBajaDTO;
 import com.melilla.gestPlanes.exceptions.exceptions.CiudadanoNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.GenericNotFoundException;
 import com.melilla.gestPlanes.model.ParteBaja;
 import com.melilla.gestPlanes.model.ParteConfirmacion;
+import com.melilla.gestPlanes.model.TipoContingencia;
 import com.melilla.gestPlanes.repository.CiudadanoRepository;
 import com.melilla.gestPlanes.repository.ParteBajaRepository;
 import com.melilla.gestPlanes.repository.ParteConfirmacionRepository;
@@ -32,6 +34,8 @@ public class ParteBajaServiceIMPL implements ParteBajaService {
 	
 	@Autowired
 	private ParteConfirmacionRepository parteConfirmacionRepository;
+	
+	
 
 	@Override
 	public List<ParteBaja> obtenerPartesBajaTrabajador(long idTrabajador) {
@@ -90,6 +94,44 @@ public class ParteBajaServiceIMPL implements ParteBajaService {
 		
 		
 		return parteBajaRepository.save(parteBaja);
+	}
+
+	@Override
+	public List<TipoContingencia> listaContingencias() {
+		
+		return tipoContingenciaRepository.findAll();
+	}
+
+	@Override
+	public TipoContingencia crearContingencia(String contingencia) {
+		
+		TipoContingencia nuevoTipo = new TipoContingencia();
+		
+		nuevoTipo.setContingencia(contingencia);
+		
+		
+		return tipoContingenciaRepository.save(nuevoTipo);
+	}
+
+	@Override
+	public TipoContingencia editarContingencia(EditaContingenciaDTO contingencia) {
+		
+		TipoContingencia tipo = tipoContingenciaRepository.findById(contingencia.getIdContingencia()).orElseThrow(()-> new GenericNotFoundException());
+		
+		tipo.setContingencia(contingencia.getContingencia());
+		
+		
+		
+		return tipoContingenciaRepository.save(tipo);
+	}
+
+	@Override
+	public void borraContingencia(long idTipoContingencia) {
+		
+		TipoContingencia tipo = tipoContingenciaRepository.findById(idTipoContingencia).orElseThrow(()-> new GenericNotFoundException());
+		
+		
+		tipoContingenciaRepository.delete(tipo);
 	}
 	
 	

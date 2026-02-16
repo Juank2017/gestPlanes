@@ -4,8 +4,10 @@ import java.util.List;
 
 import com.melilla.gestPlanes.DTO.CrearParteBajaDTO;
 import com.melilla.gestPlanes.DTO.CrearParteConfirmacionDTO;
+import com.melilla.gestPlanes.DTO.EditaContingenciaDTO;
 import com.melilla.gestPlanes.DTO.EditaParteBajaDTO;
 import com.melilla.gestPlanes.model.ParteBaja;
+import com.melilla.gestPlanes.model.TipoContingencia;
 
 public interface ParteBajaService {
 	
@@ -19,6 +21,12 @@ public interface ParteBajaService {
 	
 	ParteBaja insertaParteConfirmacion(CrearParteConfirmacionDTO parte);
 	
+	List<TipoContingencia> listaContingencias();
 	
+	TipoContingencia crearContingencia(String contingencia);
+	
+	TipoContingencia editarContingencia(EditaContingenciaDTO contingencia);
+	
+	void borraContingencia(long idTipoContingencia);
 
 }

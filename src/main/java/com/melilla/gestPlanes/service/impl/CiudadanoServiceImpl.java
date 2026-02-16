@@ -338,11 +338,7 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 						.diasVacaciones(0).duracion(trabajador.getDuracion()).base(trabajador.getBase())
 						.prorratas(trabajador.getProrratas()).residencia(trabajador.getResidencia())
 						.total(trabajador.getTotal()).ciudadano(ciudadano).build();
-				// contrato.setCategoria(new Categoria());
-				// contrato.setOcupacion(new Ocupacion());
-				// contrato.setDestino(new Destino());
-				// contrato.setEntidad(new Organismo());
-				// contrato.setGc(trabajador.getGc().toString());
+			
 
 				contrato = contratoRepository.save(contrato);
 
