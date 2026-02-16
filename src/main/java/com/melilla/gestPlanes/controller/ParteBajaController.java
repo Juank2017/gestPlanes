@@ -36,7 +36,7 @@ public class ParteBajaController {
 		ApiResponse response = new ApiResponse();
 		
 		response.setEstado(HttpStatus.OK);
-		response.getPayload().addAll(parteBajaService.obtenerPartesBajaTrabajador(idTrabajador));
+		response.getPayload().addAll(parteBajaService.obtenerPartesBajaTrabajadorMap(idTrabajador));
 		response.setMensaje("Listado de partes de baja del trabajador con id: "+idTrabajador);
 		
 		return ResponseEntity.ok(response);

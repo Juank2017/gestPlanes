@@ -1,6 +1,10 @@
 package com.melilla.gestPlanes.service.impl;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,6 +45,48 @@ public class ParteBajaServiceIMPL implements ParteBajaService {
 	public List<ParteBaja> obtenerPartesBajaTrabajador(long idTrabajador) {
 		
 		return parteBajaRepository.findAllByCiudadanoIdCiudadano(idTrabajador) ;
+	}
+	
+	@Override
+	public List<Map<String, String>> obtenerPartesBajaTrabajadorMap(long idTrabajador) {
+		
+		List<Map<String,String>> salida = new ArrayList<Map<String,String>>();
+		
+		List<ParteBaja> partes = parteBajaRepository.findAllByCiudadanoIdCiudadano(idTrabajador) ;
+		
+		Iterator<ParteBaja> it = partes.iterator();
+		
+		while (it.hasNext()) {
+			
+			Map<String,String> partePlano = new HashMap<String,String>();
+			
+			ParteBaja parte = it.next(); 
+			
+			partePlano.put("idParteBaja", parte.getIdParteBaja().toString());
+			partePlano.put("fechaInicioBaja", parte.getFechaInicioBaja().toString());
+			partePlano.put("fechaFinBaja", parte.getFechaFinBaja().toString());
+			partePlano.put("contingencia", parte.getContingencia().getContingencia());
+			
+			if(!parte.getPartesConfirmacion().isEmpty()) {
+				
+				List<ParteConfirmacion> partesConfirmacion = parte.getPartesConfirmacion();
+				
+				for (int i = 0; i < partesConfirmacion.size(); i++) {
+					
+					ParteConfirmacion parteConfirmacion = partesConfirmacion.get(i);
+					
+					partePlano.put("conf"+(i+1), parteConfirmacion.getFechaParteConfirmacion().toString());
+					partePlano.put("idConf"+(i+1), parteConfirmacion.getIdParteConfirmacion().toString());
+					
+				}
+				
+				
+			}
+			salida.add(partePlano);
+		}
+		
+		
+		return salida;
 	}
 
 	@Override
@@ -133,6 +179,8 @@ public class ParteBajaServiceIMPL implements ParteBajaService {
 		
 		tipoContingenciaRepository.delete(tipo);
 	}
+
+	
 	
 	
 	

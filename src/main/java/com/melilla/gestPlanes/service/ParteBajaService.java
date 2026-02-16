@@ -1,6 +1,7 @@
 package com.melilla.gestPlanes.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.melilla.gestPlanes.DTO.CrearParteBajaDTO;
 import com.melilla.gestPlanes.DTO.CrearParteConfirmacionDTO;
@@ -12,6 +13,8 @@ import com.melilla.gestPlanes.model.TipoContingencia;
 public interface ParteBajaService {
 	
 	List<ParteBaja> obtenerPartesBajaTrabajador(long idTrabajador);
+	
+	List<Map<String,String>> obtenerPartesBajaTrabajadorMap(long idTrabajador);
 	
 	List<ParteBaja> obtenerPartesBajaTrabajadorPorDNI(String DNI);
 	

@@ -24376,3 +24376,1675 @@ java.lang.NullPointerException: Cannot invoke "String.equals(Object)" because "u
 2026-02-16T14:51:27.092+01:00 DEBUG 28616 --- [http-nio-9092-exec-9] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
 2026-02-16T14:51:27.103+01:00 DEBUG 28616 --- [http-nio-9092-exec-9] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [java.lang.StackOverflowError]
 2026-02-16T14:51:27.104+01:00 DEBUG 28616 --- [http-nio-9092-exec-9] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2026-02-16T21:11:17.987+01:00  INFO 8276 --- [restartedMain] c.m.gestPlanes.GestPlanesApplication     : Starting GestPlanesApplication using Java 21.0.7 with PID 8276 (/Volumes/Disco externo/proyectos/gestPlanes/target/classes started by juank in /Volumes/Disco externo/proyectos/gestPlanes)
+2026-02-16T21:11:17.997+01:00  INFO 8276 --- [restartedMain] c.m.gestPlanes.GestPlanesApplication     : No active profile set, falling back to 1 default profile: "default"
+2026-02-16T21:11:18.010+01:00  INFO 8276 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-02-16T21:11:18.851+01:00  INFO 8276 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-02-16T21:11:18.898+01:00  INFO 8276 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 44 ms. Found 27 JPA repository interfaceinterfaces.
+2026-02-16T21:11:19.206+01:00  INFO 8276 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 9092 (http)
+2026-02-16T21:11:19.209+01:00  INFO 8276 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-02-16T21:11:19.209+01:00  INFO 8276 --- [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.16]
+2026-02-16T21:11:19.230+01:00  INFO 8276 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2026-02-16T21:11:19.230+01:00  INFO 8276 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1220 ms
+2026-02-16T21:11:19.234+01:00 TRACE 8276 --- [restartedMain] o.s.b.w.s.ServletContextInitializerBeans : Added existing Filter initializer bean 'securityFilterChainRegistration'; order=-100, resource=class path resource [org/springframework/boot/autoconfigure/security/servlet/SecurityFilterAutoConfiguration.class]
+2026-02-16T21:11:19.234+01:00 TRACE 8276 --- [restartedMain] o.s.b.w.s.ServletContextInitializerBeans : Added existing Servlet initializer bean 'dispatcherServletRegistration'; order=2147483647, resource=class path resource [org/springframework/boot/autoconfigure/web/servlet/DispatcherServletAutoConfiguration$DispatcherServletRegistrationConfiguration.class]
+2026-02-16T21:11:19.553+01:00  INFO 8276 --- [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-02-16T21:11:19.578+01:00  INFO 8276 --- [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.1.7.Final
+2026-02-16T21:11:19.670+01:00  INFO 8276 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-02-16T21:11:19.706+01:00  INFO 8276 --- [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.mariadb.jdbc.Connection@5d67c4a7
+2026-02-16T21:11:19.707+01:00  INFO 8276 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-02-16T21:11:19.720+01:00  INFO 8276 --- [restartedMain] SQL dialect                              : HHH000400: Using dialect: org.hibernate.dialect.MariaDBDialect
+2026-02-16T21:11:19.730+01:00  INFO 8276 --- [restartedMain] o.h.e.boot.internal.EnversServiceImpl    : Envers integration enabled? : true
+2026-02-16T21:11:19.873+01:00  INFO 8276 --- [restartedMain] o.h.e.c.i.m.AuditMetadataGenerator       : Adding properties for entity: com.melilla.gestPlanes.model.config.PlanConfig
+2026-02-16T21:11:19.874+01:00  INFO 8276 --- [restartedMain] o.h.e.c.i.m.AuditMetadataGenerator       : Adding properties for entity: com.melilla.gestPlanes.model.Plan
+2026-02-16T21:11:19.875+01:00  INFO 8276 --- [restartedMain] o.h.e.c.i.m.AuditMetadataGenerator       : Adding properties for entity: com.melilla.gestPlanes.model.SalarioDetalle
+2026-02-16T21:11:19.875+01:00  INFO 8276 --- [restartedMain] o.h.e.c.i.m.AuditMetadataGenerator       : Adding properties for entity: com.melilla.gestPlanes.model.Contrato
+2026-02-16T21:11:19.875+01:00  INFO 8276 --- [restartedMain] o.h.e.c.i.m.AuditMetadataGenerator       : Adding properties for entity: com.melilla.gestPlanes.model.NotaCiudadano
+2026-02-16T21:11:19.875+01:00  INFO 8276 --- [restartedMain] o.h.e.c.i.m.AuditMetadataGenerator       : Adding properties for entity: com.melilla.gestPlanes.model.Documento
+2026-02-16T21:11:19.876+01:00  INFO 8276 --- [restartedMain] o.h.e.c.i.m.AuditMetadataGenerator       : Adding properties for entity: com.melilla.gestPlanes.model.ParteConfirmacion
+2026-02-16T21:11:19.876+01:00  INFO 8276 --- [restartedMain] o.h.e.c.i.m.AuditMetadataGenerator       : Adding properties for entity: com.melilla.gestPlanes.model.Ciudadano
+2026-02-16T21:11:19.876+01:00  INFO 8276 --- [restartedMain] o.h.e.c.i.m.AuditMetadataGenerator       : Adding properties for entity: com.melilla.gestPlanes.model.config.PlantillaContratoConfig
+2026-02-16T21:11:19.876+01:00  INFO 8276 --- [restartedMain] o.h.e.c.i.m.AuditMetadataGenerator       : Adding properties for entity: com.melilla.gestPlanes.model.ParteBaja
+2026-02-16T21:11:19.876+01:00  INFO 8276 --- [restartedMain] o.h.e.c.i.m.AuditMetadataGenerator       : Adding properties for entity: com.melilla.gestPlanes.model.Salario
+2026-02-16T21:11:19.876+01:00  INFO 8276 --- [restartedMain] o.h.e.c.i.m.AuditMetadataGenerator       : Adding properties for entity: com.melilla.gestPlanes.model.DocumentoPlan
+2026-02-16T21:11:19.878+01:00  INFO 8276 --- [restartedMain] .e.b.i.AdditionalJaxbMappingProducerImpl : Adding JAXB document mapping
+2026-02-16T21:11:19.948+01:00  INFO 8276 --- [restartedMain] org.hibernate.envers.boot                : HHH90005601: Envers-generated HBM mapping...
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<hibernate-mapping auto-import="false" xmlns="http://www.hibernate.org/xsd/orm/hbm">
+    <class discriminator-value="PlanConfig" table="plan_config_AUD" entity-name="com.melilla.gestPlanes.model.config.PlanConfig_AUD" abstract="false">
+        <composite-id name="originalId">
+            <key-property name="idConfig">
+                <column name="id_config"/>
+                <type name="long">
+                    <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                    <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                    <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.Long</param>
+                    <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                    <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.config.PlanConfig</param>
+                    <param name="org.hibernate.type.ParameterType.propertyName">idConfig</param>
+                </type>
+            </key-property>
+            <key-many-to-one class="com.melilla.gestPlanes.envers.CustomRevisionEntity" name="REV">
+                <column name="REV"/>
+            </key-many-to-one>
+        </composite-id>
+        <property insert="true" name="REVTYPE" type="org.hibernate.envers.internal.entities.RevisionTypeType" update="false"/>
+        <many-to-one class="com.melilla.gestPlanes.envers.CustomRevisionEntity" insert="true" name="REVEND" update="true">
+            <column name="REVEND"/>
+        </many-to-one>
+        <property insert="true" name="REVEND_TSTMP" type="timestamp" update="true">
+            <column name="REVEND_TSTMP"/>
+        </property>
+        <property insert="true" name="createdAt" update="false">
+            <column name="created_at"/>
+            <type name="LocalDateTime">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.time.LocalDateTime</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.config.PlanConfig</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">createdAt</param>
+            </type>
+        </property>
+        <property insert="true" name="deleted" type="boolean" update="false">
+            <column name="deleted"/>
+        </property>
+        <property insert="true" name="deletedAt" update="false">
+            <column name="deleted_at"/>
+            <type name="LocalDateTime">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.time.LocalDateTime</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.config.PlanConfig</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">deletedAt</param>
+            </type>
+        </property>
+        <property insert="true" name="tempDir" update="false">
+            <column name="temp_dir"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.config.PlanConfig</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">tempDir</param>
+            </type>
+        </property>
+        <property insert="true" name="templateDir" update="false">
+            <column name="template_dir"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.config.PlanConfig</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">templateDir</param>
+            </type>
+        </property>
+        <property insert="true" name="trashcanDir" update="false">
+            <column name="trashcan_dir"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.config.PlanConfig</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">trashcanDir</param>
+            </type>
+        </property>
+        <property insert="true" name="uploadDir" update="false">
+            <column name="upload_dir"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.config.PlanConfig</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">uploadDir</param>
+            </type>
+        </property>
+    </class>
+</hibernate-mapping>
+
+2026-02-16T21:11:19.953+01:00  INFO 8276 --- [restartedMain] .e.b.i.AdditionalJaxbMappingProducerImpl : Adding JAXB document mapping
+2026-02-16T21:11:19.968+01:00  INFO 8276 --- [restartedMain] org.hibernate.envers.boot                : HHH90005601: Envers-generated HBM mapping...
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<hibernate-mapping auto-import="false" xmlns="http://www.hibernate.org/xsd/orm/hbm">
+    <class discriminator-value="Plan" table="plan_AUD" entity-name="com.melilla.gestPlanes.model.Plan_AUD" abstract="false">
+        <composite-id name="originalId">
+            <key-property name="idPlan">
+                <column name="id_plan"/>
+                <type name="long">
+                    <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                    <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                    <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.Long</param>
+                    <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                    <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.Plan</param>
+                    <param name="org.hibernate.type.ParameterType.propertyName">idPlan</param>
+                </type>
+            </key-property>
+            <key-many-to-one class="com.melilla.gestPlanes.envers.CustomRevisionEntity" name="REV">
+                <column name="REV"/>
+            </key-many-to-one>
+        </composite-id>
+        <property insert="true" name="REVTYPE" type="org.hibernate.envers.internal.entities.RevisionTypeType" update="false"/>
+        <many-to-one class="com.melilla.gestPlanes.envers.CustomRevisionEntity" insert="true" name="REVEND" update="true">
+            <column name="REVEND"/>
+        </many-to-one>
+        <property insert="true" name="REVEND_TSTMP" type="timestamp" update="true">
+            <column name="REVEND_TSTMP"/>
+        </property>
+        <property insert="true" name="activo" type="boolean" update="false">
+            <column name="activo"/>
+        </property>
+        <property insert="true" name="createdAt" update="false">
+            <column name="created_at"/>
+            <type name="LocalDateTime">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.time.LocalDateTime</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.Plan</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">createdAt</param>
+            </type>
+        </property>
+        <property insert="true" name="deleted" type="boolean" update="false">
+            <column name="deleted"/>
+        </property>
+        <property insert="true" name="deletedAt" update="false">
+            <column name="deleted_at"/>
+            <type name="LocalDateTime">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.time.LocalDateTime</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.Plan</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">deletedAt</param>
+            </type>
+        </property>
+        <property insert="true" name="denominacion" update="false">
+            <column name="denominacion"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.Plan</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">denominacion</param>
+            </type>
+        </property>
+        <property insert="true" name="config_idConfig" update="false">
+            <column name="config_id"/>
+            <type name="long">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.Long</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.config.PlanConfig</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">idConfig</param>
+            </type>
+        </property>
+    </class>
+</hibernate-mapping>
+
+2026-02-16T21:11:19.968+01:00  INFO 8276 --- [restartedMain] .e.b.i.AdditionalJaxbMappingProducerImpl : Adding JAXB document mapping
+2026-02-16T21:11:19.981+01:00  INFO 8276 --- [restartedMain] org.hibernate.envers.boot                : HHH90005601: Envers-generated HBM mapping...
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<hibernate-mapping auto-import="false" xmlns="http://www.hibernate.org/xsd/orm/hbm">
+    <class discriminator-value="SalarioDetalle" table="salario_detalle_AUD" entity-name="com.melilla.gestPlanes.model.SalarioDetalle_AUD" abstract="false">
+        <composite-id name="originalId">
+            <key-property name="idSalarioDetalle" type="long">
+                <column name="id_salario_detalle"/>
+            </key-property>
+            <key-many-to-one class="com.melilla.gestPlanes.envers.CustomRevisionEntity" name="REV">
+                <column name="REV"/>
+            </key-many-to-one>
+        </composite-id>
+        <property insert="true" name="REVTYPE" type="org.hibernate.envers.internal.entities.RevisionTypeType" update="false"/>
+        <many-to-one class="com.melilla.gestPlanes.envers.CustomRevisionEntity" insert="true" name="REVEND" update="true">
+            <column name="REVEND"/>
+        </many-to-one>
+        <property insert="true" name="REVEND_TSTMP" type="timestamp" update="true">
+            <column name="REVEND_TSTMP"/>
+        </property>
+        <property insert="true" name="base" update="false">
+            <column name="base"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.SalarioDetalle</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">base</param>
+            </type>
+        </property>
+        <property insert="true" name="createdAt" update="false">
+            <column name="created_at"/>
+            <type name="LocalDateTime">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.time.LocalDateTime</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.SalarioDetalle</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">createdAt</param>
+            </type>
+        </property>
+        <property insert="true" name="deleted" type="boolean" update="false">
+            <column name="deleted"/>
+        </property>
+        <property insert="true" name="deletedAt" update="false">
+            <column name="deleted_at"/>
+            <type name="LocalDateTime">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.time.LocalDateTime</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.SalarioDetalle</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">deletedAt</param>
+            </type>
+        </property>
+        <property insert="true" name="grupo" type="integer" update="false">
+            <column name="grupo"/>
+        </property>
+        <property insert="true" name="prorrata" update="false">
+            <column name="prorrata"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.SalarioDetalle</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">prorrata</param>
+            </type>
+        </property>
+        <property insert="true" name="residencia" update="false">
+            <column name="residencia"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.SalarioDetalle</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">residencia</param>
+            </type>
+        </property>
+        <property insert="true" name="total" update="false">
+            <column name="total"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.SalarioDetalle</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">total</param>
+            </type>
+        </property>
+        <property insert="true" name="salario_idSalario" update="false">
+            <column name="id_salario"/>
+            <type name="long">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.Long</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.Salario</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">idSalario</param>
+            </type>
+        </property>
+    </class>
+</hibernate-mapping>
+
+2026-02-16T21:11:19.981+01:00  INFO 8276 --- [restartedMain] .e.b.i.AdditionalJaxbMappingProducerImpl : Adding JAXB document mapping
+2026-02-16T21:11:19.993+01:00  INFO 8276 --- [restartedMain] org.hibernate.envers.boot                : HHH90005601: Envers-generated HBM mapping...
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<hibernate-mapping auto-import="false" xmlns="http://www.hibernate.org/xsd/orm/hbm">
+    <class discriminator-value="Contrato" table="contrato_AUD" entity-name="com.melilla.gestPlanes.model.Contrato_AUD" abstract="false">
+        <composite-id name="originalId">
+            <key-property name="idContrato">
+                <column name="id_contrato"/>
+                <type name="long">
+                    <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                    <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                    <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.Long</param>
+                    <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                    <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.Contrato</param>
+                    <param name="org.hibernate.type.ParameterType.propertyName">idContrato</param>
+                </type>
+            </key-property>
+            <key-many-to-one class="com.melilla.gestPlanes.envers.CustomRevisionEntity" name="REV">
+                <column name="REV"/>
+            </key-many-to-one>
+        </composite-id>
+        <property insert="true" name="REVTYPE" type="org.hibernate.envers.internal.entities.RevisionTypeType" update="false"/>
+        <many-to-one class="com.melilla.gestPlanes.envers.CustomRevisionEntity" insert="true" name="REVEND" update="true">
+            <column name="REVEND"/>
+        </many-to-one>
+        <property insert="true" name="REVEND_TSTMP" type="timestamp" update="true">
+            <column name="REVEND_TSTMP"/>
+        </property>
+        <property insert="true" name="activo" type="boolean" update="false">
+            <column name="activo"/>
+        </property>
+        <property insert="true" name="base" update="false">
+            <column name="base"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.Contrato</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">base</param>
+            </type>
+        </property>
+        <property insert="true" name="createdAt" update="false">
+            <column name="created_at"/>
+            <type name="LocalDateTime">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.time.LocalDateTime</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.Contrato</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">createdAt</param>
+            </type>
+        </property>
+        <property insert="true" name="deleted" type="boolean" update="false">
+            <column name="deleted"/>
+        </property>
+        <property insert="true" name="deletedAt" update="false">
+            <column name="deleted_at"/>
+            <type name="LocalDateTime">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.time.LocalDateTime</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.Contrato</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">deletedAt</param>
+            </type>
+        </property>
+        <property insert="true" name="diasVacaciones" type="integer" update="false">
+            <column name="dias_vacaciones"/>
+        </property>
+        <property insert="true" name="duracion" type="integer" update="false">
+            <column name="duracion"/>
+        </property>
+        <property insert="true" name="fechaExtincion" update="false">
+            <column name="fecha_extincion"/>
+            <type name="LocalDate">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.time.LocalDate</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.Contrato</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">fechaExtincion</param>
+            </type>
+        </property>
+        <property insert="true" name="fechaFinal" update="false">
+            <column name="fecha_final"/>
+            <type name="LocalDate">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.time.LocalDate</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.Contrato</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">fechaFinal</param>
+            </type>
+        </property>
+        <property insert="true" name="fechaInicio" update="false">
+            <column name="fecha_inicio"/>
+            <type name="LocalDate">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.time.LocalDate</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.Contrato</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">fechaInicio</param>
+            </type>
+        </property>
+        <property insert="true" name="gc" update="false">
+            <column name="gc"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.Contrato</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">gc</param>
+            </type>
+        </property>
+        <property insert="true" name="porcentajeHoras" update="false">
+            <column name="porcentaje_horas"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.Contrato</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">porcentajeHoras</param>
+            </type>
+        </property>
+        <property insert="true" name="prorratas" update="false">
+            <column name="prorratas"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.Contrato</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">prorratas</param>
+            </type>
+        </property>
+        <property insert="true" name="residencia" update="false">
+            <column name="residencia"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.Contrato</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">residencia</param>
+            </type>
+        </property>
+        <property insert="true" name="total" update="false">
+            <column name="total"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.Contrato</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">total</param>
+            </type>
+        </property>
+        <property insert="true" name="turno" update="false">
+            <column name="turno"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.Contrato</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">turno</param>
+            </type>
+        </property>
+        <property insert="true" name="ciudadano_idCiudadano" update="false">
+            <column name="id_ciudadano"/>
+            <type name="long">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.Long</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.Ciudadano</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">idCiudadano</param>
+            </type>
+        </property>
+        <property insert="true" name="salario_idSalario" update="false">
+            <column name="id_salario"/>
+            <type name="long">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.Long</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.Salario</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">idSalario</param>
+            </type>
+        </property>
+    </class>
+</hibernate-mapping>
+
+2026-02-16T21:11:19.994+01:00  INFO 8276 --- [restartedMain] .e.b.i.AdditionalJaxbMappingProducerImpl : Adding JAXB document mapping
+2026-02-16T21:11:20.005+01:00  INFO 8276 --- [restartedMain] org.hibernate.envers.boot                : HHH90005601: Envers-generated HBM mapping...
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<hibernate-mapping auto-import="false" xmlns="http://www.hibernate.org/xsd/orm/hbm">
+    <class discriminator-value="NotaCiudadano" table="nota_ciudadano_AUD" entity-name="com.melilla.gestPlanes.model.NotaCiudadano_AUD" abstract="false">
+        <composite-id name="originalId">
+            <key-property name="idNota">
+                <column name="id_nota"/>
+                <type name="long">
+                    <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                    <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                    <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.Long</param>
+                    <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                    <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.NotaCiudadano</param>
+                    <param name="org.hibernate.type.ParameterType.propertyName">idNota</param>
+                </type>
+            </key-property>
+            <key-many-to-one class="com.melilla.gestPlanes.envers.CustomRevisionEntity" name="REV">
+                <column name="REV"/>
+            </key-many-to-one>
+        </composite-id>
+        <property insert="true" name="REVTYPE" type="org.hibernate.envers.internal.entities.RevisionTypeType" update="false"/>
+        <many-to-one class="com.melilla.gestPlanes.envers.CustomRevisionEntity" insert="true" name="REVEND" update="true">
+            <column name="REVEND"/>
+        </many-to-one>
+        <property insert="true" name="REVEND_TSTMP" type="timestamp" update="true">
+            <column name="REVEND_TSTMP"/>
+        </property>
+        <property insert="true" name="asunto" update="false">
+            <column name="asunto"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.NotaCiudadano</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">asunto</param>
+            </type>
+        </property>
+        <property insert="true" name="createdAt" update="false">
+            <column name="created_at"/>
+            <type name="LocalDateTime">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.time.LocalDateTime</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.NotaCiudadano</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">createdAt</param>
+            </type>
+        </property>
+        <property insert="true" name="deleted" type="boolean" update="false">
+            <column name="deleted"/>
+        </property>
+        <property insert="true" name="deletedAt" update="false">
+            <column name="deleted_at"/>
+            <type name="LocalDateTime">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.time.LocalDateTime</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.NotaCiudadano</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">deletedAt</param>
+            </type>
+        </property>
+        <property insert="true" name="fechaNota" update="false">
+            <column name="fecha_nota"/>
+            <type name="LocalDate">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.time.LocalDate</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.NotaCiudadano</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">fechaNota</param>
+            </type>
+        </property>
+        <property insert="true" name="nota" update="false">
+            <column name="nota"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.NotaCiudadano</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">nota</param>
+            </type>
+        </property>
+        <property insert="true" name="pinned" type="boolean" update="false">
+            <column name="pinned"/>
+        </property>
+        <property insert="true" name="ciudadano_idCiudadano" update="false">
+            <column name="id_ciudadano"/>
+            <type name="long">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.Long</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.Ciudadano</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">idCiudadano</param>
+            </type>
+        </property>
+    </class>
+</hibernate-mapping>
+
+2026-02-16T21:11:20.005+01:00  INFO 8276 --- [restartedMain] .e.b.i.AdditionalJaxbMappingProducerImpl : Adding JAXB document mapping
+2026-02-16T21:11:20.019+01:00  INFO 8276 --- [restartedMain] org.hibernate.envers.boot                : HHH90005601: Envers-generated HBM mapping...
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<hibernate-mapping auto-import="false" xmlns="http://www.hibernate.org/xsd/orm/hbm">
+    <class discriminator-value="Documento" table="documento_AUD" entity-name="com.melilla.gestPlanes.model.Documento_AUD" abstract="false">
+        <composite-id name="originalId">
+            <key-property name="idDocumento">
+                <column name="id_documento"/>
+                <type name="long">
+                    <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                    <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                    <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.Long</param>
+                    <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                    <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.Documento</param>
+                    <param name="org.hibernate.type.ParameterType.propertyName">idDocumento</param>
+                </type>
+            </key-property>
+            <key-many-to-one class="com.melilla.gestPlanes.envers.CustomRevisionEntity" name="REV">
+                <column name="REV"/>
+            </key-many-to-one>
+        </composite-id>
+        <property insert="true" name="REVTYPE" type="org.hibernate.envers.internal.entities.RevisionTypeType" update="false"/>
+        <many-to-one class="com.melilla.gestPlanes.envers.CustomRevisionEntity" insert="true" name="REVEND" update="true">
+            <column name="REVEND"/>
+        </many-to-one>
+        <property insert="true" name="REVEND_TSTMP" type="timestamp" update="true">
+            <column name="REVEND_TSTMP"/>
+        </property>
+        <property insert="true" name="createdAt" update="false">
+            <column name="created_at"/>
+            <type name="LocalDateTime">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.time.LocalDateTime</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.Documento</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">createdAt</param>
+            </type>
+        </property>
+        <property insert="true" name="deleted" type="boolean" update="false">
+            <column name="deleted"/>
+        </property>
+        <property insert="true" name="deletedAt" update="false">
+            <column name="deleted_at"/>
+            <type name="LocalDateTime">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.time.LocalDateTime</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.Documento</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">deletedAt</param>
+            </type>
+        </property>
+        <property insert="true" name="nombre" update="false">
+            <column name="nombre"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.Documento</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">nombre</param>
+            </type>
+        </property>
+        <property insert="true" name="observaciones" update="false">
+            <column name="observaciones"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.Documento</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">observaciones</param>
+            </type>
+        </property>
+        <property insert="true" name="ruta" update="false">
+            <column name="ruta"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.Documento</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">ruta</param>
+            </type>
+        </property>
+        <property insert="true" name="tipo" update="false">
+            <column name="tipo"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.Documento</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">tipo</param>
+            </type>
+        </property>
+        <property insert="true" name="ciudadano_idCiudadano" update="false">
+            <column name="id_ciudadano"/>
+            <type name="long">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.Long</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.Ciudadano</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">idCiudadano</param>
+            </type>
+        </property>
+    </class>
+</hibernate-mapping>
+
+2026-02-16T21:11:20.019+01:00  INFO 8276 --- [restartedMain] .e.b.i.AdditionalJaxbMappingProducerImpl : Adding JAXB document mapping
+2026-02-16T21:11:20.030+01:00  INFO 8276 --- [restartedMain] org.hibernate.envers.boot                : HHH90005601: Envers-generated HBM mapping...
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<hibernate-mapping auto-import="false" xmlns="http://www.hibernate.org/xsd/orm/hbm">
+    <class discriminator-value="ParteConfirmacion" table="parte_confirmacion_AUD" entity-name="com.melilla.gestPlanes.model.ParteConfirmacion_AUD" abstract="false">
+        <composite-id name="originalId">
+            <key-property name="idParteConfirmacion">
+                <column name="id_parte_confirmacion"/>
+                <type name="long">
+                    <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                    <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                    <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.Long</param>
+                    <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                    <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.ParteConfirmacion</param>
+                    <param name="org.hibernate.type.ParameterType.propertyName">idParteConfirmacion</param>
+                </type>
+            </key-property>
+            <key-many-to-one class="com.melilla.gestPlanes.envers.CustomRevisionEntity" name="REV">
+                <column name="REV"/>
+            </key-many-to-one>
+        </composite-id>
+        <property insert="true" name="REVTYPE" type="org.hibernate.envers.internal.entities.RevisionTypeType" update="false"/>
+        <many-to-one class="com.melilla.gestPlanes.envers.CustomRevisionEntity" insert="true" name="REVEND" update="true">
+            <column name="REVEND"/>
+        </many-to-one>
+        <property insert="true" name="REVEND_TSTMP" type="timestamp" update="true">
+            <column name="REVEND_TSTMP"/>
+        </property>
+        <property insert="true" name="createdAt" update="false">
+            <column name="created_at"/>
+            <type name="LocalDateTime">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.time.LocalDateTime</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.ParteConfirmacion</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">createdAt</param>
+            </type>
+        </property>
+        <property insert="true" name="deleted" type="boolean" update="false">
+            <column name="deleted"/>
+        </property>
+        <property insert="true" name="deletedAt" update="false">
+            <column name="deleted_at"/>
+            <type name="LocalDateTime">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.time.LocalDateTime</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.ParteConfirmacion</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">deletedAt</param>
+            </type>
+        </property>
+        <property insert="true" name="fechaParteConfirmacion" update="false">
+            <column name="fecha_parte_confirmacion"/>
+            <type name="LocalDate">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.time.LocalDate</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.ParteConfirmacion</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">fechaParteConfirmacion</param>
+            </type>
+        </property>
+        <property insert="true" name="parteBaja_idParteBaja" update="false">
+            <column name="id_parte_baja"/>
+            <type name="long">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.Long</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.ParteBaja</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">idParteBaja</param>
+            </type>
+        </property>
+    </class>
+</hibernate-mapping>
+
+2026-02-16T21:11:20.031+01:00  INFO 8276 --- [restartedMain] .e.b.i.AdditionalJaxbMappingProducerImpl : Adding JAXB document mapping
+2026-02-16T21:11:20.041+01:00  INFO 8276 --- [restartedMain] org.hibernate.envers.boot                : HHH90005601: Envers-generated HBM mapping...
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<hibernate-mapping auto-import="false" xmlns="http://www.hibernate.org/xsd/orm/hbm">
+    <class discriminator-value="Ciudadano" table="ciudadano_AUD" entity-name="com.melilla.gestPlanes.model.Ciudadano_AUD" abstract="false">
+        <composite-id name="originalId">
+            <key-property name="idCiudadano">
+                <column name="id_ciudadano"/>
+                <type name="long">
+                    <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                    <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                    <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.Long</param>
+                    <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                    <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.Ciudadano</param>
+                    <param name="org.hibernate.type.ParameterType.propertyName">idCiudadano</param>
+                </type>
+            </key-property>
+            <key-many-to-one class="com.melilla.gestPlanes.envers.CustomRevisionEntity" name="REV">
+                <column name="REV"/>
+            </key-many-to-one>
+        </composite-id>
+        <property insert="true" name="REVTYPE" type="org.hibernate.envers.internal.entities.RevisionTypeType" update="false"/>
+        <many-to-one class="com.melilla.gestPlanes.envers.CustomRevisionEntity" insert="true" name="REVEND" update="true">
+            <column name="REVEND"/>
+        </many-to-one>
+        <property insert="true" name="REVEND_TSTMP" type="timestamp" update="true">
+            <column name="REVEND_TSTMP"/>
+        </property>
+        <property insert="true" name="DNI" update="false">
+            <column name="dni"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.Ciudadano</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">DNI</param>
+            </type>
+        </property>
+        <property insert="true" name="apellido1" update="false">
+            <column name="apellido1"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.Ciudadano</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">apellido1</param>
+            </type>
+        </property>
+        <property insert="true" name="apellido2" update="false">
+            <column name="apellido2"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.Ciudadano</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">apellido2</param>
+            </type>
+        </property>
+        <property insert="true" name="bajaLaboral" type="boolean" update="false">
+            <column name="baja_laboral"/>
+        </property>
+        <property insert="true" name="bajaMaternal" type="boolean" update="false">
+            <column name="baja_maternal"/>
+        </property>
+        <property insert="true" name="ccc" update="false">
+            <column name="ccc"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.Ciudadano</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">ccc</param>
+            </type>
+        </property>
+        <property insert="true" name="createdAt" update="false">
+            <column name="created_at"/>
+            <type name="LocalDateTime">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.time.LocalDateTime</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.Ciudadano</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">createdAt</param>
+            </type>
+        </property>
+        <property insert="true" name="cupo" type="boolean" update="false">
+            <column name="cupo"/>
+        </property>
+        <property insert="true" name="deleted" type="boolean" update="false">
+            <column name="deleted"/>
+        </property>
+        <property insert="true" name="deletedAt" update="false">
+            <column name="deleted_at"/>
+            <type name="LocalDateTime">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.time.LocalDateTime</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.Ciudadano</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">deletedAt</param>
+            </type>
+        </property>
+        <property insert="true" name="email" update="false">
+            <column name="email"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.Ciudadano</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">email</param>
+            </type>
+        </property>
+        <property insert="true" name="esJefeEquipo" type="boolean" update="false">
+            <column name="es_jefe_equipo"/>
+        </property>
+        <property insert="true" name="escaneado" type="boolean" update="false">
+            <column name="escaneado"/>
+        </property>
+        <property insert="true" name="estado" update="false">
+            <column name="estado"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.Ciudadano</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">estado</param>
+            </type>
+        </property>
+        <property insert="true" name="estadoCivil" update="false">
+            <column name="estado_civil"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.Ciudadano</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">estadoCivil</param>
+            </type>
+        </property>
+        <property insert="true" name="evaluacion" type="boolean" update="false">
+            <column name="evaluacion"/>
+        </property>
+        <property insert="true" name="fechaListadoSepe" update="false">
+            <column name="fecha_listado_sepe"/>
+            <type name="LocalDate">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.time.LocalDate</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.Ciudadano</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">fechaListadoSepe</param>
+            </type>
+        </property>
+        <property insert="true" name="fechaNacimiento" update="false">
+            <column name="fecha_nacimiento"/>
+            <type name="LocalDate">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.time.LocalDate</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.Ciudadano</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">fechaNacimiento</param>
+            </type>
+        </property>
+        <property insert="true" name="fechaRegistro" update="false">
+            <column name="fecha_registro"/>
+            <type name="LocalDate">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.time.LocalDate</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.Ciudadano</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">fechaRegistro</param>
+            </type>
+        </property>
+        <property insert="true" name="formacion" type="boolean" update="false">
+            <column name="formacion"/>
+        </property>
+        <property insert="true" name="nacionalidad" update="false">
+            <column name="nacionalidad"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.Ciudadano</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">nacionalidad</param>
+            </type>
+        </property>
+        <property insert="true" name="nedaes" type="boolean" update="false">
+            <column name="nedaes"/>
+        </property>
+        <property insert="true" name="nombre" update="false">
+            <column name="nombre"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.Ciudadano</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">nombre</param>
+            </type>
+        </property>
+        <property insert="true" name="numeroOrdenSepe" type="integer" update="false">
+            <column name="numero_orden_sepe"/>
+        </property>
+        <property insert="true" name="reclamaSalarios" type="boolean" update="false">
+            <column name="reclama_salarios"/>
+        </property>
+        <property insert="true" name="reconocimiento" type="boolean" update="false">
+            <column name="reconocimiento"/>
+        </property>
+        <property insert="true" name="seguridadSocial" update="false">
+            <column name="seguridad_social"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.Ciudadano</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">seguridadSocial</param>
+            </type>
+        </property>
+        <property insert="true" name="sexo" update="false">
+            <column name="sexo"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.Ciudadano</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">sexo</param>
+            </type>
+        </property>
+        <property insert="true" name="sinClausula" type="boolean" update="false">
+            <column name="sin_clausula"/>
+        </property>
+        <property insert="true" name="suplente" type="boolean" update="false">
+            <column name="suplente"/>
+        </property>
+        <property insert="true" name="telefono" update="false">
+            <column name="telefono"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.Ciudadano</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">telefono</param>
+            </type>
+        </property>
+        <property insert="true" name="vacacionesDisfrutadas" type="integer" update="false">
+            <column name="vacaciones_disfrutadas"/>
+        </property>
+        <property insert="true" name="vg" type="boolean" update="false">
+            <column name="vg"/>
+        </property>
+    </class>
+</hibernate-mapping>
+
+2026-02-16T21:11:20.042+01:00  INFO 8276 --- [restartedMain] .e.b.i.AdditionalJaxbMappingProducerImpl : Adding JAXB document mapping
+2026-02-16T21:11:20.053+01:00  INFO 8276 --- [restartedMain] org.hibernate.envers.boot                : HHH90005601: Envers-generated HBM mapping...
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<hibernate-mapping auto-import="false" xmlns="http://www.hibernate.org/xsd/orm/hbm">
+    <class discriminator-value="PlantillaContratoConfig" table="plantilla_contrato_config_AUD" entity-name="com.melilla.gestPlanes.model.config.PlantillaContratoConfig_AUD" abstract="false">
+        <composite-id name="originalId">
+            <key-property name="idContratoConfig">
+                <column name="id_contrato_config"/>
+                <type name="long">
+                    <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                    <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                    <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.Long</param>
+                    <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                    <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.config.PlantillaContratoConfig</param>
+                    <param name="org.hibernate.type.ParameterType.propertyName">idContratoConfig</param>
+                </type>
+            </key-property>
+            <key-many-to-one class="com.melilla.gestPlanes.envers.CustomRevisionEntity" name="REV">
+                <column name="REV"/>
+            </key-many-to-one>
+        </composite-id>
+        <property insert="true" name="REVTYPE" type="org.hibernate.envers.internal.entities.RevisionTypeType" update="false"/>
+        <many-to-one class="com.melilla.gestPlanes.envers.CustomRevisionEntity" insert="true" name="REVEND" update="true">
+            <column name="REVEND"/>
+        </many-to-one>
+        <property insert="true" name="REVEND_TSTMP" type="timestamp" update="true">
+            <column name="REVEND_TSTMP"/>
+        </property>
+        <property insert="true" name="activa" type="boolean" update="false">
+            <column name="activa"/>
+        </property>
+        <property insert="true" name="actividadEconomica" update="false">
+            <column name="actividad_economica"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.config.PlantillaContratoConfig</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">actividadEconomica</param>
+            </type>
+        </property>
+        <property insert="true" name="cargoRepresentante" update="false">
+            <column name="cargo_representante"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.config.PlantillaContratoConfig</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">cargoRepresentante</param>
+            </type>
+        </property>
+        <property insert="true" name="cif" update="false">
+            <column name="cif"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.config.PlantillaContratoConfig</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">cif</param>
+            </type>
+        </property>
+        <property insert="true" name="clausulaAdicional" update="false">
+            <column length="255" name="clausula_adicional" sql-type="TEXT"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.config.PlantillaContratoConfig</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">clausulaAdicional</param>
+            </type>
+        </property>
+        <property insert="true" name="clausulaEspecifica" update="false">
+            <column length="255" name="clausula_especifica" sql-type="TEXT"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.config.PlantillaContratoConfig</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">clausulaEspecifica</param>
+            </type>
+        </property>
+        <property insert="true" name="codigoCuentaCotizacion" update="false">
+            <column name="codigo_cuenta_cotizacion"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.config.PlantillaContratoConfig</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">codigoCuentaCotizacion</param>
+            </type>
+        </property>
+        <property insert="true" name="codigoMunicipioEmpresa" update="false">
+            <column name="codigo_municipio_empresa"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.config.PlantillaContratoConfig</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">codigoMunicipioEmpresa</param>
+            </type>
+        </property>
+        <property insert="true" name="codigoPaisEmpresa" update="false">
+            <column name="codigo_pais_empresa"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.config.PlantillaContratoConfig</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">codigoPaisEmpresa</param>
+            </type>
+        </property>
+        <property insert="true" name="codigoPostalEmpresa" update="false">
+            <column name="codigo_postal_empresa"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.config.PlantillaContratoConfig</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">codigoPostalEmpresa</param>
+            </type>
+        </property>
+        <property insert="true" name="dniRepresentante" update="false">
+            <column name="dni_representante"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.config.PlantillaContratoConfig</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">dniRepresentante</param>
+            </type>
+        </property>
+        <property insert="true" name="domicilioSocial" update="false">
+            <column name="domicilio_social"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.config.PlantillaContratoConfig</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">domicilioSocial</param>
+            </type>
+        </property>
+        <property insert="true" name="horas" update="false">
+            <column name="horas"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.config.PlantillaContratoConfig</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">horas</param>
+            </type>
+        </property>
+        <property insert="true" name="municipioEmpresa" update="false">
+            <column name="municipio_empresa"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.config.PlantillaContratoConfig</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">municipioEmpresa</param>
+            </type>
+        </property>
+        <property insert="true" name="nombre" update="false">
+            <column name="nombre"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.config.PlantillaContratoConfig</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">nombre</param>
+            </type>
+        </property>
+        <property insert="true" name="nombreFicheroPlantilla" update="false">
+            <column name="nombre_fichero_plantilla"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.config.PlantillaContratoConfig</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">nombreFicheroPlantilla</param>
+            </type>
+        </property>
+        <property insert="true" name="nombreRepresentante" update="false">
+            <column name="nombre_representante"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.config.PlantillaContratoConfig</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">nombreRepresentante</param>
+            </type>
+        </property>
+        <property insert="true" name="paisEmpresa" update="false">
+            <column name="pais_empresa"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.config.PlantillaContratoConfig</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">paisEmpresa</param>
+            </type>
+        </property>
+        <property insert="true" name="razonSocial" update="false">
+            <column name="razon_social"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.config.PlantillaContratoConfig</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">razonSocial</param>
+            </type>
+        </property>
+        <property insert="true" name="regimen" update="false">
+            <column name="regimen"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.config.PlantillaContratoConfig</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">regimen</param>
+            </type>
+        </property>
+        <property insert="true" name="sepe" update="false">
+            <column name="sepe"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.config.PlantillaContratoConfig</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">sepe</param>
+            </type>
+        </property>
+        <property insert="true" name="textoConceptosSalariales" update="false">
+            <column name="texto_conceptos_salariales"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.config.PlantillaContratoConfig</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">textoConceptosSalariales</param>
+            </type>
+        </property>
+        <property insert="true" name="url" update="false">
+            <column name="url"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.config.PlantillaContratoConfig</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">url</param>
+            </type>
+        </property>
+        <property insert="true" name="plan_idPlan" update="false">
+            <column name="id_plan"/>
+            <type name="long">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.Long</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.Plan</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">idPlan</param>
+            </type>
+        </property>
+    </class>
+</hibernate-mapping>
+
+2026-02-16T21:11:20.053+01:00  INFO 8276 --- [restartedMain] .e.b.i.AdditionalJaxbMappingProducerImpl : Adding JAXB document mapping
+2026-02-16T21:11:20.064+01:00  INFO 8276 --- [restartedMain] org.hibernate.envers.boot                : HHH90005601: Envers-generated HBM mapping...
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<hibernate-mapping auto-import="false" xmlns="http://www.hibernate.org/xsd/orm/hbm">
+    <class discriminator-value="ParteBaja" table="parte_baja_AUD" entity-name="com.melilla.gestPlanes.model.ParteBaja_AUD" abstract="false">
+        <composite-id name="originalId">
+            <key-property name="idParteBaja">
+                <column name="id_parte_baja"/>
+                <type name="long">
+                    <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                    <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                    <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.Long</param>
+                    <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                    <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.ParteBaja</param>
+                    <param name="org.hibernate.type.ParameterType.propertyName">idParteBaja</param>
+                </type>
+            </key-property>
+            <key-many-to-one class="com.melilla.gestPlanes.envers.CustomRevisionEntity" name="REV">
+                <column name="REV"/>
+            </key-many-to-one>
+        </composite-id>
+        <property insert="true" name="REVTYPE" type="org.hibernate.envers.internal.entities.RevisionTypeType" update="false"/>
+        <many-to-one class="com.melilla.gestPlanes.envers.CustomRevisionEntity" insert="true" name="REVEND" update="true">
+            <column name="REVEND"/>
+        </many-to-one>
+        <property insert="true" name="REVEND_TSTMP" type="timestamp" update="true">
+            <column name="REVEND_TSTMP"/>
+        </property>
+        <property insert="true" name="createdAt" update="false">
+            <column name="created_at"/>
+            <type name="LocalDateTime">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.time.LocalDateTime</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.ParteBaja</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">createdAt</param>
+            </type>
+        </property>
+        <property insert="true" name="deleted" type="boolean" update="false">
+            <column name="deleted"/>
+        </property>
+        <property insert="true" name="deletedAt" update="false">
+            <column name="deleted_at"/>
+            <type name="LocalDateTime">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.time.LocalDateTime</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.ParteBaja</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">deletedAt</param>
+            </type>
+        </property>
+        <property insert="true" name="fechaFinBaja" update="false">
+            <column name="fecha_fin_baja"/>
+            <type name="LocalDate">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.time.LocalDate</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.ParteBaja</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">fechaFinBaja</param>
+            </type>
+        </property>
+        <property insert="true" name="fechaInicioBaja" update="false">
+            <column name="fecha_inicio_baja"/>
+            <type name="LocalDate">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.time.LocalDate</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.ParteBaja</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">fechaInicioBaja</param>
+            </type>
+        </property>
+        <property insert="true" name="ciudadano_idCiudadano" update="false">
+            <column name="id_ciudadano"/>
+            <type name="long">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.Long</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.Ciudadano</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">idCiudadano</param>
+            </type>
+        </property>
+    </class>
+</hibernate-mapping>
+
+2026-02-16T21:11:20.064+01:00  INFO 8276 --- [restartedMain] .e.b.i.AdditionalJaxbMappingProducerImpl : Adding JAXB document mapping
+2026-02-16T21:11:20.075+01:00  INFO 8276 --- [restartedMain] org.hibernate.envers.boot                : HHH90005601: Envers-generated HBM mapping...
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<hibernate-mapping auto-import="false" xmlns="http://www.hibernate.org/xsd/orm/hbm">
+    <class discriminator-value="Salario" table="salario_AUD" entity-name="com.melilla.gestPlanes.model.Salario_AUD" abstract="false">
+        <composite-id name="originalId">
+            <key-property name="idSalario">
+                <column name="id_salario"/>
+                <type name="long">
+                    <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                    <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                    <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.Long</param>
+                    <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                    <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.Salario</param>
+                    <param name="org.hibernate.type.ParameterType.propertyName">idSalario</param>
+                </type>
+            </key-property>
+            <key-many-to-one class="com.melilla.gestPlanes.envers.CustomRevisionEntity" name="REV">
+                <column name="REV"/>
+            </key-many-to-one>
+        </composite-id>
+        <property insert="true" name="REVTYPE" type="org.hibernate.envers.internal.entities.RevisionTypeType" update="false"/>
+        <many-to-one class="com.melilla.gestPlanes.envers.CustomRevisionEntity" insert="true" name="REVEND" update="true">
+            <column name="REVEND"/>
+        </many-to-one>
+        <property insert="true" name="REVEND_TSTMP" type="timestamp" update="true">
+            <column name="REVEND_TSTMP"/>
+        </property>
+        <property insert="true" name="activo" type="boolean" update="false">
+            <column name="activo"/>
+        </property>
+        <property insert="true" name="createdAt" update="false">
+            <column name="created_at"/>
+            <type name="LocalDateTime">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.time.LocalDateTime</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.Salario</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">createdAt</param>
+            </type>
+        </property>
+        <property insert="true" name="deleted" type="boolean" update="false">
+            <column name="deleted"/>
+        </property>
+        <property insert="true" name="deletedAt" update="false">
+            <column name="deleted_at"/>
+            <type name="LocalDateTime">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.time.LocalDateTime</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.Salario</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">deletedAt</param>
+            </type>
+        </property>
+        <property insert="true" name="descripcion" update="false">
+            <column name="descripcion"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.Salario</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">descripcion</param>
+            </type>
+        </property>
+        <property insert="true" name="plan_idPlan" update="false">
+            <column name="id_plan"/>
+            <type name="long">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.Long</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.Plan</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">idPlan</param>
+            </type>
+        </property>
+    </class>
+</hibernate-mapping>
+
+2026-02-16T21:11:20.075+01:00  INFO 8276 --- [restartedMain] .e.b.i.AdditionalJaxbMappingProducerImpl : Adding JAXB document mapping
+2026-02-16T21:11:20.087+01:00  INFO 8276 --- [restartedMain] org.hibernate.envers.boot                : HHH90005601: Envers-generated HBM mapping...
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<hibernate-mapping auto-import="false" xmlns="http://www.hibernate.org/xsd/orm/hbm">
+    <class discriminator-value="DocumentoPlan" table="documento_plan_AUD" entity-name="com.melilla.gestPlanes.model.DocumentoPlan_AUD" abstract="false">
+        <composite-id name="originalId">
+            <key-property name="idDocumentoPlan">
+                <column name="id_documento_plan"/>
+                <type name="long">
+                    <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                    <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                    <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.Long</param>
+                    <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                    <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.DocumentoPlan</param>
+                    <param name="org.hibernate.type.ParameterType.propertyName">idDocumentoPlan</param>
+                </type>
+            </key-property>
+            <key-many-to-one class="com.melilla.gestPlanes.envers.CustomRevisionEntity" name="REV">
+                <column name="REV"/>
+            </key-many-to-one>
+        </composite-id>
+        <property insert="true" name="REVTYPE" type="org.hibernate.envers.internal.entities.RevisionTypeType" update="false"/>
+        <many-to-one class="com.melilla.gestPlanes.envers.CustomRevisionEntity" insert="true" name="REVEND" update="true">
+            <column name="REVEND"/>
+        </many-to-one>
+        <property insert="true" name="REVEND_TSTMP" type="timestamp" update="true">
+            <column name="REVEND_TSTMP"/>
+        </property>
+        <property insert="true" name="createdAt" update="false">
+            <column name="created_at"/>
+            <type name="LocalDateTime">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.time.LocalDateTime</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.DocumentoPlan</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">createdAt</param>
+            </type>
+        </property>
+        <property insert="true" name="deleted" type="boolean" update="false">
+            <column name="deleted"/>
+        </property>
+        <property insert="true" name="deletedAt" update="false">
+            <column name="deleted_at"/>
+            <type name="LocalDateTime">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.time.LocalDateTime</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.DocumentoPlan</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">deletedAt</param>
+            </type>
+        </property>
+        <property insert="true" name="nombre" update="false">
+            <column name="nombre"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.DocumentoPlan</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">nombre</param>
+            </type>
+        </property>
+        <property insert="true" name="observaciones" update="false">
+            <column name="observaciones"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.DocumentoPlan</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">observaciones</param>
+            </type>
+        </property>
+        <property insert="true" name="ruta" update="false">
+            <column name="ruta"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.DocumentoPlan</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">ruta</param>
+            </type>
+        </property>
+        <property insert="true" name="tipo" update="false">
+            <column name="tipo"/>
+            <type name="string">
+                <param name="org.hibernate.type.ParameterType.primaryKey">false</param>
+                <param name="org.hibernate.type.ParameterType.dynamic">true</param>
+                <param name="org.hibernate.type.ParameterType.returnedClass">java.lang.String</param>
+                <param name="org.hibernate.type.ParameterType.accessType">field</param>
+                <param name="org.hibernate.type.ParameterType.entityClass">com.melilla.gestPlanes.model.DocumentoPlan</param>
+                <param name="org.hibernate.type.ParameterType.propertyName">tipo</param>
+            </type>
+        </property>
+    </class>
+</hibernate-mapping>
+
+2026-02-16T21:11:20.611+01:00  INFO 8276 --- [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2026-02-16T21:11:20.616+01:00  INFO 8276 --- [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-02-16T21:11:21.074+01:00 TRACE 8276 --- [restartedMain] o.s.b.w.s.ServletContextInitializerBeans : Created Filter initializer for bean 'characterEncodingFilter'; order=-2147483648, resource=class path resource [org/springframework/boot/autoconfigure/web/servlet/HttpEncodingAutoConfiguration.class]
+2026-02-16T21:11:21.075+01:00 TRACE 8276 --- [restartedMain] o.s.b.w.s.ServletContextInitializerBeans : Created Filter initializer for bean 'formContentFilter'; order=-9900, resource=class path resource [org/springframework/boot/autoconfigure/web/servlet/WebMvcAutoConfiguration.class]
+2026-02-16T21:11:21.075+01:00 TRACE 8276 --- [restartedMain] o.s.b.w.s.ServletContextInitializerBeans : Created Filter initializer for bean 'requestContextFilter'; order=-105, resource=class path resource [org/springframework/boot/autoconfigure/web/servlet/WebMvcAutoConfiguration$WebMvcAutoConfigurationAdapter.class]
+2026-02-16T21:11:21.075+01:00 TRACE 8276 --- [restartedMain] o.s.b.w.s.ServletContextInitializerBeans : Created Filter initializer for bean 'jwtAuthenticationFilter'; order=2147483647, resource=file [/Volumes/Disco externo/proyectos/gestPlanes/target/classes/com/melilla/gestPlanes/JWT/JwtAuthenticationFilter.class]
+2026-02-16T21:11:21.077+01:00 DEBUG 8276 --- [restartedMain] o.s.b.w.s.ServletContextInitializerBeans : Mapping filters: springSecurityFilterChain urls=[/*] order=-100, characterEncodingFilter urls=[/*] order=-2147483648, formContentFilter urls=[/*] order=-9900, requestContextFilter urls=[/*] order=-105, jwtAuthenticationFilter urls=[/*] order=2147483647
+2026-02-16T21:11:21.078+01:00 DEBUG 8276 --- [restartedMain] o.s.b.w.s.ServletContextInitializerBeans : Mapping servlets: dispatcherServlet urls=[/]
+2026-02-16T21:11:21.429+01:00  WARN 8276 --- [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-02-16T21:11:21.527+01:00 DEBUG 8276 --- [restartedMain] s.w.s.m.m.a.RequestMappingHandlerMapping : 138 mappings in 'requestMappingHandlerMapping'
+2026-02-16T21:11:21.555+01:00 DEBUG 8276 --- [restartedMain] o.s.w.s.handler.SimpleUrlHandlerMapping  : Patterns [/webjars/**, /**, /swagger-ui*/*swagger-initializer.js, /swagger-ui*/**] in 'resourceHandlerMapping'
+2026-02-16T21:11:21.574+01:00  INFO 8276 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@335380d3, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@7534a7dd, org.springframework.security.web.context.SecurityContextHolderFilter@2be90d26, org.springframework.security.web.header.HeaderWriterFilter@464bffa, org.springframework.web.filter.CorsFilter@27a57883, org.springframework.security.web.authentication.logout.LogoutFilter@5dfbacd3, com.melilla.gestPlanes.JWT.JwtAuthenticationFilter@7d833833, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@558bfe8c, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@55700eb, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@5a96ee75, org.springframework.security.web.session.SessionManagementFilter@1d95f1fb, org.springframework.security.web.access.ExceptionTranslationFilter@57bd9e5d, org.springframework.security.web.access.intercept.AuthorizationFilter@772630f4]
+2026-02-16T21:11:21.595+01:00 DEBUG 8276 --- [restartedMain] s.w.s.m.m.a.RequestMappingHandlerAdapter : ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+2026-02-16T21:11:21.606+01:00 DEBUG 8276 --- [restartedMain] .m.m.a.ExceptionHandlerExceptionResolver : ControllerAdvice beans: 3 @ExceptionHandler, 1 ResponseBodyAdvice
+2026-02-16T21:11:21.613+01:00 DEBUG 8276 --- [restartedMain] .m.m.a.ExceptionHandlerExceptionResolver : ControllerAdvice beans: 3 @ExceptionHandler, 0 ResponseBodyAdvice
+2026-02-16T21:11:21.677+01:00  INFO 8276 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2026-02-16T21:11:21.691+01:00  INFO 8276 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 9092 (http) with context path ''
+2026-02-16T21:11:21.696+01:00  INFO 8276 --- [restartedMain] c.m.gestPlanes.GestPlanesApplication     : Started GestPlanesApplication in 3.817 seconds (process running for 4.149)
+2026-02-16T21:14:21.381+01:00  INFO 8276 --- [http-nio-9092-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-02-16T21:14:21.386+01:00  INFO 8276 --- [http-nio-9092-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-02-16T21:14:21.386+01:00 DEBUG 8276 --- [http-nio-9092-exec-1] o.s.web.servlet.DispatcherServlet        : Detected StandardServletMultipartResolver
+2026-02-16T21:14:21.386+01:00 DEBUG 8276 --- [http-nio-9092-exec-1] o.s.web.servlet.DispatcherServlet        : Detected AcceptHeaderLocaleResolver
+2026-02-16T21:14:21.386+01:00 DEBUG 8276 --- [http-nio-9092-exec-1] o.s.web.servlet.DispatcherServlet        : Detected FixedThemeResolver
+2026-02-16T21:14:21.388+01:00 DEBUG 8276 --- [http-nio-9092-exec-1] o.s.web.servlet.DispatcherServlet        : Detected org.springframework.web.servlet.view.DefaultRequestToViewNameTranslator@12939eb4
+2026-02-16T21:14:21.389+01:00 DEBUG 8276 --- [http-nio-9092-exec-1] o.s.web.servlet.DispatcherServlet        : Detected org.springframework.web.servlet.support.SessionFlashMapManager@bc4e23d
+2026-02-16T21:14:21.389+01:00 DEBUG 8276 --- [http-nio-9092-exec-1] o.s.web.servlet.DispatcherServlet        : enableLoggingRequestDetails='false': request parameters and headers will be masked to prevent unsafe logging of potentially sensitive data
+2026-02-16T21:14:21.389+01:00  INFO 8276 --- [http-nio-9092-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 3 ms
+2026-02-16T21:14:21.406+01:00  WARN 8276 --- [http-nio-9092-exec-2] o.s.w.s.h.HandlerMappingIntrospector     : Cache miss for REQUEST dispatch to '/login' (previous null). Performing MatchableHandlerMapping lookup. This is logged once only at WARN level, and every time at TRACE.
+2026-02-16T21:14:21.409+01:00 DEBUG 8276 --- [http-nio-9092-exec-2] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.melilla.gestPlanes.controller.AuthenticationController#login(LoginDTO)
+2026-02-16T21:14:21.411+01:00 DEBUG 8276 --- [http-nio-9092-exec-2] o.s.web.servlet.DispatcherServlet        : POST "/login", parameters={}
+2026-02-16T21:14:21.411+01:00 DEBUG 8276 --- [http-nio-9092-exec-2] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.melilla.gestPlanes.controller.AuthenticationController#login(LoginDTO)
+2026-02-16T21:14:21.431+01:00 DEBUG 8276 --- [http-nio-9092-exec-2] m.m.a.RequestResponseBodyMethodProcessor : Read "application/json;charset=UTF-8" to [LoginDTO(userName=admin, password=admin)]
+2026-02-16T21:14:21.597+01:00 DEBUG 8276 --- [http-nio-9092-exec-2] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2026-02-16T21:14:21.598+01:00 DEBUG 8276 --- [http-nio-9092-exec-2] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [JwtResponseDTO(estado=401 UNAUTHORIZED, userName=null, userId=0, idPlan=0, roles=null, token=null, r (truncated)...]
+2026-02-16T21:14:21.602+01:00 DEBUG 8276 --- [http-nio-9092-exec-2] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2026-02-16T21:14:44.322+01:00 DEBUG 8276 --- [http-nio-9092-exec-4] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.melilla.gestPlanes.controller.AuthenticationController#login(LoginDTO)
+2026-02-16T21:14:44.322+01:00 DEBUG 8276 --- [http-nio-9092-exec-4] o.s.web.servlet.DispatcherServlet        : POST "/login", parameters={}
+2026-02-16T21:14:44.323+01:00 DEBUG 8276 --- [http-nio-9092-exec-4] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.melilla.gestPlanes.controller.AuthenticationController#login(LoginDTO)
+2026-02-16T21:14:44.324+01:00 DEBUG 8276 --- [http-nio-9092-exec-4] m.m.a.RequestResponseBodyMethodProcessor : Read "application/json;charset=UTF-8" to [LoginDTO(userName=admin, password=admin)]
+2026-02-16T21:14:44.423+01:00 DEBUG 8276 --- [http-nio-9092-exec-4] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2026-02-16T21:14:44.424+01:00 DEBUG 8276 --- [http-nio-9092-exec-4] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [JwtResponseDTO(estado=401 UNAUTHORIZED, userName=null, userId=0, idPlan=0, roles=null, token=null, r (truncated)...]
+2026-02-16T21:14:44.424+01:00 DEBUG 8276 --- [http-nio-9092-exec-4] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
