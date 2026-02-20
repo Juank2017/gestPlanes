@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import com.melilla.gestPlanes.DTO.CiudadanoOrdenBusqueda;
 import com.melilla.gestPlanes.DTO.CreateTrabajadorDTO;
+import com.melilla.gestPlanes.DTO.ListadoTrabajadoresConPartes;
 import com.melilla.gestPlanes.DTO.ModificaEquipoDTO;
 import com.melilla.gestPlanes.DTO.ModificaEstadoDTO;
 import com.melilla.gestPlanes.DTO.ModificaEstadoPrevencionDTO;
@@ -73,6 +74,11 @@ public interface CiudadanoService {
 	List<Ciudadano> ciudadanosPorDNI(String dni);
 	
 	Ciudadano saveCiudadano(Ciudadano ciudadano);
+	
+	List<ListadoTrabajadoresConPartes> trabajadoresConPartesDebajaPlanActivo();
+	
+	//Comprueba si tiene algún parte de baja abierto.
+	boolean estaDeBaja(long idTrabajador);
 	
 	
 }

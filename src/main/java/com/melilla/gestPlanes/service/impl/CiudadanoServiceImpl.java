@@ -24,6 +24,7 @@ import com.melilla.gestPlanes.DTO.CiudadanoCriterioBusqueda;
 import com.melilla.gestPlanes.DTO.CiudadanoCriterioOrden;
 import com.melilla.gestPlanes.DTO.CiudadanoOrdenBusqueda;
 import com.melilla.gestPlanes.DTO.CreateTrabajadorDTO;
+import com.melilla.gestPlanes.DTO.ListadoTrabajadoresConPartes;
 import com.melilla.gestPlanes.DTO.ModificaEquipoDTO;
 import com.melilla.gestPlanes.DTO.ModificaEstadoDTO;
 import com.melilla.gestPlanes.DTO.ModificaEstadoPrevencionDTO;
@@ -46,6 +47,7 @@ import com.melilla.gestPlanes.model.Equipo;
 import com.melilla.gestPlanes.model.Ocupacion;
 import com.melilla.gestPlanes.model.Organismo;
 import com.melilla.gestPlanes.model.OrganismoOcupacion;
+import com.melilla.gestPlanes.model.ParteBaja;
 import com.melilla.gestPlanes.model.Plan;
 import com.melilla.gestPlanes.model.User;
 import com.melilla.gestPlanes.model.enums.EstadoCiudadano;
@@ -809,6 +811,38 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 		}
 
 		return modificados;
+	}
+
+	@Override
+	public List<ListadoTrabajadoresConPartes> trabajadoresConPartesDebajaPlanActivo() {
+		
+		return ciudadanoRepository.findAllByIdPlanAndPartesIsNotEmpty(planService.getWorikingPlan());
+	}
+
+	@Override
+	public boolean estaDeBaja(long idTrabajador) {
+		Ciudadano trabajador = ciudadanoRepository.findById(idTrabajador).orElseThrow(()-> new CiudadanoNotFoundException(idTrabajador));
+		
+		if(trabajador.getPartes().isEmpty()) {
+			return false;
+		}else {
+			List<ParteBaja> partes = trabajador.getPartes();
+			
+			for (ParteBaja parteBaja : partes) {
+				if(!parteBaja.isDeleted()) {
+					
+					if (parteBaja.getFechaFinBaja() == null) {
+						return true;
+					}
+					
+				}
+			
+			}
+			
+			
+		}
+		
+		return false;
 	}
 
 }

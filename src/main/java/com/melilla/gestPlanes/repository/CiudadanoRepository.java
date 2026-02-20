@@ -12,6 +12,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.history.RevisionRepository;
 
 import com.melilla.gestPlanes.DTO.DashBoardEstadoGeneroDTO;
+import com.melilla.gestPlanes.DTO.ListadoTrabajadoresConPartes;
 import com.melilla.gestPlanes.model.Ciudadano;
 import com.melilla.gestPlanes.model.Plan;
 
@@ -65,4 +66,7 @@ public interface CiudadanoRepository extends JpaRepository<Ciudadano, Long>, Rev
 	List<Ciudadano> findAllByidPlanIdPlanAndBajaMaternalTrue(Long idPlan);
 
 	List<Ciudadano> findAllByDNI(String dni);
+	
+	List<ListadoTrabajadoresConPartes> findAllByIdPlanAndPartesIsNotEmpty(Plan plan);
+
 }

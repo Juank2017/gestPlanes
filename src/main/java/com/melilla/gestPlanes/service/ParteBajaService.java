@@ -8,6 +8,8 @@ import com.melilla.gestPlanes.DTO.CrearParteConfirmacionDTO;
 import com.melilla.gestPlanes.DTO.EditaContingenciaDTO;
 import com.melilla.gestPlanes.DTO.EditaParteBajaDTO;
 import com.melilla.gestPlanes.model.ParteBaja;
+import com.melilla.gestPlanes.model.ParteConfirmacion;
+import com.melilla.gestPlanes.model.Plan;
 import com.melilla.gestPlanes.model.TipoContingencia;
 
 public interface ParteBajaService {
@@ -18,11 +20,21 @@ public interface ParteBajaService {
 	
 	List<ParteBaja> obtenerPartesBajaTrabajadorPorDNI(String DNI);
 	
+	List<Map<String,String>> obtenerPartesBajaPlan(Plan WorkingPlan);
+	
+	List<ParteConfirmacion>obtenerPartesConfirmacion(long idParteBaja);
+	
 	ParteBaja altaParteBaja (CrearParteBajaDTO parte);
 	
 	ParteBaja editaParteBaja (EditaParteBajaDTO parte);
 	
+	void borrarParteBaja(long idParteBaja);
+	
 	ParteBaja insertaParteConfirmacion(CrearParteConfirmacionDTO parte);
+	
+	int numeroMaximoPartesConfirmacionTrabajador(long idTrabajador);
+	
+	void borraParteConfirmacion(long idParteConfirmacion);
 	
 	List<TipoContingencia> listaContingencias();
 	

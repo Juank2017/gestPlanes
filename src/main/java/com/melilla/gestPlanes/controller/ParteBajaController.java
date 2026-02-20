@@ -7,13 +7,16 @@ import com.melilla.gestPlanes.DTO.CrearParteConfirmacionDTO;
 import com.melilla.gestPlanes.DTO.EditaContingenciaDTO;
 import com.melilla.gestPlanes.DTO.EditaParteBajaDTO;
 import com.melilla.gestPlanes.model.ApiResponse;
+import com.melilla.gestPlanes.service.CiudadanoService;
 import com.melilla.gestPlanes.service.ParteBajaService;
+import com.melilla.gestPlanes.service.PlanService;
 
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,14 +32,21 @@ public class ParteBajaController {
 	@Autowired
 	private ParteBajaService parteBajaService;
 	
+	@Autowired
+	private PlanService planService;
 	
+	@Autowired
+	private CiudadanoService ciudadanoService;
+	
+	@CrossOrigin(origins = "http://x520marina033", maxAge = 3600)
 	@GetMapping("/partesBaja/{idTrabajador}")
 	public ResponseEntity<ApiResponse> obtenerPartesTrabajador(@PathVariable long idTrabajador) {
 		
 		ApiResponse response = new ApiResponse();
 		
 		response.setEstado(HttpStatus.OK);
-		response.getPayload().addAll(parteBajaService.obtenerPartesBajaTrabajadorMap(idTrabajador));
+		response.getPayload().add(parteBajaService.obtenerPartesBajaTrabajadorMap(idTrabajador));
+		response.getPayload().add(parteBajaService.numeroMaximoPartesConfirmacionTrabajador(idTrabajador));
 		response.setMensaje("Listado de partes de baja del trabajador con id: "+idTrabajador);
 		
 		return ResponseEntity.ok(response);
@@ -49,7 +59,21 @@ public class ParteBajaController {
 		
 		response.setEstado(HttpStatus.OK);
 		response.getPayload().addAll(parteBajaService.obtenerPartesBajaTrabajadorPorDNI(DNI));
+		
 		response.setMensaje("Listado de partes de baja del trabajador con DNI: "+DNI);
+		
+		return ResponseEntity.ok(response);
+	}
+	
+	@GetMapping("/partesBaja")
+	public ResponseEntity<ApiResponse> obtenerPartes() {
+		
+		ApiResponse response = new ApiResponse();
+		
+		response.setEstado(HttpStatus.OK);
+		response.getPayload().addAll(parteBajaService.obtenerPartesBajaPlan(planService.getWorikingPlan()));
+		
+		response.setMensaje("Listado de partes de baja del Plan activo ");
 		
 		return ResponseEntity.ok(response);
 	}
@@ -80,6 +104,32 @@ public class ParteBajaController {
 		return ResponseEntity.ok(response);
 		
 		
+	}
+	
+	@DeleteMapping("/parteBaja/borrar/{idParteBaja}")
+	public ResponseEntity<ApiResponse> borraParteBaja(@PathVariable long idParteBaja){
+		
+		ApiResponse response = new ApiResponse();
+		
+		response.setEstado(HttpStatus.OK);
+		parteBajaService.borrarParteBaja(idParteBaja);
+		response.setMensaje("Parte de baja borrado");
+		
+		return ResponseEntity.ok(response);
+		
+		
+	}
+	
+	@GetMapping("/parteBaja/partesConfirmacion/{idParteBaja}")
+	public ResponseEntity<ApiResponse> obtenerPartesConfirmacion(@PathVariable long idParteBaja){
+		ApiResponse response = new ApiResponse();
+		
+		response.setEstado(HttpStatus.OK);
+		response.getPayload().addAll(parteBajaService.obtenerPartesConfirmacion(idParteBaja));
+		
+		response.setMensaje("Listado de partes de confirmación del parte "+idParteBaja);
+		
+		return ResponseEntity.ok(response);
 	}
 	
 	@PostMapping("/parteBaja/parteConfirmacion/alta")
