@@ -96,7 +96,7 @@ public class ParteBajaServiceIMPL implements ParteBajaService {
 				partePlano.put("idParteBaja", parte.getIdParteBaja().toString());
 				partePlano.put("fechaInicioBaja",(parte.getFechaInicioBaja() != null)?parte.getFechaInicioBaja().format(dtf):"");
 				partePlano.put("fechaFinBaja",(parte.getFechaFinBaja()!= null)? parte.getFechaFinBaja().format(dtf):"");
-				partePlano.put("contingencia", parte.getContingencia().getIdTipoContingencia()+"-"+ parte.getContingencia().getContingencia());
+				partePlano.put("contingencia", parte.getContingencia().getIdTipoContingencia()+" - "+ parte.getContingencia().getContingencia());
 				
 				if(!parte.getPartesConfirmacion().isEmpty()) {
 					
