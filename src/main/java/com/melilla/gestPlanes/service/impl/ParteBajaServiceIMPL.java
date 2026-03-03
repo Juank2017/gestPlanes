@@ -101,12 +101,18 @@ public class ParteBajaServiceIMPL implements ParteBajaService {
 					for (int i = 0; i < partesConfirmacion.size(); i++) {
 
 						ParteConfirmacion parteConfirmacion = partesConfirmacion.get(i);
+						
+						if(!parteConfirmacion.isDeleted()) {
+							
+							partePlano.put("conf" + (i + 1),
+									(parteConfirmacion.getFechaParteConfirmacion() != null)
+											? parteConfirmacion.getFechaParteConfirmacion().format(dtf)
+											: "");
+							partePlano.put("idConf" + (i + 1), parteConfirmacion.getIdParteConfirmacion().toString());  
+							
+						}
 
-						partePlano.put("conf" + (i + 1),
-								(parteConfirmacion.getFechaParteConfirmacion() != null)
-										? parteConfirmacion.getFechaParteConfirmacion().format(dtf)
-										: "");
-						partePlano.put("idConf" + (i + 1), parteConfirmacion.getIdParteConfirmacion().toString());
+						
 
 					}
 
