@@ -9,10 +9,10 @@ import com.melilla.gestPlanes.model.Plan;
 
 public interface ParteBajaRepository extends JpaRepository<ParteBaja, Long> {
 	
-	List<ParteBaja> findAllByCiudadanoIdCiudadano(long idCiudadano);
+	List<ParteBaja> findAllByCiudadanoIdCiudadanoAndDeletedFalse(long idCiudadano);
 	
 	List<ParteBaja> findAllByCiudadanoDNI(String DNI);
 	
-	List<ParteBaja> findAllByCiudadanoIdPlan(Plan plan);
+	List<ParteBaja> findAllByCiudadanoIdPlanAndDeletedFalse(Plan plan);
 
 }

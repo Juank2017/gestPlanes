@@ -7,11 +7,15 @@ import com.melilla.gestPlanes.DTO.CrearParteConfirmacionDTO;
 import com.melilla.gestPlanes.DTO.EditaContingenciaDTO;
 import com.melilla.gestPlanes.DTO.EditaParteBajaDTO;
 import com.melilla.gestPlanes.model.ApiResponse;
+import com.melilla.gestPlanes.model.ParteBaja;
+import com.melilla.gestPlanes.model.Plan;
 import com.melilla.gestPlanes.service.CiudadanoService;
 import com.melilla.gestPlanes.service.ParteBajaService;
 import com.melilla.gestPlanes.service.PlanService;
 
 import lombok.RequiredArgsConstructor;
+
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -69,15 +73,17 @@ public class ParteBajaController {
 	public ResponseEntity<ApiResponse> obtenerPartes() {
 		
 		ApiResponse response = new ApiResponse();
-		
+		Plan planActivo = planService.getWorikingPlan();
 		response.setEstado(HttpStatus.OK);
-		response.getPayload().addAll(parteBajaService.obtenerPartesBajaPlan(planService.getWorikingPlan()));
 		
+		response.getPayload().add(parteBajaService.obtenerPartesBajaPlan(planActivo));
+		response.getPayload().add(parteBajaService.numeroMaximoPartesConfirmacionPlanActivo(planActivo));
 		response.setMensaje("Listado de partes de baja del Plan activo ");
 		
 		return ResponseEntity.ok(response);
 	}
 	
+
 	@PostMapping("/parteBaja/alta")
 	public ResponseEntity<ApiResponse> altaParteBaja(@RequestBody CrearParteBajaDTO  parte){
 		
@@ -143,6 +149,18 @@ public class ParteBajaController {
 		
 		return ResponseEntity.ok(response);
 		
+		
+	}
+	
+	@DeleteMapping("/parteBaja/parteConfirmacion/borra/{idParteConfirmacion}")
+	public ResponseEntity<ApiResponse> bajaParteConfirmacion(@PathVariable long idParteConfirmacion){
+		
+		ApiResponse response = new ApiResponse();
+		response.setEstado(HttpStatus.OK);
+		parteBajaService.borraParteConfirmacion(idParteConfirmacion);
+		response.setMensaje("Parte de confirmación borrado");
+		
+		return ResponseEntity.ok(response);
 		
 	}
 	

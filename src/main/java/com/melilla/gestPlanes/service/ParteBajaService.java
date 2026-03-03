@@ -34,6 +34,8 @@ public interface ParteBajaService {
 	
 	int numeroMaximoPartesConfirmacionTrabajador(long idTrabajador);
 	
+	int numeroMaximoPartesConfirmacionPlanActivo(Plan planActivo);
+	
 	void borraParteConfirmacion(long idParteConfirmacion);
 	
 	List<TipoContingencia> listaContingencias();
