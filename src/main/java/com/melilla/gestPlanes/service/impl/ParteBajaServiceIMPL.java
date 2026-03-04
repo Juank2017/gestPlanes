@@ -96,7 +96,8 @@ public class ParteBajaServiceIMPL implements ParteBajaService {
 
 				if (!parte.getPartesConfirmacion().isEmpty()) {
 
-					List<ParteConfirmacion> partesConfirmacion = parte.getPartesConfirmacion();
+					List<ParteConfirmacion> partesConfirmacion = parteConfirmacionRepository
+							.findAllByParteBajaIdParteBajaAndDeletedFalse(parte.getIdParteBaja());
 
 					for (int i = 0; i < partesConfirmacion.size(); i++) {
 
