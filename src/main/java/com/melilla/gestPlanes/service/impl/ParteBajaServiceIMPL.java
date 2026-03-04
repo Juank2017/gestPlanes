@@ -101,18 +101,16 @@ public class ParteBajaServiceIMPL implements ParteBajaService {
 					for (int i = 0; i < partesConfirmacion.size(); i++) {
 
 						ParteConfirmacion parteConfirmacion = partesConfirmacion.get(i);
-						
-						if(!parteConfirmacion.isDeleted()) {
-							
+
+						if (!parteConfirmacion.isDeleted()) {
+
 							partePlano.put("conf" + (i + 1),
 									(parteConfirmacion.getFechaParteConfirmacion() != null)
 											? parteConfirmacion.getFechaParteConfirmacion().format(dtf)
 											: "");
-							partePlano.put("idConf" + (i + 1), parteConfirmacion.getIdParteConfirmacion().toString());  
-							
-						}
+							partePlano.put("idConf" + (i + 1), parteConfirmacion.getIdParteConfirmacion().toString());
 
-						
+						}
 
 					}
 
@@ -241,8 +239,9 @@ public class ParteBajaServiceIMPL implements ParteBajaService {
 
 			for (ParteBaja parte : partes) {
 
-				List<ParteConfirmacion> partesConfirmacion = parteConfirmacionRepository.findAllByParteBajaIdParteBajaAndDeletedFalse(parte.getIdParteBaja());
-				
+				List<ParteConfirmacion> partesConfirmacion = parteConfirmacionRepository
+						.findAllByParteBajaIdParteBajaAndDeletedFalse(parte.getIdParteBaja());
+
 				listaCantidadesPartesConfirmacion.add(partesConfirmacion.size());
 
 			}
@@ -285,7 +284,7 @@ public class ParteBajaServiceIMPL implements ParteBajaService {
 
 	@Override
 	public void borraParteConfirmacion(long idParteConfirmacion) {
-		
+
 		parteConfirmacionRepository.deleteById(idParteConfirmacion);
 
 	}
@@ -300,14 +299,16 @@ public class ParteBajaServiceIMPL implements ParteBajaService {
 	public int numeroMaximoPartesConfirmacionPlanActivo(Plan planActivo) {
 
 		List<ParteBaja> partes = parteBajaRepository.findAllByCiudadanoIdPlanAndDeletedFalse(planActivo);
-		
+
 		List<Integer> listaCantidadesPartesConfirmacion = new ArrayList<Integer>();
 
 		if (!partes.isEmpty()) {
 
 			for (ParteBaja parte : partes) {
+				List<ParteConfirmacion> partesConfirmacion = parteConfirmacionRepository
+						.findAllByParteBajaIdParteBajaAndDeletedFalse(parte.getIdParteBaja());
 
-				listaCantidadesPartesConfirmacion.add(parte.getPartesConfirmacion().size());
+				listaCantidadesPartesConfirmacion.add(partesConfirmacion.size());
 
 			}
 

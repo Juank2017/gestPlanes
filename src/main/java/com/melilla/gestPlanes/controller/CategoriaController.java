@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.melilla.gestPlanes.DTO.CrearCategoriaDTO;
 import com.melilla.gestPlanes.DTO.EditarCategoriaDTO;
 import com.melilla.gestPlanes.model.ApiResponse;
-import com.melilla.gestPlanes.model.Categoria;
+
 import com.melilla.gestPlanes.service.CategoriaService;
 
 import lombok.RequiredArgsConstructor;
