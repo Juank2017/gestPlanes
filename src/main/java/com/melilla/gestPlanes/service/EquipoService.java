@@ -12,6 +12,8 @@ public interface EquipoService {
 	
 	List<EquipoResponseDTO>equipos(Long idPlan);
 	
+	EquipoResponseDTO equipoToDTO(Long idPlan,Long idEquipo);
+	
 	Equipo equipo(Long idPlan,Long idEquipo);
 	
 	Equipo crearEquipo(CreateEquipoDTO equipo);

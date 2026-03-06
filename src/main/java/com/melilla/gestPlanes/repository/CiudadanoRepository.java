@@ -61,9 +61,9 @@ public interface CiudadanoRepository extends JpaRepository<Ciudadano, Long>, Rev
 	@Query("SELECT new com.melilla.gestPlanes.DTO.DashBoardEstadoGeneroDTO(c.estado as estado ,sum(case when c.sexo = \"HOMBRE\" then 1 else 0 end) as hombres ,sum(case when c.sexo = \"MUJER\" then 1 else 0 end) as mujeres) FROM Ciudadano c WHERE c.idPlan.idPlan = ?1 and c.deleted = 0 GROUP BY c.estado")
 	List<DashBoardEstadoGeneroDTO> findAllByIdPlanAndNotDeletedGroupByEstado(Long idPlan);
 
-	List<Ciudadano> findAllByidPlanIdPlanAndBajaLaboralTrue(Long idPlan);
+	List<Ciudadano> findAllByidPlanIdPlanAndBajaLaboralTrueAndDeletedFalse(Long idPlan);
 
-	List<Ciudadano> findAllByidPlanIdPlanAndBajaMaternalTrue(Long idPlan);
+	List<Ciudadano> findAllByidPlanIdPlanAndBajaMaternalTrueAndDeletedFalse(Long idPlan);
 
 	List<Ciudadano> findAllByDNI(String dni);
 	

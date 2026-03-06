@@ -16,7 +16,7 @@ public class EquipoResponseDTO {
 	private String apellido2Jefe;
 	private String DNIJefe;
 	private String telefonoJefe;
-	private List<Ciudadano>componentes;
+	private List<ComponentesEquipoDTO>componentes;
 	boolean deleted;
 	
 }

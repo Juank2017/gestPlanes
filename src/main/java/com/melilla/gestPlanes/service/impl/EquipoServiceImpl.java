@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.stereotype.Service;
 
+import com.melilla.gestPlanes.DTO.ComponentesEquipoDTO;
 import com.melilla.gestPlanes.DTO.CreateEquipoDTO;
 import com.melilla.gestPlanes.DTO.EditaEquipoDTO;
 import com.melilla.gestPlanes.DTO.EquipoResponseDTO;
@@ -16,6 +17,7 @@ import com.melilla.gestPlanes.exceptions.exceptions.EquipoConComponentesExceptio
 import com.melilla.gestPlanes.exceptions.exceptions.EquipoCreationException;
 import com.melilla.gestPlanes.exceptions.exceptions.EquipoNoEncontradoException;
 import com.melilla.gestPlanes.exceptions.exceptions.TrabajadorNoEsJefeException;
+import com.melilla.gestPlanes.mappers.ComponenteDTMapper;
 import com.melilla.gestPlanes.model.Ciudadano;
 import com.melilla.gestPlanes.model.Equipo;
 import com.melilla.gestPlanes.repository.CiudadanoRepository;
@@ -39,6 +41,9 @@ public class EquipoServiceImpl implements EquipoService {
 
 	@Autowired
 	private PlanService planService;
+	
+	@Autowired
+	private final ComponenteDTMapper mapper;
 
 	@Override
 	public List<EquipoResponseDTO> equipos(Long idPlan) {
@@ -57,7 +62,7 @@ public class EquipoServiceImpl implements EquipoService {
 			eq.setApellido2Jefe(equipo.getJefeEquipo().getApellido2());
 			eq.setDNIJefe(equipo.getJefeEquipo().getDNI());
 			eq.setTelefonoJefe(equipo.getJefeEquipo().getTelefono());
-			eq.setComponentes(equipo.getComponentes());
+			eq.setComponentes(equipo.getComponentes().stream().map((c)-> mapper.ciudadanoToComponentesEquipoDTO( c,new ComponentesEquipoDTO())).toList());
 			eq.setDeleted(equipo.isDeleted());
 			listEquipos.add(eq);
 			
@@ -171,8 +176,29 @@ public class EquipoServiceImpl implements EquipoService {
 	}
 
 	@Override
-	public Equipo equipo(Long idPlan, Long idEquipo) {
+	public EquipoResponseDTO equipoToDTO(Long idPlan, Long idEquipo) {
+		
+		EquipoResponseDTO response = new EquipoResponseDTO();
+		
+		Equipo equipo = equipoRepository.findByIdPlanIdPlanAndIdEquipo(idPlan, idEquipo)
+				.orElseThrow(() -> new EquipoNoEncontradoException(idEquipo));
+		
+		response.setIdEquipo(equipo.getIdEquipo());
+		response.setNombreEquipo(equipo.getNombreEquipo());
+		response.setNombreJefe(equipo.getJefeEquipo().getNombre());
+		response.setApellido1Jefe(equipo.getJefeEquipo().getApellido1());
+		response.setApellido2Jefe(equipo.getJefeEquipo().getApellido2());
+		response.setDNIJefe(equipo.getJefeEquipo().getDNI());		
+		response.setTelefonoJefe(equipo.getJefeEquipo().getTelefono());
+		
+		response.setComponentes(equipo.getComponentes().stream().map((c)-> mapper.ciudadanoToComponentesEquipoDTO( c,new ComponentesEquipoDTO())).toList());
 
+		return response;
+	}
+
+	@Override
+	public Equipo equipo(Long idPlan, Long idEquipo) {
+		
 		return equipoRepository.findByIdPlanIdPlanAndIdEquipo(idPlan, idEquipo)
 				.orElseThrow(() -> new EquipoNoEncontradoException(idEquipo));
 	}

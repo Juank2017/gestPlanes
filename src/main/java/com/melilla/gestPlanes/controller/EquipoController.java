@@ -55,7 +55,7 @@ public class EquipoController {
 		ApiResponse response = new ApiResponse();
 
 		response.setEstado(HttpStatus.OK);
-		response.getPayload().add(equipoService.equipo(idPlan, idEquipo));
+		response.getPayload().add(equipoService.equipoToDTO(idPlan, idEquipo));
 		response.setMensaje("Equipo " + idEquipo);
 
 		return ResponseEntity.ok(response);

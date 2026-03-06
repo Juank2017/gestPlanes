@@ -34,8 +34,8 @@ public class DashBoardServiceIMPL implements DashBoardService {
 
 	@Override
 	public List<DashBoardBajasDTO> trabajadoresEnBaja(Long idPlan) {
-		List<Ciudadano> bajasLaborales = ciudadanoRepository.findAllByidPlanIdPlanAndBajaLaboralTrue(idPlan);
-		List<Ciudadano> bajasMaternidad= ciudadanoRepository.findAllByidPlanIdPlanAndBajaMaternalTrue(idPlan);
+		List<Ciudadano> bajasLaborales = ciudadanoRepository.findAllByidPlanIdPlanAndBajaLaboralTrueAndDeletedFalse(idPlan);
+		List<Ciudadano> bajasMaternidad= ciudadanoRepository.findAllByidPlanIdPlanAndBajaMaternalTrueAndDeletedFalse(idPlan);
 		List<DashBoardBajasDTO> resultado = new ArrayList<>();
 		
 		DashBoardBajasDTO bajas = new DashBoardBajasDTO();
