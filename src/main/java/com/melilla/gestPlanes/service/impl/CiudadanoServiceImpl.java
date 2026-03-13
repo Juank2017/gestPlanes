@@ -876,7 +876,7 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 				String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 				
 				try {
-					// Check if the file's name contains invalid characters
+					
 					if (fileName.contains("..")) {
 						throw new FileStorageException(
 								"El nombre de archivo tiene una secuencia de carácteres no válida " + fileName);
