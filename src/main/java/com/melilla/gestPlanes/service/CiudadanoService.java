@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.melilla.gestPlanes.DTO.CiudadanoOrdenBusqueda;
 import com.melilla.gestPlanes.DTO.CreateTrabajadorDTO;
 import com.melilla.gestPlanes.DTO.ListadoTrabajadoresConPartes;
@@ -79,6 +81,8 @@ public interface CiudadanoService {
 	
 	//Comprueba si tiene algún parte de baja abierto.
 	boolean estaDeBaja(long idTrabajador);
+	
+	boolean subirPlantilla(MultipartFile file);
 	
 	
 }

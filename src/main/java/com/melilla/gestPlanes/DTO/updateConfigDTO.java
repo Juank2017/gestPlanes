@@ -14,4 +14,6 @@ public class updateConfigDTO {
 	private String trashcanDir;
 	
 	private String contrato;
+	
+	private String uploadTemplateDir;
 }

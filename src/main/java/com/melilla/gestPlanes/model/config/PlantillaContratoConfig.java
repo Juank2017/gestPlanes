@@ -74,4 +74,6 @@ public class PlantillaContratoConfig {
 	private String url;
 	
 	private String nombreFicheroPlantilla;
+	
+	
 }

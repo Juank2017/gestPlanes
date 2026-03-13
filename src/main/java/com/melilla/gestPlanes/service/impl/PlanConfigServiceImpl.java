@@ -27,6 +27,7 @@ public class PlanConfigServiceImpl implements PlanConfigService {
 		PlanConfig config = new PlanConfig();
 		
 		config.setTemplateDir("plantillas");
+		config.setUploadTemplateDir("cargaCandidatos");
 		
 		return planConfigRepository.save(config);
 	}
@@ -39,6 +40,7 @@ public class PlanConfigServiceImpl implements PlanConfigService {
 		configBBDD.setTempDir(config.getTempDir());
 		configBBDD.setTrashcanDir(config.getTrashcanDir());
 		configBBDD.setUploadDir(config.getUploadDir());
+		configBBDD.setUploadTemplateDir(config.getUploadTemplateDir());
 		
 		log.warning(configBBDD.getUploadDir());
 		

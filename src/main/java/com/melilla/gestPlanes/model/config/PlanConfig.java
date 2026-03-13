@@ -40,6 +40,8 @@ public class PlanConfig {
 	private String trashcanDir;
 	
 	private String templateDir;
+	
+	private String uploadTemplateDir;
 
 	@NotAudited
 	@JsonIgnore
@@ -130,6 +132,14 @@ public class PlanConfig {
 
 	public void setDeletedAt(LocalDateTime deletedAt) {
 		this.deletedAt = deletedAt;
+	}
+
+	public String getUploadTemplateDir() {
+		return uploadTemplateDir;
+	}
+
+	public void setUploadTemplateDir(String uploadTemplateDir) {
+		this.uploadTemplateDir = uploadTemplateDir;
 	}
 	
 

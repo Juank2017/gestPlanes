@@ -6,7 +6,13 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
+import java.io.IOException;
 import java.lang.Math;
+import java.nio.file.FileAlreadyExistsException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,6 +25,9 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.melilla.gestPlanes.DTO.CiudadanoCriterioBusqueda;
 import com.melilla.gestPlanes.DTO.CiudadanoCriterioOrden;
@@ -35,6 +44,7 @@ import com.melilla.gestPlanes.DTO.VacantesResponseDTO;
 import com.melilla.gestPlanes.exceptions.exceptions.CategoriaNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.CiudadanoNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.DestinoNotFoundException;
+import com.melilla.gestPlanes.exceptions.exceptions.FileStorageException;
 import com.melilla.gestPlanes.exceptions.exceptions.OcupacionNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.OrganismoNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.PlanNotFoundException;
@@ -50,6 +60,7 @@ import com.melilla.gestPlanes.model.OrganismoOcupacion;
 import com.melilla.gestPlanes.model.ParteBaja;
 import com.melilla.gestPlanes.model.Plan;
 import com.melilla.gestPlanes.model.User;
+import com.melilla.gestPlanes.model.config.PlanConfig;
 import com.melilla.gestPlanes.model.enums.EstadoCiudadano;
 import com.melilla.gestPlanes.model.enums.TipoModificacionPrevencion;
 import com.melilla.gestPlanes.repository.CategoriaRepository;
@@ -62,6 +73,7 @@ import com.melilla.gestPlanes.repository.OrganismoOcupacionRepository;
 import com.melilla.gestPlanes.repository.OrganismoRepository;
 import com.melilla.gestPlanes.service.CiudadanoService;
 import com.melilla.gestPlanes.service.EquipoService;
+import com.melilla.gestPlanes.service.PlanConfigService;
 import com.melilla.gestPlanes.service.PlanService;
 
 import lombok.RequiredArgsConstructor;
@@ -98,6 +110,9 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 
 	@Autowired
 	private EquipoService equipoService;
+
+	@Autowired
+	private PlanConfigService planConfigService;
 
 	@Value("${file.upload-dir}")
 	private String uploadDir;
@@ -340,7 +355,6 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 						.diasVacaciones(0).duracion(trabajador.getDuracion()).base(trabajador.getBase())
 						.prorratas(trabajador.getProrratas()).residencia(trabajador.getResidencia())
 						.total(trabajador.getTotal()).ciudadano(ciudadano).build();
-			
 
 				contrato = contratoRepository.save(contrato);
 
@@ -815,34 +829,72 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 
 	@Override
 	public List<ListadoTrabajadoresConPartes> trabajadoresConPartesDebajaPlanActivo() {
-		
+
 		return ciudadanoRepository.findAllByIdPlanAndPartesIsNotEmpty(planService.getWorikingPlan());
 	}
 
 	@Override
 	public boolean estaDeBaja(long idTrabajador) {
-		Ciudadano trabajador = ciudadanoRepository.findById(idTrabajador).orElseThrow(()-> new CiudadanoNotFoundException(idTrabajador));
-		
-		if(trabajador.getPartes().isEmpty()) {
+		Ciudadano trabajador = ciudadanoRepository.findById(idTrabajador)
+				.orElseThrow(() -> new CiudadanoNotFoundException(idTrabajador));
+
+		if (trabajador.getPartes().isEmpty()) {
 			return false;
-		}else {
+		} else {
 			List<ParteBaja> partes = trabajador.getPartes();
-			
+
 			for (ParteBaja parteBaja : partes) {
-				if(!parteBaja.isDeleted()) {
-					
+				if (!parteBaja.isDeleted()) {
+
 					if (parteBaja.getFechaFinBaja() == null) {
 						return true;
 					}
-					
+
 				}
-			
+
 			}
-			
-			
+
 		}
-		
+
 		return false;
+	}
+
+	@Override
+	public boolean subirPlantilla(MultipartFile file) {
+
+		PlanConfig config = planConfigService.obtenerConfig(planService.getWorikingPlan().getIdPlan());
+
+		Path fileStorageLocation = Paths.get(config.getTemplateDir()).toAbsolutePath().normalize();
+		
+		try {
+			Files.createDirectories(fileStorageLocation);
+		} catch (Exception e) {
+			throw new FileStorageException("No se ha podido crear el directorio: " + fileStorageLocation);
+		}
+
+		// nombre del fichero
+				String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+				
+				try {
+					// Check if the file's name contains invalid characters
+					if (fileName.contains("..")) {
+						throw new FileStorageException(
+								"El nombre de archivo tiene una secuencia de carácteres no válida " + fileName);
+					}
+					// Copy file to the target location (Replacing existing file with the same name)
+					Path targetLocation = fileStorageLocation.resolve(fileName);
+					Files.copy(file.getInputStream(), targetLocation,StandardCopyOption.REPLACE_EXISTING);
+
+					return true;
+
+				} catch (FileAlreadyExistsException e) {
+					throw new FileStorageException("El archivo " + fileName + " ya existe");
+				} catch (IOException ex) {
+					throw new FileStorageException("No se pudo subir el documento " + fileName + ". Intentelo de nuevo!");
+				}
+				
+
+		
 	}
 
 }
