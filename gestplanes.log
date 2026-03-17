@@ -63909,3 +63909,30 @@ java.sql.SQLSyntaxErrorException: (conn=299) Table 'gestplan.fichero_carga_candi
 2026-03-16T14:17:33.428+01:00 DEBUG 35248 --- [http-nio-9092-exec-4] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
 2026-03-16T14:17:33.434+01:00 DEBUG 35248 --- [http-nio-9092-exec-4] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [java.lang.StackOverflowError]
 2026-03-16T14:17:33.437+01:00 DEBUG 35248 --- [http-nio-9092-exec-4] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2026-03-16T15:09:41.861+01:00  INFO 35248 --- [File Watcher] rtingClassPathChangeChangedEventListener : Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+2026-03-16T15:09:42.076+01:00  INFO 35248 --- [Thread-51] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
+2026-03-16T15:09:42.088+01:00  INFO 35248 --- [Thread-51] o.a.c.c.C.[Tomcat].[localhost].[/]       : Destroying Spring FrameworkServlet 'dispatcherServlet'
+2026-03-16T15:09:42.171+01:00  WARN 35248 --- [Thread-51] o.a.c.loader.WebappClassLoaderBase       : The web application [ROOT] appears to have started a thread named [HikariPool-13 housekeeper] but has failed to stop it. This is very likely to create a memory leak. Stack trace of thread:
+ java.base@17.0.1/jdk.internal.misc.Unsafe.park(Native Method)
+ java.base@17.0.1/java.util.concurrent.locks.LockSupport.parkNanos(LockSupport.java:252)
+ java.base@17.0.1/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.awaitNanos(AbstractQueuedSynchronizer.java:1672)
+ java.base@17.0.1/java.util.concurrent.ScheduledThreadPoolExecutor$DelayedWorkQueue.take(ScheduledThreadPoolExecutor.java:1182)
+ java.base@17.0.1/java.util.concurrent.ScheduledThreadPoolExecutor$DelayedWorkQueue.take(ScheduledThreadPoolExecutor.java:899)
+ java.base@17.0.1/java.util.concurrent.ThreadPoolExecutor.getTask(ThreadPoolExecutor.java:1062)
+ java.base@17.0.1/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1122)
+ java.base@17.0.1/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+ java.base@17.0.1/java.lang.Thread.run(Thread.java:833)
+2026-03-16T15:09:42.221+01:00  INFO 35248 --- [Thread-51] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-03-16T15:09:42.265+01:00  INFO 35248 --- [Thread-51] com.zaxxer.hikari.HikariDataSource       : HikariPool-13 - Shutdown initiated...
+2026-03-16T15:09:42.283+01:00  INFO 35248 --- [Thread-51] com.zaxxer.hikari.HikariDataSource       : HikariPool-13 - Shutdown completed.
+2026-03-16T15:09:42.806+01:00  INFO 35248 --- [restartedMain] c.m.gestPlanes.GestPlanesApplication     : Starting GestPlanesApplication using Java 17.0.1 with PID 35248 (D:\proyectos\gestPlanes\target\classes started by juancarlos.pmera in D:\proyectos\gestPlanes)
+2026-03-16T15:09:42.807+01:00  INFO 35248 --- [restartedMain] c.m.gestPlanes.GestPlanesApplication     : No active profile set, falling back to 1 default profile: "default"
+2026-03-16T15:09:44.297+01:00  INFO 35248 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-03-16T15:09:45.045+01:00  INFO 35248 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 748 ms. Found 28 JPA repository interfaceinterfaces.
+2026-03-16T15:09:46.069+01:00  INFO 35248 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 9092 (http)
+2026-03-16T15:09:46.070+01:00  INFO 35248 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-03-16T15:09:46.070+01:00  INFO 35248 --- [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.16]
+2026-03-16T15:09:46.128+01:00  INFO 35248 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2026-03-16T15:09:46.128+01:00  INFO 35248 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 3317 ms
+2026-03-16T15:09:46.133+01:00 TRACE 35248 --- [restartedMain] o.s.b.w.s.ServletContextInitializerBeans : Added existing Filter initializer bean 'securityFilterChainRegistration'; order=-100, resource=class path resource [org/springframework/boot/autoconfigure/security/servlet/SecurityFilterAutoConfiguration.class]
+2026-03-16T15:09:46.133+01:00 TRACE 35248 --- [restartedMain] o.s.b.w.s.ServletContextInitializerBeans : Added existing Servlet initializer bean 'dispatcherServletRegistration'; order=2147483647, resource=class path resource [org/springframework/boot/autoconfigure/web/servlet/DispatcherServletAutoConfiguration$DispatcherServletRegistrationConfiguration.class]
