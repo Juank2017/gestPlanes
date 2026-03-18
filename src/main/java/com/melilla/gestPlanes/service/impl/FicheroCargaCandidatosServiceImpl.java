@@ -197,12 +197,15 @@ public class FicheroCargaCandidatosServiceImpl implements FicheroCargaCandidatos
 		    	 
 		    	 candidato.setOrdenSEPE(row.getCell(0).getStringCellValue());
 		    	 candidato.setFechaListadoSEPE(row.getCell(1).getDateCellValue());
-		    	 candidato.setDni(row.getCell(2).getStringCellValue());
-		    	 candidato.setNombre(row.getCell(3).getStringCellValue());
-		    	 candidato.setApellido1(row.getCell(4).getStringCellValue());
-		    	 candidato.setApellido2(row.getCell(5).getStringCellValue());
-		    	 candidato.setTelefono(row.getCell(6).getStringCellValue()+ "/" +row.getCell(7).getStringCellValue());
-		    	 candidato.setEmail(row.getCell(8).getStringCellValue());
+		    	 candidato.setSuplente(row.getCell(2).getStringCellValue());
+		    	 candidato.setDni(row.getCell(3).getStringCellValue());
+		    	 candidato.setNombre(row.getCell(4).getStringCellValue());
+		    	 candidato.setApellido1(row.getCell(5).getStringCellValue());
+		    	 candidato.setApellido2(row.getCell(6).getStringCellValue());
+		    	 candidato.setTelefono(row.getCell(7).getStringCellValue()+ "/" +row.getCell(8).getStringCellValue());
+		    	 candidato.setEmail(row.getCell(9).getStringCellValue());
+		    	 candidato.setIdOcupacion(row.getCell(10).getStringCellValue());
+		    	 candidato.setIdOrganismo(row.getCell(11).getStringCellValue());
 		    	 
 		    	 candidatos.add(candidato);
 		    

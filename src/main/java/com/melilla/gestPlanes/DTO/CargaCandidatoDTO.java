@@ -13,6 +13,8 @@ public class CargaCandidatoDTO {
 	
 	private Date fechaListadoSEPE;
 	
+	private String suplente;
+	
 	private String nombre;
 	
 	private String apellido1;
@@ -24,5 +26,9 @@ public class CargaCandidatoDTO {
 	private String dni;
 	
 	private String email;
+	
+	private String idOcupacion;
+	
+	private String idOrganismo;
 
 }
