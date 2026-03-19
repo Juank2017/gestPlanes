@@ -162,9 +162,8 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 						: null)
 				.esJefeEquipo(false).build());
 
-		Contrato nuevoContrato = contratoRepository.save(Contrato.builder().base(trabajador.getBase())
-				.prorratas(trabajador.getProrratas()).residencia(trabajador.getResidencia())
-				.total(trabajador.getTotal())
+		Contrato nuevoContrato = Contrato.builder().base(trabajador.getBase()).prorratas(trabajador.getProrratas())
+				.residencia(trabajador.getResidencia()).total(trabajador.getTotal())
 				.entidad((trabajador.getEntidad() != null) ? organismoRepository.findById(trabajador.getEntidad())
 						.orElseThrow(() -> new OrganismoNotFoundException(trabajador.getEntidad())) : null)
 
@@ -181,8 +180,8 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 				.fechaInicio((trabajador.getFechaInicio() != null) ? trabajador.getFechaInicio() : null)
 				.fechaFinal((trabajador.getFechaFinal() != null) ? trabajador.getFechaFinal() : null)
 				.turno((trabajador.getTurno() != null) ? trabajador.getTurno() : "MAÑANA").porcentajeHoras("63")
-				.gc(trabajador.getGc().toString()).ciudadano(nuevoCiudadano).build());
-
+				.gc(trabajador.getGc().toString()).ciudadano(nuevoCiudadano).build();
+		contratoRepository.save(nuevoContrato);
 		return nuevoCiudadano;
 	}
 
@@ -865,7 +864,7 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 		PlanConfig config = planConfigService.obtenerConfig(planService.getWorikingPlan().getIdPlan());
 
 		Path fileStorageLocation = Paths.get(config.getTemplateDir()).toAbsolutePath().normalize();
-		
+
 		try {
 			Files.createDirectories(fileStorageLocation);
 		} catch (Exception e) {
@@ -873,28 +872,26 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 		}
 
 		// nombre del fichero
-				String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-				
-				try {
-					
-					if (fileName.contains("..")) {
-						throw new FileStorageException(
-								"El nombre de archivo tiene una secuencia de carácteres no válida " + fileName);
-					}
-					// Copy file to the target location (Replacing existing file with the same name)
-					Path targetLocation = fileStorageLocation.resolve(fileName);
-					Files.copy(file.getInputStream(), targetLocation,StandardCopyOption.REPLACE_EXISTING);
+		String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 
-					return true;
+		try {
 
-				} catch (FileAlreadyExistsException e) {
-					throw new FileStorageException("El archivo " + fileName + " ya existe");
-				} catch (IOException ex) {
-					throw new FileStorageException("No se pudo subir el documento " + fileName + ". Intentelo de nuevo!");
-				}
-				
+			if (fileName.contains("..")) {
+				throw new FileStorageException(
+						"El nombre de archivo tiene una secuencia de carácteres no válida " + fileName);
+			}
+			// Copy file to the target location (Replacing existing file with the same name)
+			Path targetLocation = fileStorageLocation.resolve(fileName);
+			Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
 
-		
+			return true;
+
+		} catch (FileAlreadyExistsException e) {
+			throw new FileStorageException("El archivo " + fileName + " ya existe");
+		} catch (IOException ex) {
+			throw new FileStorageException("No se pudo subir el documento " + fileName + ". Intentelo de nuevo!");
+		}
+
 	}
 
 }
