@@ -130,6 +130,7 @@ public class CiudadanoController {
 				item.setDeleted(ciudadano.isDeleted());
 				item.setNotas((ciudadano.getNotas().size() >0)?true:false);
 				item.setEquipo((ciudadano.getEquipo() != null)?ciudadano.getEquipo().getNombreEquipo():"");
+				item.setEmail(ciudadano.getEmail());
 				lista.getTrabajadores().add(item);
 				
 
