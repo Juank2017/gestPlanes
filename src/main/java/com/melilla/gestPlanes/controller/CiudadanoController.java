@@ -197,6 +197,7 @@ public class CiudadanoController {
 				item.setSexo(ciudadano.getSexo());
 				item.setDeleted(ciudadano.isDeleted());
 				item.setNotas((ciudadano.getNotas().size() >0)?true:false);
+				item.setEmail(ciudadano.getEmail());
 				lista.getTrabajadores().add(item);
 			
 
