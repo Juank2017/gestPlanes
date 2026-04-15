@@ -102,5 +102,17 @@ public class FicheroCargaCandidatosController {
 				.body(resource);
 		
 	}
+	
+	@PostMapping("cargaCandidatos/procesar/{id}")
+	public ResponseEntity<ApiResponse>procesar(@PathVariable long id){
 
+		ApiResponse response = new ApiResponse();
+		
+		response.setEstado(HttpStatus.OK);
+		response.getPayload().add(ficheroCargaCandidatosService.procesaFichero(id));
+		response.setMensaje("Fichero procesado");
+		
+		return ResponseEntity.ok(response);
+	}
+		
 }

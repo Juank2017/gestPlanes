@@ -48,7 +48,7 @@ public class OcupacionController {
 		ApiResponse response = new ApiResponse();
 		
 		response.setEstado(HttpStatus.OK);
-		response.getPayload().addAll(ocupacionService.obtenerOcupacionesPlan(planService.getPlan(idPlan).get()));
+		response.getPayload().addAll(ocupacionService.obtenerOcupacionesPlan(planService.getPlan(idPlan)));
 		response.setMensaje("Listado de ocupaciones de la categoria con id: "+idPlan);
 		
 		return ResponseEntity.ok(response);

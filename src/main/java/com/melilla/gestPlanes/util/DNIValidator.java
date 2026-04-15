@@ -10,7 +10,7 @@ public class DNIValidator {
 		
 		String letra = "TRWAGMYFPDXBNJZSQVHLCKET";
 		
-		String expresion_regular_dni = "/^[XYZ]?\\d{5,8}[A-Z]$/";
+		String expresion_regular_dni = "^[XYZxyz]?[0-9]{7,8}[A-Za-z]$";
 		
 		if (dni.matches(expresion_regular_dni)) {
 			

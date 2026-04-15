@@ -96,7 +96,7 @@ public class OcupacionServiceImpl implements OcupacionService {
 
 		nuevaOcupacion.setOcupacionSEPE(ocupacion.getCno());
 
-		nuevaOcupacion.setIdPlan(planService.getPlan(ocupacion.getIdPlan()).get());
+		nuevaOcupacion.setIdPlan(planService.getPlan(ocupacion.getIdPlan()));
 
 		return ocupacionRepository.save(nuevaOcupacion);
 	}

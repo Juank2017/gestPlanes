@@ -120,7 +120,7 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 	@Override
 	public List<Ciudadano> getCiudadanos(Long idPlan) {
 
-		Plan plan = planService.getPlan(idPlan).orElseThrow(() -> new PlanNotFoundException("Plan no encontrado."));
+		Plan plan = planService.getPlan(idPlan);
 
 		return ciudadanoRepository.findAllByIdPlan(plan);
 	}
@@ -151,7 +151,8 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 				.email(trabajador.getEmail()).esJefeEquipo(false).telefono(trabajador.getTelefono())
 				.sexo(trabajador.getSexo()).seguridadSocial(trabajador.getSeguridadSocial())
 				.reclamaSalarios(trabajador.isReclamaSalarios())
-				.idPlan((trabajador.isReclamaSalarios()) ? null : planService.getPlan(trabajador.getIdPlan()).get())
+				.idPlan(planService.getPlan(trabajador.getIdPlan()))
+						
 				.fechaRegistro(trabajador.getFechaRegistro()).fechaNacimiento(trabajador.getFechaNacimiento())
 				.estado(trabajador.getEstado()).numeroOrdenSepe(trabajador.getNumeroOrdenSepe())
 				.fechaListadoSepe(trabajador.getFechaListadoSepe()).suplente(trabajador.isSuplente())
@@ -181,8 +182,9 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 				.fechaFinal((trabajador.getFechaFinal() != null) ? trabajador.getFechaFinal() : null)
 				.turno((trabajador.getTurno() != null) ? trabajador.getTurno() : "MAÑANA").porcentajeHoras("63")
 				.gc(trabajador.getGc().toString()).ciudadano(nuevoCiudadano).build();
-		contratoRepository.save(nuevoContrato);
-		return nuevoCiudadano;
+		nuevoCiudadano.setContrato(contratoRepository.save(nuevoContrato));
+		
+		return ciudadanoRepository.save(nuevoCiudadano);
 	}
 
 	@Override
@@ -607,8 +609,7 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 		log.info("IdPlanTrabajo usuario logado: " + planUsuarioLogado);
 		log.info("IdPlanActivo: " + idPlanActivo);
 		Plan result = (idPlanActivo == planUsuarioLogado) ? planActivo
-				: planService.getPlan(usuarioLogado.getPlanDeTrabajo())
-						.orElseThrow(() -> new PlanNotFoundException("Plan no encontrado"));
+				: planService.getPlan(usuarioLogado.getPlanDeTrabajo());
 		log.info("id result: " + result.getIdPlan());
 
 		Collection<Organismo> organismosPlan = organismoRepository

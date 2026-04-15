@@ -1,14 +1,19 @@
 package com.melilla.gestPlanes.DTO;
 
 import java.time.LocalDate;
+
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * DTO para crear un trabajador.
  */
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class CreateTrabajadorDTO {
 //TODO: revisar la eliminación de los campos booleanos que ya no se usan.
 	

@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -31,16 +33,20 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.melilla.gestPlanes.DTO.CargaCandidatoDTO;
 import com.melilla.gestPlanes.DTO.CreateTrabajadorDTO;
+import com.melilla.gestPlanes.exceptions.exceptions.ExcelParseErrorException;
 import com.melilla.gestPlanes.exceptions.exceptions.FicheroCandidatosUploadException;
 import com.melilla.gestPlanes.exceptions.exceptions.FileStorageException;
 import com.melilla.gestPlanes.exceptions.exceptions.MyFileNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.OcupacionNotFoundException;
+import com.melilla.gestPlanes.model.Ciudadano;
 import com.melilla.gestPlanes.model.FicheroCargaCandidatos;
 import com.melilla.gestPlanes.model.Ocupacion;
 import com.melilla.gestPlanes.model.Plan;
 import com.melilla.gestPlanes.model.config.PlanConfig;
+import com.melilla.gestPlanes.repository.CiudadanoRepository;
 import com.melilla.gestPlanes.repository.FicheroCargaCandidatosRepository;
 import com.melilla.gestPlanes.repository.OcupacionRepository;
+import com.melilla.gestPlanes.service.CiudadanoService;
 import com.melilla.gestPlanes.service.FicheroCargaCandidatosService;
 import com.melilla.gestPlanes.service.OcupacionService;
 import com.melilla.gestPlanes.service.PlanConfigService;
@@ -62,9 +68,12 @@ public class FicheroCargaCandidatosServiceImpl implements FicheroCargaCandidatos
 
 	@Autowired
 	FicheroCargaCandidatosRepository ficheroCargaCandidatosRepository;
-	
+
 	@Autowired
 	OcupacionRepository ocupacionRepository;
+	
+	@Autowired
+	CiudadanoService ciudadanoService;
 
 	@Override
 	public FicheroCargaCandidatos subirFichero(MultipartFile fichero) {
@@ -100,7 +109,7 @@ public class FicheroCargaCandidatosServiceImpl implements FicheroCargaCandidatos
 			Files.copy(fichero.getInputStream(), targetLocation);
 
 			String fileDownladUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-					.path(config.getUploadTemplateDir()+"/").path(fileName).toUriString();
+					.path(config.getUploadTemplateDir() + "/").path(fileName).toUriString();
 
 			ficheroCargaCandidatos.setIdPlan(planService.getWorikingPlan());
 			ficheroCargaCandidatos.setFileName(fileName);
@@ -140,10 +149,11 @@ public class FicheroCargaCandidatosServiceImpl implements FicheroCargaCandidatos
 
 	@Override
 	public List<FicheroCargaCandidatos> obtenerListadoFicheros() {
-		
+
 		Plan plan = planService.getWorikingPlan();
 
-		return ficheroCargaCandidatosRepository.findAll().stream().filter((f) -> f.isDeleted() == false && f.getIdPlan().getIdPlan() == plan.getIdPlan()).toList();
+		return ficheroCargaCandidatosRepository.findAll().stream()
+				.filter((f) -> f.isDeleted() == false && f.getIdPlan().getIdPlan() == plan.getIdPlan()).toList();
 	}
 
 	@Override
@@ -169,105 +179,162 @@ public class FicheroCargaCandidatosServiceImpl implements FicheroCargaCandidatos
 	}
 
 	@Override
-	public List<FicheroCargaCandidatos> procesaFichero(long idFichero) {
-		
-		 FicheroCargaCandidatos fichero = ficheroCargaCandidatosRepository.findById(idFichero)
+	public List<Ciudadano> procesaFichero(long idFichero) {
+
+		FicheroCargaCandidatos fichero = ficheroCargaCandidatosRepository.findById(idFichero)
 				.orElseThrow(() -> new MyFileNotFoundException("Fichero no encontrado"));
 		PlanConfig config = planConfigService.obtenerConfig(planService.getWorikingPlan().getIdPlan());
 
 		Path fileStorageLocation = Paths.get(config.getUploadTemplateDir() + "\\" + fichero.getFileName())
 				.toAbsolutePath().normalize();
+
+		List<Ciudadano> creados = new ArrayList<Ciudadano>();
 		
-		List<CreateTrabajadorDTO> candidatos =excelToCargaCandidatoDTOList(fileStorageLocation);
-		
+		List<CreateTrabajadorDTO> candidatos = excelToCargaCandidatoDTOList(fileStorageLocation);
+
 		Iterator<CreateTrabajadorDTO> it = candidatos.iterator();
-		
+
 		while (it.hasNext()) {
-			
+
 			CreateTrabajadorDTO candidato = it.next();
-			
+
 			String dni = candidato.getDNI();
 			
-			if (DNIValidator.validate(dni)) {
-				
+			try {
+				if (DNIValidator.validate(dni)) {
+					log.info("dni ok");
+					
+					Ciudadano ciudadano = ciudadanoService.crearTrabajador(candidato);
+					
+					creados.add(ciudadano);
+					
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-			
-			
+
+	
+
 		}
-		
-		
-		return null;
+
+		return creados;
 	}
 
 	private List<CreateTrabajadorDTO> excelToCargaCandidatoDTOList(Path fileStorageLocation) {
 		Workbook wb;
-		List<CreateTrabajadorDTO> candidatos =new  ArrayList<CreateTrabajadorDTO>();
+		List<CreateTrabajadorDTO> candidatos = new ArrayList<CreateTrabajadorDTO>();
+		long idPlan = planService.getWorikingPlan().getIdPlan();
 		try {
+			int i;
 			Resource resource = new UrlResource(fileStorageLocation.toUri());
-			
+
 			InputStream inp = new FileInputStream(resource.getFile());
-		    wb = WorkbookFactory.create(inp);
-		    Sheet sheet= wb.getSheetAt(0);
-		    
-		    int lastRow = sheet.getLastRowNum()+1;
-		    
-		    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-		    
-		    for (int i = 1; i < lastRow; i++) {
-				
-		    	 Row row = sheet.getRow(i);
-		    	 
-		    	 Long idOcupacion =Long.parseLong(row.getCell(9).getStringCellValue());
-		    	 
-		    	 Ocupacion ocupacion = ocupacionRepository.findById(idOcupacion).orElseThrow(()-> new OcupacionNotFoundException(idOcupacion));
-		    	 
-		    	 long idCategoria = ocupacion.getCategoria().getIdCategoria();
-		    	 
-		    	 long gc = (long) ocupacion.getCategoria().getGrupo();
-		    	 
-		    	 
-		    	 
-		    	 CreateTrabajadorDTO candidato = CreateTrabajadorDTO
-		    			 .builder()
-		    			 .numeroOrdenSepe(Integer.parseInt(row.getCell(0).getStringCellValue()))
-		    			 .fechaListadoSepe(LocalDate.parse(row.getCell(1).getStringCellValue(), formatter))
-		    			 .suplente(row.getCell(2).getStringCellValue().equals("NO")?false:true)
-		    			 .DNI(row.getCell(3).getStringCellValue())
-		    			 .nombre(row.getCell(4).getStringCellValue())
-		    			 .apellido1(row.getCell(4).getStringCellValue())
-		    			 .apellido2(row.getCell(5).getStringCellValue())
-		    			 .telefono(row.getCell(6).getStringCellValue()+"/"+row.getCell(7).getStringCellValue())
-		    			 .email(row.getCell(8).getStringCellValue())
-		    			 .ocu(ocupacion.getIdOcupacion())
-		    			 .categoria(idCategoria)
-		    			 .gc(gc)
-		    			 .entidad(Long.parseLong(row.getCell(10).getStringCellValue()))
-		    			 .estado("PRE-CANDIDATO")
-		    			 .fechaRegistro(LocalDate.now())
-		    			 .idPlan(planService.getWorikingPlan().getIdPlan())
-		    			 .build();
-		    	 
-		    	 candidatos.add(candidato);
-		    
-		    	 
-		    	 
+			wb = WorkbookFactory.create(inp);
+			Sheet sheet = wb.getSheetAt(0);
+
+			int lastRow = sheet.getLastRowNum() ;
+
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+log.info(lastRow+"");
+			for (i = 1; i <= lastRow; i++) {
+
+				Row row = sheet.getRow(i);
+
+				LocalDate fechaOrigen = LocalDate.of(1899, 12, 31);
+
+//		    	 log.info(fechaOrigen.plusDays((long) row.getCell(1).getNumericCellValue()-1).toString());
+//		    	 
+//		    	 for (int j= 0;j<10;j++) {
+//		    		 
+//		    		 
+//		    		 Cell celda = row.getCell(j);
+//		    		 celda.setCellType(CellType.STRING);
+//		    		 String valor =(celda.getCellType().name() =="NUMERIC")?(int)celda.getNumericCellValue()+"":celda.getStringCellValue();
+//		    		 log.info(j+" "+celda.getColumnIndex()+" "+celda.getCellType().name()+" "+ valor );
+//		    		 
+//		    		 
+//		    		 
+//		    	 }
+
+				CreateTrabajadorDTO candi = new CreateTrabajadorDTO();
+log.info(i+"");
+				if (row.getCell(0) == null || row.getCell(1) == null || row.getCell(2) == null || row.getCell(3) == null
+						|| row.getCell(6) == null || row.getCell(4) == null || row.getCell(12) == null
+						|| row.getCell(10) == null) {
+					throw new ExcelParseErrorException(i, "hay un valor null en la celda o está vacía.");
+				} else {
+					Long idOcupacion = (long) row.getCell(12).getNumericCellValue();
+
+					Ocupacion ocupacion = ocupacionRepository.findById(idOcupacion)
+							.orElseThrow(() -> new OcupacionNotFoundException(idOcupacion));
+
+					long idCategoria = ocupacion.getCategoria().getIdCategoria();
+
+					long gc = (long) ocupacion.getCategoria().getGrupo();
+
+					candi.setNumeroOrdenSepe((int) row.getCell(0).getNumericCellValue());
+
+					candi.setFechaListadoSepe(fechaOrigen.plusDays((long) row.getCell(1).getNumericCellValue() - 1));
+
+					candi.setSuplente(row.getCell(2).getStringCellValue().equals("NO") ? false : true);
+					
+					candi.setDNI(row.getCell(3).getStringCellValue());
+
+					candi.setApellido1(row.getCell(4).getStringCellValue());
+
+					candi.setApellido2(row.getCell(5).getStringCellValue());
+
+					candi.setNombre(row.getCell(6).getStringCellValue());
+
+					if (row.getCell(7) != null)
+						row.getCell(7).setCellType(CellType.STRING);
+					if (row.getCell(8) != null)
+						row.getCell(8).setCellType(CellType.STRING);
+
+					String numero1 = (row.getCell(7) == null) ? "" : row.getCell(7).getStringCellValue();
+
+					String numero2 = (row.getCell(8) == null) ? "" : row.getCell(8).getStringCellValue();
+
+					candi.setTelefono(numero1 + "/" + numero2);
+
+					candi.setEmail((row.getCell(9) == null) ? "" : row.getCell(9).getStringCellValue());
+
+					candi.setOcu(ocupacion.getIdOcupacion());
+
+					candi.setCategoria(idCategoria);
+
+					candi.setGc(gc);
+
+					candi.setEntidad((long) row.getCell(13).getNumericCellValue());
+
+					candi.setEstado("PRE-CANDIDATO");
+
+					candi.setFechaRegistro(LocalDate.now());
+
+					candi.setIdPlan(idPlan);
+					
+					candi.setNacionalidad("");
+
+				}
+
+				candidatos.add(candi);
+
 			}
-		    wb.close();
-		  
-		   
-			
+			wb.close();
+
 		} catch (MalformedURLException e) {
 			throw new MyFileNotFoundException("No se encuentra el fichero excel");
-		}catch(FileNotFoundException e) {
+		} catch (FileNotFoundException e) {
 			throw new MyFileNotFoundException("No se encuentra el fichero excel");
-		}
-		catch(IOException e) {
-			
+		} catch (IOException e) {
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new ExcelParseErrorException(0, e.getMessage());
 		}
 		return candidatos;
 	}
-	
-	
+
 //	private List<CargaCandidatoDTO> excelToCargaCandidatoDTOList(Path fileStorageLocation) {
 //		Workbook wb;
 //		List<CargaCandidatoDTO> candidatos =new  ArrayList<CargaCandidatoDTO>();
