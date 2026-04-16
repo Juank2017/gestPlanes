@@ -72,7 +72,7 @@ public class FicheroCargaCandidatosServiceImpl implements FicheroCargaCandidatos
 
 	@Autowired
 	OcupacionRepository ocupacionRepository;
-	
+
 	@Autowired
 	CiudadanoService ciudadanoService;
 
@@ -181,7 +181,7 @@ public class FicheroCargaCandidatosServiceImpl implements FicheroCargaCandidatos
 
 	@Override
 	public FicheroCargaCandidatosResponseDTO procesaFichero(long idFichero) {
-		
+
 		FicheroCargaCandidatosResponseDTO response = new FicheroCargaCandidatosResponseDTO();
 
 		FicheroCargaCandidatos fichero = ficheroCargaCandidatosRepository.findById(idFichero)
@@ -192,9 +192,9 @@ public class FicheroCargaCandidatosServiceImpl implements FicheroCargaCandidatos
 				.toAbsolutePath().normalize();
 
 		List<Ciudadano> creados = new ArrayList<Ciudadano>();
-		
+
 		List<CreateTrabajadorDTO> candidatos = excelToCargaCandidatoDTOList(fileStorageLocation);
-		
+
 		List<CreateTrabajadorDTO> candidatosConError = new ArrayList<CreateTrabajadorDTO>();
 
 		Iterator<CreateTrabajadorDTO> it = candidatos.iterator();
@@ -204,105 +204,119 @@ public class FicheroCargaCandidatosServiceImpl implements FicheroCargaCandidatos
 			CreateTrabajadorDTO candidato = it.next();
 
 			String dni = candidato.getDNI();
-			
+
 			try {
 				if (DNIValidator.validate(dni)) {
 					log.info("dni ok");
-					
+
 					Ciudadano ciudadano = ciudadanoService.crearTrabajador(candidato);
-					
+
 					creados.add(ciudadano);
-					
+
 				}
-			}catch (OcupacionNotFoundException e) {
+			} catch (OcupacionNotFoundException e) {
 				log.info("OcupacionNotFound");
 				candidatosConError.add(candidato);
 				e.printStackTrace();
-				
-			}
-			catch (Exception e) {
-				
+
+			} catch (Exception e) {
+
 				candidatosConError.add(candidato);
 				e.printStackTrace();
-				
+
 			}
 
-	
-
 		}
-		
+
 		response.setCandidatos(creados);
 		response.setCandidatosConError(candidatosConError);
-		
+
 		return response;
 	}
 
 	private List<CreateTrabajadorDTO> excelToCargaCandidatoDTOList(Path fileStorageLocation) {
 		Workbook wb;
-		int i=0;
-		int col=0;
+		int i = 0;
+		int j = 0;
+		int col = 0;
 		List<CreateTrabajadorDTO> candidatos = new ArrayList<CreateTrabajadorDTO>();
 		long idPlan = planService.getWorikingPlan().getIdPlan();
 		try {
-			
+
 			Resource resource = new UrlResource(fileStorageLocation.toUri());
 
 			InputStream inp = new FileInputStream(resource.getFile());
 			wb = WorkbookFactory.create(inp);
 			Sheet sheet = wb.getSheetAt(0);
 
-			int lastRow = sheet.getLastRowNum() ;
+			int lastRow = sheet.getLastRowNum();
 
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-log.info(lastRow+"");
+			log.info(lastRow + "");
+			LocalDate fechaOrigen = LocalDate.of(1899, 12, 31);
+			
 			for (i = 1; i <= lastRow; i++) {
 
 				Row row = sheet.getRow(i);
-
-				LocalDate fechaOrigen = LocalDate.of(1899, 12, 31);
-
-
-
 				CreateTrabajadorDTO candi = new CreateTrabajadorDTO();
-log.info(i+"");
+				
+				for ( j = 0;i<=13;j++) {
+					
+					switch (j) {
+					case 0: {
+						if(row.getCell(0) != null) {
+							candi.setNumeroOrdenSepe((int) row.getCell(0).getNumericCellValue());
+						}else {
+							throw new ExcelParseErrorException(i, j, "hay un valor null en la celda o está vacía.");
+						}
+						break;
+					}
+					default:
+						throw new IllegalArgumentException("Unexpected value: " + j);
+					}
+				}
+
+				//CreateTrabajadorDTO candi = new CreateTrabajadorDTO();
+				log.info(i + "");
 				if (row.getCell(0) == null || row.getCell(1) == null || row.getCell(2) == null || row.getCell(3) == null
 						|| row.getCell(6) == null || row.getCell(4) == null || row.getCell(12) == null
 						|| row.getCell(10) == null) {
-					throw new ExcelParseErrorException(i,col, "hay un valor null en la celda o está vacía.");
+					throw new ExcelParseErrorException(i, col, "hay un valor null en la celda o está vacía.");
 				} else {
 					Long idOcupacion = (long) row.getCell(12).getNumericCellValue();
-					col=12;
-					Ocupacion ocupacion = ocupacionRepository.findById(idOcupacion).orElseThrow(()-> new OcupacionNotFoundException(idOcupacion));
+					col = 12;
+					Ocupacion ocupacion = ocupacionRepository.findById(idOcupacion)
+							.orElseThrow(() -> new OcupacionNotFoundException(idOcupacion));
 
 					long idCategoria = ocupacion.getCategoria().getIdCategoria();
 
 					long gc = (long) ocupacion.getCategoria().getGrupo();
-					col=0;
+					col = 0;
 					candi.setNumeroOrdenSepe((int) row.getCell(0).getNumericCellValue());
-					col=1;
+					col = 1;
 					candi.setFechaListadoSepe(fechaOrigen.plusDays((long) row.getCell(1).getNumericCellValue() - 1));
-					col=2;
+					col = 2;
 					candi.setSuplente(row.getCell(2).getStringCellValue().equals("NO") ? false : true);
-					col=3;
+					col = 3;
 					candi.setDNI(row.getCell(3).getStringCellValue());
-					col=4;
+					col = 4;
 					candi.setApellido1(row.getCell(4).getStringCellValue());
-					col=5;
+					col = 5;
 					candi.setApellido2(row.getCell(5).getStringCellValue());
-					col=6;
+					col = 6;
 					candi.setNombre(row.getCell(6).getStringCellValue());
-					col=7;
+					col = 7;
 					if (row.getCell(7) != null)
 						row.getCell(7).setCellType(CellType.STRING);
 					if (row.getCell(8) != null)
 						row.getCell(8).setCellType(CellType.STRING);
 
 					String numero1 = (row.getCell(7) == null) ? "" : row.getCell(7).getStringCellValue();
-					col=8;
+					col = 8;
 					String numero2 = (row.getCell(8) == null) ? "" : row.getCell(8).getStringCellValue();
 
 					candi.setTelefono(numero1 + "/" + numero2);
-					col=9;
+					col = 9;
 					candi.setEmail((row.getCell(9) == null) ? "" : row.getCell(9).getStringCellValue());
 
 					candi.setOcu(ocupacion.getIdOcupacion());
@@ -310,7 +324,7 @@ log.info(i+"");
 					candi.setCategoria(idCategoria);
 
 					candi.setGc(gc);
-					col=13;
+					col = 13;
 					candi.setEntidad((long) row.getCell(13).getNumericCellValue());
 
 					candi.setEstado("PRE-CANDIDATO");
@@ -318,7 +332,7 @@ log.info(i+"");
 					candi.setFechaRegistro(LocalDate.now());
 
 					candi.setIdPlan(idPlan);
-					
+
 					candi.setNacionalidad("");
 
 				}
@@ -336,7 +350,7 @@ log.info(i+"");
 			e.printStackTrace();
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new ExcelParseErrorException(i,col, e.getMessage());
+			throw new ExcelParseErrorException(i, col, e.getMessage());
 		}
 		return candidatos;
 	}
