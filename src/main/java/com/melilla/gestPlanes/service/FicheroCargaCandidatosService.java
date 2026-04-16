@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.melilla.gestPlanes.DTO.FicheroCargaCandidatosResponseDTO;
 import com.melilla.gestPlanes.exceptions.exceptions.FicheroCandidatosUploadException;
 import com.melilla.gestPlanes.model.Ciudadano;
 import com.melilla.gestPlanes.model.FicheroCargaCandidatos;
@@ -19,7 +20,7 @@ public interface FicheroCargaCandidatosService {
 	
 	Resource descargarFichero (long id);
 	
-	List<Ciudadano> procesaFichero(long idFichero);
+	FicheroCargaCandidatosResponseDTO procesaFichero(long idFichero);
 	
 	
 
