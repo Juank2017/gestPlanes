@@ -14,6 +14,6 @@ public class FicheroCargaCandidatosResponseDTO {
 	
 	List<CreateTrabajadorDTO> candidatosConError = new ArrayList<CreateTrabajadorDTO>();
 	
-	
+	List<String> errores= new ArrayList<String>();
 
 }

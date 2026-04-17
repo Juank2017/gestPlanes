@@ -1,10 +1,18 @@
 package com.melilla.gestPlanes.util;
 
+import lombok.extern.java.Log;
+import lombok.extern.log4j.Log4j;
+
+@Log
 public class DNIValidator {
 	
 	
 	
 	public static boolean validate(String dni) {
+		
+		//if (dni == null) return false;
+		
+		log.info(dni);
 		
 		dni = dni.toUpperCase();
 		

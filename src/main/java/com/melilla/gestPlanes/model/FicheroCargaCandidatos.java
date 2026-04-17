@@ -10,12 +10,14 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import lombok.Data;
 
@@ -33,11 +35,18 @@ public class FicheroCargaCandidatos {
 	
 	private boolean procesado;
 	
+	private boolean conError;
+	
 	private String URL;
 	
-	@OneToOne
-	@JoinColumn(name="id_fichero_resultado", referencedColumnName = "idFicheroCargaCandidatos")
-	private FicheroCargaCandidatos resultadoCarga;
+//	@OneToOne
+//	@JoinColumn(name="id_fichero_resultado", referencedColumnName = "idFicheroCargaCandidatos")
+//	private FicheroCargaCandidatos resultadoCarga;
+//	
+	
+	@OneToMany(mappedBy = "fichero",cascade = CascadeType.ALL)
+	List<ErroresCargaFicheroCandidatos> errores;
+	
 	
 	@JsonIgnore
 	@OneToOne
