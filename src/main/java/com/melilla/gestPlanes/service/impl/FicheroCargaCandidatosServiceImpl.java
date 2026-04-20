@@ -78,7 +78,7 @@ public class FicheroCargaCandidatosServiceImpl implements FicheroCargaCandidatos
 
 	@Autowired
 	CiudadanoService ciudadanoService;
-	
+
 	@Autowired
 	ErroresCargaFicheroRepository erroresRepository;
 
@@ -194,45 +194,40 @@ public class FicheroCargaCandidatosServiceImpl implements FicheroCargaCandidatos
 				.orElseThrow(() -> new MyFileNotFoundException("Fichero no encontrado"));
 		PlanConfig config = planConfigService.obtenerConfig(planService.getWorikingPlan().getIdPlan());
 
-		Path fileStorageLocation = Paths.get(config.getUploadTemplateDir() + "\\" + fichero.getFileName())
+		Path fileStorageLocation = Paths.get(config.getUploadTemplateDir() + "//" + fichero.getFileName())
 				.toAbsolutePath().normalize();
 
 		List<Ciudadano> creados = new ArrayList<Ciudadano>();
 
 		List<CreateTrabajadorDTO> candidatosExtraidosDelExcel = new ArrayList<CreateTrabajadorDTO>();
 
-		// List<CreateTrabajadorDTO> candidatosConError = new
-		// ArrayList<CreateTrabajadorDTO>();
-
 		excelToCargaCandidatoDTOList(fileStorageLocation, candidatosExtraidosDelExcel, response.getCandidatosConError(),
 				response.getErrores());
 
 		Iterator<CreateTrabajadorDTO> it = candidatosExtraidosDelExcel.iterator();
 
-		int contador= 0;
+		int contador = 0;
 		while (it.hasNext()) {
 
 			CreateTrabajadorDTO candidato = it.next();
 
 			String dni = candidato.getDNI();
 
-			log.info(dni);
 			try {
 				if (DNIValidator.validate(dni)) {
-					log.info("dni ok");
 
 					Ciudadano ciudadano = ciudadanoService.crearTrabajador(candidato);
 
 					creados.add(ciudadano);
 
 				} else {
-					response.getErrores().add(contador +" DNI erróneo: " + candidato.getApellido1() + " "
+					response.getErrores().add(contador + " DNI erróneo: " + candidato.getApellido1() + " "
 							+ candidato.getApellido2() + "," + candidato.getNombre());
 					response.getCandidatosConError().add(candidato);
 				}
 
 			} catch (OcupacionNotFoundException e) {
-				log.info("OcupacionNotFound");
+
 				response.getCandidatosConError().add(candidato);
 				e.printStackTrace();
 
@@ -245,18 +240,18 @@ public class FicheroCargaCandidatosServiceImpl implements FicheroCargaCandidatos
 			contador++;
 		}
 		fichero.setProcesado(true);
-		
+
 		if (response.getErrores().size() > 0) {
 			fichero.setConError(true);
-			
+
 			List<String> errores = response.getErrores();
-			
-			errores.forEach((e)->{
-				erroresRepository.save(new ErroresCargaFicheroCandidatos(e,fichero));
+
+			errores.forEach((e) -> {
+				erroresRepository.save(new ErroresCargaFicheroCandidatos(e, fichero));
 			});
 			ficheroCargaCandidatosRepository.save(fichero);
 		}
-		
+
 		response.setCandidatos(creados);
 
 		return response;
@@ -268,33 +263,35 @@ public class FicheroCargaCandidatosServiceImpl implements FicheroCargaCandidatos
 		Workbook wb;
 		int i = 0;
 		int j = 0;
-		int col = 0;
 
 		long idPlan = planService.getWorikingPlan().getIdPlan();
+
 		try {
 
 			Resource resource = new UrlResource(fileStorageLocation.toUri());
 
 			InputStream inp = new FileInputStream(resource.getFile());
+
 			wb = WorkbookFactory.create(inp);
+
 			Sheet sheet = wb.getSheetAt(0);
 
 			int lastRow = sheet.getLastRowNum();
 
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-			log.info(lastRow + "");
+
 			LocalDate fechaOrigen = LocalDate.of(1899, 12, 31);
 
 			for (i = 1; i <= lastRow; i++) {
 
 				Row row = sheet.getRow(i);
-				CreateTrabajadorDTO candi = new CreateTrabajadorDTO();
 
 				if (row.getCell(0) == null || row.getCell(1) == null || row.getCell(2) == null || row.getCell(3) == null
 						|| row.getCell(6) == null || row.getCell(4) == null || row.getCell(12) == null
 						|| row.getCell(13) == null) {
 					errores.add("Celda vacía en la línea: " + i + " col: " + j);
 				} else {
+					CreateTrabajadorDTO candi = new CreateTrabajadorDTO();
 					// Número orden SEPE
 					if (row.getCell(0).getCellType().equals(CellType.NUMERIC)) {
 						candi.setNumeroOrdenSepe((int) row.getCell(0).getNumericCellValue());
@@ -404,9 +401,9 @@ public class FicheroCargaCandidatosServiceImpl implements FicheroCargaCandidatos
 					candi.setIdPlan(idPlan);
 
 					candi.setNacionalidad("");
-				}
 
-				candidatosExtraidosDelExcel.add(candi);
+					candidatosExtraidosDelExcel.add(candi);
+				}
 
 			}
 			wb.close();
@@ -423,7 +420,5 @@ public class FicheroCargaCandidatosServiceImpl implements FicheroCargaCandidatos
 		}
 
 	}
-
-
 
 }
