@@ -112,6 +112,13 @@ public class CiudadanoSpecification implements Specification<Ciudadano> {
 			likePredicate = builder.equal(root.get("formacion"), valor);
 			break;
 		}
+		case "bajaLaboral": {
+
+			boolean valor = (criteria.getValue().equalsIgnoreCase("si"));
+
+			likePredicate = builder.equal(root.get("bajaLaboral"), valor);
+			break;
+		}
 		case "evaluacion": {
 
 			boolean valor = (criteria.getValue().equalsIgnoreCase("si"));
