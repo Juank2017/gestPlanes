@@ -16,23 +16,19 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
-import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
-import org.apache.tomcat.util.http.fileupload.FileUploadException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.melilla.gestPlanes.DTO.CargaCandidatoDTO;
 import com.melilla.gestPlanes.DTO.CreateTrabajadorDTO;
 import com.melilla.gestPlanes.DTO.FicheroCargaCandidatosResponseDTO;
 import com.melilla.gestPlanes.exceptions.exceptions.ExcelParseErrorException;
@@ -46,19 +42,16 @@ import com.melilla.gestPlanes.model.FicheroCargaCandidatos;
 import com.melilla.gestPlanes.model.Ocupacion;
 import com.melilla.gestPlanes.model.Plan;
 import com.melilla.gestPlanes.model.config.PlanConfig;
-import com.melilla.gestPlanes.repository.CiudadanoRepository;
 import com.melilla.gestPlanes.repository.ErroresCargaFicheroRepository;
 import com.melilla.gestPlanes.repository.FicheroCargaCandidatosRepository;
 import com.melilla.gestPlanes.repository.OcupacionRepository;
 import com.melilla.gestPlanes.service.CiudadanoService;
 import com.melilla.gestPlanes.service.FicheroCargaCandidatosService;
-import com.melilla.gestPlanes.service.OcupacionService;
 import com.melilla.gestPlanes.service.PlanConfigService;
 import com.melilla.gestPlanes.service.PlanService;
 import com.melilla.gestPlanes.util.DNIValidator;
 
 import lombok.extern.java.Log;
-import lombok.extern.log4j.Log4j;
 
 @Log
 @Service
@@ -84,7 +77,9 @@ public class FicheroCargaCandidatosServiceImpl implements FicheroCargaCandidatos
 
 	@Override
 	public FicheroCargaCandidatos subirFichero(MultipartFile fichero) {
-
+		
+		
+		//Comprueba si el fichero es excel
 		if (!fichero.getContentType().equals("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")) {
 
 			throw new FicheroCandidatosUploadException();
@@ -97,27 +92,30 @@ public class FicheroCargaCandidatosServiceImpl implements FicheroCargaCandidatos
 		Path fileStorageLocation = Paths.get(config.getUploadTemplateDir()).toAbsolutePath().normalize();
 
 		try {
-
+			
+			//crea el directorio configurado en uploadTemplateDir
 			Files.createDirectories(fileStorageLocation);
 
 			// nombre del fichero
 			String fileName = StringUtils.cleanPath(fichero.getOriginalFilename());
-
-			String contentType = fichero.getContentType();
-
-			log.warning(contentType);
-
+			
+			
 			if (fileName.contains("..")) {
 				throw new FileStorageException(
 						"El nombre de archivo tiene una secuencia de carácteres no válida " + fileName);
 			}
-			// Copy file to the target location (Replacing existing file with the same name)
+
+			//Obtiene el path completo del fichero
 			Path targetLocation = fileStorageLocation.resolve(fileName);
+
+			//Hace la copia del fichero subido al directorio si ya existe lanza excepción
 			Files.copy(fichero.getInputStream(), targetLocation);
 
+			//Calcula la ruta para poderlo descargar
 			String fileDownladUri = ServletUriComponentsBuilder.fromCurrentContextPath()
 					.path(config.getUploadTemplateDir() + "/").path(fileName).toUriString();
 
+			//guarda los datos del fichero en la base de datos.
 			ficheroCargaCandidatos.setIdPlan(planService.getWorikingPlan());
 			ficheroCargaCandidatos.setFileName(fileName);
 			ficheroCargaCandidatos.setProcesado(false);
@@ -136,15 +134,20 @@ public class FicheroCargaCandidatosServiceImpl implements FicheroCargaCandidatos
 
 	@Override
 	public void borrarFichero(long idFichero) {
+		
+		//busca los datos del fichero en la base de datos
 		FicheroCargaCandidatos fichero = ficheroCargaCandidatosRepository.findById(idFichero)
 				.orElseThrow(() -> new MyFileNotFoundException("Fichero no encontrado"));
 
+		//Obtiene el nombre del directorio 
 		PlanConfig config = planConfigService.obtenerConfig(planService.getWorikingPlan().getIdPlan());
 
+		//Monta el path completo
 		Path fileStorageLocation = Paths.get(config.getUploadTemplateDir() + "\\" + fichero.getFileName())
 				.toAbsolutePath().normalize();
 		try {
 
+			//Borra el fichero físico y los datos del fichero en la base de datos.
 			Files.delete(fileStorageLocation);
 			ficheroCargaCandidatosRepository.delete(fichero);
 
