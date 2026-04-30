@@ -124,7 +124,7 @@ public class FicheroCargaCandidatosServiceImpl implements FicheroCargaCandidatos
 			ficheroCargaCandidatos = ficheroCargaCandidatosRepository.save(ficheroCargaCandidatos);
 
 		} catch (FileAlreadyExistsException e) {
-			throw new FileStorageException("El archivo " + fichero + " ya existe");
+			throw new FileStorageException("El archivo " + fichero.getResource().getFilename()+ " ya existe");
 		} catch (Exception IOException) {
 			throw new FileStorageException("No se ha podido crear el directorio: " + fileStorageLocation);
 		}
