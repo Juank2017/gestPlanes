@@ -1,8 +1,10 @@
 package com.melilla.gestPlanes.DTO;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 public class ComponentesEquipoDTO {
 
 	private String dni;

@@ -33,12 +33,14 @@ import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
-@RequiredArgsConstructor
+
 @Setter
 @Getter
+@NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Entity
