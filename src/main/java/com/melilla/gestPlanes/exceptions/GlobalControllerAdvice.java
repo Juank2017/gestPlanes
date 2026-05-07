@@ -10,6 +10,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import com.melilla.gestPlanes.exceptions.exceptions.CategoriaNotFoundException;
@@ -23,7 +24,9 @@ import com.melilla.gestPlanes.exceptions.exceptions.DocumentoNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.EquipoConComponentesException;
 import com.melilla.gestPlanes.exceptions.exceptions.EquipoCreationException;
 import com.melilla.gestPlanes.exceptions.exceptions.EquipoNoEncontradoException;
+import com.melilla.gestPlanes.exceptions.exceptions.ExcelParseErrorException;
 import com.melilla.gestPlanes.exceptions.exceptions.ExpedienteNotFoundException;
+import com.melilla.gestPlanes.exceptions.exceptions.FicheroCandidatosUploadException;
 import com.melilla.gestPlanes.exceptions.exceptions.FileParseException;
 import com.melilla.gestPlanes.exceptions.exceptions.FileStorageException;
 import com.melilla.gestPlanes.exceptions.exceptions.GenericNotFoundException;
@@ -71,7 +74,7 @@ public class GlobalControllerAdvice extends ResponseEntityExceptionHandler {
 		return new ResponseEntity<Object>("Access denied message here", new HttpHeaders(), HttpStatus.UNAUTHORIZED);
 	}
 
-	@ExceptionHandler({FileParseException.class, ConvertStringToDateException.class, PdfConvertionException.class })
+	@ExceptionHandler({MultipartException.class, ExcelParseErrorException.class, FicheroCandidatosUploadException.class, FileParseException.class, ConvertStringToDateException.class, PdfConvertionException.class })
 	public ResponseEntity<ApiError> handleEntityCreateError(Exception e) {
 		ApiError apiError = new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(apiError);

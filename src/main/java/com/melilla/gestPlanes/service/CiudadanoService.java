@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.melilla.gestPlanes.DTO.CiudadanoOrdenBusqueda;
 import com.melilla.gestPlanes.DTO.CreateTrabajadorDTO;
 import com.melilla.gestPlanes.DTO.ListadoTrabajadoresConPartes;
@@ -12,8 +14,10 @@ import com.melilla.gestPlanes.DTO.ModificaEstadoDTO;
 import com.melilla.gestPlanes.DTO.ModificaEstadoPrevencionDTO;
 import com.melilla.gestPlanes.DTO.ModificaFechaContratoDTO;
 import com.melilla.gestPlanes.DTO.ModificarOrganismoContrato;
+import com.melilla.gestPlanes.DTO.TrabajadoresDTO;
 import com.melilla.gestPlanes.DTO.UpdateTrabajadorDTO2;
 import com.melilla.gestPlanes.DTO.VacantesResponseDTO;
+import com.melilla.gestPlanes.DTO.listadoTrabajadoresDTO;
 import com.melilla.gestPlanes.model.Ciudadano;
 import com.melilla.gestPlanes.model.Plan;
 import com.melilla.gestPlanes.model.enums.TipoModificacionPrevencion;
@@ -80,5 +84,7 @@ public interface CiudadanoService {
 	//Comprueba si tiene algún parte de baja abierto.
 	boolean estaDeBaja(long idTrabajador);
 	
+	boolean subirPlantilla(MultipartFile file);
 	
+	List<TrabajadoresDTO> listadoCiudadanosToListadoTrabajadoresDTO(List<Ciudadano> respuesta );
 }

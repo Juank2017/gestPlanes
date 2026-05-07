@@ -121,8 +121,8 @@ public class PlanServiceImpl implements PlanService {
 	}
 
 	@Override
-	public Optional<Plan> getPlan(Long idPlan) {
-		return planRepository.findById(idPlan);
+	public Plan getPlan(Long idPlan) {
+		return planRepository.findById(idPlan).orElseThrow(() -> new PlanNotFoundException("No se encuentra el plan con id: " + idPlan));
 	}
 
 	@Override
@@ -636,7 +636,7 @@ public class PlanServiceImpl implements PlanService {
 	@Override
 	public void borrarPlan(Long idPlan) {
 
-		Plan plan = getPlan(idPlan).orElseThrow(() -> new PlanNotFoundException("Plan no encontrado"));
+		Plan plan = getPlan(idPlan);
 
 		List<Ciudadano> ciudadanosDelPlan = ciudadanoRepository.findAllByIdPlan(plan);
 

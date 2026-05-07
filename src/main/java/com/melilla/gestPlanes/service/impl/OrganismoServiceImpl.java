@@ -67,7 +67,7 @@ public class OrganismoServiceImpl implements OrganismoService {
 		
 		nuevoOrganismo.setOrganismo(organismo.getOrganismo());
 		nuevoOrganismo.setNombreCortoOrganismo(organismo.getNombreCortoOrganismo());
-		nuevoOrganismo.setIdPlan(planService.getPlan(organismo.getIdPlan()).orElseThrow(()-> new PlanNotFoundException("Plan no encontrado")));
+		nuevoOrganismo.setIdPlan(planService.getPlan(organismo.getIdPlan()));
 		
 		
 		

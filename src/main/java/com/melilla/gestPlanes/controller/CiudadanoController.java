@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.melilla.gestPlanes.DTO.CiudadanoOrdenBusqueda;
 import com.melilla.gestPlanes.DTO.CreateTrabajadorDTO;
@@ -415,6 +417,22 @@ public class CiudadanoController {
 		response.setMensaje("Trabajador restaurado.");
 
 		return ResponseEntity.ok(response);
+	}
+	
+	@PostMapping("/ciudadano/subirPlantilla")
+	public ResponseEntity<ApiResponse> subirPlantilla(@RequestPart MultipartFile file 
+			) {
+
+		ApiResponse response = new ApiResponse();
+
+		//Documento doc = documentoService.guardarDocumento(Long.parseLong(idCiudadano), file, tipo);
+
+		response.setEstado(HttpStatus.OK);
+		response.getPayload().add(ciudadanoService.subirPlantilla(file));
+		response.setMensaje("Platilla subida.");
+
+		return ResponseEntity.ok(response);
+
 	}
 
 }

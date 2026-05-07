@@ -6,7 +6,13 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
+import java.io.IOException;
 import java.lang.Math;
+import java.nio.file.FileAlreadyExistsException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,6 +25,9 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.melilla.gestPlanes.DTO.CiudadanoCriterioBusqueda;
 import com.melilla.gestPlanes.DTO.CiudadanoCriterioOrden;
@@ -30,11 +39,14 @@ import com.melilla.gestPlanes.DTO.ModificaEstadoDTO;
 import com.melilla.gestPlanes.DTO.ModificaEstadoPrevencionDTO;
 import com.melilla.gestPlanes.DTO.ModificaFechaContratoDTO;
 import com.melilla.gestPlanes.DTO.ModificarOrganismoContrato;
+import com.melilla.gestPlanes.DTO.TrabajadoresDTO;
 import com.melilla.gestPlanes.DTO.UpdateTrabajadorDTO2;
 import com.melilla.gestPlanes.DTO.VacantesResponseDTO;
+import com.melilla.gestPlanes.DTO.listadoTrabajadoresDTO;
 import com.melilla.gestPlanes.exceptions.exceptions.CategoriaNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.CiudadanoNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.DestinoNotFoundException;
+import com.melilla.gestPlanes.exceptions.exceptions.FileStorageException;
 import com.melilla.gestPlanes.exceptions.exceptions.OcupacionNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.OrganismoNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.PlanNotFoundException;
@@ -50,6 +62,7 @@ import com.melilla.gestPlanes.model.OrganismoOcupacion;
 import com.melilla.gestPlanes.model.ParteBaja;
 import com.melilla.gestPlanes.model.Plan;
 import com.melilla.gestPlanes.model.User;
+import com.melilla.gestPlanes.model.config.PlanConfig;
 import com.melilla.gestPlanes.model.enums.EstadoCiudadano;
 import com.melilla.gestPlanes.model.enums.TipoModificacionPrevencion;
 import com.melilla.gestPlanes.repository.CategoriaRepository;
@@ -62,6 +75,7 @@ import com.melilla.gestPlanes.repository.OrganismoOcupacionRepository;
 import com.melilla.gestPlanes.repository.OrganismoRepository;
 import com.melilla.gestPlanes.service.CiudadanoService;
 import com.melilla.gestPlanes.service.EquipoService;
+import com.melilla.gestPlanes.service.PlanConfigService;
 import com.melilla.gestPlanes.service.PlanService;
 
 import lombok.RequiredArgsConstructor;
@@ -99,13 +113,16 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 	@Autowired
 	private EquipoService equipoService;
 
+	@Autowired
+	private PlanConfigService planConfigService;
+
 	@Value("${file.upload-dir}")
 	private String uploadDir;
 
 	@Override
 	public List<Ciudadano> getCiudadanos(Long idPlan) {
 
-		Plan plan = planService.getPlan(idPlan).orElseThrow(() -> new PlanNotFoundException("Plan no encontrado."));
+		Plan plan = planService.getPlan(idPlan);
 
 		return ciudadanoRepository.findAllByIdPlan(plan);
 	}
@@ -136,7 +153,8 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 				.email(trabajador.getEmail()).esJefeEquipo(false).telefono(trabajador.getTelefono())
 				.sexo(trabajador.getSexo()).seguridadSocial(trabajador.getSeguridadSocial())
 				.reclamaSalarios(trabajador.isReclamaSalarios())
-				.idPlan((trabajador.isReclamaSalarios()) ? null : planService.getPlan(trabajador.getIdPlan()).get())
+				.idPlan(planService.getPlan(trabajador.getIdPlan()))
+						
 				.fechaRegistro(trabajador.getFechaRegistro()).fechaNacimiento(trabajador.getFechaNacimiento())
 				.estado(trabajador.getEstado()).numeroOrdenSepe(trabajador.getNumeroOrdenSepe())
 				.fechaListadoSepe(trabajador.getFechaListadoSepe()).suplente(trabajador.isSuplente())
@@ -147,9 +165,8 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 						: null)
 				.esJefeEquipo(false).build());
 
-		Contrato nuevoContrato = contratoRepository.save(Contrato.builder().base(trabajador.getBase())
-				.prorratas(trabajador.getProrratas()).residencia(trabajador.getResidencia())
-				.total(trabajador.getTotal())
+		Contrato nuevoContrato = Contrato.builder().base(trabajador.getBase()).prorratas(trabajador.getProrratas())
+				.residencia(trabajador.getResidencia()).total(trabajador.getTotal())
 				.entidad((trabajador.getEntidad() != null) ? organismoRepository.findById(trabajador.getEntidad())
 						.orElseThrow(() -> new OrganismoNotFoundException(trabajador.getEntidad())) : null)
 
@@ -166,9 +183,10 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 				.fechaInicio((trabajador.getFechaInicio() != null) ? trabajador.getFechaInicio() : null)
 				.fechaFinal((trabajador.getFechaFinal() != null) ? trabajador.getFechaFinal() : null)
 				.turno((trabajador.getTurno() != null) ? trabajador.getTurno() : "MAÑANA").porcentajeHoras("63")
-				.gc(trabajador.getGc().toString()).ciudadano(nuevoCiudadano).build());
-
-		return nuevoCiudadano;
+				.gc(trabajador.getGc().toString()).ciudadano(nuevoCiudadano).build();
+		nuevoCiudadano.setContrato(contratoRepository.save(nuevoContrato));
+		
+		return ciudadanoRepository.save(nuevoCiudadano);
 	}
 
 	@Override
@@ -340,7 +358,6 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 						.diasVacaciones(0).duracion(trabajador.getDuracion()).base(trabajador.getBase())
 						.prorratas(trabajador.getProrratas()).residencia(trabajador.getResidencia())
 						.total(trabajador.getTotal()).ciudadano(ciudadano).build();
-			
 
 				contrato = contratoRepository.save(contrato);
 
@@ -594,8 +611,7 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 		log.info("IdPlanTrabajo usuario logado: " + planUsuarioLogado);
 		log.info("IdPlanActivo: " + idPlanActivo);
 		Plan result = (idPlanActivo == planUsuarioLogado) ? planActivo
-				: planService.getPlan(usuarioLogado.getPlanDeTrabajo())
-						.orElseThrow(() -> new PlanNotFoundException("Plan no encontrado"));
+				: planService.getPlan(usuarioLogado.getPlanDeTrabajo());
 		log.info("id result: " + result.getIdPlan());
 
 		Collection<Organismo> organismosPlan = organismoRepository
@@ -815,34 +831,141 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 
 	@Override
 	public List<ListadoTrabajadoresConPartes> trabajadoresConPartesDebajaPlanActivo() {
-		
+
 		return ciudadanoRepository.findAllByIdPlanAndPartesIsNotEmpty(planService.getWorikingPlan());
 	}
 
 	@Override
 	public boolean estaDeBaja(long idTrabajador) {
-		Ciudadano trabajador = ciudadanoRepository.findById(idTrabajador).orElseThrow(()-> new CiudadanoNotFoundException(idTrabajador));
-		
-		if(trabajador.getPartes().isEmpty()) {
+		Ciudadano trabajador = ciudadanoRepository.findById(idTrabajador)
+				.orElseThrow(() -> new CiudadanoNotFoundException(idTrabajador));
+
+		if (trabajador.getPartes().isEmpty()) {
 			return false;
-		}else {
+		} else {
 			List<ParteBaja> partes = trabajador.getPartes();
-			
+
 			for (ParteBaja parteBaja : partes) {
-				if(!parteBaja.isDeleted()) {
-					
+				if (!parteBaja.isDeleted()) {
+
 					if (parteBaja.getFechaFinBaja() == null) {
 						return true;
 					}
-					
+
 				}
-			
+
 			}
-			
-			
+
 		}
-		
+
 		return false;
 	}
 
+	@Override
+	public boolean subirPlantilla(MultipartFile file) {
+
+		PlanConfig config = planConfigService.obtenerConfig(planService.getWorikingPlan().getIdPlan());
+
+		Path fileStorageLocation = Paths.get(config.getTemplateDir()).toAbsolutePath().normalize();
+
+		try {
+			Files.createDirectories(fileStorageLocation);
+		} catch (Exception e) {
+			throw new FileStorageException("No se ha podido crear el directorio: " + fileStorageLocation);
+		}
+
+		// nombre del fichero
+		String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+
+		try {
+
+			if (fileName.contains("..")) {
+				throw new FileStorageException(
+						"El nombre de archivo tiene una secuencia de carácteres no válida " + fileName);
+			}
+			// Copy file to the target location (Replacing existing file with the same name)
+			Path targetLocation = fileStorageLocation.resolve(fileName);
+			Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
+
+			return true;
+
+		} catch (FileAlreadyExistsException e) {
+			throw new FileStorageException("El archivo " + fileName + " ya existe");
+		} catch (IOException ex) {
+			throw new FileStorageException("No se pudo subir el documento " + fileName + ". Intentelo de nuevo!");
+		}
+
+	}
+
+	public List<TrabajadoresDTO> listadoCiudadanosToListadoTrabajadoresDTO(List<Ciudadano> listado ) {
+
+		
+
+		List<TrabajadoresDTO> lista = new ArrayList<TrabajadoresDTO>();
+
+		for (Ciudadano ciudadano : listado) {
+
+			
+				TrabajadoresDTO item = new TrabajadoresDTO();
+				item.setVacacionesDisfrutadas(ciudadano.getVacacionesDisfrutadas());
+				item.setIdPlan(ciudadano.getIdPlan().getIdPlan());
+				item.setIdCiudadano(ciudadano.getIdCiudadano());
+				item.setIdPlan(ciudadano.getIdPlan().getIdPlan());
+				item.setNumeroOrdenSepe(ciudadano.getNumeroOrdenSepe());
+				item.setSinClausula(ciudadano.isSinClausula());
+				item.setBajaLaboral(ciudadano.isBajaLaboral());
+				item.setBajaMaternal(ciudadano.isBajaMaternal());
+				item.setEstado(ciudadano.getEstado());
+				item.setFechaRegistro(ciudadano.getFechaRegistro());
+				item.setFechaListadoSepe(ciudadano.getFechaListadoSepe());
+				item.setCcc(ciudadano.getCcc());
+				item.setNacionalidad(ciudadano.getNacionalidad());
+				item.setEmail(ciudadano.getEmail());
+				if (ciudadano.getContrato() != null) {
+					item.setFechaInicio(ciudadano.getContrato().getFechaInicio());
+					item.setFechaFinal(ciudadano.getContrato().getFechaFinal());
+					item.setFechaExtincion(ciudadano.getContrato().getFechaExtincion());
+					item.setTotal(
+							(ciudadano.getContrato().getTotal() != null) ? ciudadano.getContrato().getTotal() : null);
+					item.setCategoria((ciudadano.getContrato().getCategoria() != null)
+							? ciudadano.getContrato().getCategoria().getCategoria()
+							: null);
+					item.setOcupacion((ciudadano.getContrato().getOcupacion() != null)
+							? ciudadano.getContrato().getOcupacion().getOcupacion()
+							: null);
+					item.setOrganismo((ciudadano.getContrato().getEntidad() != null)
+							? ciudadano.getContrato().getEntidad().getNombreCortoOrganismo()
+							: null);
+					item.setDestino((ciudadano.getContrato().getDestino() != null)
+							? ciudadano.getContrato().getDestino().getDestino()
+							: null);
+					item.setTurno((ciudadano.getContrato().getTurno() != null)
+							?ciudadano.getContrato().getTurno()
+							: null);
+				}
+				item.setNombre(ciudadano.getNombre());
+				item.setApellido1(ciudadano.getApellido1());
+				item.setApellido2(ciudadano.getApellido2());
+				item.setDNI(ciudadano.getDNI());
+				item.setSeguridadSocial(ciudadano.getSeguridadSocial());
+				item.setFechaNacimiento(ciudadano.getFechaNacimiento());
+				item.setFormacion(ciudadano.isFormacion());
+				item.setEvaluacion(ciudadano.isEvaluacion());
+				item.setReconocimiento(ciudadano.isReconocimiento());
+				item.setEscaneado(ciudadano.isEscaneado());
+				item.setNedaes(ciudadano.isNedaes());
+				item.setSuplente(ciudadano.isSuplente());
+				item.setTelefono(ciudadano.getTelefono());
+				item.setSexo(ciudadano.getSexo());
+				item.setDeleted(ciudadano.isDeleted());
+				item.setNotas((ciudadano.getNotas() != null && ciudadano.getNotas().size() >0)?true:false);
+				item.setEquipo((ciudadano.getEquipo() != null)?ciudadano.getEquipo().getNombreEquipo():"");
+				lista.add(item);
+				
+
+			
+		}
+
+		return lista;
+	}
 }

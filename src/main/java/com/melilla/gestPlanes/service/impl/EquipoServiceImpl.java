@@ -42,14 +42,16 @@ public class EquipoServiceImpl implements EquipoService {
 	@Autowired
 	private PlanService planService;
 	
-	@Autowired
-	private final ComponenteDTMapper mapper;
+	//@Autowired
+	//private final ComponenteDTMapper mapper;
 
 	@Override
 	public List<EquipoResponseDTO> equipos(Long idPlan) {
 
 		List<EquipoResponseDTO> listEquipos = new ArrayList<EquipoResponseDTO>();
 		List<Equipo> equipos = equipoRepository.findAllByIdPlanIdPlan(idPlan);
+		
+		
 		
 		for (Equipo equipo : equipos) {
 			
@@ -62,7 +64,7 @@ public class EquipoServiceImpl implements EquipoService {
 			eq.setApellido2Jefe(equipo.getJefeEquipo().getApellido2());
 			eq.setDNIJefe(equipo.getJefeEquipo().getDNI());
 			eq.setTelefonoJefe(equipo.getJefeEquipo().getTelefono());
-			eq.setComponentes(equipo.getComponentes().stream().map((c)-> mapper.ciudadanoToComponentesEquipoDTO( c,new ComponentesEquipoDTO())).toList());
+			eq.setComponentes(equipo.getComponentes().stream().map((c)-> ComponenteDTMapper.MAPPER.ciudadanoToComponentesEquipoDTO( c,new ComponentesEquipoDTO())).toList());
 			eq.setDeleted(equipo.isDeleted());
 			listEquipos.add(eq);
 			
@@ -191,7 +193,7 @@ public class EquipoServiceImpl implements EquipoService {
 		response.setDNIJefe(equipo.getJefeEquipo().getDNI());		
 		response.setTelefonoJefe(equipo.getJefeEquipo().getTelefono());
 		
-		response.setComponentes(equipo.getComponentes().stream().map((c)-> mapper.ciudadanoToComponentesEquipoDTO( c,new ComponentesEquipoDTO())).toList());
+		response.setComponentes(equipo.getComponentes().stream().map((c)-> ComponenteDTMapper.MAPPER.ciudadanoToComponentesEquipoDTO( c,new ComponentesEquipoDTO())).toList());
 
 		return response;
 	}

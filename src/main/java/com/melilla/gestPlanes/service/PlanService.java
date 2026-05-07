@@ -13,7 +13,7 @@ public interface PlanService {
 
 	List<Plan>getPlanes();
 	
-	Optional<Plan>getPlan(Long idPlan);
+	Plan getPlan(Long idPlan);
 	
 	Plan seleccionarPlan(Long idPlan);
 	
