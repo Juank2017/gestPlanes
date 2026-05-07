@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
+import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -20,6 +21,7 @@ import com.melilla.gestPlanes.exceptions.exceptions.FileStorageException;
 import com.melilla.gestPlanes.model.ApiResponse;
 import com.melilla.gestPlanes.service.FicheroCargaCandidatosService;
 
+import jakarta.mail.internet.ContentType;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 
@@ -83,23 +85,30 @@ public class FicheroCargaCandidatosController {
 
 		response.setEstado(HttpStatus.OK);
 		Resource resource = ficheroCargaCandidatosService.descargarFichero(id);
-
+		HttpHeaders header = new HttpHeaders();
 		// Try to determine file's content type
 		String contentType = null;
 		try {
 			contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
+			
+			if (contentType == null) {
+				contentType = "application/octet-stream";
+			}
+
+			
+			   header.setContentType(MediaType.valueOf(contentType));
+			   header.setContentLength(resource.getFile().length());
+			   header.set(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"");
+			   header.set("Nombre", "attachment; filename=\"" + resource.getFilename() + "\"");
+			   
 		} catch (IOException ex) {
 			throw new FileStorageException("Could not determine file type.");
 		}
 
 		// Fallback to the default content type if type could not be determined
-		if (contentType == null) {
-			contentType = "application/octet-stream";
-		}
-
-		return ResponseEntity.ok().contentType(MediaType.parseMediaType(contentType))
-				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
-				.body(resource);
+	
+		return new ResponseEntity<>(resource,header,HttpStatus.OK);
+				
 		
 	}
 	

@@ -14,8 +14,10 @@ import com.melilla.gestPlanes.DTO.ModificaEstadoDTO;
 import com.melilla.gestPlanes.DTO.ModificaEstadoPrevencionDTO;
 import com.melilla.gestPlanes.DTO.ModificaFechaContratoDTO;
 import com.melilla.gestPlanes.DTO.ModificarOrganismoContrato;
+import com.melilla.gestPlanes.DTO.TrabajadoresDTO;
 import com.melilla.gestPlanes.DTO.UpdateTrabajadorDTO2;
 import com.melilla.gestPlanes.DTO.VacantesResponseDTO;
+import com.melilla.gestPlanes.DTO.listadoTrabajadoresDTO;
 import com.melilla.gestPlanes.model.Ciudadano;
 import com.melilla.gestPlanes.model.Plan;
 import com.melilla.gestPlanes.model.enums.TipoModificacionPrevencion;
@@ -84,5 +86,5 @@ public interface CiudadanoService {
 	
 	boolean subirPlantilla(MultipartFile file);
 	
-	
+	List<TrabajadoresDTO> listadoCiudadanosToListadoTrabajadoresDTO(List<Ciudadano> respuesta );
 }

@@ -39,8 +39,10 @@ import com.melilla.gestPlanes.DTO.ModificaEstadoDTO;
 import com.melilla.gestPlanes.DTO.ModificaEstadoPrevencionDTO;
 import com.melilla.gestPlanes.DTO.ModificaFechaContratoDTO;
 import com.melilla.gestPlanes.DTO.ModificarOrganismoContrato;
+import com.melilla.gestPlanes.DTO.TrabajadoresDTO;
 import com.melilla.gestPlanes.DTO.UpdateTrabajadorDTO2;
 import com.melilla.gestPlanes.DTO.VacantesResponseDTO;
+import com.melilla.gestPlanes.DTO.listadoTrabajadoresDTO;
 import com.melilla.gestPlanes.exceptions.exceptions.CategoriaNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.CiudadanoNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.DestinoNotFoundException;
@@ -895,4 +897,75 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 
 	}
 
+	public List<TrabajadoresDTO> listadoCiudadanosToListadoTrabajadoresDTO(List<Ciudadano> listado ) {
+
+		
+
+		List<TrabajadoresDTO> lista = new ArrayList<TrabajadoresDTO>();
+
+		for (Ciudadano ciudadano : listado) {
+
+			
+				TrabajadoresDTO item = new TrabajadoresDTO();
+				item.setVacacionesDisfrutadas(ciudadano.getVacacionesDisfrutadas());
+				item.setIdPlan(ciudadano.getIdPlan().getIdPlan());
+				item.setIdCiudadano(ciudadano.getIdCiudadano());
+				item.setIdPlan(ciudadano.getIdPlan().getIdPlan());
+				item.setNumeroOrdenSepe(ciudadano.getNumeroOrdenSepe());
+				item.setSinClausula(ciudadano.isSinClausula());
+				item.setBajaLaboral(ciudadano.isBajaLaboral());
+				item.setBajaMaternal(ciudadano.isBajaMaternal());
+				item.setEstado(ciudadano.getEstado());
+				item.setFechaRegistro(ciudadano.getFechaRegistro());
+				item.setFechaListadoSepe(ciudadano.getFechaListadoSepe());
+				item.setCcc(ciudadano.getCcc());
+				item.setNacionalidad(ciudadano.getNacionalidad());
+				item.setEmail(ciudadano.getEmail());
+				if (ciudadano.getContrato() != null) {
+					item.setFechaInicio(ciudadano.getContrato().getFechaInicio());
+					item.setFechaFinal(ciudadano.getContrato().getFechaFinal());
+					item.setFechaExtincion(ciudadano.getContrato().getFechaExtincion());
+					item.setTotal(
+							(ciudadano.getContrato().getTotal() != null) ? ciudadano.getContrato().getTotal() : null);
+					item.setCategoria((ciudadano.getContrato().getCategoria() != null)
+							? ciudadano.getContrato().getCategoria().getCategoria()
+							: null);
+					item.setOcupacion((ciudadano.getContrato().getOcupacion() != null)
+							? ciudadano.getContrato().getOcupacion().getOcupacion()
+							: null);
+					item.setOrganismo((ciudadano.getContrato().getEntidad() != null)
+							? ciudadano.getContrato().getEntidad().getNombreCortoOrganismo()
+							: null);
+					item.setDestino((ciudadano.getContrato().getDestino() != null)
+							? ciudadano.getContrato().getDestino().getDestino()
+							: null);
+					item.setTurno((ciudadano.getContrato().getTurno() != null)
+							?ciudadano.getContrato().getTurno()
+							: null);
+				}
+				item.setNombre(ciudadano.getNombre());
+				item.setApellido1(ciudadano.getApellido1());
+				item.setApellido2(ciudadano.getApellido2());
+				item.setDNI(ciudadano.getDNI());
+				item.setSeguridadSocial(ciudadano.getSeguridadSocial());
+				item.setFechaNacimiento(ciudadano.getFechaNacimiento());
+				item.setFormacion(ciudadano.isFormacion());
+				item.setEvaluacion(ciudadano.isEvaluacion());
+				item.setReconocimiento(ciudadano.isReconocimiento());
+				item.setEscaneado(ciudadano.isEscaneado());
+				item.setNedaes(ciudadano.isNedaes());
+				item.setSuplente(ciudadano.isSuplente());
+				item.setTelefono(ciudadano.getTelefono());
+				item.setSexo(ciudadano.getSexo());
+				item.setDeleted(ciudadano.isDeleted());
+				item.setNotas((ciudadano.getNotas() != null && ciudadano.getNotas().size() >0)?true:false);
+				item.setEquipo((ciudadano.getEquipo() != null)?ciudadano.getEquipo().getNombreEquipo():"");
+				lista.add(item);
+				
+
+			
+		}
+
+		return lista;
+	}
 }

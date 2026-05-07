@@ -91,7 +91,7 @@ public class SecurityConfig {
 	    configuration.setAllowedOrigins(Arrays.asList("*"));//"http://x520marina001","http://x520marina001:9092","http://localhost","http://localhost:3000"
 	    configuration.setAllowedMethods(Arrays.asList("*"));//"GET","POST","PUT","DELETE","OPTIONS"
 	    configuration.setAllowedHeaders(Arrays.asList("*"));//"Content-Type","Authorization","authorization"
-	    
+	    configuration.setExposedHeaders(Arrays.asList("Content-Disposition"));
 	    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 	    
 	    source.registerCorsConfiguration("/**", configuration);

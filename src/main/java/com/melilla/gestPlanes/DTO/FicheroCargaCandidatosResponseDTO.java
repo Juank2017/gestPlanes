@@ -10,7 +10,7 @@ import lombok.Data;
 @Data
 public class FicheroCargaCandidatosResponseDTO {
 	
-	List<Ciudadano> candidatos = new ArrayList<Ciudadano>();
+	List<TrabajadoresDTO> candidatos = new ArrayList<TrabajadoresDTO>();
 	
 	List<CreateTrabajadorDTO> candidatosConError = new ArrayList<CreateTrabajadorDTO>();
 	
