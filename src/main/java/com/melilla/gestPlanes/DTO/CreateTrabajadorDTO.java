@@ -12,8 +12,6 @@ import lombok.NoArgsConstructor;
  */
 @Data
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
 public class CreateTrabajadorDTO {
 //TODO: revisar la eliminación de los campos booleanos que ya no se usan.
 	

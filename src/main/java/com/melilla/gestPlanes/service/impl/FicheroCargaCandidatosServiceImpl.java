@@ -289,13 +289,18 @@ public class FicheroCargaCandidatosServiceImpl implements FicheroCargaCandidatos
 			for (i = 1; i <= lastRow; i++) {
 
 				Row row = sheet.getRow(i);
+				
+				if (row == null ) {
+					errores.add("La fila es nula "+i);
+					continue;
+				}
 
 				if (row.getCell(0) == null || row.getCell(1) == null || row.getCell(2) == null || row.getCell(3) == null
 						|| row.getCell(6) == null || row.getCell(4) == null || row.getCell(12) == null
 						|| row.getCell(13) == null) {
 					errores.add("Celda vacía en la línea: " + i + " col: " + j);
 				} else {
-					CreateTrabajadorDTO candi = new CreateTrabajadorDTO();
+					CreateTrabajadorDTO candi = CreateTrabajadorDTO.builder().build();
 					// Número orden SEPE
 					if (row.getCell(0).getCellType().equals(CellType.NUMERIC)) {
 						candi.setNumeroOrdenSepe((int) row.getCell(0).getNumericCellValue());
