@@ -10,4 +10,6 @@ public interface RefreshTokenService {
 	public RefreshToken createRefreshToken(Long userId);
 	 public RefreshToken verifyExpiration(RefreshToken token);
 	 public int deleteByUserId(Long userId);
+	 
+	 public RefreshToken save(RefreshToken token);
 }

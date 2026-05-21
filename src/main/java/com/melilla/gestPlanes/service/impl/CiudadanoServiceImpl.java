@@ -606,12 +606,12 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		User usuarioLogado = (User) auth.getPrincipal();
 
-		long planUsuarioLogado = usuarioLogado.getPlanDeTrabajo();
+		long planUsuarioLogado = usuarioLogado.getIdPlan().getIdPlan();
 		long idPlanActivo = planActivo.getIdPlan();
 		log.info("IdPlanTrabajo usuario logado: " + planUsuarioLogado);
 		log.info("IdPlanActivo: " + idPlanActivo);
 		Plan result = (idPlanActivo == planUsuarioLogado) ? planActivo
-				: planService.getPlan(usuarioLogado.getPlanDeTrabajo());
+				: planService.getPlan(usuarioLogado.getIdPlan().getIdPlan());
 		log.info("id result: " + result.getIdPlan());
 
 		Collection<Organismo> organismosPlan = organismoRepository

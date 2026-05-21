@@ -6,6 +6,8 @@ import org.springframework.http.HttpStatus;
 
 import org.springframework.security.core.GrantedAuthority;
 
+import com.melilla.gestPlanes.model.Plan;
+
 import lombok.Builder;
 import lombok.Data;
 
@@ -16,7 +18,7 @@ public class JwtResponseDTO {
 	private HttpStatus estado;
 	private String userName;
 	private long userId;
-	private long idPlan;
+	private Plan idPlan;
 	private List<GrantedAuthority> roles;
 	private String token;
 	private String refreshToken;

@@ -28,6 +28,8 @@ public class RefreshToken {
   @Column(nullable = false)
   private Instant expiryDate;
 
+  
+  private boolean refreshTokenStatus;
 
 
 }
