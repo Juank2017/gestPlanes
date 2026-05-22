@@ -295,10 +295,10 @@ public class FicheroCargaCandidatosServiceImpl implements FicheroCargaCandidatos
 					continue;
 				}
 
-				if (row.getCell(0) == null || row.getCell(1) == null || row.getCell(2) == null || row.getCell(3) == null
-						|| row.getCell(6) == null || row.getCell(4) == null || row.getCell(12) == null
-						|| row.getCell(13) == null) {
-					errores.add("Celda vacía en la línea: " + i + " col: " + j);
+				if (row.getCell(0) == null  || row.getCell(1) == null || row.getCell(2) == null || row.getCell(3) == null
+						|| row.getCell(6) == null || row.getCell(5) == null || row.getCell(7) == null
+						|| row.getCell(8) == null|| row.getCell(9) == null|| row.getCell(10) == null) {
+					errores.add("Celda vacía en la línea: " + i);
 				} else {
 					CreateTrabajadorDTO candi = CreateTrabajadorDTO.builder().build();
 					// Número orden SEPE
@@ -309,80 +309,68 @@ public class FicheroCargaCandidatosServiceImpl implements FicheroCargaCandidatos
 						errores.add("El contenido de la celda en la línea:" + i
 								+ " col: 0  no es un número. Tipo actual: " + row.getCell(0).getCellType());
 					}
-					// Fecha listado SEPE
-					if (row.getCell(1).getCellType().equals(CellType.NUMERIC)) {
-						candi.setFechaListadoSepe(
-								fechaOrigen.plusDays((long) row.getCell(1).getNumericCellValue() - 1));
-					} else {
-
-						errores.add("El contenido de la celda en la línea:" + i + " col: 1 no es válido ");
-					}
 					// Suplente
-					if (row.getCell(2).getCellType().equals(CellType.STRING)) {
+					if (row.getCell(1).getCellType().equals(CellType.STRING)) {
 						candi.setSuplente(row.getCell(2).getStringCellValue().equals("NO") ? false : true);
 					} else {
 
 						errores.add("El contenido de la celda en la línea:" + i
-								+ " col: 2 es un número, bebe ser SI o NO ");
+								+ " col: 1 es un número, bebe ser SI o NO ");
 					}
+					
 					// DNI
-					if (row.getCell(3).getCellType().equals(CellType.STRING)) {
-						String DNI = row.getCell(3).getStringCellValue();
+					if (row.getCell(2).getCellType().equals(CellType.STRING)) {
+						String DNI = row.getCell(2).getStringCellValue();
 						if (DNIValidator.validate(DNI)) {
 							candi.setDNI(DNI);
 						} else {
-							errores.add("DNI erróneo:" + i + " col: 3 " + DNI);
+							errores.add("DNI erróneo:" + i + " col: 2 " + DNI);
 						}
 					} else {
 
 						errores.add("El contenido de la celda en la línea:" + i
-								+ " col: 3 es un número, ¿Falta la letra? ");
+								+ " col: 2 es un número, ¿Falta la letra? ");
 					}
 					// APELLIDO1
+					if (row.getCell(3).getCellType().equals(CellType.STRING)) {
+
+						candi.setApellido1(row.getCell(3).getStringCellValue());
+
+					} else {
+
+						errores.add("El contenido de la celda en la línea:" + i + " col: 3 no es un texto. ");
+					}
+					// APELLIDO2
 					if (row.getCell(4).getCellType().equals(CellType.STRING)) {
 
-						candi.setApellido1(row.getCell(4).getStringCellValue());
+						if (row.getCell(4) != null) {
+							candi.setApellido2(row.getCell(4).getStringCellValue());
+						}
 
 					} else {
 
 						errores.add("El contenido de la celda en la línea:" + i + " col: 4 no es un texto. ");
 					}
-					// APELLIDO2
+					// NOMBRE
 					if (row.getCell(5).getCellType().equals(CellType.STRING)) {
 
-						if (row.getCell(5) != null) {
-							candi.setApellido2(row.getCell(5).getStringCellValue());
-						}
+						candi.setNombre(row.getCell(5).getStringCellValue());
 
 					} else {
 
 						errores.add("El contenido de la celda en la línea:" + i + " col: 5 no es un texto. ");
 					}
-					// NOMBRE
-					if (row.getCell(6).getCellType().equals(CellType.STRING)) {
-
-						candi.setNombre(row.getCell(6).getStringCellValue());
-
+					// Fecha listado SEPE
+					if (row.getCell(6).getCellType().equals(CellType.NUMERIC)) {
+						candi.setFechaListadoSepe(
+								fechaOrigen.plusDays((long) row.getCell(6).getNumericCellValue() - 1));
 					} else {
 
-						errores.add("El contenido de la celda en la línea:" + i + " col: 6 no es un texto. ");
+						errores.add("El contenido de la celda en la línea:" + i + " col: 6 no es válido ");
 					}
-					// Telefono
-					if (row.getCell(7) != null)
-						row.getCell(7).setCellType(CellType.STRING);
-					if (row.getCell(8) != null)
-						row.getCell(8).setCellType(CellType.STRING);
-
-					String numero1 = (row.getCell(7) == null) ? "" : row.getCell(7).getStringCellValue();
-
-					String numero2 = (row.getCell(8) == null) ? "" : row.getCell(8).getStringCellValue();
-
-					candi.setTelefono(numero1 + "/" + numero2);
-
-					candi.setEmail((row.getCell(9) == null) ? "" : row.getCell(9).getStringCellValue());
-
-					if (row.getCell(12) != null) {
-						Long idOcupacion = (long) row.getCell(12).getNumericCellValue();
+			
+					if (row.getCell(9) != null) {
+						Long idOcupacion = (long) row.getCell(9).getNumericCellValue();
 
 						Optional<Ocupacion> ocupacion = ocupacionRepository.findById(idOcupacion);
 
@@ -400,8 +388,29 @@ public class FicheroCargaCandidatosServiceImpl implements FicheroCargaCandidatos
 						}
 
 					}
+					
+					// Telefono
+					if (row.getCell(12) != null)
+						row.getCell(12).setCellType(CellType.STRING);
+					if (row.getCell(13) != null)
+						row.getCell(13).setCellType(CellType.STRING);
 
-					candi.setEntidad((long) row.getCell(13).getNumericCellValue());
+					String numero1 = (row.getCell(12) == null) ? "" : row.getCell(12).getStringCellValue();
+
+					String numero2 = (row.getCell(13) == null) ? "" : row.getCell(13).getStringCellValue();
+
+					candi.setTelefono(numero1 + "/" + numero2);
+					
+					if (row.getCell(14) != null)
+						row.getCell(14).setCellType(CellType.STRING);
+
+					candi.setEmail((row.getCell(14) == null) ? "" : row.getCell(14).getStringCellValue());
+
+				
+					if(row.getCell(10) != null && !row.getCell(10).getStringCellValue().isEmpty()) {
+						candi.setEntidad((long) row.getCell(13).getNumericCellValue());
+					}
+					
 
 					candi.setEstado("PRE-CANDIDATO");
 
