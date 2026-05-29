@@ -290,10 +290,12 @@ public class FicheroCargaCandidatosServiceImpl implements FicheroCargaCandidatos
 
 				Row row = sheet.getRow(i);
 
-				if (row.getCell(0) == null || row.getCell(1) == null || row.getCell(2) == null || row.getCell(3) == null
-						|| row.getCell(6) == null || row.getCell(4) == null || row.getCell(12) == null
-						|| row.getCell(13) == null) {
-					errores.add("Celda vacía en la línea: " + i + " col: " + j);
+
+				if (row.getCell(0) == null  || row.getCell(1) == null || row.getCell(2) == null || row.getCell(3) == null
+						|| row.getCell(6) == null || row.getCell(5) == null || row.getCell(7) == null
+						|| row.getCell(8) == null|| row.getCell(9) == null) {
+					errores.add("Celda vacía en la línea: " + i);
+
 				} else {
 					CreateTrabajadorDTO candi = new CreateTrabajadorDTO();
 					// Número orden SEPE
@@ -313,8 +315,26 @@ public class FicheroCargaCandidatosServiceImpl implements FicheroCargaCandidatos
 						errores.add("El contenido de la celda en la línea:" + i + " col: 1 no es válido ");
 					}
 					// Suplente
-					if (row.getCell(2).getCellType().equals(CellType.STRING)) {
-						candi.setSuplente(row.getCell(2).getStringCellValue().equals("NO") ? false : true);
+
+					if (row.getCell(1).getCellType().equals(CellType.STRING)) {
+						
+						if (row.getCell(1).getStringCellValue().equals("NO")) {
+							
+							candi.setSuplente(false);
+							candi.setEstado("PRE-CANDIDATO");
+							
+						}else{
+							
+							candi.setSuplente(true);
+							candi.setEstado("NO-SELECCIONADO");
+							
+							
+							
+						}
+						
+						
+						
+
 					} else {
 
 						errores.add("El contenido de la celda en la línea:" + i
@@ -398,7 +418,7 @@ public class FicheroCargaCandidatosServiceImpl implements FicheroCargaCandidatos
 
 					candi.setEntidad((long) row.getCell(13).getNumericCellValue());
 
-					candi.setEstado("PRE-CANDIDATO");
+				
 
 					candi.setFechaRegistro(LocalDate.now());
 
