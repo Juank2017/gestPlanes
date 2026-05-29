@@ -99,6 +99,7 @@ public class CiudadanoController {
 					item.setFechaExtincion(ciudadano.getContrato().getFechaExtincion());
 					item.setTotal(
 							(ciudadano.getContrato().getTotal() != null) ? ciudadano.getContrato().getTotal() : null);
+					item.setGc((ciudadano.getContrato().getCategoria() != null)?ciudadano.getContrato().getCategoria().getGrupo():0);
 					item.setCategoria((ciudadano.getContrato().getCategoria() != null)
 							? ciudadano.getContrato().getCategoria().getCategoria()
 							: null);

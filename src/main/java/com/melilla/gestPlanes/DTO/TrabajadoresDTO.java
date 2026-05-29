@@ -84,6 +84,7 @@ private Long idCiudadano;
 	private boolean cupo;
 	private boolean vg;
 	
+	private int gc;
 	private String categoria;
 	private String ocupacion;
 	private String organismo;
