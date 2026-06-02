@@ -20,6 +20,8 @@ import com.melilla.gestPlanes.service.AuthenticationService;
 import com.melilla.gestPlanes.service.JWTService;
 import com.melilla.gestPlanes.service.RefreshTokenService;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
@@ -36,8 +38,10 @@ public class AuthenticationController {
 
 	@Autowired
 	JWTService jwtService;
+
 	/**
 	 * Hace el login de un usuario.
+	 * 
 	 * @param loginDTO
 	 * @return
 	 */
@@ -49,41 +53,43 @@ public class AuthenticationController {
 
 	/**
 	 * Actualiza el token del usuario.
+	 * 
 	 * @param request
 	 * @return
 	 */
 	@PostMapping("/refreshtoken")
-	public ResponseEntity<?> refreshtoken(@Valid @RequestBody Map<String,String> request) {
-			
-			String ref = request.get("refreshToken");
-			
-			//Localiza el token en la BBDD
-			RefreshToken refresh = refreshTokenService.findByToken(ref).orElseThrow(()-> new TokenRefreshException(request.get("refreshToken"), "no se encuentra"));
-			//Comprueba que el token de refresco no esté caducado.
-			refreshTokenService.verifyExpiration(refresh);
-			
-			User user = refresh.getUser();
-			String token = jwtService.generateToken(user);
-		
-			return ResponseEntity.ok(JwtResponseDTO.builder()
-							.estado(HttpStatus.OK)
-							.token(token)
-							.refreshToken(request.get("refreshToken"))
-							.userName(user.getUsername())
-							.roles(user.getAuthorities().stream().collect(Collectors.toList()))
-							.build());
-				
+	public ResponseEntity<?> refreshtoken(@Valid @RequestBody Map<String, String> request) {
+
+		String ref = request.get("refreshToken");
+
+		// Localiza el token en la BBDD
+		RefreshToken refresh = refreshTokenService.findByToken(ref)
+				.orElseThrow(() -> new TokenRefreshException(request.get("refreshToken"), "no se encuentra"));
+		// Comprueba que el token de refresco no esté caducado.
+		refreshTokenService.verifyExpiration(refresh);
+
+		User user = refresh.getUser();
+		String token = jwtService.generateToken(user);
+
+		return ResponseEntity.ok(JwtResponseDTO.builder().estado(HttpStatus.OK).token(token)
+				.refreshToken(request.get("refreshToken")).userName(user.getUsername())
+				.roles(user.getAuthorities().stream().collect(Collectors.toList())).build());
+
 	}
-	
+
 	@PostMapping("/checkToken")
-	public ResponseEntity<ApiResponse>compruebaToken(@RequestBody Map<String,String> request){
-		
-		
+	public ResponseEntity<ApiResponse> compruebaToken(@RequestBody Map<String, String> request) {
+
 		ApiResponse response = new ApiResponse();
 		response.setEstado(HttpStatus.OK);
 		response.getPayload().add(authenticationService.checkToken(request.get("token"), request.get("userName")));
 		response.setMensaje("Listado de usuarios");
 		return ResponseEntity.ok(response);
+	}
+
+	@PostMapping("/logout")
+	public ResponseEntity<ApiResponse> logout(HttpServletRequest request, HttpServletResponse response) {
+		return authenticationService.logout(request, response);
 	}
 
 }

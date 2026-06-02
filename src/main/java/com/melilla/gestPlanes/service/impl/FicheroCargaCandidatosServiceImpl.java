@@ -309,9 +309,35 @@ public class FicheroCargaCandidatosServiceImpl implements FicheroCargaCandidatos
 						errores.add("El contenido de la celda en la línea:" + i
 								+ " col: 0  no es un número. Tipo actual: " + row.getCell(0).getCellType());
 					}
+					// Fecha listado SEPE
+					if (row.getCell(1).getCellType().equals(CellType.NUMERIC)) {
+						candi.setFechaListadoSepe(
+								fechaOrigen.plusDays((long) row.getCell(1).getNumericCellValue() - 1));
+					} else {
+
+						errores.add("El contenido de la celda en la línea:" + i + " col: 1 no es válido ");
+					}
 					// Suplente
+
 					if (row.getCell(1).getCellType().equals(CellType.STRING)) {
-						candi.setSuplente(row.getCell(2).getStringCellValue().equals("NO") ? false : true);
+						
+						if (row.getCell(1).getStringCellValue().equals("NO")) {
+							
+							candi.setSuplente(false);
+							candi.setEstado("PRE-CANDIDATO");
+							
+						}else{
+							
+							candi.setSuplente(true);
+							candi.setEstado("NO-SELECCIONADO");
+							
+							
+							
+						}
+						
+						
+						
+
 					} else {
 
 						errores.add("El contenido de la celda en la línea:" + i

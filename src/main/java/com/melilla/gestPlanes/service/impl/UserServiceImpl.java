@@ -73,7 +73,7 @@ public class UserServiceImpl implements UserService {
 		nuevoUsuario.setActive(usuario.isEnabled());
 		nuevoUsuario.setUserName(usuario.getUserName());
 		nuevoUsuario.setPassword(passwordEncoder.encode(password));
-		nuevoUsuario.setPlanDeTrabajo(planService.getWorikingPlan().getIdPlan());
+		nuevoUsuario.setIdPlan(planService.getWorikingPlan());
 	
 		List<Role> roles = new ArrayList<Role>();
 		try {
@@ -164,7 +164,7 @@ public class UserServiceImpl implements UserService {
 		
 		User usuario = userRepository.findById(idUsuario).orElseThrow(()-> new UserNotFoundException("Usuario no encontrado"));
 		
-		usuario.setPlanDeTrabajo(idNewPlan);
+		usuario.setIdPlan(planService.getPlan(idNewPlan));
 		
 		usuario = userRepository.save(usuario);
 		

@@ -730,13 +730,13 @@ public class PlanServiceImpl implements PlanService {
 		 Authentication auth = SecurityContextHolder.getContext().getAuthentication(); 
 		 User usuarioLogado = (User) auth.getPrincipal();
 				  
-		 long planUsuarioLogado = usuarioLogado.getPlanDeTrabajo(); 
+		 long planUsuarioLogado = usuarioLogado.getIdPlan().getIdPlan(); 
 		 long idPlanActivo = planActivo.getIdPlan(); 
 		 log.info("IdPlanTrabajo usuario logado: " + planUsuarioLogado); 
 		 log.info("IdPlanActivo: " + idPlanActivo);
 				  
 		 Plan result = (idPlanActivo == planUsuarioLogado)? planActivo:
-				  planRepository.findById(usuarioLogado.getPlanDeTrabajo()) .orElseThrow(() ->
+				  planRepository.findById(usuarioLogado.getIdPlan().getIdPlan()) .orElseThrow(() ->
 				  new PlanNotFoundException("Plan no encontrado")) ;
 				  
 				  log.info("Plan activo: "+result.getIdPlan()+" " +result.getDenominacion());

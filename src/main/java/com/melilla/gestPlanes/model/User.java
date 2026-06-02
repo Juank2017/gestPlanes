@@ -7,7 +7,9 @@ import java.util.Collection;
 import java.util.List;
 
 import org.hibernate.annotations.SQLDelete;
+import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
+import org.hibernate.envers.RelationTargetAuditMode;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.security.core.GrantedAuthority;
@@ -82,9 +84,11 @@ public class User implements UserDetails {
 	private Long version;
 	
 	
-	@Column(name="idPlan")
-	@NotAudited
-	private long planDeTrabajo;
+	
+	
+	@OneToOne
+	@JoinColumn(name="id_Plan",referencedColumnName = "idPlan")
+	private Plan idPlan;
 
 	@Override
 	@JsonIgnore
