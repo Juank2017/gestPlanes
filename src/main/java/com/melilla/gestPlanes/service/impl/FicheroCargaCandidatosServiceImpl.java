@@ -78,9 +78,8 @@ public class FicheroCargaCandidatosServiceImpl implements FicheroCargaCandidatos
 
 	@Override
 	public FicheroCargaCandidatos subirFichero(MultipartFile fichero) {
-		
-		
-		//Comprueba si el fichero es excel
+
+		// Comprueba si el fichero es excel
 		if (!fichero.getContentType().equals("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")) {
 
 			throw new FicheroCandidatosUploadException();
@@ -93,30 +92,29 @@ public class FicheroCargaCandidatosServiceImpl implements FicheroCargaCandidatos
 		Path fileStorageLocation = Paths.get(config.getUploadTemplateDir()).toAbsolutePath().normalize();
 
 		try {
-			
-			//crea el directorio configurado en uploadTemplateDir
+
+			// crea el directorio configurado en uploadTemplateDir
 			Files.createDirectories(fileStorageLocation);
 
 			// nombre del fichero
 			String fileName = StringUtils.cleanPath(fichero.getOriginalFilename());
-			
-			
+
 			if (fileName.contains("..")) {
 				throw new FileStorageException(
 						"El nombre de archivo tiene una secuencia de carácteres no válida " + fileName);
 			}
 
-			//Obtiene el path completo del fichero
+			// Obtiene el path completo del fichero
 			Path targetLocation = fileStorageLocation.resolve(fileName);
 
-			//Hace la copia del fichero subido al directorio si ya existe lanza excepción
+			// Hace la copia del fichero subido al directorio si ya existe lanza excepción
 			Files.copy(fichero.getInputStream(), targetLocation);
 
-			//Calcula la ruta para poderlo descargar
+			// Calcula la ruta para poderlo descargar
 			String fileDownladUri = ServletUriComponentsBuilder.fromCurrentContextPath()
 					.path(config.getUploadTemplateDir() + "/").path(fileName).toUriString();
 
-			//guarda los datos del fichero en la base de datos.
+			// guarda los datos del fichero en la base de datos.
 			ficheroCargaCandidatos.setIdPlan(planService.getWorikingPlan());
 			ficheroCargaCandidatos.setFileName(fileName);
 			ficheroCargaCandidatos.setProcesado(false);
@@ -125,7 +123,7 @@ public class FicheroCargaCandidatosServiceImpl implements FicheroCargaCandidatos
 			ficheroCargaCandidatos = ficheroCargaCandidatosRepository.save(ficheroCargaCandidatos);
 
 		} catch (FileAlreadyExistsException e) {
-			throw new FileStorageException("El archivo " + fichero.getResource().getFilename()+ " ya existe");
+			throw new FileStorageException("El archivo " + fichero.getResource().getFilename() + " ya existe");
 		} catch (Exception IOException) {
 			throw new FileStorageException("No se ha podido crear el directorio: " + fileStorageLocation);
 		}
@@ -135,20 +133,20 @@ public class FicheroCargaCandidatosServiceImpl implements FicheroCargaCandidatos
 
 	@Override
 	public void borrarFichero(long idFichero) {
-		
-		//busca los datos del fichero en la base de datos
+
+		// busca los datos del fichero en la base de datos
 		FicheroCargaCandidatos fichero = ficheroCargaCandidatosRepository.findById(idFichero)
 				.orElseThrow(() -> new MyFileNotFoundException("Fichero no encontrado"));
 
-		//Obtiene el nombre del directorio 
+		// Obtiene el nombre del directorio
 		PlanConfig config = planConfigService.obtenerConfig(planService.getWorikingPlan().getIdPlan());
 
-		//Monta el path completo
+		// Monta el path completo
 		Path fileStorageLocation = Paths.get(config.getUploadTemplateDir() + "\\" + fichero.getFileName())
 				.toAbsolutePath().normalize();
 		try {
 
-			//Borra el fichero físico y los datos del fichero en la base de datos.
+			// Borra el fichero físico y los datos del fichero en la base de datos.
 			Files.delete(fileStorageLocation);
 			ficheroCargaCandidatosRepository.delete(fichero);
 
@@ -266,7 +264,7 @@ public class FicheroCargaCandidatosServiceImpl implements FicheroCargaCandidatos
 			List<String> errores) {
 		Workbook wb;
 		int i = 0;
-		int j = 0;
+		
 
 		long idPlan = planService.getWorikingPlan().getIdPlan();
 
@@ -282,7 +280,7 @@ public class FicheroCargaCandidatosServiceImpl implements FicheroCargaCandidatos
 
 			int lastRow = sheet.getLastRowNum();
 
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+			
 
 			LocalDate fechaOrigen = LocalDate.of(1899, 12, 31);
 
@@ -297,7 +295,7 @@ public class FicheroCargaCandidatosServiceImpl implements FicheroCargaCandidatos
 
 				if (row.getCell(0) == null  || row.getCell(1) == null || row.getCell(2) == null || row.getCell(3) == null
 						|| row.getCell(6) == null || row.getCell(5) == null || row.getCell(7) == null
-						|| row.getCell(8) == null|| row.getCell(9) == null|| row.getCell(10) == null) {
+						|| row.getCell(8) == null|| row.getCell(9) == null) {
 					errores.add("Celda vacía en la línea: " + i);
 				} else {
 					CreateTrabajadorDTO candi = CreateTrabajadorDTO.builder().build();
@@ -309,14 +307,7 @@ public class FicheroCargaCandidatosServiceImpl implements FicheroCargaCandidatos
 						errores.add("El contenido de la celda en la línea:" + i
 								+ " col: 0  no es un número. Tipo actual: " + row.getCell(0).getCellType());
 					}
-					// Fecha listado SEPE
-					if (row.getCell(1).getCellType().equals(CellType.NUMERIC)) {
-						candi.setFechaListadoSepe(
-								fechaOrigen.plusDays((long) row.getCell(1).getNumericCellValue() - 1));
-					} else {
-
-						errores.add("El contenido de la celda en la línea:" + i + " col: 1 no es válido ");
-					}
+				
 					// Suplente
 
 					if (row.getCell(1).getCellType().equals(CellType.STRING)) {
@@ -367,15 +358,17 @@ public class FicheroCargaCandidatosServiceImpl implements FicheroCargaCandidatos
 						errores.add("El contenido de la celda en la línea:" + i + " col: 3 no es un texto. ");
 					}
 					// APELLIDO2
-					if (row.getCell(4).getCellType().equals(CellType.STRING)) {
+					if (row.getCell(4) != null) {
 
-						if (row.getCell(4) != null) {
+						if (row.getCell(4).getCellType().equals(CellType.STRING)) {
 							candi.setApellido2(row.getCell(4).getStringCellValue());
+						}else {
+							candi.setApellido2("");
+							errores.add("El contenido de la celda en la línea:" + i + " col: 4 no es un texto o está vacia. ");
 						}
 
-					} else {
-
-						errores.add("El contenido de la celda en la línea:" + i + " col: 4 no es un texto. ");
+					}else {
+						candi.setApellido2("");
 					}
 					// NOMBRE
 					if (row.getCell(5).getCellType().equals(CellType.STRING)) {
@@ -396,22 +389,29 @@ public class FicheroCargaCandidatosServiceImpl implements FicheroCargaCandidatos
 					}
 			
 					if (row.getCell(9) != null) {
-						Long idOcupacion = (long) row.getCell(9).getNumericCellValue();
+						if (row.getCell(9).getCellType().equals(CellType.NUMERIC)) {
+							Long idOcupacion = (long) row.getCell(9).getNumericCellValue();
 
-						Optional<Ocupacion> ocupacion = ocupacionRepository.findById(idOcupacion);
+							Optional<Ocupacion> ocupacion = ocupacionRepository.findById(idOcupacion);
 
-						if (ocupacion.isPresent()) {
-							long idCategoria = ocupacion.get().getCategoria().getIdCategoria();
+							if (ocupacion.isPresent()) {
+								long idCategoria = ocupacion.get().getCategoria().getIdCategoria();
 
-							long gc = (long) ocupacion.get().getCategoria().getGrupo();
-							candi.setOcu(ocupacion.get().getIdOcupacion());
+								long gc = (long) ocupacion.get().getCategoria().getGrupo();
+								candi.setOcu(ocupacion.get().getIdOcupacion());
 
-							candi.setCategoria(idCategoria);
+								candi.setCategoria(idCategoria);
 
-							candi.setGc(gc);
-						} else {
-							errores.add("No se ha encontrado la ocupación de la línea: " + i);
+								candi.setGc(gc);
+							} else {
+								errores.add("No se ha encontrado la ocupación de la línea: " + i);
+							}
+						}else {
+							errores.add("El candidato de la línea: "+i+" se omite por un error en la ocupación");
+							candi = null;
+							continue;
 						}
+					
 
 					}
 					
@@ -429,16 +429,23 @@ public class FicheroCargaCandidatosServiceImpl implements FicheroCargaCandidatos
 					
 					if (row.getCell(14) != null)
 						row.getCell(14).setCellType(CellType.STRING);
-
-					candi.setEmail((row.getCell(14) == null) ? "" : row.getCell(14).getStringCellValue());
-
-				
-					if(row.getCell(10) != null && !row.getCell(10).getStringCellValue().isEmpty()) {
-						candi.setEntidad((long) row.getCell(13).getNumericCellValue());
+					
+					String email = (row.getCell(14) == null) ? "" : row.getCell(14).getStringCellValue();
+					
+					if (email.matches("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$")) {
+						
+						candi.setEmail(email);
+					}else {
+						errores.add("Error en el email línea "+i);
 					}
 					
+				
 
-					candi.setEstado("PRE-CANDIDATO");
+				
+				
+					
+
+				
 
 					candi.setFechaRegistro(LocalDate.now());
 
@@ -452,17 +459,26 @@ public class FicheroCargaCandidatosServiceImpl implements FicheroCargaCandidatos
 			}
 			wb.close();
 
-		} catch (MalformedURLException e) {
-			throw new MyFileNotFoundException("No se encuentra el fichero excel");
-		} catch (FileNotFoundException e) {
-			throw new MyFileNotFoundException("No se encuentra el fichero excel");
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new ExcelParseErrorException(i, 0, e.getMessage());
-		}
+		}catch(
 
+	MalformedURLException e)
+	{
+		throw new MyFileNotFoundException("No se encuentra el fichero excel");
+	}catch(
+	FileNotFoundException e)
+	{
+		throw new MyFileNotFoundException("No se encuentra el fichero excel");
+	}catch(
+	IOException e)
+	{
+		e.printStackTrace();
+	}catch(
+	Exception e)
+	{
+		e.printStackTrace();
+		throw new ExcelParseErrorException(i, 0, e.getMessage());
 	}
+
+}
 
 }
