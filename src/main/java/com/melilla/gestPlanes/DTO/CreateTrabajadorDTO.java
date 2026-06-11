@@ -20,9 +20,11 @@ public class CreateTrabajadorDTO {
 	String apellido2;
 	String sexo;
 	String DNI;
-	String seguridadSocial;
+	@Builder.Default
+	String seguridadSocial = "00/00000000/00";
 	LocalDate fechaNacimiento;
-	String ccc;
+	@Builder.Default
+	String ccc = "";
 	long idPlan;
 	String estado;
 	//Orden en el listado del SEPE

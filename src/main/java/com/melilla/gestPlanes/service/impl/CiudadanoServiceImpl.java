@@ -148,25 +148,40 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 		}
 
 		Ciudadano nuevoCiudadano = ciudadanoRepository.save(Ciudadano.builder()
-				.nombre(trabajador.getNombre().toUpperCase()).apellido1(trabajador.getApellido1().toUpperCase())
-				.apellido2(trabajador.getApellido2().toUpperCase()).DNI(trabajador.getDNI().toUpperCase())
-				.email(trabajador.getEmail()).esJefeEquipo(false).telefono(trabajador.getTelefono())
-				.sexo(trabajador.getSexo()).seguridadSocial(trabajador.getSeguridadSocial())
+				.nombre(trabajador.getNombre().toUpperCase())
+				.apellido1(trabajador.getApellido1().toUpperCase())
+				.apellido2(trabajador.getApellido2().toUpperCase())
+				.DNI(trabajador.getDNI().toUpperCase())
+				.email(trabajador.getEmail())
+				.esJefeEquipo(false)
+				.telefono(trabajador.getTelefono())
+				.sexo(trabajador.getSexo())
+				.seguridadSocial(trabajador.getSeguridadSocial())
 				.reclamaSalarios(trabajador.isReclamaSalarios())
 				.idPlan(planService.getPlan(trabajador.getIdPlan()))
 						
-				.fechaRegistro(trabajador.getFechaRegistro()).fechaNacimiento(trabajador.getFechaNacimiento())
-				.estado(trabajador.getEstado()).numeroOrdenSepe(trabajador.getNumeroOrdenSepe())
-				.fechaListadoSepe(trabajador.getFechaListadoSepe()).suplente(trabajador.isSuplente())
-				.nacionalidad(trabajador.getNacionalidad().toUpperCase()).bajaLaboral(false).bajaMaternal(false)
-				.ccc(trabajador.getCcc()).sinClausula(trabajador.isSinClausula())
+				.fechaRegistro(trabajador.getFechaRegistro())
+				.fechaNacimiento(trabajador.getFechaNacimiento())
+				.estado(trabajador.getEstado())
+				.numeroOrdenSepe(trabajador.getNumeroOrdenSepe())
+				.fechaListadoSepe(trabajador.getFechaListadoSepe())
+				.suplente(trabajador.isSuplente())
+				.nacionalidad(trabajador.getNacionalidad().toUpperCase())
+				.bajaLaboral(false)
+				.bajaMaternal(false)
+				.ccc(trabajador.getCcc())
+				.sinClausula(trabajador.isSinClausula())
 				.equipo((trabajador.getEquipo() != null)
 						? equipoService.equipo(trabajador.getIdPlan(), trabajador.getEquipo())
 						: null)
-				.esJefeEquipo(false).build());
+				.esJefeEquipo(false)
+				.build());
 
-		Contrato nuevoContrato = Contrato.builder().base(trabajador.getBase()).prorratas(trabajador.getProrratas())
-				.residencia(trabajador.getResidencia()).total(trabajador.getTotal())
+		Contrato nuevoContrato = Contrato.builder()
+				.base(trabajador.getBase())
+				.prorratas(trabajador.getProrratas())
+				.residencia(trabajador.getResidencia())
+				.total(trabajador.getTotal())
 				.entidad((trabajador.getEntidad() != null) ? organismoRepository.findById(trabajador.getEntidad())
 						.orElseThrow(() -> new OrganismoNotFoundException(trabajador.getEntidad())) : null)
 
@@ -182,8 +197,10 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 				.duracion(trabajador.getDuracion())
 				.fechaInicio((trabajador.getFechaInicio() != null) ? trabajador.getFechaInicio() : null)
 				.fechaFinal((trabajador.getFechaFinal() != null) ? trabajador.getFechaFinal() : null)
-				.turno((trabajador.getTurno() != null) ? trabajador.getTurno() : "MAÑANA").porcentajeHoras("63")
-				.gc(trabajador.getGc().toString()).ciudadano(nuevoCiudadano).build();
+				.turno((trabajador.getTurno() != null) ? trabajador.getTurno() : "-").porcentajeHoras("63")
+				.gc(trabajador.getGc().toString())
+				.ciudadano(nuevoCiudadano)
+				.build();
 		nuevoCiudadano.setContrato(contratoRepository.save(nuevoContrato));
 		
 		return ciudadanoRepository.save(nuevoCiudadano);
