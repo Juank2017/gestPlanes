@@ -47,12 +47,15 @@ public class OrganismoServiceImpl implements OrganismoService {
 		while (it.hasNext()) {
 			Organismo o = it.next();
 			OrganismoDTO organismoDTO = new OrganismoDTO();
-			organismoDTO.setNombreCortoOrganismo(o.getNombreCortoOrganismo());
-			organismoDTO.setOrganismo(o.getOrganismo());
-			organismoDTO.setDeleted(o.isDeleted());
-			organismoDTO.setIdOrganismo(o.getIdOrganismo());
-			
-			salida.add(organismoDTO);
+			if(!o.isDeleted()) {
+				organismoDTO.setNombreCortoOrganismo(o.getNombreCortoOrganismo());
+				organismoDTO.setOrganismo(o.getOrganismo());
+				organismoDTO.setDeleted(o.isDeleted());
+				organismoDTO.setIdOrganismo(o.getIdOrganismo());
+				
+				salida.add(organismoDTO);
+			}
+	
 		
 		}
 		
