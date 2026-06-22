@@ -25,6 +25,7 @@ import com.melilla.gestPlanes.DTO.ModificaEstadoDTO;
 import com.melilla.gestPlanes.DTO.ModificaEstadoPrevencionDTO;
 import com.melilla.gestPlanes.DTO.ModificaFechaContratoDTO;
 import com.melilla.gestPlanes.DTO.ModificarOrganismoContrato;
+import com.melilla.gestPlanes.DTO.TrabajadorResponseDTO;
 import com.melilla.gestPlanes.DTO.TrabajadoresDTO;
 import com.melilla.gestPlanes.DTO.UpdateTrabajadorDTO2;
 import com.melilla.gestPlanes.DTO.listadoTrabajadoresDTO;
@@ -216,7 +217,7 @@ public class CiudadanoController {
 	public ResponseEntity<ApiResponse> obtenerCiudadano(@PathVariable Long idCiudadano) {
 		ApiResponse response = new ApiResponse();
 
-		response.getPayload().add(ciudadanoService.getCiudadano(idCiudadano));
+		response.getPayload().add( TrabajadorResponseDTO.ciudadanoToTrabajadorResponseDTO(ciudadanoService.getCiudadano(idCiudadano)));
 
 		return ResponseEntity.ok(response);
 	}

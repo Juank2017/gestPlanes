@@ -14,6 +14,7 @@ import com.melilla.gestPlanes.DTO.ModificaEstadoDTO;
 import com.melilla.gestPlanes.DTO.ModificaEstadoPrevencionDTO;
 import com.melilla.gestPlanes.DTO.ModificaFechaContratoDTO;
 import com.melilla.gestPlanes.DTO.ModificarOrganismoContrato;
+import com.melilla.gestPlanes.DTO.TrabajadorResponseDTO;
 import com.melilla.gestPlanes.DTO.TrabajadoresDTO;
 import com.melilla.gestPlanes.DTO.UpdateTrabajadorDTO2;
 import com.melilla.gestPlanes.DTO.VacantesResponseDTO;
@@ -27,6 +28,8 @@ public interface CiudadanoService {
 	List<Ciudadano> getCiudadanos(Long idPlan);
 	
 	Ciudadano getCiudadano(Long idCiudadano);
+	
+	
 	
 	Ciudadano getTrabajadorByDNIAndEstado(String DNI,String estado);
 	
