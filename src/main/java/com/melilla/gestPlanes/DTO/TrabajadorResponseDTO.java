@@ -30,7 +30,7 @@ private	String grupoConvenio;
 private	  boolean bajaLaboral;
 private	 boolean bajaMaternal;
 private	long categoria;
-private	long ocupacion;
+private	long ocu;
 private	int numeroOrdenSepe;
 private	 LocalDate fechaInicio;
 private	LocalDate  fechaFinal;
@@ -95,7 +95,7 @@ private boolean esJefeEquipo;
 		   
 		   if (contrato.getCategoria() != null) trabajador.setCategoria(contrato.getCategoria().getIdCategoria());
 		
-		   if (contrato.getOcupacion() != null) trabajador.setOcupacion(contrato.getOcupacion().getIdOcupacion());
+		   if (contrato.getOcupacion() != null) trabajador.setOcu(contrato.getOcupacion().getIdOcupacion());
 		
 		   if (contrato.getEntidad() != null) trabajador.setEntidad(contrato.getEntidad().getIdOrganismo()); 
 		   
