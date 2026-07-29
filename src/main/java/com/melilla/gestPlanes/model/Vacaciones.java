@@ -7,8 +7,10 @@ import org.hibernate.envers.NotAudited;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.Entity;
@@ -40,6 +42,7 @@ public class Vacaciones {
 	
 	private int dias;
 	
+	@JsonBackReference
 	@ManyToOne
 	@JoinColumn(name="idCiudadano")
 	private Ciudadano ciudadano;
@@ -52,6 +55,7 @@ public class Vacaciones {
 	
 	private LocalDateTime deletedAt;
 	
+	@JsonIgnore
 	@OneToOne
 	@JoinColumn(name="idPlan")
 	@NotAudited
