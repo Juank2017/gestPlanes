@@ -1,7 +1,11 @@
 package com.melilla.gestPlanes.service;
 
 import java.util.List;
+
+
+
 import com.melilla.gestPlanes.DTO.CrearNotaDTO;
+import com.melilla.gestPlanes.DTO.EditaNotaDTO;
 import com.melilla.gestPlanes.model.NotaCiudadano;
 
 public interface NotasService {
@@ -12,7 +16,7 @@ public interface NotasService {
 	
 	NotaCiudadano nota(Long idNota);
 	
-	NotaCiudadano editaNota(NotaCiudadano nota);
+	NotaCiudadano editaNota(EditaNotaDTO nota);
 	
 	NotaCiudadano crearNota(CrearNotaDTO nota);
 

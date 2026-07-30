@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.melilla.gestPlanes.DTO.CrearNotaDTO;
+import com.melilla.gestPlanes.DTO.EditaNotaDTO;
 import com.melilla.gestPlanes.model.ApiResponse;
 import com.melilla.gestPlanes.model.NotaCiudadano;
 import com.melilla.gestPlanes.service.NotasService;
@@ -40,14 +41,14 @@ public class NotasController {
 		return ResponseEntity.ok(response);
 	}
 	
-	@DeleteMapping("/borraNota/{idCiudadano}/{idNota}")
-	public ResponseEntity<ApiResponse> borraNotaTrabajador(@PathVariable Long idCiudadano, @PathVariable Long idNota) {
+	@DeleteMapping("/borraNota/{idNota}")
+	public ResponseEntity<ApiResponse> borraNotaTrabajador( @PathVariable Long idNota) {
 		
 		ApiResponse response  = new ApiResponse();
 		
 		response.setEstado(HttpStatus.OK);
 		notasService.borraNota(idNota);
-		response.getPayload().addAll(notasService.notasTrabajador(idCiudadano));
+		//response.getPayload().addAll(notasService.notasTrabajador(idCiudadano));
 		response.setMensaje("Nota eliminada");
 		
 		return ResponseEntity.ok(response);
@@ -66,7 +67,7 @@ public class NotasController {
 	}
 	
 	@PutMapping("/editarNota")
-	ResponseEntity<ApiResponse>editarNota(@RequestBody NotaCiudadano nota){
+	ResponseEntity<ApiResponse>editarNota(@RequestBody EditaNotaDTO nota){
 		ApiResponse response  = new ApiResponse();
 		
 		response.setEstado(HttpStatus.OK);

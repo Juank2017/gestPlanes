@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.melilla.gestPlanes.DTO.CrearNotaDTO;
+import com.melilla.gestPlanes.DTO.EditaNotaDTO;
 import com.melilla.gestPlanes.exceptions.exceptions.CiudadanoNotFoundException;
 import com.melilla.gestPlanes.exceptions.exceptions.NotaNotFoundException;
 import com.melilla.gestPlanes.model.NotaCiudadano;
@@ -25,7 +26,7 @@ public class NotasServiceImpl implements NotasService{
 	@Override
 	public List<NotaCiudadano> notasTrabajador(Long idCiudadano) {
 		
-		return notasRepository.findByCiudadanoIdCiudadano(idCiudadano);
+		return notasRepository.findByCiudadanoIdCiudadano(idCiudadano).stream().filter((n)->n.isDeleted() == false).toList();
 	}
 
 	@Override
@@ -41,7 +42,7 @@ public class NotasServiceImpl implements NotasService{
 	}
 
 	@Override
-	public NotaCiudadano editaNota(NotaCiudadano nota) {
+	public NotaCiudadano editaNota(EditaNotaDTO nota) {
 		NotaCiudadano notaAEditar = notasRepository.findById(nota.getIdNota()).orElseThrow(()->new NotaNotFoundException(nota.getIdNota()+""));
 		
 		notaAEditar.setAsunto(nota.getAsunto());
