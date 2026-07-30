@@ -141,6 +141,7 @@ public class Ciudadano {
 	@NotAudited
 	private Plan idPlan;
 	
+	@JsonManagedReference
 	@NotAudited
 	@OneToMany(mappedBy = "ciudadano" , cascade= CascadeType.ALL)
 	private List<Vacaciones> periodosVacaciones= new ArrayList<Vacaciones>();
