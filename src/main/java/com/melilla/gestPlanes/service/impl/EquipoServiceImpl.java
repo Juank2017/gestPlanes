@@ -64,7 +64,7 @@ public class EquipoServiceImpl implements EquipoService {
 			eq.setApellido2Jefe(equipo.getJefeEquipo().getApellido2());
 			eq.setDNIJefe(equipo.getJefeEquipo().getDNI());
 			eq.setTelefonoJefe(equipo.getJefeEquipo().getTelefono());
-			eq.setComponentes(equipo.getComponentes().stream().map((c)-> ComponenteDTMapper.MAPPER.ciudadanoToComponentesEquipoDTO( c,new ComponentesEquipoDTO())).toList());
+			eq.setComponentes(equipo.getComponentes().stream().map((c)->ComponentesEquipoDTO.ciudadanoToComponentesEquipoDTO( c)).toList());
 			eq.setDeleted(equipo.isDeleted());
 			listEquipos.add(eq);
 			
@@ -193,7 +193,7 @@ public class EquipoServiceImpl implements EquipoService {
 		response.setDNIJefe(equipo.getJefeEquipo().getDNI());		
 		response.setTelefonoJefe(equipo.getJefeEquipo().getTelefono());
 		
-		response.setComponentes(equipo.getComponentes().stream().map((c)-> ComponenteDTMapper.MAPPER.ciudadanoToComponentesEquipoDTO( c,new ComponentesEquipoDTO())).toList());
+		response.setComponentes(equipo.getComponentes().stream().map((c)-> ComponentesEquipoDTO.ciudadanoToComponentesEquipoDTO( c)).toList());
 
 		return response;
 	}
