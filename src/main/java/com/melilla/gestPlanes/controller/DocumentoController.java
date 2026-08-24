@@ -152,7 +152,7 @@ public class DocumentoController {
 		log.warning(trabajadores.toString());
 		ApiResponse response = new ApiResponse();
 
-		response.getPayload().add(documentoService.generarPresentacion(trabajadores));
+		response.getPayload().addAll(documentoService.generarPresentacion(trabajadores));
 
 		return ResponseEntity.ok(response);
 	}
