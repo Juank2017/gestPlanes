@@ -795,7 +795,7 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 			Equipo equipo = equipoService.equipo(planService.getPlanActivo().getIdPlan(), item.getIdEquipo());
 
 			trabajador.setEquipo(equipo);
-			ciudadanoRepository.save(trabajador);
+			 trabajador =  ciudadanoRepository.save(trabajador);
 			resultado.add(trabajador);
 		}
 
