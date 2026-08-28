@@ -19,7 +19,6 @@ import java.util.Locale;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import org.apache.commons.text.StringEscapeUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDResources;
 import org.apache.pdfbox.pdmodel.font.PDFont;
@@ -547,7 +546,8 @@ public class DocumentoServiceImpl implements DocumentoService {
 	@Override
 	public List<GeneraContratoResponseDTO> generarContratoConPlantilla(List<GeneraContratoDTO> trabajadores) {
 		String directorioSubida = null;
-
+		String os = System.getProperty("os.name").toLowerCase();
+		log.info(os);
 		PlanConfig config = planConfigService.obtenerConfig(planservice.getWorikingPlan().getIdPlan());
 
 		if (config.getUploadDir() == null || config.getUploadDir().equals("")) {
@@ -563,7 +563,10 @@ public class DocumentoServiceImpl implements DocumentoService {
 			// carga el fichero de la plantilla de resources
 			String directorioPlantillas = config.getTemplateDir();
 			PlantillaContratoConfig plantillaContrato = plantillaContratoConfigService.obtenerPlantillaActiva(planservice.getWorikingPlan());
-			Resource classPahtResource = resourceLoader.getResource("file:" +directorioPlantillas+"\\"+ plantillaContrato.getNombreFicheroPlantilla());
+			String ruta = "file:" +directorioPlantillas+"\\"+ plantillaContrato.getNombreFicheroPlantilla();
+			if (!os.contains("win")) ruta = ruta.replace("\\", "//");
+			log.info(ruta);
+			Resource classPahtResource = resourceLoader.getResource(ruta);
 			File plantilla = classPahtResource.getFile();
 			for (GeneraContratoDTO generaContratoDTO : trabajadores) {
 				log.warning("Inicio Genera contrato: " + generaContratoDTO.getId());
