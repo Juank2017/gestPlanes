@@ -102,6 +102,7 @@ public class EquipoServiceImpl implements EquipoService {
 			}
 
 			e.setIdPlan(planService.getWorikingPlan());
+			e.setComponentes(new ArrayList<Ciudadano>());
 			return equipoRepository.save(e);
 		} catch (IncorrectResultSizeDataAccessException e2) {
 			log.warning(e2.getMessage());

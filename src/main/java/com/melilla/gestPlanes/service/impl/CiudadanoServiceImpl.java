@@ -301,7 +301,7 @@ public class CiudadanoServiceImpl implements CiudadanoService {
 		ciudadano.setApellido2(trabajador.getApellido2().toUpperCase());
 		ciudadano.setDNI(trabajador.getDNI().toUpperCase());
 		ciudadano.setEmail(trabajador.getEmail());
-		ciudadano.setCcc(trabajador.getCcc().toUpperCase());
+		ciudadano.setCcc(trabajador.getCcc());
 		ciudadano.setNacionalidad(trabajador.getNacionalidad().toUpperCase());
 		if (!trabajador.getEstado().equals(ciudadano.getEstado())) {
 			if (trabajador.getEstado().equals("CONTRATADO/A")) {
