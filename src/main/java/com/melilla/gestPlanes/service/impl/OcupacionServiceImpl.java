@@ -53,7 +53,9 @@ public class OcupacionServiceImpl implements OcupacionService {
 
 		while (it.hasNext()) {
 			Ocupacion ocupacion = it.next();
-
+			if (ocupacion.isDeleted()) {
+                continue;
+            }
 			OcupacionResponseDTO dto = new OcupacionResponseDTO();
 
 			dto.setCategoria(ocupacion.getCategoria().getCategoria());
