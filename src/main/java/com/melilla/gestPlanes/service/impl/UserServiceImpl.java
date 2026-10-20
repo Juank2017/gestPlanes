@@ -104,7 +104,7 @@ public class UserServiceImpl implements UserService {
 	public User updateUser(EditUserDTO user) {
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		User usuario = userRepository.findById(user.getId()).orElseThrow(()->new UserNotFoundException("usuario no encontrado"));
-		if (user.getVersion() != usuario.getVersion()) throw new DataStaleException();
+		//if (user.getVersion() != usuario.getVersion()) throw new DataStaleException();
 		usuario.setUserName(user.getUserName());
 		usuario.setActive(user.isEnabled());
 		usuario.setVersion(user.getVersion());

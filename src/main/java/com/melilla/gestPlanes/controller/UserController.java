@@ -125,4 +125,13 @@ public class UserController {
 		return ResponseEntity.ok(response);
 	}
 
+	@GetMapping("obtenerRoles")
+	ResponseEntity<ApiResponse>obtenerRoles(){
+		ApiResponse response = new ApiResponse();
+		response.setEstado(HttpStatus.OK);
+		response.getPayload().addAll(roleService.getAllRoles());
+		response.setMensaje("Lista de roles");
+
+		return ResponseEntity.ok(response);
+	}
 }
