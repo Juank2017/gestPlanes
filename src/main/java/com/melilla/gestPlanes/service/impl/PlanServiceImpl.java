@@ -87,6 +87,8 @@ public class PlanServiceImpl implements PlanService {
 	@Autowired
 	PlanConfigService planConfigService;
 
+
+
 	@Autowired
 	PlantillaContratoRepository plantillaContratoRepository;
 
@@ -568,10 +570,13 @@ public class PlanServiceImpl implements PlanService {
 
 				log.info(result);
 
-				PlanConfig config = planConfigService.crearConfig();
-
+				PlanConfig config = new  PlanConfig();
+				config.setTemplateDir("plantillas");
+				config.setUploadTemplateDir("cargaCandidatos");
+//				config.setPlan(nuevoPlan);
 				nuevoPlan.setConfig(config);
-				config.setPlan(nuevoPlan);
+
+			//	planConfigRepository.save(config);
 				planRepository.save(nuevoPlan);
 
 			}
@@ -712,7 +717,7 @@ public class PlanServiceImpl implements PlanService {
 		PlanConfig config = plan.getConfig();
 
 		if (config != null) {
-			config.setPlan(null);
+//			config.setPlan(null);
 			planConfigRepository.delete(config);
 		}
 		

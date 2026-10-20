@@ -33,6 +33,17 @@ public class PlanConfigServiceImpl implements PlanConfigService {
 	}
 
 	@Override
+	public PlanConfig crearConfigWithPlan(Plan plan) {
+		PlanConfig config = new PlanConfig();
+//		config.setPlan(plan);
+		config.setTemplateDir("plantillas");
+		config.setUploadTemplateDir("cargaCandidatos");
+
+		return planConfigRepository.save(config);
+	}
+
+
+	@Override
 	public PlanConfig actualizarConfig(updateConfigDTO config) {
 		
 		PlanConfig configBBDD = planConfigRepository.findById(config.getIdConfig()).orElseThrow(()->new PlanConfigNotFoundException(config.getIdConfig()));
@@ -56,7 +67,7 @@ public class PlanConfigServiceImpl implements PlanConfigService {
 	@Override
 	public PlanConfig obtenerConfig(long idPlan) {
 		
-		return planConfigRepository.findByPlanIdPlan(idPlan).orElseThrow(()->new PlanConfigNotFoundException(idPlan));
+		return null;//planConfigRepository.findByIdPlanIdPlan(idPlan).orElseThrow(()->new PlanConfigNotFoundException(idPlan));
 	}
 
 }

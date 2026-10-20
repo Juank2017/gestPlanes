@@ -2,6 +2,7 @@ package com.melilla.gestPlanes.model.config;
 
 import java.time.LocalDateTime;
 
+import jakarta.persistence.*;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
 import org.hibernate.envers.RelationTargetAuditMode;
@@ -11,15 +12,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.melilla.gestPlanes.model.Plan;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.MapsId;
-import jakarta.persistence.OneToOne;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -43,11 +35,11 @@ public class PlanConfig {
 	
 	private String uploadTemplateDir;
 
-	@NotAudited
-	@JsonIgnore
-	@OneToOne(mappedBy = "config")
-	private Plan plan;
-	
+
+//	@JsonIgnore
+//	@OneToOne(mappedBy = "config")
+//	private Plan idPlan;
+//
 	@CreatedDate
 	@JsonFormat(shape = JsonFormat.Shape.STRING,  pattern = "dd/MM/yyy")
 	private LocalDateTime createdAt;
@@ -106,9 +98,9 @@ public class PlanConfig {
 //		return plan;
 //	}
 
-	public void setPlan(Plan plan) {
-		this.plan = plan;
-	}
+//	public void setPlan(Plan plan) {
+//		this.idPlan = plan;
+//	}
 
 	public LocalDateTime getCreatedAt() {
 		return createdAt;

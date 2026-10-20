@@ -8,7 +8,10 @@ import com.melilla.gestPlanes.model.config.PlanConfig;
 public interface PlanConfigService {
 	
 	PlanConfig crearConfig();
-	
+
+	PlanConfig crearConfigWithPlan(Plan plan);
+
+
 	PlanConfig actualizarConfig(updateConfigDTO config);
 	
 	void eliminarConfig(long idConfig);

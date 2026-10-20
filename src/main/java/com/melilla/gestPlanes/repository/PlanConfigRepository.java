@@ -11,5 +11,5 @@ import com.melilla.gestPlanes.model.config.PlanConfig;
 public interface PlanConfigRepository extends JpaRepository<PlanConfig, Long>, RevisionRepository<PlanConfig, Long, Long> {
 
 	
-	Optional<PlanConfig> findByPlanIdPlan(long idPlan);
+	//Optional<PlanConfig> findByIdPlanIdPlan(long idPlan);
 }
